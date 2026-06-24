@@ -12,6 +12,21 @@ import { RouteLocationNormalized, RouteRecordRaw } from "vue-router";
 
 export const routes: Readonly<RouteRecordRaw>[] = [
 	{
+		path: "/account",
+		component: () => import("@/pages/AccountSettings.page.vue"),
+		name: "account-settings",
+	},
+	{
+		path: "/account/teams",
+		component: () => import("@/pages/account/AccountTeams.page.vue"),
+		name: "account-teams",
+	},
+	{
+		path: "/account/thirdPartyProviders",
+		component: () => import("@/pages/account/ThirdPartyProviders.page.vue"),
+		name: "account-third-party-providers",
+	},
+	{
 		path: "/administration/ldap/activate",
 		component: () => import("@/pages/administration/LDAPActivate.page.vue"),
 		name: "administration-ldap-activate",
@@ -134,6 +149,23 @@ export const routes: Readonly<RouteRecordRaw>[] = [
 		name: "dashboard",
 	},
 	{
+		path: "/onboarding",
+		component: () => import("@/pages/Onboarding.page.vue"),
+		name: "onboarding",
+		meta: {
+			layout: Layouts.LOGGED_IN,
+		},
+	},
+	{
+		path: "/login",
+		component: () => import("@/pages/Login.page.vue"),
+		name: "login",
+		meta: {
+			isPublic: true,
+			layout: Layouts.BORDERLESS,
+		},
+	},
+	{
 		path: `/boards/:id(${REGEX_ID})`,
 		component: async () => (await import("@page-board")).ColumnBoardPage,
 		name: "boards-id",
@@ -148,6 +180,11 @@ export const routes: Readonly<RouteRecordRaw>[] = [
 		props: (route: RouteLocationNormalized) => ({
 			boardId: route.params.boardId,
 		}),
+	},
+	{
+		path: "/calendar",
+		component: () => import("@/pages/Calendar.page.vue"),
+		name: "calendar",
 	},
 	{
 		path: `/collabora/:id(${REGEX_ID})`,
@@ -168,6 +205,16 @@ export const routes: Readonly<RouteRecordRaw>[] = [
 		meta: {
 			isPublic: true,
 		},
+	},
+	{
+		path: "/files",
+		component: () => import("@/pages/FilesOverview.page.vue"),
+		name: "files-overview",
+	},
+	{
+		path: "/files/my",
+		component: () => import("@/pages/PersonalFiles.page.vue"),
+		name: "personal-files",
 	},
 	{
 		path: `/folder/:id(${REGEX_ID})`,
@@ -220,6 +267,30 @@ export const routes: Readonly<RouteRecordRaw>[] = [
 		},
 	},
 	{
+		path: "/help",
+		redirect: { name: "help-articles" },
+	},
+	{
+		path: "/help/articles",
+		component: () => import("@/pages/help/HelpArticles.page.vue"),
+		name: "help-articles",
+	},
+	{
+		path: "/help/contact",
+		component: () => import("@/pages/help/HelpContact.page.vue"),
+		name: "help-contact",
+	},
+	{
+		path: "/help/confluence/:id(\\d+)",
+		component: () => import("@/pages/help/HelpConfluence.page.vue"),
+		name: "help-confluence",
+	},
+	{
+		path: "/help/faq/documents",
+		component: () => import("@/pages/help/HelpDocuments.page.vue"),
+		name: "help-documents",
+	},
+	{
 		path: "/imprint",
 		component: () => import("@/pages/Imprint.page.vue"),
 		name: "imprint",
@@ -262,6 +333,11 @@ export const routes: Readonly<RouteRecordRaw>[] = [
 		},
 	},
 	{
+		path: "/legacy-view-migration",
+		component: () => import("@/pages/LegacyViewMigration.page.vue"),
+		name: "legacy-view-migration",
+	},
+	{
 		path: `/media-shelf`,
 		component: async () => (await import("@page-media-shelf")).MediaShelfPage,
 		name: "media-shelf",
@@ -292,6 +368,11 @@ export const routes: Readonly<RouteRecordRaw>[] = [
 			isPublic: true,
 			layout: Layouts.LOGGED_OUT,
 		},
+	},
+	{
+		path: "/news",
+		component: async () => (await import("@page-news")).NewsOverviewPage,
+		name: "news-overview",
 	},
 	{
 		path: "/news/new",
@@ -378,6 +459,11 @@ export const routes: Readonly<RouteRecordRaw>[] = [
 		}),
 	},
 	{
+		path: "/system/releases",
+		component: () => import("@/pages/ReleaseNotes.page.vue"),
+		name: "system-releases",
+	},
+	{
 		path: "/system/security",
 		component: () => import("@/pages/Security.page.vue"),
 		meta: {
@@ -388,6 +474,11 @@ export const routes: Readonly<RouteRecordRaw>[] = [
 		path: "/tasks",
 		component: () => import("@/pages/tasks/TaskOverview.page.vue"),
 		name: "tasks",
+	},
+	{
+		path: `/homework/:id(${REGEX_ID})`,
+		component: () => import("@/pages/tasks/TaskDetail.page.vue"),
+		name: "task-detail",
 	},
 	{
 		path: `/tools/context/tool-configuration`,
@@ -417,5 +508,18 @@ export const routes: Readonly<RouteRecordRaw>[] = [
 		path: "/",
 		component: () => import("@/pages/Home.page.vue"),
 		name: "home",
+		meta: {
+			isPublic: true,
+			layout: Layouts.BORDERLESS,
+		},
+	},
+	{
+		path: "/logout",
+		component: () => import("@/pages/Logout.page.vue"),
+		name: "logout",
+		meta: {
+			isPublic: true,
+			layout: Layouts.BORDERLESS,
+		},
 	},
 ];

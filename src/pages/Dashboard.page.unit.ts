@@ -21,7 +21,7 @@ import {
 	RuntimeConfigApiInterface,
 	SchulcloudTheme,
 } from "@api-server";
-import { DashboardTasks } from "@feature-dashboard";
+import { DashboardCalendarEvents, DashboardTasks } from "@feature-dashboard";
 import { createTestingPinia } from "@pinia/testing";
 import { flushPromises } from "@vue/test-utils";
 import { AxiosInstance } from "axios";
@@ -88,7 +88,10 @@ describe("DashboardPage", () => {
 		);
 
 		const wrapper = mount(DashboardPage, {
-			global: { plugins: [createTestingVuetify(), createTestingI18n()], stubs: ["DashboardTasks"] },
+			global: {
+				plugins: [createTestingVuetify(), createTestingI18n()],
+				stubs: ["DashboardCalendarEvents", "DashboardTasks"],
+			},
 		});
 
 		return { wrapper };
@@ -116,6 +119,29 @@ describe("DashboardPage", () => {
 
 			const newsCards = wrapper.findAll("[data-testid='news-card-item']");
 			expect(newsCards).toHaveLength(news.length);
+		});
+	});
+
+	describe("dashboard calendar events", () => {
+		it("shows DashboardCalendarEvents for teachers", async () => {
+			const { wrapper } = setup({ roleName: RoleName.TEACHER });
+			await flushPromises();
+
+			expect(wrapper.findComponent(DashboardCalendarEvents).exists()).toBe(true);
+		});
+
+		it("shows DashboardCalendarEvents for students", async () => {
+			const { wrapper } = setup({ roleName: RoleName.STUDENT });
+			await flushPromises();
+
+			expect(wrapper.findComponent(DashboardCalendarEvents).exists()).toBe(true);
+		});
+
+		it("does not show DashboardCalendarEvents for other roles", async () => {
+			const { wrapper } = setup();
+			await flushPromises();
+
+			expect(wrapper.findComponent(DashboardCalendarEvents).exists()).toBe(false);
 		});
 	});
 

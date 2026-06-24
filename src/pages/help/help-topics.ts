@@ -1,0 +1,447 @@
+export type HelpArticle = { id: string; title: string; type: string };
+export type HelpCategory = { id: string; title: string; type: string; articles?: HelpArticle[] };
+export type HelpTopic = { id: string; title: string; type: string; icon: string; categories: HelpCategory[] };
+
+export const helpTopics: HelpTopic[] = [
+	{
+		id: "17170472",
+		title: "Unterricht",
+		type: "topic",
+		icon: "fa-graduation-cap",
+		categories: [
+			{
+				id: "375458794",
+				title: "Räume",
+				type: "category",
+				articles: [
+					{
+						id: "381583517",
+						title: "Räume und ihre Funktionen",
+						type: "article",
+					},
+					{
+						id: "270827606",
+						title: "Bereiche - einspaltig und zweispaltig",
+						type: "article",
+					},
+				],
+			},
+			{
+				id: "44072994",
+				title: "Kurse",
+				type: "category",
+				articles: [
+					{
+						id: "13828241",
+						title: "Kurse erstellen",
+						type: "article",
+					},
+					{
+						id: "13828373",
+						title: "Kurse bearbeiten",
+						type: "article",
+					},
+					{
+						id: "13828369",
+						title: "Gruppen im Kurs anlegen",
+						type: "article",
+					},
+					{
+						id: "154188226",
+						title: "Kurse wiederverwenden",
+						type: "article",
+					},
+					{
+						id: "102204000",
+						title: "Kurse löschen",
+						type: "article",
+					},
+					{
+						id: "113641943",
+						title: "Archivierte Kurse",
+						type: "article",
+					},
+					{
+						id: "21921821",
+						title: "Kurse kopieren (klonen)",
+						type: "article",
+					},
+					{
+						id: "39387173",
+						title: "Kurse teilen und importieren",
+						type: "article",
+					},
+					{
+						id: "178658305",
+						title: "Kurse sortieren",
+						type: "article",
+					},
+				],
+			},
+			{
+				id: "423592596",
+				title: "Themen & Inhalte",
+				type: "category",
+				articles: [
+					{
+						id: "424706075",
+						title: "Themen, Aufgaben und Bereiche erstellen",
+						type: "article",
+					},
+					{
+						id: "424706092",
+						title: "Themen - Einfügen, Teilen, Importieren und Kopieren",
+						type: "article",
+					},
+					{
+						id: "424706131",
+						title: "Interaktives Whiteboard nutzen",
+						type: "article",
+					},
+				],
+			},
+			{
+				id: "424706267",
+				title: "Aufgaben",
+				type: "category",
+				articles: [
+					{
+						id: "424706478",
+						title: "Aufgaben - Funktionen für Lehrkräfte",
+						type: "article",
+					},
+					{
+						id: "424706507",
+						title: "Aufgaben - Funktionen für Schülerinnen und Schüler",
+						type: "article",
+					},
+				],
+			},
+			{
+				id: "113651065",
+				title: "Videokonferenzen",
+				type: "category",
+				articles: [
+					{
+						id: "113652165",
+						title: "Videokonferenzen einrichten",
+						type: "article",
+					},
+					{
+						id: "154190409",
+						title: "Videokonferenzen durchführen",
+						type: "article",
+					},
+					{
+						id: "154186057",
+						title: "An Videokonferenzen teilnehmen",
+						type: "article",
+					},
+					{
+						id: "170594138",
+						title: "In Videokonferenzen präsentieren",
+						type: "article",
+					},
+					{
+						id: "113653222",
+						title: "Videokonferenzen moderieren",
+						type: "article",
+					},
+					{
+						id: "170596102",
+						title: "Technische Probleme während Videokonferenzen",
+						type: "article",
+					},
+					{
+						id: "123409850",
+						title: "Umfragen in Videokonferenzen",
+						type: "article",
+					},
+					{
+						id: "215516270",
+						title: "Externe Personen in Videokonferenzen",
+						type: "article",
+					},
+				],
+			},
+			{
+				id: "13828549",
+				title: "Dateien",
+				type: "category",
+				articles: [],
+			},
+			{
+				id: "123409350",
+				title: "Texteditor",
+				type: "category",
+				articles: [],
+			},
+			{
+				id: "148537453",
+				title: "Bettermarks",
+				type: "category",
+				articles: [],
+			},
+		],
+	},
+	{
+		id: "17170474",
+		title: "Organisation",
+		type: "topic",
+		icon: "fa-sitemap",
+		categories: [
+			{
+				id: "44073004",
+				title: "Registrierung",
+				type: "category",
+				articles: [
+					{
+						id: "17956927",
+						title: "Startschritte",
+						type: "article",
+					},
+					{
+						id: "154189991",
+						title: "Nutzer:innen hinzufügen",
+						type: "article",
+					},
+					{
+						id: "167772637",
+						title: "Registrierung von Lehrkräften",
+						type: "article",
+					},
+					{
+						id: "36700189",
+						title: "Registrierung von Schüler:innen",
+						type: "article",
+					},
+					{
+						id: "113641993",
+						title: "Klassenweite Einverständniserklärungen einholen",
+						type: "article",
+					},
+					{
+						id: "13828806",
+						title: "Passwörter zurücksetzen",
+						type: "article",
+					},
+					{
+						id: "13828427",
+						title: "Login / Anmeldung",
+						type: "article",
+					},
+				],
+			},
+			{
+				id: "44073009",
+				title: "Hinweise für Admins",
+				type: "category",
+				articles: [
+					{
+						id: "98598995",
+						title: "Browserspezifische Hinweise",
+						type: "article",
+					},
+					{
+						id: "102205394",
+						title: "Schulweite Funktionen freischalten",
+						type: "article",
+					},
+					{
+						id: "154188138",
+						title: "Teams für Schüler:innen aktivieren",
+						type: "article",
+					},
+					{
+						id: "223674916",
+						title: "Teams bearbeiten und verwalten",
+						type: "article",
+					},
+					{
+						id: "113640783",
+						title: "Moodle-Hinweise für Schulen",
+						type: "article",
+					},
+					{
+						id: "154188223",
+						title: "Zusätzliche Admins an der Schule benennen",
+						type: "article",
+					},
+					{
+						id: "154188727",
+						title: "Nutzer:innen löschen",
+						type: "article",
+					},
+					{
+						id: "55902270",
+						title: "LDAP-Information für Schulen",
+						type: "article",
+					},
+					{
+						id: "123407528",
+						title: "LDAP-Schuljahreswechsel",
+						type: "article",
+					},
+					{
+						id: "123407609",
+						title: "E-Mail-Adressen ungültig machen (Schulwechsel)",
+						type: "article",
+					},
+					{
+						id: "123407871",
+						title: "Spezielle Anleitung zum Schulwechsel für Schulen mit LDAP-System",
+						type: "article",
+					},
+					{
+						id: "154188767",
+						title: "Schulweit Sprache ändern",
+						type: "article",
+					},
+					{
+						id: "196739599",
+						title: "Migrationsprozess",
+						type: "article",
+					},
+					{
+						id: "236650836",
+						title: "Migrationsprozess in der dBildungscloud",
+						type: "article",
+					},
+					{
+						id: "246055610",
+						title: "Externe Tools anbinden und verwalten (LTI)",
+						type: "article",
+					},
+					{
+						id: "308413368",
+						title: "Migrationsassistent für moin.schule",
+						type: "article",
+					},
+				],
+			},
+			{
+				id: "426312891",
+				title: "Klassenverwaltung",
+				type: "category",
+				articles: [
+					{
+						id: "442991374",
+						title: "Klassen - Anlegen, Bearbeiten und Löschen",
+						type: "article",
+					},
+					{
+						id: "442991388",
+						title: "Klassen in neues Schuljahr versetzen",
+						type: "article",
+					},
+				],
+			},
+			{
+				id: "426313034",
+				title: "Teams",
+				type: "category",
+				articles: [
+					{
+						id: "426313035",
+						title: "Teams anlegen, bearbeiten und löschen",
+						type: "article",
+					},
+					{
+						id: "426313038",
+						title: "Teammitglieder einladen",
+						type: "article",
+					},
+					{
+						id: "426313051",
+						title: "Teamrollen und Berechtigungen",
+						type: "article",
+					},
+					{
+						id: "426313060",
+						title: "Teameinladung freigeben",
+						type: "article",
+					},
+				],
+			},
+			{
+				id: "17170476",
+				title: "Hilfreiche Funktionen",
+				type: "category",
+				articles: [
+					{
+						id: "153452633",
+						title: "Allgemeine Verwaltungsoptionen",
+						type: "article",
+					},
+					{
+						id: "13829031",
+						title: "Filterfunktion",
+						type: "article",
+					},
+					{
+						id: "13828660",
+						title: "QR-Code Funktion",
+						type: "article",
+					},
+					{
+						id: "113646967",
+						title: "Automatisiertes Ausloggen",
+						type: "article",
+					},
+					{
+						id: "130778703",
+						title: "Sprache ändern / Change language / Cambiar idioma",
+						type: "article",
+					},
+				],
+			},
+			{
+				id: "154188672",
+				title: "Probleme beheben",
+				type: "category",
+				articles: [
+					{
+						id: "148537858",
+						title: "Bekannte Fehler in der Cloud und ihre Behebung",
+						type: "article",
+					},
+					{
+						id: "13828795",
+						title: "Wunsch oder Problem senden",
+						type: "article",
+					},
+				],
+			},
+			{
+				id: "13828292",
+				title: "Neuigkeiten",
+				type: "category",
+				articles: [],
+			},
+			{
+				id: "13828371",
+				title: "Termine",
+				type: "category",
+				articles: [],
+			},
+			{
+				id: "123407337",
+				title: "Schuljahreswechsel",
+				type: "category",
+				articles: [],
+			},
+			{
+				id: "214237489",
+				title: "Dateien in Nextcloud",
+				type: "category",
+				articles: [],
+			},
+			{
+				id: "352583745",
+				title: "Medienregal",
+				type: "category",
+				articles: [],
+			},
+		],
+	},
+];

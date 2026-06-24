@@ -1,0 +1,1996 @@
+{
+  "summary": {
+    "legacy_hbs_total": 223,
+    "legacy_hbs_by_category": {
+      "account": 3,
+      "administration": 20,
+      "authentication": 6,
+      "calendar": 3,
+      "community": 3,
+      "courses": 19,
+      "dashboard": 1,
+      "files": 11,
+      "firstLogin": 33,
+      "help": 15,
+      "homework": 10,
+      "lib": 51,
+      "news": 7,
+      "oauth2": 2,
+      "pwRecovery": 3,
+      "registration": 7,
+      "system": 1,
+      "teams": 19,
+      "topic": 8,
+      "user": 1
+    },
+    "legacy_res_render_total": 72,
+    "legacy_controller_route_handlers_total": 205,
+    "nuxt_page_vue_total": 35,
+    "nuxt_vue_route_whitelist_total": 67,
+    "top_rendered_views_sample": [
+      {
+        "controller": "controllers/teams.js",
+        "view": "teams/edit-team",
+        "line": 155
+      },
+      {
+        "controller": "controllers/teams.js",
+        "view": "teams/edit-course",
+        "line": 240
+      },
+      {
+        "controller": "controllers/teams.js",
+        "view": "teams/overview",
+        "line": 313
+      },
+      {
+        "controller": "controllers/teams.js",
+        "view": "teams/overview-empty",
+        "line": 325
+      },
+      {
+        "controller": "controllers/teams.js",
+        "view": "teams/team",
+        "line": 579
+      },
+      {
+        "controller": "controllers/teams.js",
+        "view": "teams/members",
+        "line": 1059
+      },
+      {
+        "controller": "controllers/teams.js",
+        "view": "teams/topics",
+        "line": 1278
+      },
+      {
+        "controller": "controllers/oauth2.js",
+        "view": "oauth2/consent",
+        "line": 96
+      },
+      {
+        "controller": "controllers/oauth2.js",
+        "view": "oauth2/username",
+        "line": 133
+      },
+      {
+        "controller": "controllers/oauth2.js",
+        "view": "oauth2/username",
+        "line": 145
+      },
+      {
+        "controller": "controllers/forcePasswordChange.js",
+        "view": "firstLogin/forcePasswordChange",
+        "line": 17
+      },
+      {
+        "controller": "controllers/system.js",
+        "view": "system/releases",
+        "line": 26
+      },
+      {
+        "controller": "controllers/files.js",
+        "view": "files/files",
+        "line": 527
+      },
+      {
+        "controller": "controllers/files.js",
+        "view": "files/files",
+        "line": 577
+      },
+      {
+        "controller": "controllers/files.js",
+        "view": "files/files-overview",
+        "line": 596
+      },
+      {
+        "controller": "controllers/files.js",
+        "view": "files/files",
+        "line": 611
+      },
+      {
+        "controller": "controllers/files.js",
+        "view": "files/files",
+        "line": 656
+      },
+      {
+        "controller": "controllers/files.js",
+        "view": "files/files",
+        "line": 695
+      },
+      {
+        "controller": "controllers/files.js",
+        "view": "files/files",
+        "line": 742
+      },
+      {
+        "controller": "controllers/files.js",
+        "view": "files/files",
+        "line": 778
+      },
+      {
+        "controller": "controllers/files.js",
+        "view": "files/files",
+        "line": 813
+      },
+      {
+        "controller": "controllers/files.js",
+        "view": "files/search",
+        "line": 905
+      },
+      {
+        "controller": "controllers/registration.js",
+        "view": "registration/registration-parent",
+        "line": 242
+      },
+      {
+        "controller": "controllers/registration.js",
+        "view": "registration/registration-student",
+        "line": 309
+      },
+      {
+        "controller": "controllers/registration.js",
+        "view": "registration/registration-employee",
+        "line": 388
+      },
+      {
+        "controller": "controllers/registration.js",
+        "view": "registration/registration",
+        "line": 427
+      },
+      {
+        "controller": "controllers/homework.js",
+        "view": "homework/edit",
+        "line": 367
+      },
+      {
+        "controller": "controllers/homework.js",
+        "view": "homework/edit",
+        "line": 424
+      },
+      {
+        "controller": "controllers/homework.js",
+        "view": "homework/edit",
+        "line": 439
+      },
+      {
+        "controller": "controllers/homework.js",
+        "view": "homework/assignment",
+        "line": 658
+      },
+      {
+        "controller": "controllers/administration.js",
+        "view": "administration/users_registrationcomplete",
+        "line": 504
+      },
+      {
+        "controller": "controllers/administration.js",
+        "view": "administration/import",
+        "line": 632
+      },
+      {
+        "controller": "controllers/administration.js",
+        "view": "administration/users_edit",
+        "line": 690
+      },
+      {
+        "controller": "controllers/administration.js",
+        "view": "administration/import",
+        "line": 781
+      },
+      {
+        "controller": "controllers/administration.js",
+        "view": "administration/users_skipregistration",
+        "line": 821
+      },
+      {
+        "controller": "controllers/administration.js",
+        "view": "administration/users_edit",
+        "line": 990
+      },
+      {
+        "controller": "controllers/administration.js",
+        "view": "administration/classes-edit",
+        "line": 1103
+      },
+      {
+        "controller": "controllers/administration.js",
+        "view": "administration/classes-manage",
+        "line": 1324
+      },
+      {
+        "controller": "controllers/administration.js",
+        "view": "administration/teams",
+        "line": 1743
+      },
+      {
+        "controller": "controllers/administration.js",
+        "view": "administration/ldap-schoolyear-start",
+        "line": 1876
+      },
+      {
+        "controller": "controllers/help.js",
+        "view": "help/help",
+        "line": 15
+      },
+      {
+        "controller": "controllers/help.js",
+        "view": "help/contact",
+        "line": 25
+      },
+      {
+        "controller": "controllers/help.js",
+        "view": "help/confluence",
+        "line": 33
+      },
+      {
+        "controller": "controllers/help.js",
+        "view": "help/accordion-sections",
+        "line": 57
+      },
+      {
+        "controller": "controllers/firstLogin.js",
+        "view": "firstLogin/firstLoginShortened",
+        "line": 109
+      },
+      {
+        "controller": "controllers/firstLogin.js",
+        "view": "firstLogin/firstLogin",
+        "line": 259
+      },
+      {
+        "controller": "controllers/firstLogin.js",
+        "view": "firstLogin/firstLoginExistingUser",
+        "line": 263
+      },
+      {
+        "controller": "controllers/firstLogin.js",
+        "view": "firstLogin/consentError",
+        "line": 272
+      },
+      {
+        "controller": "controllers/welcome.js",
+        "view": "firstLogin/welcome",
+        "line": 10
+      },
+      {
+        "controller": "controllers/login.js",
+        "view": "authentication/home",
+        "line": 316
+      },
+      {
+        "controller": "controllers/login.js",
+        "view": "authentication/login",
+        "line": 349
+      },
+      {
+        "controller": "controllers/courses.js",
+        "view": "courses/edit-course",
+        "line": 348
+      },
+      {
+        "controller": "controllers/courses.js",
+        "view": "courses/create-course",
+        "line": 365
+      },
+      {
+        "controller": "controllers/courses.js",
+        "view": "courses/edit-course",
+        "line": 466
+      },
+      {
+        "controller": "controllers/courses.js",
+        "view": "courses/course",
+        "line": 669
+      },
+      {
+        "controller": "controllers/pwrecovery.js",
+        "view": "pwRecovery/pwRecoveryResponse",
+        "line": 7
+      },
+      {
+        "controller": "controllers/pwrecovery.js",
+        "view": "pwRecovery/pwRecoveryFailed",
+        "line": 11
+      },
+      {
+        "controller": "controllers/pwrecovery.js",
+        "view": "pwRecovery/pwrecovery",
+        "line": 30
+      },
+      {
+        "controller": "controllers/account.js",
+        "view": "account/settings",
+        "line": 41
+      },
+      {
+        "controller": "controllers/account.js",
+        "view": "account/settings",
+        "line": 53
+      }
+    ]
+  },
+  "renders": [
+    {
+      "controller": "controllers/teams.js",
+      "view": "teams/edit-team",
+      "line": 155
+    },
+    {
+      "controller": "controllers/teams.js",
+      "view": "teams/edit-course",
+      "line": 240
+    },
+    {
+      "controller": "controllers/teams.js",
+      "view": "teams/overview",
+      "line": 313
+    },
+    {
+      "controller": "controllers/teams.js",
+      "view": "teams/overview-empty",
+      "line": 325
+    },
+    {
+      "controller": "controllers/teams.js",
+      "view": "teams/team",
+      "line": 579
+    },
+    {
+      "controller": "controllers/teams.js",
+      "view": "teams/members",
+      "line": 1059
+    },
+    {
+      "controller": "controllers/teams.js",
+      "view": "teams/topics",
+      "line": 1278
+    },
+    {
+      "controller": "controllers/oauth2.js",
+      "view": "oauth2/consent",
+      "line": 96
+    },
+    {
+      "controller": "controllers/oauth2.js",
+      "view": "oauth2/username",
+      "line": 133
+    },
+    {
+      "controller": "controllers/oauth2.js",
+      "view": "oauth2/username",
+      "line": 145
+    },
+    {
+      "controller": "controllers/forcePasswordChange.js",
+      "view": "firstLogin/forcePasswordChange",
+      "line": 17
+    },
+    {
+      "controller": "controllers/system.js",
+      "view": "system/releases",
+      "line": 26
+    },
+    {
+      "controller": "controllers/files.js",
+      "view": "files/files",
+      "line": 527
+    },
+    {
+      "controller": "controllers/files.js",
+      "view": "files/files",
+      "line": 577
+    },
+    {
+      "controller": "controllers/files.js",
+      "view": "files/files-overview",
+      "line": 596
+    },
+    {
+      "controller": "controllers/files.js",
+      "view": "files/files",
+      "line": 611
+    },
+    {
+      "controller": "controllers/files.js",
+      "view": "files/files",
+      "line": 656
+    },
+    {
+      "controller": "controllers/files.js",
+      "view": "files/files",
+      "line": 695
+    },
+    {
+      "controller": "controllers/files.js",
+      "view": "files/files",
+      "line": 742
+    },
+    {
+      "controller": "controllers/files.js",
+      "view": "files/files",
+      "line": 778
+    },
+    {
+      "controller": "controllers/files.js",
+      "view": "files/files",
+      "line": 813
+    },
+    {
+      "controller": "controllers/files.js",
+      "view": "files/search",
+      "line": 905
+    },
+    {
+      "controller": "controllers/registration.js",
+      "view": "registration/registration-parent",
+      "line": 242
+    },
+    {
+      "controller": "controllers/registration.js",
+      "view": "registration/registration-student",
+      "line": 309
+    },
+    {
+      "controller": "controllers/registration.js",
+      "view": "registration/registration-employee",
+      "line": 388
+    },
+    {
+      "controller": "controllers/registration.js",
+      "view": "registration/registration",
+      "line": 427
+    },
+    {
+      "controller": "controllers/homework.js",
+      "view": "homework/edit",
+      "line": 367
+    },
+    {
+      "controller": "controllers/homework.js",
+      "view": "homework/edit",
+      "line": 424
+    },
+    {
+      "controller": "controllers/homework.js",
+      "view": "homework/edit",
+      "line": 439
+    },
+    {
+      "controller": "controllers/homework.js",
+      "view": "homework/assignment",
+      "line": 658
+    },
+    {
+      "controller": "controllers/administration.js",
+      "view": "administration/users_registrationcomplete",
+      "line": 504
+    },
+    {
+      "controller": "controllers/administration.js",
+      "view": "administration/import",
+      "line": 632
+    },
+    {
+      "controller": "controllers/administration.js",
+      "view": "administration/users_edit",
+      "line": 690
+    },
+    {
+      "controller": "controllers/administration.js",
+      "view": "administration/import",
+      "line": 781
+    },
+    {
+      "controller": "controllers/administration.js",
+      "view": "administration/users_skipregistration",
+      "line": 821
+    },
+    {
+      "controller": "controllers/administration.js",
+      "view": "administration/users_edit",
+      "line": 990
+    },
+    {
+      "controller": "controllers/administration.js",
+      "view": "administration/classes-edit",
+      "line": 1103
+    },
+    {
+      "controller": "controllers/administration.js",
+      "view": "administration/classes-manage",
+      "line": 1324
+    },
+    {
+      "controller": "controllers/administration.js",
+      "view": "administration/teams",
+      "line": 1743
+    },
+    {
+      "controller": "controllers/administration.js",
+      "view": "administration/ldap-schoolyear-start",
+      "line": 1876
+    },
+    {
+      "controller": "controllers/help.js",
+      "view": "help/help",
+      "line": 15
+    },
+    {
+      "controller": "controllers/help.js",
+      "view": "help/contact",
+      "line": 25
+    },
+    {
+      "controller": "controllers/help.js",
+      "view": "help/confluence",
+      "line": 33
+    },
+    {
+      "controller": "controllers/help.js",
+      "view": "help/accordion-sections",
+      "line": 57
+    },
+    {
+      "controller": "controllers/firstLogin.js",
+      "view": "firstLogin/firstLoginShortened",
+      "line": 109
+    },
+    {
+      "controller": "controllers/firstLogin.js",
+      "view": "firstLogin/firstLogin",
+      "line": 259
+    },
+    {
+      "controller": "controllers/firstLogin.js",
+      "view": "firstLogin/firstLoginExistingUser",
+      "line": 263
+    },
+    {
+      "controller": "controllers/firstLogin.js",
+      "view": "firstLogin/consentError",
+      "line": 272
+    },
+    {
+      "controller": "controllers/welcome.js",
+      "view": "firstLogin/welcome",
+      "line": 10
+    },
+    {
+      "controller": "controllers/login.js",
+      "view": "authentication/home",
+      "line": 316
+    },
+    {
+      "controller": "controllers/login.js",
+      "view": "authentication/login",
+      "line": 349
+    },
+    {
+      "controller": "controllers/courses.js",
+      "view": "courses/edit-course",
+      "line": 348
+    },
+    {
+      "controller": "controllers/courses.js",
+      "view": "courses/create-course",
+      "line": 365
+    },
+    {
+      "controller": "controllers/courses.js",
+      "view": "courses/edit-course",
+      "line": 466
+    },
+    {
+      "controller": "controllers/courses.js",
+      "view": "courses/course",
+      "line": 669
+    },
+    {
+      "controller": "controllers/pwrecovery.js",
+      "view": "pwRecovery/pwRecoveryResponse",
+      "line": 7
+    },
+    {
+      "controller": "controllers/pwrecovery.js",
+      "view": "pwRecovery/pwRecoveryFailed",
+      "line": 11
+    },
+    {
+      "controller": "controllers/pwrecovery.js",
+      "view": "pwRecovery/pwrecovery",
+      "line": 30
+    },
+    {
+      "controller": "controllers/account.js",
+      "view": "account/settings",
+      "line": 41
+    },
+    {
+      "controller": "controllers/account.js",
+      "view": "account/settings",
+      "line": 53
+    },
+    {
+      "controller": "controllers/account.js",
+      "view": "account/settings",
+      "line": 68
+    },
+    {
+      "controller": "controllers/account.js",
+      "view": "account/settings",
+      "line": 77
+    },
+    {
+      "controller": "controllers/account.js",
+      "view": "account/teams",
+      "line": 90
+    },
+    {
+      "controller": "controllers/account.js",
+      "view": "account/thirdPartyProviders",
+      "line": 106
+    },
+    {
+      "controller": "controllers/account.js",
+      "view": "account/settings",
+      "line": 154
+    },
+    {
+      "controller": "controllers/news.js",
+      "view": "news/overview",
+      "line": 90
+    },
+    {
+      "controller": "controllers/news.js",
+      "view": "news/article",
+      "line": 109
+    },
+    {
+      "controller": "controllers/topics.js",
+      "view": "topic/edit-topic",
+      "line": 46
+    },
+    {
+      "controller": "controllers/topics.js",
+      "view": "topic/topic",
+      "line": 276
+    },
+    {
+      "controller": "controllers/calendar.js",
+      "view": "calendar/calendar",
+      "line": 21
+    },
+    {
+      "controller": "controllers/coursegroups.js",
+      "view": "courses/edit-courseGroup",
+      "line": 53
+    },
+    {
+      "controller": "controllers/coursegroups.js",
+      "view": "courses/courseGroup",
+      "line": 157
+    }
+  ],
+  "routes": [
+    {
+      "file": "controllers/teams.js",
+      "method": "GET",
+      "path": "/",
+      "line": 265
+    },
+    {
+      "file": "controllers/teams.js",
+      "method": "POST",
+      "path": "/copy/:teamId",
+      "line": 332
+    },
+    {
+      "file": "controllers/teams.js",
+      "method": "GET",
+      "path": "/:teamId/json",
+      "line": 377
+    },
+    {
+      "file": "controllers/teams.js",
+      "method": "GET",
+      "path": "/:teamId/usersJson",
+      "line": 408
+    },
+    {
+      "file": "controllers/teams.js",
+      "method": "GET",
+      "path": "/:teamId",
+      "line": 421
+    },
+    {
+      "file": "controllers/teams.js",
+      "method": "GET",
+      "path": "/:teamId",
+      "line": 523
+    },
+    {
+      "file": "controllers/teams.js",
+      "method": "GET",
+      "path": "/:teamId/edit",
+      "line": 629
+    },
+    {
+      "file": "controllers/teams.js",
+      "method": "GET",
+      "path": "/:teamId/copy",
+      "line": 631
+    },
+    {
+      "file": "controllers/teams.js",
+      "method": "PATCH",
+      "path": "/:teamId",
+      "line": 633
+    },
+    {
+      "file": "controllers/teams.js",
+      "method": "POST",
+      "path": "/:teamId/convert-to-room",
+      "line": 676
+    },
+    {
+      "file": "controllers/teams.js",
+      "method": "PATCH",
+      "path": "/:teamId/permissions",
+      "line": 692
+    },
+    {
+      "file": "controllers/teams.js",
+      "method": "GET",
+      "path": "/:teamId/delete",
+      "line": 704
+    },
+    {
+      "file": "controllers/teams.js",
+      "method": "DELETE",
+      "path": "/:teamId",
+      "line": 713
+    },
+    {
+      "file": "controllers/teams.js",
+      "method": "POST",
+      "path": "/:teamId/events/",
+      "line": 724
+    },
+    {
+      "file": "controllers/teams.js",
+      "method": "PUT",
+      "path": "/events/:eventId",
+      "line": 741
+    },
+    {
+      "file": "controllers/teams.js",
+      "method": "GET",
+      "path": "/:teamId/news/new",
+      "line": 759
+    },
+    {
+      "file": "controllers/teams.js",
+      "method": "GET",
+      "path": "/:teamId/members",
+      "line": 767
+    },
+    {
+      "file": "controllers/teams.js",
+      "method": "POST",
+      "path": "/:teamId/members",
+      "line": 1103
+    },
+    {
+      "file": "controllers/teams.js",
+      "method": "PATCH",
+      "path": "/:teamId/members",
+      "line": 1122
+    },
+    {
+      "file": "controllers/teams.js",
+      "method": "POST",
+      "path": "/external/invite",
+      "line": 1144
+    },
+    {
+      "file": "controllers/teams.js",
+      "method": "DELETE",
+      "path": "/:teamId/members",
+      "line": 1161
+    },
+    {
+      "file": "controllers/teams.js",
+      "method": "PATCH",
+      "path": "/:teamId/invitation",
+      "line": 1180
+    },
+    {
+      "file": "controllers/teams.js",
+      "method": "DELETE",
+      "path": "/:teamId/invitation",
+      "line": 1193
+    },
+    {
+      "file": "controllers/teams.js",
+      "method": "GET",
+      "path": "/invitation/accept/:teamId",
+      "line": 1206
+    },
+    {
+      "file": "controllers/teams.js",
+      "method": "GET",
+      "path": "/:teamId/topics",
+      "line": 1229
+    },
+    {
+      "file": "controllers/teams.js",
+      "method": "PATCH",
+      "path": "/:teamId/positions",
+      "line": 1310
+    },
+    {
+      "file": "controllers/oauth2.js",
+      "method": "GET",
+      "path": "/login",
+      "line": 11
+    },
+    {
+      "file": "controllers/oauth2.js",
+      "method": "GET",
+      "path": "/login/success",
+      "line": 22
+    },
+    {
+      "file": "controllers/oauth2.js",
+      "method": "GET",
+      "path": "/consent",
+      "line": 83
+    },
+    {
+      "file": "controllers/oauth2.js",
+      "method": "POST",
+      "path": "/consent",
+      "line": 114
+    },
+    {
+      "file": "controllers/oauth2.js",
+      "method": "GET",
+      "path": "/username/:pseudonym",
+      "line": 116
+    },
+    {
+      "file": "controllers/schools.js",
+      "method": "GET",
+      "path": "/",
+      "line": 7
+    },
+    {
+      "file": "controllers/forcePasswordChange.js",
+      "method": "GET",
+      "path": "/",
+      "line": 9
+    },
+    {
+      "file": "controllers/forcePasswordChange.js",
+      "method": "POST",
+      "path": "/submit",
+      "line": 20
+    },
+    {
+      "file": "controllers/system.js",
+      "method": "GET",
+      "path": "/releases",
+      "line": 13
+    },
+    {
+      "file": "controllers/files.js",
+      "method": "POST",
+      "path": "/file",
+      "line": 359
+    },
+    {
+      "file": "controllers/files.js",
+      "method": "DELETE",
+      "path": "/file",
+      "line": 362
+    },
+    {
+      "file": "controllers/files.js",
+      "method": "GET",
+      "path": "/signedurl",
+      "line": 376
+    },
+    {
+      "file": "controllers/files.js",
+      "method": "GET",
+      "path": "/file",
+      "line": 398
+    },
+    {
+      "file": "controllers/files.js",
+      "method": "POST",
+      "path": "/file/:id/move",
+      "line": 421
+    },
+    {
+      "file": "controllers/files.js",
+      "method": "POST",
+      "path": "/newFile",
+      "line": 444
+    },
+    {
+      "file": "controllers/files.js",
+      "method": "POST",
+      "path": "/directory",
+      "line": 466
+    },
+    {
+      "file": "controllers/files.js",
+      "method": "DELETE",
+      "path": "/directory",
+      "line": 488
+    },
+    {
+      "file": "controllers/files.js",
+      "method": "GET",
+      "path": "/my/{:folderId}{/:subFolderId}",
+      "line": 500
+    },
+    {
+      "file": "controllers/files.js",
+      "method": "GET",
+      "path": "/shared/",
+      "line": 550
+    },
+    {
+      "file": "controllers/files.js",
+      "method": "GET",
+      "path": "/",
+      "line": 595
+    },
+    {
+      "file": "controllers/files.js",
+      "method": "GET",
+      "path": "/courses/",
+      "line": 602
+    },
+    {
+      "file": "controllers/files.js",
+      "method": "GET",
+      "path": "/courses/:courseId{/:folderId}",
+      "line": 622
+    },
+    {
+      "file": "controllers/files.js",
+      "method": "GET",
+      "path": "/teams/",
+      "line": 686
+    },
+    {
+      "file": "controllers/files.js",
+      "method": "GET",
+      "path": "/teams/:teamId{/:folderId}",
+      "line": 707
+    },
+    {
+      "file": "controllers/files.js",
+      "method": "GET",
+      "path": "/classes/",
+      "line": 771
+    },
+    {
+      "file": "controllers/files.js",
+      "method": "GET",
+      "path": "/classes/:classId{/:folderId}",
+      "line": 789
+    },
+    {
+      "file": "controllers/files.js",
+      "method": "POST",
+      "path": "/permissions/",
+      "line": 827
+    },
+    {
+      "file": "controllers/files.js",
+      "method": "GET",
+      "path": "/share/",
+      "line": 858
+    },
+    {
+      "file": "controllers/files.js",
+      "method": "GET",
+      "path": "/permissions/",
+      "line": 874
+    },
+    {
+      "file": "controllers/files.js",
+      "method": "PATCH",
+      "path": "/permissions/",
+      "line": 884
+    },
+    {
+      "file": "controllers/files.js",
+      "method": "GET",
+      "path": "/search/",
+      "line": 892
+    },
+    {
+      "file": "controllers/files.js",
+      "method": "GET",
+      "path": "/permittedDirectories/",
+      "line": 914
+    },
+    {
+      "file": "controllers/files.js",
+      "method": "POST",
+      "path": "/fileModel",
+      "line": 960
+    },
+    {
+      "file": "controllers/files.js",
+      "method": "GET",
+      "path": "/fileModel/:id/proxy",
+      "line": 966
+    },
+    {
+      "file": "controllers/files.js",
+      "method": "POST",
+      "path": "/fileModel/:id/rename",
+      "line": 976
+    },
+    {
+      "file": "controllers/files.js",
+      "method": "POST",
+      "path": "/directoryModel/:id/rename",
+      "line": 1003
+    },
+    {
+      "file": "controllers/link.js",
+      "method": "POST",
+      "path": "/",
+      "line": 11
+    },
+    {
+      "file": "controllers/link.js",
+      "method": "GET",
+      "path": "/:id",
+      "line": 29
+    },
+    {
+      "file": "controllers/registration.js",
+      "method": "POST",
+      "path": "/registration/pincreation",
+      "line": 69
+    },
+    {
+      "file": "controllers/alerts.js",
+      "method": "GET",
+      "path": "/",
+      "line": 21
+    },
+    {
+      "file": "controllers/users.js",
+      "method": "GET",
+      "path": "/teachersOfSchool",
+      "line": 13
+    },
+    {
+      "file": "controllers/users.js",
+      "method": "GET",
+      "path": "/teachersWithEmail",
+      "line": 42
+    },
+    {
+      "file": "controllers/users.js",
+      "method": "PATCH",
+      "path": "/language",
+      "line": 71
+    },
+    {
+      "file": "controllers/homework.js",
+      "method": "POST",
+      "path": "/",
+      "line": 318
+    },
+    {
+      "file": "controllers/homework.js",
+      "method": "POST",
+      "path": "/silent",
+      "line": 319
+    },
+    {
+      "file": "controllers/homework.js",
+      "method": "PATCH",
+      "path": "/:id",
+      "line": 320
+    },
+    {
+      "file": "controllers/homework.js",
+      "method": "DELETE",
+      "path": "/:id",
+      "line": 321
+    },
+    {
+      "file": "controllers/homework.js",
+      "method": "GET",
+      "path": "/submit/:id/import",
+      "line": 323
+    },
+    {
+      "file": "controllers/homework.js",
+      "method": "PATCH",
+      "path": "/submit/:id",
+      "line": 324
+    },
+    {
+      "file": "controllers/homework.js",
+      "method": "POST",
+      "path": "/submit",
+      "line": 325
+    },
+    {
+      "file": "controllers/homework.js",
+      "method": "POST",
+      "path": "/submit/silent",
+      "line": 326
+    },
+    {
+      "file": "controllers/homework.js",
+      "method": "DELETE",
+      "path": "/submit/:id",
+      "line": 327
+    },
+    {
+      "file": "controllers/homework.js",
+      "method": "GET",
+      "path": "/submit/:id/delete",
+      "line": 328
+    },
+    {
+      "file": "controllers/homework.js",
+      "method": "POST",
+      "path": "/comment",
+      "line": 330
+    },
+    {
+      "file": "controllers/homework.js",
+      "method": "DELETE",
+      "path": "/comment/:id",
+      "line": 331
+    },
+    {
+      "file": "controllers/homework.js",
+      "method": "GET",
+      "path": "/new",
+      "line": 333
+    },
+    {
+      "file": "controllers/homework.js",
+      "method": "GET",
+      "path": "/:assignmentId/edit",
+      "line": 382
+    },
+    {
+      "file": "controllers/homework.js",
+      "method": "GET",
+      "path": "/:assignmentId",
+      "line": 461
+    },
+    {
+      "file": "controllers/administration.js",
+      "method": "POST",
+      "path": "/registrationlink/",
+      "line": 258
+    },
+    {
+      "file": "controllers/administration.js",
+      "method": "POST",
+      "path": "/registrationlinkMail/",
+      "line": 603
+    },
+    {
+      "file": "controllers/administration.js",
+      "method": "POST",
+      "path": "/teachers/import/",
+      "line": 621
+    },
+    {
+      "file": "controllers/administration.js",
+      "method": "GET",
+      "path": "/teachers/import",
+      "line": 627
+    },
+    {
+      "file": "controllers/administration.js",
+      "method": "POST",
+      "path": "/teachers/:id",
+      "line": 642
+    },
+    {
+      "file": "controllers/administration.js",
+      "method": "PATCH",
+      "path": "/teachers/:id/pw",
+      "line": 647
+    },
+    {
+      "file": "controllers/administration.js",
+      "method": "GET",
+      "path": "/teachers/:id",
+      "line": 652
+    },
+    {
+      "file": "controllers/administration.js",
+      "method": "DELETE",
+      "path": "/teachers/:id",
+      "line": 657
+    },
+    {
+      "file": "controllers/administration.js",
+      "method": "GET",
+      "path": "/teachers/:id/edit",
+      "line": 662
+    },
+    {
+      "file": "controllers/administration.js",
+      "method": "POST",
+      "path": "/students/import/",
+      "line": 770
+    },
+    {
+      "file": "controllers/administration.js",
+      "method": "GET",
+      "path": "/students/import",
+      "line": 776
+    },
+    {
+      "file": "controllers/administration.js",
+      "method": "PATCH",
+      "path": "/students/:id/pw",
+      "line": 791
+    },
+    {
+      "file": "controllers/administration.js",
+      "method": "POST",
+      "path": "/students/:id",
+      "line": 796
+    },
+    {
+      "file": "controllers/administration.js",
+      "method": "GET",
+      "path": "/students/:id",
+      "line": 801
+    },
+    {
+      "file": "controllers/administration.js",
+      "method": "DELETE",
+      "path": "/students/:id",
+      "line": 806
+    },
+    {
+      "file": "controllers/administration.js",
+      "method": "POST",
+      "path": "/students/:id/skipregistration/",
+      "line": 810
+    },
+    {
+      "file": "controllers/administration.js",
+      "method": "GET",
+      "path": "/students/:id/skipregistration",
+      "line": 815
+    },
+    {
+      "file": "controllers/administration.js",
+      "method": "GET",
+      "path": "/users-without-consent/send-email",
+      "line": 875
+    },
+    {
+      "file": "controllers/administration.js",
+      "method": "GET",
+      "path": "/users-without-consent/get-json",
+      "line": 943
+    },
+    {
+      "file": "controllers/administration.js",
+      "method": "GET",
+      "path": "/students/:id/edit",
+      "line": 968
+    },
+    {
+      "file": "controllers/administration.js",
+      "method": "GET",
+      "path": "/classes/create",
+      "line": 1133
+    },
+    {
+      "file": "controllers/administration.js",
+      "method": "GET",
+      "path": "/classes/students",
+      "line": 1145
+    },
+    {
+      "file": "controllers/administration.js",
+      "method": "GET",
+      "path": "/classes/:classId/edit",
+      "line": 1168
+    },
+    {
+      "file": "controllers/administration.js",
+      "method": "GET",
+      "path": "/classes/:classId/createSuccessor",
+      "line": 1178
+    },
+    {
+      "file": "controllers/administration.js",
+      "method": "GET",
+      "path": "/classes/:id",
+      "line": 1188
+    },
+    {
+      "file": "controllers/administration.js",
+      "method": "PATCH",
+      "path": "/classes/:id",
+      "line": 1189
+    },
+    {
+      "file": "controllers/administration.js",
+      "method": "DELETE",
+      "path": "/classes/:id",
+      "line": 1195
+    },
+    {
+      "file": "controllers/administration.js",
+      "method": "GET",
+      "path": "/classes/:classId/manage",
+      "line": 1201
+    },
+    {
+      "file": "controllers/administration.js",
+      "method": "POST",
+      "path": "/classes/:classId/manage",
+      "line": 1345
+    },
+    {
+      "file": "controllers/administration.js",
+      "method": "POST",
+      "path": "/classes/create",
+      "line": 1367
+    },
+    {
+      "file": "controllers/administration.js",
+      "method": "POST",
+      "path": "/classes/:classId/edit",
+      "line": 1417
+    },
+    {
+      "file": "controllers/administration.js",
+      "method": "PATCH",
+      "path": "/:classId/",
+      "line": 1451
+    },
+    {
+      "file": "controllers/administration.js",
+      "method": "DELETE",
+      "path": "/:classId/",
+      "line": 1468
+    },
+    {
+      "file": "controllers/administration.js",
+      "method": "POST",
+      "path": "/courses/",
+      "line": 1506
+    },
+    {
+      "file": "controllers/administration.js",
+      "method": "PATCH",
+      "path": "/courses/:id",
+      "line": 1507
+    },
+    {
+      "file": "controllers/administration.js",
+      "method": "GET",
+      "path": "/courses/:id",
+      "line": 1514
+    },
+    {
+      "file": "controllers/administration.js",
+      "method": "DELETE",
+      "path": "/courses/:id",
+      "line": 1515
+    },
+    {
+      "file": "controllers/administration.js",
+      "method": "PATCH",
+      "path": "/teams/enablestudents/:id",
+      "line": 1565
+    },
+    {
+      "file": "controllers/administration.js",
+      "method": "GET",
+      "path": "/teams/:id",
+      "line": 1759
+    },
+    {
+      "file": "controllers/administration.js",
+      "method": "POST",
+      "path": "/teams/:id",
+      "line": 1770
+    },
+    {
+      "file": "controllers/administration.js",
+      "method": "PATCH",
+      "path": "/teams/:id",
+      "line": 1786
+    },
+    {
+      "file": "controllers/administration.js",
+      "method": "DELETE",
+      "path": "/teams/:id",
+      "line": 1801
+    },
+    {
+      "file": "controllers/administration.js",
+      "method": "GET",
+      "path": "/startldapschoolyear",
+      "line": 1819
+    },
+    {
+      "file": "controllers/help.js",
+      "method": "GET",
+      "path": "/articles",
+      "line": 14
+    },
+    {
+      "file": "controllers/help.js",
+      "method": "GET",
+      "path": "/",
+      "line": 22
+    },
+    {
+      "file": "controllers/help.js",
+      "method": "GET",
+      "path": "/contact",
+      "line": 24
+    },
+    {
+      "file": "controllers/help.js",
+      "method": "GET",
+      "path": "/confluence/:id",
+      "line": 32
+    },
+    {
+      "file": "controllers/help.js",
+      "method": "GET",
+      "path": "/faq/documents",
+      "line": 46
+    },
+    {
+      "file": "controllers/ghost.js",
+      "method": "GET",
+      "path": "/:slug",
+      "line": 9
+    },
+    {
+      "file": "controllers/firstLogin.js",
+      "method": "GET",
+      "path": "/",
+      "line": 52
+    },
+    {
+      "file": "controllers/firstLogin.js",
+      "method": "GET",
+      "path": "/existing",
+      "line": 262
+    },
+    {
+      "file": "controllers/firstLogin.js",
+      "method": "GET",
+      "path": "/consentError",
+      "line": 271
+    },
+    {
+      "file": "controllers/welcome.js",
+      "method": "GET",
+      "path": "/",
+      "line": 9
+    },
+    {
+      "file": "controllers/blog.js",
+      "method": "GET",
+      "path": "/",
+      "line": 9
+    },
+    {
+      "file": "controllers/login.js",
+      "method": "POST",
+      "path": "/login/",
+      "line": 18
+    },
+    {
+      "file": "controllers/login.js",
+      "method": "POST",
+      "path": "/login/email",
+      "line": 51
+    },
+    {
+      "file": "controllers/login.js",
+      "method": "GET",
+      "path": "/login/email",
+      "line": 72
+    },
+    {
+      "file": "controllers/login.js",
+      "method": "POST",
+      "path": "/login/ldap",
+      "line": 87
+    },
+    {
+      "file": "controllers/login.js",
+      "method": "GET",
+      "path": "/login/ldap",
+      "line": 130
+    },
+    {
+      "file": "controllers/login.js",
+      "method": "POST",
+      "path": "/login/oauth2",
+      "line": 186
+    },
+    {
+      "file": "controllers/login.js",
+      "method": "GET",
+      "path": "/login/oauth2/:systemId",
+      "line": 197
+    },
+    {
+      "file": "controllers/login.js",
+      "method": "GET",
+      "path": "/login/oauth2-callback",
+      "line": 209
+    },
+    {
+      "file": "controllers/login.js",
+      "method": "GET",
+      "path": "/loginRedirect",
+      "line": 366
+    },
+    {
+      "file": "controllers/login.js",
+      "method": "GET",
+      "path": "/login/success",
+      "line": 402
+    },
+    {
+      "file": "controllers/login.js",
+      "method": "GET",
+      "path": "/logout/",
+      "line": 450
+    },
+    {
+      "file": "controllers/login.js",
+      "method": "GET",
+      "path": "/logout/external/",
+      "line": 476
+    },
+    {
+      "file": "controllers/base64Files.js",
+      "method": "GET",
+      "path": "/:id",
+      "line": 6
+    },
+    {
+      "file": "controllers/courses.js",
+      "method": "GET",
+      "path": "/getNames",
+      "line": 486
+    },
+    {
+      "file": "controllers/courses.js",
+      "method": "GET",
+      "path": "/",
+      "line": 497
+    },
+    {
+      "file": "controllers/courses.js",
+      "method": "POST",
+      "path": "/",
+      "line": 501
+    },
+    {
+      "file": "controllers/courses.js",
+      "method": "GET",
+      "path": "/add/",
+      "line": 548
+    },
+    {
+      "file": "controllers/courses.js",
+      "method": "GET",
+      "path": "/:courseId/json",
+      "line": 554
+    },
+    {
+      "file": "controllers/courses.js",
+      "method": "GET",
+      "path": "/:courseId/usersJson",
+      "line": 567
+    },
+    {
+      "file": "controllers/courses.js",
+      "method": "GET",
+      "path": "/:courseId/",
+      "line": 584
+    },
+    {
+      "file": "controllers/courses.js",
+      "method": "PATCH",
+      "path": "/:courseId",
+      "line": 711
+    },
+    {
+      "file": "controllers/courses.js",
+      "method": "PATCH",
+      "path": "/:courseId/positions",
+      "line": 811
+    },
+    {
+      "file": "controllers/courses.js",
+      "method": "DELETE",
+      "path": "/:courseId",
+      "line": 823
+    },
+    {
+      "file": "controllers/courses.js",
+      "method": "GET",
+      "path": "/:courseId/addStudent",
+      "line": 833
+    },
+    {
+      "file": "controllers/courses.js",
+      "method": "GET",
+      "path": "/:courseId/edit",
+      "line": 876
+    },
+    {
+      "file": "controllers/courses.js",
+      "method": "GET",
+      "path": "/:courseId/copy",
+      "line": 878
+    },
+    {
+      "file": "controllers/pwrecovery.js",
+      "method": "GET",
+      "path": "/response",
+      "line": 6
+    },
+    {
+      "file": "controllers/pwrecovery.js",
+      "method": "GET",
+      "path": "/failed",
+      "line": 10
+    },
+    {
+      "file": "controllers/pwrecovery.js",
+      "method": "GET",
+      "path": "/:pwId",
+      "line": 14
+    },
+    {
+      "file": "controllers/pwrecovery.js",
+      "method": "POST",
+      "path": "/",
+      "line": 42
+    },
+    {
+      "file": "controllers/pwrecovery.js",
+      "method": "POST",
+      "path": "/reset",
+      "line": 57
+    },
+    {
+      "file": "controllers/account.js",
+      "method": "POST",
+      "path": "/",
+      "line": 11
+    },
+    {
+      "file": "controllers/account.js",
+      "method": "GET",
+      "path": "/",
+      "line": 64
+    },
+    {
+      "file": "controllers/account.js",
+      "method": "GET",
+      "path": "/teams/",
+      "line": 87
+    },
+    {
+      "file": "controllers/account.js",
+      "method": "GET",
+      "path": "/thirdPartyProviders/",
+      "line": 97
+    },
+    {
+      "file": "controllers/account.js",
+      "method": "GET",
+      "path": "/oauth2/revoke/:client",
+      "line": 114
+    },
+    {
+      "file": "controllers/account.js",
+      "method": "GET",
+      "path": "/user",
+      "line": 123
+    },
+    {
+      "file": "controllers/account.js",
+      "method": "POST",
+      "path": "/preferences",
+      "line": 128
+    },
+    {
+      "file": "controllers/account.js",
+      "method": "POST",
+      "path": "/teamSettings",
+      "line": 137
+    },
+    {
+      "file": "controllers/dataprivacy.js",
+      "method": "GET",
+      "path": "/",
+      "line": 15
+    },
+    {
+      "file": "controllers/news.js",
+      "method": "DELETE",
+      "path": "/:id",
+      "line": 29
+    },
+    {
+      "file": "controllers/news.js",
+      "method": "GET",
+      "path": "/:newsId",
+      "line": 104
+    },
+    {
+      "file": "controllers/community.js",
+      "method": "GET",
+      "path": "/",
+      "line": 6
+    },
+    {
+      "file": "controllers/termsofuse.js",
+      "method": "GET",
+      "path": "/",
+      "line": 15
+    },
+    {
+      "file": "controllers/topics.js",
+      "method": "GET",
+      "path": "/",
+      "line": 157
+    },
+    {
+      "file": "controllers/topics.js",
+      "method": "GET",
+      "path": "/add",
+      "line": 162
+    },
+    {
+      "file": "controllers/topics.js",
+      "method": "POST",
+      "path": "/",
+      "line": 164
+    },
+    {
+      "file": "controllers/topics.js",
+      "method": "POST",
+      "path": "/:id/share",
+      "line": 200
+    },
+    {
+      "file": "controllers/topics.js",
+      "method": "GET",
+      "path": "/:topicId",
+      "line": 211
+    },
+    {
+      "file": "controllers/topics.js",
+      "method": "PATCH",
+      "path": "/:topicId",
+      "line": 310
+    },
+    {
+      "file": "controllers/topics.js",
+      "method": "DELETE",
+      "path": "/:topicId",
+      "line": 356
+    },
+    {
+      "file": "controllers/topics.js",
+      "method": "DELETE",
+      "path": "/:topicId/materials/:materialId",
+      "line": 364
+    },
+    {
+      "file": "controllers/topics.js",
+      "method": "GET",
+      "path": "/:topicId/edit",
+      "line": 379
+    },
+    {
+      "file": "controllers/videoconference.js",
+      "method": "GET",
+      "path": "/:scopeName/:scopeId",
+      "line": 9
+    },
+    {
+      "file": "controllers/videoconference.js",
+      "method": "POST",
+      "path": "/",
+      "line": 17
+    },
+    {
+      "file": "controllers/calendar.js",
+      "method": "GET",
+      "path": "/",
+      "line": 15
+    },
+    {
+      "file": "controllers/calendar.js",
+      "method": "GET",
+      "path": "/events/",
+      "line": 28
+    },
+    {
+      "file": "controllers/calendar.js",
+      "method": "POST",
+      "path": "/events/",
+      "line": 46
+    },
+    {
+      "file": "controllers/calendar.js",
+      "method": "DELETE",
+      "path": "/events/:eventId",
+      "line": 71
+    },
+    {
+      "file": "controllers/calendar.js",
+      "method": "PUT",
+      "path": "/events/:eventId",
+      "line": 77
+    },
+    {
+      "file": "controllers/messenger.js",
+      "method": "GET",
+      "path": "/token",
+      "line": 9
+    },
+    {
+      "file": "controllers/coursegroups.js",
+      "method": "GET",
+      "path": "/add",
+      "line": 71
+    },
+    {
+      "file": "controllers/coursegroups.js",
+      "method": "POST",
+      "path": "/",
+      "line": 73
+    },
+    {
+      "file": "controllers/coursegroups.js",
+      "method": "GET",
+      "path": "/:courseGroupId/",
+      "line": 92
+    },
+    {
+      "file": "controllers/coursegroups.js",
+      "method": "PATCH",
+      "path": "/:courseGroupId",
+      "line": 177
+    },
+    {
+      "file": "controllers/coursegroups.js",
+      "method": "GET",
+      "path": "/:courseGroupId/edit",
+      "line": 196
+    },
+    {
+      "file": "controllers/coursegroups.js",
+      "method": "DELETE",
+      "path": "/:courseGroupId",
+      "line": 198
+    }
+  ],
+  "vue_routes": [
+    "^/favicon.png$",
+    "^/collabora/doc.docx$",
+    "^/collabora/presentation.pptx$",
+    "^/collabora/spreadsheet.xlsx$",
+    "^/_nuxt/*",
+    "^/runtime.config.json",
+    "^/administration/?$",
+    "^/administration/students/?$",
+    "^/administration/students/new/?$",
+    "^/administration/students/consent/?$",
+    "^/administration/teachers/?$",
+    "^/administration/teachers/new/?$",
+    "^/administration/ldap/config/?$",
+    "^/administration/ldap/activate/?$",
+    "^/administration/school-settings/?$",
+    "^/administration/school-settings/tool-configuration/?$",
+    "^/administration/school-settings/tool-configuration/${mongoId}/?$",
+    "^/administration/school-settings/provisioning-options/?$",
+    "^/administration/migration/?$",
+    "^/administration/groups/classes/?$",
+    "^/administration/groups/classes/${mongoId}/?$",
+    "^/administration/rooms/new/?$",
+    "^/administration/rooms/manage/?$",
+    "^/administration/rooms/manage/${mongoId}?$",
+    "^/boards/${mongoId}/?$",
+    "^/boards/${mongoId}/cards/${mongoId}/?$",
+    "^/collabora/${mongoId}/?$",
+    "^/error/?$",
+    "^/h5p/player/${h5pId}/?$",
+    "^/h5p/editor/?$",
+    "^/h5p/editor/${h5pId}/?$",
+    "^/dashboard/?$",
+    "^/$",
+    "^/onboarding/?$",
+    "^/login/?$",
+    "^/logout/?$",
+    "^/imprint/?$",
+    "^/licenses/?$",
+    "^/migration/?$",
+    "^/migration/success/?$",
+    "^/migration/error/?$",
+    "^/media-shelf/?$",
+    "^/media-shelf/fwu-media/?$",
+    "^/news/new/?$",
+    "^/news/${mongoId}/?$",
+    "^/news/${mongoId}/edit/?$",
+    "^/poc-files/?$",
+    "^/folder/${mongoId}/?$",
+    "^/folder/${mongoId}/trash/?$",
+    "^/rooms/invitation-link/${mongoId}?$",
+    "^/rooms/?$",
+    "^/rooms/new/?$",
+    "^/rooms/${mongoId}/?$",
+    "^/rooms/${mongoId}/board/?$",
+    "^/rooms/${mongoId}/edit/?$",
+    "^/rooms/${mongoId}/members/?$",
+    "^/rooms/courses-list/?$",
+    "^/rooms/courses-overview/?$",
+    "^/rooms-overview/?$",
+    "^/system/security",
+    "^/tasks/?$",
+    "^/tools/context/tool-configuration/?$",
+    "^/tools/context/tool-configuration/${mongoId}/?$",
+    "^/registration-external-members/?$",
+    "^/@",
+    "^/src/",
+    "^/node_modules/"
+  ]
+}
