@@ -23,3 +23,13 @@ export {
 	InvitationStep,
 	RoomInvitationLinkValidationError,
 } from "./roomMembers/types";
+export {
+	BLANK_ROOM_TEMPLATE_ID,
+	getRoomTemplateById,
+	type RoomTemplate,
+	type RoomTemplateBoard,
+	type RoomTemplateCard,
+	type RoomTemplateColumn,
+	roomTemplates,
+	useRoomTemplate,
+} from "./roomTemplates";

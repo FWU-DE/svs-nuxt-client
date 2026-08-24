@@ -16,6 +16,8 @@ import Invitations from "./roomMembers/tabs/Invitations.vue";
 import Members from "./roomMembers/tabs/Members.vue";
 import RoomMenu from "./RoomMenu.vue";
 import RoomsWelcomeInfo from "./RoomsWelcomeInfo.vue";
+import RoomTemplatePicker from "./roomTemplates/RoomTemplatePicker.vue";
+import RoomTemplateSummary from "./roomTemplates/RoomTemplateSummary.vue";
 
 export {
 	AddExternalPersonDialog,
@@ -36,4 +38,6 @@ export {
 	RoomGrid,
 	RoomMenu,
 	RoomsWelcomeInfo,
+	RoomTemplatePicker,
+	RoomTemplateSummary,
 };
