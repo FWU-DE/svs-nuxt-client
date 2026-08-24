@@ -69,6 +69,34 @@ describe("@pages/RoomCreate.page.vue", () => {
 		});
 	});
 
+	it("should show the structure of the picked template", async () => {
+		const { wrapper, selectTemplate } = setup();
+
+		await selectTemplate("weeklyPlan");
+
+		// four week columns by default, plus the fixed help and archive column
+		expect(wrapper.findAll('[data-testid^="template-column-0-"]')).toHaveLength(6);
+	});
+
+	it("should rebuild the structure when a param changes", async () => {
+		const { wrapper, selectTemplate } = setup();
+		await selectTemplate("weeklyPlan");
+
+		await wrapper.find('[data-testid="room-template-param-weeks"] input').setValue("2");
+
+		expect(wrapper.findAll('[data-testid^="template-column-0-"]')).toHaveLength(4);
+	});
+
+	it("should clamp a param to the range of the template", async () => {
+		const { wrapper, selectTemplate } = setup();
+		await selectTemplate("weeklyPlan");
+
+		await wrapper.find('[data-testid="room-template-param-weeks"] input').setValue("99");
+
+		// at most twelve weeks, plus the fixed help and archive column
+		expect(wrapper.findAll('[data-testid^="template-column-0-"]')).toHaveLength(14);
+	});
+
 	it("should return to the template picker on 'change template'", async () => {
 		const { wrapper, selectTemplate } = setup();
 		await selectTemplate("subject");

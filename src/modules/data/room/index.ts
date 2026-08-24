@@ -25,11 +25,23 @@ export {
 } from "./roomMembers/types";
 export {
 	BLANK_ROOM_TEMPLATE_ID,
+	boardKey,
+	cardKey,
+	columnKey,
+	defaultParamValues,
 	getRoomTemplateById,
+	type ResolvedBoard,
+	type ResolvedCard,
+	type ResolvedColumn,
+	type ResolvedElement,
+	resolveRoomName,
+	resolveTemplate,
 	type RoomTemplate,
 	type RoomTemplateBoard,
 	type RoomTemplateCard,
 	type RoomTemplateColumn,
+	type RoomTemplateParam,
+	type RoomTemplateParamValues,
 	roomTemplates,
 	useRoomTemplate,
 } from "./roomTemplates";

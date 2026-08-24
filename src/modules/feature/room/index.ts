@@ -16,7 +16,9 @@ import Invitations from "./roomMembers/tabs/Invitations.vue";
 import Members from "./roomMembers/tabs/Members.vue";
 import RoomMenu from "./RoomMenu.vue";
 import RoomsWelcomeInfo from "./RoomsWelcomeInfo.vue";
+import RoomTemplateParams from "./roomTemplates/RoomTemplateParams.vue";
 import RoomTemplatePicker from "./roomTemplates/RoomTemplatePicker.vue";
+import RoomTemplateStructure from "./roomTemplates/RoomTemplateStructure.vue";
 import RoomTemplateSummary from "./roomTemplates/RoomTemplateSummary.vue";
 
 export {
@@ -38,6 +40,8 @@ export {
 	RoomGrid,
 	RoomMenu,
 	RoomsWelcomeInfo,
+	RoomTemplateParams,
 	RoomTemplatePicker,
+	RoomTemplateStructure,
 	RoomTemplateSummary,
 };

@@ -18,6 +18,9 @@ export const BLANK_ROOM_TEMPLATE_ID = "blank";
 /**
  * Ready-made room structures offered on room creation. Every template is applied through the
  * regular board api, so everything it creates can be renamed, moved and deleted afterwards.
+ *
+ * Texts may contain `{placeholders}` of the template params. Columns and cards with a
+ * `repeatParam` are created as often as that number param says, counting `{index}` from 1.
  */
 export const roomTemplates: RoomTemplate[] = [
 	{
@@ -27,6 +30,7 @@ export const roomTemplates: RoomTemplate[] = [
 		descriptionKey: "pages.roomCreate.templates.blank.description",
 		color: RoomColor.BLUE_GREY,
 		features: [],
+		params: [],
 		boards: [],
 	},
 	{
@@ -37,6 +41,15 @@ export const roomTemplates: RoomTemplate[] = [
 		roomNameKey: "pages.roomCreate.templates.subject.roomName",
 		color: RoomColor.BLUE,
 		features: [],
+		params: [
+			{
+				key: "subject",
+				labelKey: "pages.roomCreate.templates.params.subject",
+				type: "text",
+				defaultValue: "Mathematik",
+			},
+			{ key: "grade", labelKey: "pages.roomCreate.templates.params.grade", type: "text", defaultValue: "9b" },
+		],
 		boards: [
 			{
 				titleKey: "pages.roomCreate.templates.subject.boards.overview",
@@ -98,13 +111,30 @@ export const roomTemplates: RoomTemplate[] = [
 		roomNameKey: "pages.roomCreate.templates.weeklyPlan.roomName",
 		color: RoomColor.GREEN,
 		features: [],
+		params: [
+			{
+				key: "subject",
+				labelKey: "pages.roomCreate.templates.params.subject",
+				type: "text",
+				defaultValue: "Mathematik",
+			},
+			{
+				key: "weeks",
+				labelKey: "pages.roomCreate.templates.params.weeks",
+				type: "number",
+				defaultValue: 4,
+				min: 1,
+				max: 12,
+			},
+		],
 		boards: [
 			{
 				titleKey: "pages.roomCreate.templates.weeklyPlan.boards.week",
 				layout: BoardLayout.COLUMNS,
 				columns: [
 					{
-						titleKey: "pages.roomCreate.templates.weeklyPlan.columns.thisWeek",
+						titleKey: "pages.roomCreate.templates.weeklyPlan.columns.week",
+						repeatParam: "weeks",
 						cards: [
 							{
 								titleKey: "pages.roomCreate.templates.weeklyPlan.cards.goals.title",
@@ -113,15 +143,6 @@ export const roomTemplates: RoomTemplate[] = [
 							{
 								titleKey: "pages.roomCreate.templates.weeklyPlan.cards.tasks.title",
 								elements: [richText("pages.roomCreate.templates.weeklyPlan.cards.tasks.text")],
-							},
-						],
-					},
-					{
-						titleKey: "pages.roomCreate.templates.weeklyPlan.columns.nextWeek",
-						cards: [
-							{
-								titleKey: "pages.roomCreate.templates.weeklyPlan.cards.preview.title",
-								elements: [richText("pages.roomCreate.templates.weeklyPlan.cards.preview.text")],
 							},
 						],
 					},
@@ -155,6 +176,22 @@ export const roomTemplates: RoomTemplate[] = [
 		roomNameKey: "pages.roomCreate.templates.project.roomName",
 		color: RoomColor.ORANGE,
 		features: [RoomFeatures.EDITOR_MANAGE_VIDEOCONFERENCE],
+		params: [
+			{
+				key: "projectName",
+				labelKey: "pages.roomCreate.templates.params.projectName",
+				type: "text",
+				defaultValue: "Projektwoche",
+			},
+			{
+				key: "groups",
+				labelKey: "pages.roomCreate.templates.params.groups",
+				type: "number",
+				defaultValue: 4,
+				min: 1,
+				max: 12,
+			},
+		],
 		boards: [
 			{
 				titleKey: "pages.roomCreate.templates.project.boards.project",
@@ -181,8 +218,9 @@ export const roomTemplates: RoomTemplate[] = [
 						titleKey: "pages.roomCreate.templates.project.columns.todo",
 						cards: [
 							{
-								titleKey: "pages.roomCreate.templates.project.cards.example.title",
-								elements: [richText("pages.roomCreate.templates.project.cards.example.text")],
+								titleKey: "pages.roomCreate.templates.project.cards.group.title",
+								repeatParam: "groups",
+								elements: [richText("pages.roomCreate.templates.project.cards.group.text")],
 							},
 						],
 					},
@@ -215,6 +253,14 @@ export const roomTemplates: RoomTemplate[] = [
 		roomNameKey: "pages.roomCreate.templates.classroom.roomName",
 		color: RoomColor.TURQUOISE,
 		features: [],
+		params: [
+			{
+				key: "className",
+				labelKey: "pages.roomCreate.templates.params.className",
+				type: "text",
+				defaultValue: "7a",
+			},
+		],
 		boards: [
 			{
 				titleKey: "pages.roomCreate.templates.classroom.boards.news",
@@ -287,6 +333,14 @@ export const roomTemplates: RoomTemplate[] = [
 		roomNameKey: "pages.roomCreate.templates.team.roomName",
 		color: RoomColor.PURPLE,
 		features: [RoomFeatures.EDITOR_MANAGE_VIDEOCONFERENCE],
+		params: [
+			{
+				key: "subject",
+				labelKey: "pages.roomCreate.templates.params.subject",
+				type: "text",
+				defaultValue: "Mathematik",
+			},
+		],
 		boards: [
 			{
 				titleKey: "pages.roomCreate.templates.team.boards.team",
@@ -340,6 +394,14 @@ export const roomTemplates: RoomTemplate[] = [
 		roomNameKey: "pages.roomCreate.templates.selfStudy.roomName",
 		color: RoomColor.LIGHT_BLUE,
 		features: [],
+		params: [
+			{
+				key: "topic",
+				labelKey: "pages.roomCreate.templates.params.topic",
+				type: "text",
+				defaultValue: "Bruchrechnung",
+			},
+		],
 		boards: [
 			{
 				titleKey: "pages.roomCreate.templates.selfStudy.boards.path",

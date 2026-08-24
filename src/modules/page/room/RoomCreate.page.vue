@@ -6,15 +6,17 @@
 			</h1>
 		</template>
 
-		<div v-if="isCreating" class="d-flex flex-column align-center py-16" data-testid="room-template-progress">
+		<div v-if="isCreating" data-testid="room-template-progress">
 			<p class="text-body-1 mb-4">{{ t("pages.roomCreate.templates.applying") }}</p>
-			<VProgressLinear class="room-template-progress-bar" :model-value="progress" color="primary" height="8" rounded />
+			<VProgressLinear class="mb-6" :model-value="progress" color="primary" height="8" rounded />
+			<RoomTemplateStructure :boards="resolvedBoards" show-progress :created-keys="createdKeys" />
 		</div>
 
 		<RoomTemplatePicker v-else-if="isTemplateStep" @select="onSelectTemplate" />
 
-		<template v-else>
-			<RoomTemplateSummary v-if="selectedTemplate" :template="selectedTemplate" @change="onChangeTemplate" />
+		<template v-else-if="selectedTemplate">
+			<RoomTemplateSummary :template="selectedTemplate" :boards="resolvedBoards" @change="onChangeTemplate" />
+			<RoomTemplateParams v-model:values="paramValues" :template="selectedTemplate" />
 			<RoomForm :room="roomData" @save="onSave" @cancel="onCancel" />
 		</template>
 	</DefaultWireframe>
@@ -25,11 +27,25 @@ import { ApiResponseError } from "@/types/common/commons";
 import { RoomColor, RoomCreateParams } from "@/types/room/Room";
 import { buildPageTitle } from "@/utils/pageTitle";
 import { notifyError } from "@data-app";
-import { RoomTemplate, useRoomStore, useRoomTemplate } from "@data-room";
-import { RoomForm, RoomTemplatePicker, RoomTemplateSummary } from "@feature-room";
+import {
+	defaultParamValues,
+	resolveRoomName,
+	resolveTemplate,
+	RoomTemplate,
+	RoomTemplateParamValues,
+	useRoomStore,
+	useRoomTemplate,
+} from "@data-room";
+import {
+	RoomForm,
+	RoomTemplateParams,
+	RoomTemplatePicker,
+	RoomTemplateStructure,
+	RoomTemplateSummary,
+} from "@feature-room";
 import { Breadcrumb, DefaultWireframe } from "@ui-layout";
 import { useTitle } from "@vueuse/core";
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 
@@ -44,11 +60,25 @@ const roomData = ref<RoomCreateParams>({
 });
 
 const { createRoom } = useRoomStore();
-const { applyTemplate, progress } = useRoomTemplate();
+const { applyTemplate, createdKeys, progress } = useRoomTemplate();
 
 const selectedTemplate = ref<RoomTemplate>();
+const paramValues = ref<RoomTemplateParamValues>({});
 const isTemplateStep = ref(true);
 const isCreating = ref(false);
+
+const resolvedBoards = computed(() =>
+	selectedTemplate.value ? resolveTemplate(selectedTemplate.value, paramValues.value, t) : []
+);
+
+const suggestedRoomName = computed(() =>
+	selectedTemplate.value ? resolveRoomName(selectedTemplate.value, paramValues.value, t) : ""
+);
+
+// the suggested name follows the params until the user typed a name of their own
+watch(suggestedRoomName, (suggestion, previousSuggestion) => {
+	if (roomData.value.name === previousSuggestion) roomData.value.name = suggestion;
+});
 
 const pageTitle = computed(() => buildPageTitle(`${t("pages.roomCreate.title")}`));
 useTitle(pageTitle);
@@ -66,8 +96,9 @@ const breadcrumbs: Breadcrumb[] = [
 
 const onSelectTemplate = (template: RoomTemplate) => {
 	selectedTemplate.value = template;
+	paramValues.value = defaultParamValues(template);
 	roomData.value = {
-		name: template.roomNameKey ? t(template.roomNameKey) : "",
+		name: suggestedRoomName.value,
 		color: template.color,
 		features: [...template.features],
 	};
@@ -90,10 +121,8 @@ const onSave = async (payload: { room: RoomCreateParams }) => {
 		return;
 	}
 
-	if (selectedTemplate.value) {
-		const isComplete = await applyTemplate(room.data.id, selectedTemplate.value);
-		if (!isComplete) notifyError(t("pages.roomCreate.templates.applyError"));
-	}
+	const isComplete = await applyTemplate(room.data.id, resolvedBoards.value);
+	if (!isComplete) notifyError(t("pages.roomCreate.templates.applyError"));
 
 	router.push({ name: "room-details", params: { id: room.data.id } });
 };
@@ -109,9 +138,3 @@ const onCancel = () => {
 	});
 };
 </script>
-
-<style lang="scss" scoped>
-.room-template-progress-bar {
-	max-width: 400px;
-}
-</style>

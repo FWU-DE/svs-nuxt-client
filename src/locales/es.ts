@@ -1846,12 +1846,23 @@ export default {
 	"pages.roomCreate.templates.applying": "Se está creando la sala a partir de la plantilla …",
 	"pages.roomCreate.templates.applyError":
 		"No se pudo crear todo el contenido de la plantilla. Puedes añadirlo en la sala.",
+	"pages.roomCreate.templates.params.title": "Ajustar plantilla",
+	"pages.roomCreate.templates.params.subject": "Asignatura",
+	"pages.roomCreate.templates.params.grade": "Clase / curso",
+	"pages.roomCreate.templates.params.weeks": "Número de semanas",
+	"pages.roomCreate.templates.params.projectName": "Nombre del proyecto",
+	"pages.roomCreate.templates.params.groups": "Número de grupos",
+	"pages.roomCreate.templates.params.className": "Clase",
+	"pages.roomCreate.templates.params.topic": "Tema",
+	"pages.roomCreate.templates.weeklyPlan.columns.week": "Semana {index}",
+	"pages.roomCreate.templates.project.cards.group.title": "Grupo {index}",
+	"pages.roomCreate.templates.project.cards.group.text": "<p>Tareas, responsabilidades y avance del grupo {index}.</p>",
 	"pages.roomCreate.templates.blank.title": "Sala vacía",
 	"pages.roomCreate.templates.blank.description": "Empezar sin plantilla y crear las secciones por tu cuenta.",
 	"pages.roomCreate.templates.subject.title": "Sala de asignatura",
 	"pages.roomCreate.templates.subject.description":
 		"Una sala para una asignatura durante todo el curso: organización, material, tareas y fechas.",
-	"pages.roomCreate.templates.subject.roomName": "Nueva sala de asignatura",
+	"pages.roomCreate.templates.subject.roomName": "{subject} {grade}",
 	"pages.roomCreate.templates.subject.boards.overview": "Vista general",
 	"pages.roomCreate.templates.subject.columns.organisation": "Organización",
 	"pages.roomCreate.templates.subject.columns.material": "Material",
@@ -1859,7 +1870,7 @@ export default {
 	"pages.roomCreate.templates.subject.columns.dates": "Fechas y exámenes",
 	"pages.roomCreate.templates.subject.cards.welcome.title": "Bienvenida",
 	"pages.roomCreate.templates.subject.cards.welcome.text":
-		"<p>¡Bienvenidos! Aquí encontraréis todo lo importante sobre nuestra asignatura.</p><p>Sustituye este texto por tu propia bienvenida.</p>",
+		"<p>¡Bienvenidos a {subject}! Aquí encontraréis todo lo importante sobre la asignatura.</p><p>Sustituye este texto por tu propia bienvenida.</p>",
 	"pages.roomCreate.templates.subject.cards.rules.title": "Normas y evaluación",
 	"pages.roomCreate.templates.subject.cards.rules.text":
 		"<ul><li>¿Cómo se compone la nota?</li><li>¿Qué materiales hacen falta?</li><li>¿Qué normas rigen en clase?</li></ul>",
@@ -1874,18 +1885,14 @@ export default {
 	"pages.roomCreate.templates.weeklyPlan.title": "Plan semanal",
 	"pages.roomCreate.templates.weeklyPlan.description":
 		"El ritmo semanal de un vistazo: esta semana, vista previa, ayudas y trabajo terminado.",
-	"pages.roomCreate.templates.weeklyPlan.roomName": "Plan semanal",
+	"pages.roomCreate.templates.weeklyPlan.roomName": "Plan semanal {subject}",
 	"pages.roomCreate.templates.weeklyPlan.boards.week": "Plan semanal",
-	"pages.roomCreate.templates.weeklyPlan.columns.thisWeek": "Esta semana",
-	"pages.roomCreate.templates.weeklyPlan.columns.nextWeek": "Próxima semana",
 	"pages.roomCreate.templates.weeklyPlan.columns.help": "Material y ayudas",
 	"pages.roomCreate.templates.weeklyPlan.columns.done": "Terminado",
 	"pages.roomCreate.templates.weeklyPlan.cards.goals.title": "Objetivos de aprendizaje",
 	"pages.roomCreate.templates.weeklyPlan.cards.goals.text": "<ul><li>Sé …</li><li>Sé …</li></ul>",
 	"pages.roomCreate.templates.weeklyPlan.cards.tasks.title": "Tareas de la semana",
 	"pages.roomCreate.templates.weeklyPlan.cards.tasks.text": "<ol><li>…</li><li>…</li></ol>",
-	"pages.roomCreate.templates.weeklyPlan.cards.preview.title": "Vista previa",
-	"pages.roomCreate.templates.weeklyPlan.cards.preview.text": "<p>¿Cómo seguimos la próxima semana?</p>",
 	"pages.roomCreate.templates.weeklyPlan.cards.help.title": "Explicaciones y vídeos",
 	"pages.roomCreate.templates.weeklyPlan.cards.help.text": "<p>Aquí están las ayudas para el trabajo autónomo.</p>",
 	"pages.roomCreate.templates.weeklyPlan.cards.archive.title": "Archivo",
@@ -1893,7 +1900,7 @@ export default {
 	"pages.roomCreate.templates.project.title": "Proyecto y trabajo en grupo",
 	"pages.roomCreate.templates.project.description":
 		"Del encargo del proyecto a la presentación: para semanas de proyecto y trabajos en grupo.",
-	"pages.roomCreate.templates.project.roomName": "Nuevo proyecto",
+	"pages.roomCreate.templates.project.roomName": "{projectName}",
 	"pages.roomCreate.templates.project.boards.project": "Tablero del proyecto",
 	"pages.roomCreate.templates.project.columns.briefing": "Encargo del proyecto",
 	"pages.roomCreate.templates.project.columns.todo": "Por hacer",
@@ -1909,16 +1916,13 @@ export default {
 	"pages.roomCreate.templates.project.cards.schedule.title": "Calendario",
 	"pages.roomCreate.templates.project.cards.schedule.text":
 		"<ul><li>Inicio: …</li><li>Revisión intermedia: …</li><li>Entrega: …</li></ul>",
-	"pages.roomCreate.templates.project.cards.example.title": "Tarea de ejemplo",
-	"pages.roomCreate.templates.project.cards.example.text":
-		"<p>Una tarjeta por paso de trabajo: arrástrala hacia la derecha mientras avanzas.</p>",
 	"pages.roomCreate.templates.project.cards.presentation.title": "Presentación y feedback",
 	"pages.roomCreate.templates.project.cards.presentation.text":
 		"<p>Reúne resultados, presentaciones y comentarios.</p>",
 	"pages.roomCreate.templates.classroom.title": "Sala de clase",
 	"pages.roomCreate.templates.classroom.description":
 		"Para la tutoría: novedades, organización de la clase, fechas e información para familias.",
-	"pages.roomCreate.templates.classroom.roomName": "Clase",
+	"pages.roomCreate.templates.classroom.roomName": "Clase {className}",
 	"pages.roomCreate.templates.classroom.boards.news": "Novedades",
 	"pages.roomCreate.templates.classroom.boards.organisation": "Organización de la clase",
 	"pages.roomCreate.templates.classroom.columns.announcements": "Anuncios",
@@ -1928,7 +1932,7 @@ export default {
 	"pages.roomCreate.templates.classroom.columns.parents": "Para las familias",
 	"pages.roomCreate.templates.classroom.cards.welcome.title": "Bienvenidos a nuestra clase",
 	"pages.roomCreate.templates.classroom.cards.welcome.text":
-		"<p>Aquí va la información actual: lo más importante siempre arriba.</p>",
+		"<p>Información actual para la clase {className}: lo más importante siempre arriba.</p>",
 	"pages.roomCreate.templates.classroom.cards.thisWeek.title": "Esta semana",
 	"pages.roomCreate.templates.classroom.cards.thisWeek.text": "<ul><li>Lunes: …</li><li>Martes: …</li></ul>",
 	"pages.roomCreate.templates.classroom.cards.dutyPlan.title": "Plan de tareas",
@@ -1942,7 +1946,7 @@ export default {
 	"pages.roomCreate.templates.team.title": "Departamento y equipo",
 	"pages.roomCreate.templates.team.description":
 		"Colaboración en el claustro: anuncios, materiales, actas y responsabilidades.",
-	"pages.roomCreate.templates.team.roomName": "Departamento",
+	"pages.roomCreate.templates.team.roomName": "Departamento {subject}",
 	"pages.roomCreate.templates.team.boards.team": "Sala del equipo",
 	"pages.roomCreate.templates.team.columns.announcements": "Anuncios",
 	"pages.roomCreate.templates.team.columns.material": "Materiales y currículo",
@@ -1962,7 +1966,7 @@ export default {
 	"pages.roomCreate.templates.selfStudy.title": "Unidad de autoaprendizaje",
 	"pages.roomCreate.templates.selfStudy.description":
 		"Itinerario en cuatro pasos: introducción, elaboración, práctica y consolidación.",
-	"pages.roomCreate.templates.selfStudy.roomName": "Unidad de autoaprendizaje",
+	"pages.roomCreate.templates.selfStudy.roomName": "Unidad de autoaprendizaje {topic}",
 	"pages.roomCreate.templates.selfStudy.boards.path": "Itinerario de aprendizaje",
 	"pages.roomCreate.templates.selfStudy.columns.intro": "1 – Introducción",
 	"pages.roomCreate.templates.selfStudy.columns.learn": "2 – Elaboración",
@@ -1970,7 +1974,7 @@ export default {
 	"pages.roomCreate.templates.selfStudy.columns.secure": "4 – Consolidación",
 	"pages.roomCreate.templates.selfStudy.cards.hook.title": "Introducción",
 	"pages.roomCreate.templates.selfStudy.cards.hook.text":
-		"<p>¿Con qué empiezan los alumnos: vídeo, imagen o pregunta?</p>",
+		"<p>¿Con qué empiezan los alumnos en {topic}: vídeo, imagen o pregunta?</p>",
 	"pages.roomCreate.templates.selfStudy.cards.input.title": "Material e input",
 	"pages.roomCreate.templates.selfStudy.cards.input.text":
 		"<p>Textos, vídeos y explicaciones para trabajar de forma autónoma.</p>",

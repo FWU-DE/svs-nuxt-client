@@ -16,20 +16,16 @@
 			</VBtn>
 		</div>
 
-		<template v-if="template.boards.length > 0">
-			<div class="text-subtitle-2 mt-4">{{ t("pages.roomCreate.templates.preview.title") }}</div>
-			<ul class="mt-1 pl-5 text-body-2">
-				<li v-for="board in template.boards" :key="board.titleKey">
-					<span class="font-weight-bold">{{ t(board.titleKey) }}</span>
-					<span v-if="board.columns.length > 0">: {{ columnTitles(board) }}</span>
-				</li>
-			</ul>
+		<template v-if="boards.length > 0">
+			<div class="text-subtitle-2 mt-4 mb-2">{{ t("pages.roomCreate.templates.preview.title") }}</div>
+			<RoomTemplateStructure :boards="boards" />
 		</template>
 	</VSheet>
 </template>
 
 <script setup lang="ts">
-import { RoomTemplate, RoomTemplateBoard } from "@data-room";
+import RoomTemplateStructure from "./RoomTemplateStructure.vue";
+import { ResolvedBoard, RoomTemplate } from "@data-room";
 import { PropType } from "vue";
 import { useI18n } from "vue-i18n";
 
@@ -38,6 +34,10 @@ defineProps({
 		type: Object as PropType<RoomTemplate>,
 		required: true,
 	},
+	boards: {
+		type: Array as PropType<ResolvedBoard[]>,
+		default: () => [],
+	},
 });
 
 const emit = defineEmits<{
@@ -45,6 +45,4 @@ const emit = defineEmits<{
 }>();
 
 const { t } = useI18n();
-
-const columnTitles = (board: RoomTemplateBoard) => board.columns.map((column) => t(column.titleKey)).join(" · ");
 </script>
