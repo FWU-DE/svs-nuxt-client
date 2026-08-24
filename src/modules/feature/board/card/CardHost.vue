@@ -57,7 +57,7 @@
 							<KebabMenuActionAiCards
 								v-if="isAiEnabled && allowedOperations?.createCard && targetColumnId"
 								data-testid="card-menu-ai-cards"
-								@click="isAiDialogOpen = true"
+								@click.stop="openAiDialog"
 							/>
 							<KebabMenuActionShare v-if="allowedOperations?.shareCard" @click="onShareCard" />
 							<KebabMenuActionShareLink :scope="BoardMenuScope.CARD" @click="onCopyShareLink" />
@@ -158,6 +158,9 @@ const { allowedOperations } = useBoardAllowedOperations();
 const isAiDialogOpen = ref(false);
 const isAiEnabled = computed(() => useEnvConfig().value.FEATURE_BOARD_AI_CARDS_ENABLED);
 const targetColumnId = computed(() => useBoardStore().getColumnId(props.columnIndex));
+
+// the menu closes on this very click, and vuetify would read that as a click outside the dialog
+const openAiDialog = () => setTimeout(() => (isAiDialogOpen.value = true));
 const cardHost = ref(null);
 const cardId = toRef(props, "cardId");
 const { isFocusContained, isFocusedById } = useBoardFocusHandler(cardId.value, cardHost);

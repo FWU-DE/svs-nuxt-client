@@ -42,7 +42,7 @@
 					<KebabMenuActionAiCards
 						v-if="isAiEnabled"
 						data-testid="column-menu-ai-cards"
-						@click="isAiDialogOpen = true"
+						@click.stop="openAiDialog"
 					/>
 					<KebabMenuActionDelete :name="title" @click="onDelete" />
 				</BoardMenu>
@@ -94,6 +94,9 @@ const props = defineProps({
 
 const isAiDialogOpen = ref(false);
 const isAiEnabled = computed(() => useEnvConfig().value.FEATURE_BOARD_AI_CARDS_ENABLED);
+
+// the menu closes on this very click, and vuetify would read that as a click outside the dialog
+const openAiDialog = () => setTimeout(() => (isAiDialogOpen.value = true));
 
 const emit = defineEmits([
 	"delete:column",
