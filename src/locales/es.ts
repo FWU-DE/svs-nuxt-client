@@ -1846,6 +1846,17 @@ export default {
 	"pages.roomCreate.templates.applying": "Se está creando la sala a partir de la plantilla …",
 	"pages.roomCreate.templates.applyError":
 		"No se pudo crear todo el contenido de la plantilla. Puedes añadirlo en la sala.",
+	"pages.roomCreate.ai.title": "Empezar con ia",
+	"pages.roomCreate.ai.subtitle":
+		"Describe tu sala con tus palabras. La ia propone una estructura que puedes revisar antes de crearla.",
+	"pages.roomCreate.ai.label": "Descripción",
+	"pages.roomCreate.ai.placeholder":
+		"p. ej. matemáticas 3.º ESO, fracciones durante tres semanas con ejercicios y autoevaluación",
+	"pages.roomCreate.ai.generate": "Proponer estructura",
+	"pages.roomCreate.ai.preview": "La ia está escribiendo la propuesta. Todo se puede cambiar después.",
+	"pages.roomCreate.ai.discard": "Descartar",
+	"pages.roomCreate.ai.accept": "Usar esta",
+	"pages.roomCreate.ai.error": "No se pudo crear la propuesta. Inténtalo de nuevo o elige una plantilla.",
 	"pages.roomCreate.templates.params.title": "Ajustar plantilla",
 	"pages.roomCreate.templates.params.subject": "Asignatura",
 	"pages.roomCreate.templates.params.grade": "Clase / curso",

@@ -43,5 +43,6 @@ export {
 	type RoomTemplateParam,
 	type RoomTemplateParamValues,
 	roomTemplates,
+	useRoomAiTemplate,
 	useRoomTemplate,
 } from "./roomTemplates";

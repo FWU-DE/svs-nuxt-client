@@ -1824,6 +1824,17 @@ export default {
 	"pages.roomCreate.templates.preview.more": "+{count} ще",
 	"pages.roomCreate.templates.applying": "Кімната створюється за шаблоном …",
 	"pages.roomCreate.templates.applyError": "Не весь вміст шаблону вдалося створити. Ви можете додати його в кімнаті.",
+	"pages.roomCreate.ai.title": "Почати за допомогою ші",
+	"pages.roomCreate.ai.subtitle":
+		"Опишіть кімнату своїми словами. Ші запропонує структуру, яку можна перевірити перед створенням.",
+	"pages.roomCreate.ai.label": "Опис",
+	"pages.roomCreate.ai.placeholder":
+		"напр. математика 9 клас, дроби протягом трьох тижнів із вправами та самоперевіркою",
+	"pages.roomCreate.ai.generate": "Запропонувати структуру",
+	"pages.roomCreate.ai.preview": "Ші пише пропозицію. Усе в ній можна змінити пізніше.",
+	"pages.roomCreate.ai.discard": "Відхилити",
+	"pages.roomCreate.ai.accept": "Використати",
+	"pages.roomCreate.ai.error": "Не вдалося створити пропозицію. Спробуйте ще раз або оберіть шаблон.",
 	"pages.roomCreate.templates.params.title": "Налаштувати шаблон",
 	"pages.roomCreate.templates.params.subject": "Предмет",
 	"pages.roomCreate.templates.params.grade": "Клас / рік навчання",

@@ -1,5 +1,5 @@
 import { RoomCreateParams } from "@/types/room/Room";
-import { createTestRoomStore, mockApiResponse, roomItemFactory } from "@@/tests/test-utils";
+import { createTestEnvStore, createTestRoomStore, mockApiResponse, roomItemFactory } from "@@/tests/test-utils";
 import { createTestingI18n, createTestingVuetify } from "@@/tests/test-utils/setup";
 import { RoomColor, RoomFeatures } from "@api-server";
 import { getRoomTemplateById } from "@data-room";
@@ -10,9 +10,15 @@ import { flushPromises, VueWrapper } from "@vue/test-utils";
 import { setActivePinia } from "pinia";
 import { createRouterMock, getRouter, injectRouterMock } from "vue-router-mock";
 
+vi.mock("@/utils/api", async (importOriginal) => ({
+	...(await importOriginal<typeof import("@/utils/api")>()),
+	$axios: { defaults: { baseURL: "/api" } },
+}));
+
 describe("@pages/RoomCreate.page.vue", () => {
-	const setup = () => {
+	const setup = (options: { isAiEnabled?: boolean } = {}) => {
 		injectRouterMock(createRouterMock());
+		createTestEnvStore({ FEATURE_ROOM_AI_TEMPLATE_ENABLED: options.isAiEnabled ?? false });
 
 		const wrapper = mount(RoomCreatePage, {
 			global: {
@@ -151,6 +157,72 @@ describe("@pages/RoomCreate.page.vue", () => {
 		roomFormComponent.vm.$emit("cancel");
 
 		expect(getRouter().push).toHaveBeenCalledWith({ name: "rooms" });
+	});
+
+	describe("the ai mode", () => {
+		const encoder = new TextEncoder();
+
+		const streamResponse = (chunks: string[]) =>
+			({
+				ok: true,
+				body: new ReadableStream<Uint8Array>({
+					start(controller) {
+						chunks.forEach((chunk) => controller.enqueue(encoder.encode(chunk)));
+						controller.close();
+					},
+				}),
+			}) as Response;
+
+		const suggestion = [
+			'{"type":"roomName","name":"Mathe 9b"}\n',
+			'{"type":"board","title":"Lernpfad","layout":"columns"}\n',
+			'{"type":"column","title":"Einstieg"}\n{"type":"card","title":"Video"}\n',
+		];
+
+		afterEach(() => {
+			vi.unstubAllGlobals();
+		});
+
+		const generate = async (wrapper: VueWrapper) => {
+			await wrapper.find('[data-testid="room-ai-prompt-input"] textarea').setValue("Mathe 9b, Bruchrechnung");
+			await wrapper.find('[data-testid="room-ai-generate-btn"]').trigger("click");
+			await flushPromises();
+		};
+
+		it("should stay hidden while the feature is off", () => {
+			const { wrapper } = setup();
+
+			expect(wrapper.find('[data-testid="room-ai-prompt"]').exists()).toBe(false);
+		});
+
+		it("should show the suggested structure", async () => {
+			vi.stubGlobal("fetch", vi.fn().mockResolvedValue(streamResponse(suggestion)));
+			const { wrapper } = setup({ isAiEnabled: true });
+
+			await generate(wrapper);
+
+			expect(wrapper.find('[data-testid="template-card-0-0-0"]').text()).toContain("Video");
+		});
+
+		it("should take the suggested name into the form", async () => {
+			vi.stubGlobal("fetch", vi.fn().mockResolvedValue(streamResponse(suggestion)));
+			const { wrapper } = setup({ isAiEnabled: true });
+			await generate(wrapper);
+
+			await wrapper.find('[data-testid="room-ai-accept-btn"]').trigger("click");
+
+			expect(wrapper.findComponent(RoomForm).props("room")).toEqual(expect.objectContaining({ name: "Mathe 9b" }));
+		});
+
+		it("should return to the picker when the suggestion is discarded", async () => {
+			vi.stubGlobal("fetch", vi.fn().mockResolvedValue(streamResponse(suggestion)));
+			const { wrapper } = setup({ isAiEnabled: true });
+			await generate(wrapper);
+
+			await wrapper.find('[data-testid="room-ai-discard-btn"]').trigger("click");
+
+			expect(wrapper.findComponent(RoomTemplatePicker).exists()).toBe(true);
+		});
 	});
 
 	const emitSave = (roomFormComponent: VueWrapper, room: RoomCreateParams) =>

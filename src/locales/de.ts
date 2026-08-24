@@ -1846,6 +1846,17 @@ export default {
 	"pages.roomCreate.templates.applying": "Der Raum wird aus der Vorlage angelegt …",
 	"pages.roomCreate.templates.applyError":
 		"Nicht alle Inhalte der Vorlage konnten angelegt werden. Du kannst sie im Raum ergänzen.",
+	"pages.roomCreate.ai.title": "Mit KI starten",
+	"pages.roomCreate.ai.subtitle":
+		"Beschreibe deinen Raum in eigenen Worten. Die KI schlägt eine Struktur vor, die du vor dem Anlegen prüfen kannst.",
+	"pages.roomCreate.ai.label": "Beschreibung",
+	"pages.roomCreate.ai.placeholder": "z. B. Mathe 9b, Bruchrechnung über drei Wochen mit Übungen und Selbstcheck",
+	"pages.roomCreate.ai.generate": "Vorschlag erzeugen",
+	"pages.roomCreate.ai.preview": "Die KI schreibt den Vorschlag. Alles daran lässt sich später ändern.",
+	"pages.roomCreate.ai.discard": "Verwerfen",
+	"pages.roomCreate.ai.accept": "Übernehmen",
+	"pages.roomCreate.ai.error":
+		"Der Vorschlag konnte nicht erzeugt werden. Versuche es noch einmal oder wähle eine Vorlage.",
 	"pages.roomCreate.templates.params.title": "Vorlage anpassen",
 	"pages.roomCreate.templates.params.subject": "Fach",
 	"pages.roomCreate.templates.params.grade": "Klasse / Jahrgang",
