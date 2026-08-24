@@ -39,11 +39,7 @@
 						<KebabMenuActionMoveLeft v-if="isNotFirstColumn" @click="onMoveColumnLeft" />
 						<KebabMenuActionMoveRight v-if="isNotLastColumn" @click="onMoveColumnRight" />
 					</template>
-					<KebabMenuActionAiCards
-						v-if="isAiEnabled"
-						data-testid="column-menu-ai-cards"
-						@click.stop="openAiDialog"
-					/>
+					<KebabMenuActionAiCards v-if="isAiEnabled" data-testid="column-menu-ai-cards" @click.stop="openAiDialog" />
 					<KebabMenuActionDelete :name="title" @click="onDelete" />
 				</BoardMenu>
 				<BoardAiCardsDialog
@@ -51,6 +47,7 @@
 					v-model="isAiDialogOpen"
 					:source="{ kind: 'column', id: columnId }"
 					:target-column-id="columnId"
+					:source-title="title"
 				/>
 			</div>
 		</div>

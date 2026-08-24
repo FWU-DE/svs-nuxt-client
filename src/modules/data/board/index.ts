@@ -4,6 +4,7 @@ export {
 	type BoardAiSource,
 	useBoardAiCards,
 } from "./ai/boardAiCards.composable";
+export { type ContentSearchResult, useContentSearch } from "./ai/contentSearch.composable";
 import { useBoardStore } from "./Board.store";
 import * as boardActions from "./boardActions/boardActions";
 import { useBoardApi } from "./BoardApi.composable";

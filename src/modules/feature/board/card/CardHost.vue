@@ -73,6 +73,7 @@
 							v-model="isAiDialogOpen"
 							:source="{ kind: 'card', id: cardId }"
 							:target-column-id="targetColumnId"
+							:source-title="card?.title ?? ''"
 						/>
 					</div>
 
