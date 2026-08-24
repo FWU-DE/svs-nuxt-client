@@ -51,7 +51,7 @@
 </template>
 
 <script setup lang="ts">
-import { RoomTemplate, roomTemplates } from "@data-room";
+import { defaultParamValues, resolveTemplate, RoomTemplate, roomTemplates } from "@data-room";
 import { useI18n } from "vue-i18n";
 
 const MAX_PREVIEW_COLUMNS = 4;
@@ -62,12 +62,14 @@ const emit = defineEmits<{
 
 const { t } = useI18n();
 
-const allColumns = (template: RoomTemplate) => template.boards.flatMap((board) => board.columns);
+// the preview shows what the defaults produce, so a repeated column appears with its numbers
+const allColumns = (template: RoomTemplate) =>
+	resolveTemplate(template, defaultParamValues(template), t).flatMap((board) => board.columns);
 
 const previewColumnTitles = (template: RoomTemplate) =>
 	allColumns(template)
 		.slice(0, MAX_PREVIEW_COLUMNS)
-		.map((column) => t(column.titleKey));
+		.map((column) => column.title);
 
 const hiddenColumnCount = (template: RoomTemplate) => Math.max(allColumns(template).length - MAX_PREVIEW_COLUMNS, 0);
 </script>
