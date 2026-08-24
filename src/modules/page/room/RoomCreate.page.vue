@@ -69,6 +69,7 @@
 import { ApiResponseError } from "@/types/common/commons";
 import { RoomColor, RoomCreateParams } from "@/types/room/Room";
 import { buildPageTitle } from "@/utils/pageTitle";
+import { RoomFeatures } from "@api-server";
 import { notifyError } from "@data-app";
 import { useEnvConfig } from "@data-env";
 import {
@@ -114,6 +115,7 @@ const {
 	boards: aiBoards,
 	generate,
 	hasFailed,
+	hasVideoConference,
 	isGenerating,
 	reset: resetAiResult,
 	roomName: aiRoomName,
@@ -184,7 +186,8 @@ const onAcceptAiResult = () => {
 	roomData.value = {
 		name: aiRoomName.value,
 		color: RoomColor.BLUE_GREY,
-		features: [],
+		// a suggested video conference is worthless unless editors may manage one
+		features: hasVideoConference.value ? [RoomFeatures.EDITOR_MANAGE_VIDEOCONFERENCE] : [],
 	};
 	step.value = "form";
 };

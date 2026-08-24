@@ -1,6 +1,6 @@
 import { useRoomAiTemplate } from "./roomAiTemplate.composable";
 import { mountComposable } from "@@/tests/test-utils";
-import { BoardLayout, ContentElementType } from "@api-server";
+import { BoardLayout, Colors } from "@api-server";
 import { logger } from "@util-logger";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
@@ -49,7 +49,7 @@ describe("roomAiTemplate.composable", () => {
 		fetchMock.mockResolvedValue(
 			streamResponse([
 				'{"type":"roomName","name":"Mathe 9b"}\n{"type":"board","title":"Plan","layout":"list"}\n',
-				'{"type":"column","title":"Woche 1"}\n{"type":"card","title":"Ziele","text":"<p>Los</p>"}\n',
+				'{"type":"column","title":"Woche 1"}\n{"type":"card","title":"Ziele","color":"teal","elements":[{"kind":"text","text":"<p>Los</p>"}]}\n',
 			])
 		);
 		const composable = setup();
@@ -67,7 +67,8 @@ describe("roomAiTemplate.composable", () => {
 						cards: [
 							{
 								title: "Ziele",
-								elements: [{ type: ContentElementType.RICH_TEXT, text: "<p>Los</p>" }],
+								color: Colors.TEAL,
+								elements: [{ kind: "text", text: "<p>Los</p>" }],
 							},
 						],
 					},
@@ -76,7 +77,7 @@ describe("roomAiTemplate.composable", () => {
 		]);
 	});
 
-	it("should keep a card without text empty", async () => {
+	it("should keep a card without content empty", async () => {
 		fetchMock.mockResolvedValue(
 			streamResponse([
 				'{"type":"board","title":"Plan","layout":"columns"}\n{"type":"column","title":"Material"}\n{"type":"card","title":"Links"}\n',
@@ -87,6 +88,39 @@ describe("roomAiTemplate.composable", () => {
 		await composable.generate("Mathe");
 
 		expect(composable.boards.value[0].columns[0].cards[0].elements).toEqual([]);
+	});
+
+	it("should take over every content type of a card", async () => {
+		fetchMock.mockResolvedValue(
+			streamResponse([
+				'{"type":"board","title":"Plan","layout":"columns"}\n{"type":"column","title":"Material"}\n',
+				'{"type":"card","title":"Sammlung","elements":[{"kind":"link","title":"Serlo","url":"https://de.serlo.org"},{"kind":"folder","title":"Material"},{"kind":"drawing"},{"kind":"boardLink","title":"Woche 2","boardIndex":1}]}\n',
+			])
+		);
+		const composable = setup();
+
+		await composable.generate("Mathe");
+
+		expect(composable.boards.value[0].columns[0].cards[0].elements).toEqual([
+			{ kind: "link", title: "Serlo", url: "https://de.serlo.org" },
+			{ kind: "folder", title: "Material" },
+			{ kind: "drawing" },
+			{ kind: "boardLink", title: "Woche 2", boardIndex: 1 },
+		]);
+	});
+
+	it("should notice a suggested video conference, so the room can enable the feature", async () => {
+		fetchMock.mockResolvedValue(
+			streamResponse([
+				'{"type":"board","title":"Plan","layout":"columns"}\n{"type":"column","title":"Termine"}\n',
+				'{"type":"card","title":"Sprechstunde","elements":[{"kind":"videoConference","title":"Sprechstunde"}]}\n',
+			])
+		);
+		const composable = setup();
+
+		await composable.generate("Mathe");
+
+		expect(composable.hasVideoConference.value).toBe(true);
 	});
 
 	it("should ignore items that have no place to go", async () => {

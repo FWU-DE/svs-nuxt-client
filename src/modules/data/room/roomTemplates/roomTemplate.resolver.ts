@@ -2,9 +2,11 @@ import {
 	ResolvedBoard,
 	ResolvedCard,
 	ResolvedColumn,
+	ResolvedElement,
 	RoomTemplate,
 	RoomTemplateCard,
 	RoomTemplateColumn,
+	RoomTemplateElement,
 	RoomTemplateParamValues,
 } from "./types";
 import { MessageSchema } from "@/locales/schema";
@@ -21,6 +23,27 @@ const repetitionsOf = (repeatParam: string | undefined, values: RoomTemplatePara
 	return Number.isFinite(count) ? Math.max(Math.trunc(count), 0) : 0;
 };
 
+const resolveElement = (
+	element: RoomTemplateElement,
+	values: RoomTemplateParamValues,
+	translate: TemplateTranslator
+): ResolvedElement => {
+	switch (element.kind) {
+		case "text":
+			return { kind: "text", text: translate(element.textKey, values) };
+		case "link":
+			return { kind: "link", title: translate(element.titleKey, values), url: element.url };
+		case "boardLink":
+			return { kind: "boardLink", title: translate(element.titleKey, values), boardIndex: element.boardIndex };
+		case "folder":
+			return { kind: "folder", title: translate(element.titleKey, values) };
+		case "videoConference":
+			return { kind: "videoConference", title: translate(element.titleKey, values) };
+		default:
+			return element;
+	}
+};
+
 const resolveCards = (
 	cards: RoomTemplateCard[],
 	values: RoomTemplateParamValues,
@@ -33,10 +56,8 @@ const resolveCards = (
 
 			return {
 				title: translate(card.titleKey, cardValues),
-				elements: card.elements.map((element) => ({
-					type: element.type,
-					text: translate(element.textKey, cardValues),
-				})),
+				color: card.color,
+				elements: card.elements.map((element) => resolveElement(element, cardValues, translate)),
 			};
 		})
 	);

@@ -1,5 +1,5 @@
 import { MessageSchema } from "@/locales/schema";
-import { BoardLayout, ContentElementType, RoomColor, RoomFeatures } from "@api-server";
+import { BoardLayout, Colors, RoomColor, RoomFeatures } from "@api-server";
 
 export type RoomTemplateParamValue = string | number;
 
@@ -16,15 +16,23 @@ export interface RoomTemplateParam {
 	max?: number;
 }
 
-export interface RoomTemplateElement {
-	type: ContentElementType.RICH_TEXT;
-	/** i18n key of the rich text content (may contain simple html) */
-	textKey: keyof MessageSchema;
-}
+/**
+ * The content a card can carry. `boardLink` is not a content element of its own: it becomes a link
+ * element as soon as the board it points at exists, which is how a room cross-references itself.
+ */
+export type RoomTemplateElement =
+	| { kind: "text"; textKey: keyof MessageSchema }
+	| { kind: "link"; titleKey: keyof MessageSchema; url: string }
+	| { kind: "boardLink"; titleKey: keyof MessageSchema; boardIndex: number }
+	| { kind: "folder"; titleKey: keyof MessageSchema }
+	| { kind: "drawing" }
+	| { kind: "collaborative" }
+	| { kind: "videoConference"; titleKey: keyof MessageSchema };
 
 export interface RoomTemplateCard {
 	titleKey: keyof MessageSchema;
 	elements: RoomTemplateElement[];
+	color?: Colors;
 	/** key of a number param: the card is created that often, `{index}` counts from 1 */
 	repeatParam?: string;
 }
@@ -59,14 +67,19 @@ export interface RoomTemplate {
  * A template with all placeholders filled in and all repetitions expanded - the shape that is
  * actually created in the room. The ai mode produces the same shape without a template.
  */
-export interface ResolvedElement {
-	type: ContentElementType.RICH_TEXT;
-	text: string;
-}
+export type ResolvedElement =
+	| { kind: "text"; text: string }
+	| { kind: "link"; title: string; url: string }
+	| { kind: "boardLink"; title: string; boardIndex: number }
+	| { kind: "folder"; title: string }
+	| { kind: "drawing" }
+	| { kind: "collaborative" }
+	| { kind: "videoConference"; title: string };
 
 export interface ResolvedCard {
 	title: string;
 	elements: ResolvedElement[];
+	color?: Colors;
 }
 
 export interface ResolvedColumn {

@@ -1846,6 +1846,23 @@ export default {
 	"pages.roomCreate.templates.applying": "Se está creando la sala a partir de la plantilla …",
 	"pages.roomCreate.templates.applyError":
 		"No se pudo crear todo el contenido de la plantilla. Puedes añadirlo en la sala.",
+	"pages.roomCreate.templates.element.text": "Texto",
+	"pages.roomCreate.templates.element.link": "Enlace",
+	"pages.roomCreate.templates.element.boardLink": "Referencia a una sección",
+	"pages.roomCreate.templates.element.folder": "Carpeta de archivos",
+	"pages.roomCreate.templates.element.drawing": "Pizarra",
+	"pages.roomCreate.templates.element.collaborative": "Documento de texto compartido",
+	"pages.roomCreate.templates.element.videoConference": "Videoconferencia",
+	"pages.roomCreate.templates.folder.material": "Carpeta de materiales",
+	"pages.roomCreate.templates.folder.results": "Carpeta de entregas",
+	"pages.roomCreate.templates.folder.parents": "Circulares para las familias",
+	"pages.roomCreate.templates.folder.minutes": "Actas",
+	"pages.roomCreate.templates.subject.cards.links.text":
+		"<p>Aquí caben enlaces a vídeos explicativos, páginas de ejercicios y obras de consulta.</p>",
+	"pages.roomCreate.templates.project.cards.ideas.title": "Lluvia de ideas",
+	"pages.roomCreate.templates.project.cards.ideas.text": "<p>Recoge y ordena las primeras ideas en la pizarra.</p>",
+	"pages.roomCreate.templates.classroom.cards.toOrganisation.title": "A la organización de la clase",
+	"pages.roomCreate.templates.team.cards.latest.conference": "Reunión del equipo",
 	"pages.roomCreate.ai.title": "Empezar con ia",
 	"pages.roomCreate.ai.subtitle":
 		"Describe tu sala con tus palabras. La ia propone una estructura que puedes revisar antes de crearla.",

@@ -1,4 +1,4 @@
-import { ResolvedBoard, ResolvedCard } from "./types";
+import { ResolvedBoard, ResolvedCard, ResolvedElement } from "./types";
 import { $axios } from "@/utils/api";
 import {
 	BoardApiFactory,
@@ -6,6 +6,8 @@ import {
 	BoardColumnApiFactory,
 	BoardElementApiFactory,
 	BoardParentType,
+	ContentElementType,
+	UpdateElementContentBodyParams,
 } from "@api-server";
 import { logger } from "@util-logger";
 import { computed, ref } from "vue";
@@ -20,6 +22,16 @@ export const boardKey = (boardIndex: number): string => `b${boardIndex}`;
 export const columnKey = (boardIndex: number, columnIndex: number): string => `b${boardIndex}c${columnIndex}`;
 export const cardKey = (boardIndex: number, columnIndex: number, cardIndex: number): string =>
 	`b${boardIndex}c${columnIndex}k${cardIndex}`;
+
+const ELEMENT_TYPES: Record<ResolvedElement["kind"], ContentElementType> = {
+	text: ContentElementType.RICH_TEXT,
+	link: ContentElementType.LINK,
+	boardLink: ContentElementType.LINK,
+	folder: ContentElementType.FILE_FOLDER,
+	drawing: ContentElementType.DRAWING,
+	collaborative: ContentElementType.COLLABORATIVE_TEXT_EDITOR,
+	videoConference: ContentElementType.VIDEO_CONFERENCE,
+};
 
 const countSteps = (boards: ResolvedBoard[]): number =>
 	boards.reduce((boardSteps, board) => {
@@ -58,36 +70,71 @@ export const useRoomTemplate = () => {
 		return result;
 	};
 
-	const createCard = async (columnId: string, card: ResolvedCard, key: string) => {
+	const boardUrl = (boardId: string) => `${window.location.origin}/boards/${boardId}`;
+
+	/**
+	 * @returns the content of the element, or undefined for elements that are created empty
+	 */
+	const contentOf = (element: ResolvedElement, boardIds: string[]): UpdateElementContentBodyParams | undefined => {
+		switch (element.kind) {
+			case "text":
+				return {
+					data: {
+						type: ContentElementType.RICH_TEXT,
+						content: { text: element.text, inputFormat: RICH_TEXT_INPUT_FORMAT },
+					},
+				};
+			case "link":
+				return { data: { type: ContentElementType.LINK, content: { url: element.url, title: element.title } } };
+			case "boardLink": {
+				const boardId = boardIds[element.boardIndex];
+				if (boardId === undefined) return undefined;
+
+				return {
+					data: { type: ContentElementType.LINK, content: { url: boardUrl(boardId), title: element.title } },
+				};
+			}
+			case "folder":
+				return { data: { type: ContentElementType.FILE_FOLDER, content: { title: element.title } } };
+			case "videoConference":
+				return { data: { type: ContentElementType.VIDEO_CONFERENCE, content: { title: element.title } } };
+			default:
+				// a drawing and a collaborative text document start out empty
+				return undefined;
+		}
+	};
+
+	const createElement = async (cardId: string, element: ResolvedElement, boardIds: string[]) => {
+		// a reference to a board that was not created cannot be filled with anything meaningful
+		const content = contentOf(element, boardIds);
+		if (element.kind === "boardLink" && content === undefined) return;
+
+		const elementId = (await step(cardApi.cardControllerCreateElement(cardId, { type: ELEMENT_TYPES[element.kind] })))
+			.data.id;
+
+		if (content === undefined) return;
+
+		await elementApi.elementControllerUpdateElement(elementId, content);
+	};
+
+	const createCard = async (columnId: string, card: ResolvedCard, key: string, boardIds: string[]) => {
 		const cardId = (await step(columnApi.columnControllerCreateCard(columnId, {}))).data.id;
 		await cardApi.cardControllerUpdateCardTitle(cardId, { title: card.title });
+		if (card.color) await cardApi.cardControllerUpdateCardColor(cardId, { backgroundColor: card.color });
 
 		for (const element of card.elements) {
-			const elementId = (await step(cardApi.cardControllerCreateElement(cardId, { type: element.type }))).data.id;
-			await elementApi.elementControllerUpdateElement(elementId, {
-				data: {
-					type: element.type,
-					content: { text: element.text, inputFormat: RICH_TEXT_INPUT_FORMAT },
-				},
-			});
+			try {
+				await createElement(cardId, element, boardIds);
+			} catch (error) {
+				// a content type the instance does not offer must not cost us the rest of the card
+				logger.error(`Could not create a ${element.kind} element of a room template`, error);
+			}
 		}
 
 		createdKeys.value = [...createdKeys.value, key];
 	};
 
-	const createBoard = async (roomId: string, board: ResolvedBoard, boardIndex: number) => {
-		const boardId = (
-			await step(
-				boardApi.boardControllerCreateBoard({
-					title: board.title,
-					parentId: roomId,
-					parentType: BoardParentType.ROOM,
-					layout: board.layout,
-				})
-			)
-		).data.id;
-		createdKeys.value = [...createdKeys.value, boardKey(boardIndex)];
-
+	const fillBoard = async (boardId: string, board: ResolvedBoard, boardIndex: number, boardIds: string[]) => {
 		// columns have to be created one after another, their order follows the order of creation
 		const columnIds: string[] = [];
 		for (const [columnIndex, column] of board.columns.entries()) {
@@ -101,17 +148,15 @@ export const useRoomTemplate = () => {
 		await Promise.all(
 			board.columns.map(async (column, columnIndex) => {
 				for (const [cardIndex, card] of column.cards.entries()) {
-					await createCard(columnIds[columnIndex], card, cardKey(boardIndex, columnIndex, cardIndex));
+					await createCard(columnIds[columnIndex], card, cardKey(boardIndex, columnIndex, cardIndex), boardIds);
 				}
 			})
 		);
-
-		// a new board is a draft: without this the members of the room would not see it at all
-		await step(boardApi.boardControllerUpdateVisibility(boardId, { isVisible: true }));
 	};
 
 	/**
-	 * Creates the boards of a resolved template in an already created room.
+	 * Creates the boards of a resolved template in an already created room. All boards are created
+	 * before they are filled, so that cards can link to any board of the same room.
 	 * @returns whether all of the content could be created
 	 */
 	const applyTemplate = async (roomId: string, boards: ResolvedBoard[]): Promise<boolean> => {
@@ -124,15 +169,35 @@ export const useRoomTemplate = () => {
 		let isComplete = true;
 
 		try {
-			// boards are created one after another to keep the order of the template
+			const boardIds: string[] = [];
+			for (const [boardIndex, board] of boards.entries()) {
+				const boardId = (
+					await step(
+						boardApi.boardControllerCreateBoard({
+							title: board.title,
+							parentId: roomId,
+							parentType: BoardParentType.ROOM,
+							layout: board.layout,
+						})
+					)
+				).data.id;
+				boardIds.push(boardId);
+				createdKeys.value = [...createdKeys.value, boardKey(boardIndex)];
+			}
+
 			for (const [boardIndex, board] of boards.entries()) {
 				try {
-					await createBoard(roomId, board, boardIndex);
+					await fillBoard(boardIds[boardIndex], board, boardIndex, boardIds);
+					// a new board is a draft: without this the members of the room would not see it at all
+					await step(boardApi.boardControllerUpdateVisibility(boardIds[boardIndex], { isVisible: true }));
 				} catch (error) {
 					isComplete = false;
-					logger.error(`Could not create board "${board.title}" of a room template`, error);
+					logger.error(`Could not fill board "${board.title}" of a room template`, error);
 				}
 			}
+		} catch (error) {
+			isComplete = false;
+			logger.error("Could not create the boards of a room template", error);
 		} finally {
 			isApplying.value = false;
 		}

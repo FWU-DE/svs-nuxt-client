@@ -10,6 +10,7 @@ import {
 	BoardLayout,
 	BoardParentType,
 	CardResponse,
+	Colors,
 	ColumnResponse,
 	ContentElementType,
 	CreateBoardResponse,
@@ -60,7 +61,7 @@ describe("roomTemplates.composable", () => {
 					cards: [
 						{
 							title: "Linksammlung",
-							elements: [{ type: ContentElementType.RICH_TEXT, text: "<p>Dateien hochladen.</p>" }],
+							elements: [{ kind: "text", text: "<p>Dateien hochladen.</p>" }],
 						},
 					],
 				},
@@ -148,6 +149,96 @@ describe("roomTemplates.composable", () => {
 			expect(isComplete).toBe(true);
 			expect(composable.progress.value).toBe(100);
 			expect(composable.isApplying.value).toBe(false);
+		});
+	});
+
+	describe("when a card carries more than text", () => {
+		const richBoards: ResolvedBoard[] = [
+			{
+				title: "Aktuelles",
+				layout: BoardLayout.LIST,
+				columns: [
+					{
+						title: "Ankündigungen",
+						cards: [
+							{
+								title: "Material",
+								color: Colors.TEAL,
+								elements: [
+									{ kind: "folder", title: "Materialordner" },
+									{ kind: "drawing" },
+									{ kind: "collaborative" },
+									{ kind: "link", title: "Serlo", url: "https://de.serlo.org" },
+									{ kind: "boardLink", title: "Zur Organisation", boardIndex: 1 },
+									{ kind: "videoConference", title: "Sprechstunde" },
+								],
+							},
+						],
+					},
+				],
+			},
+			{ title: "Organisation", layout: BoardLayout.COLUMNS, columns: [] },
+		];
+
+		it("should create every content type of the card", async () => {
+			const composable = setup();
+
+			await composable.applyTemplate("room-id", richBoards);
+
+			const createdTypes = cardApiMock.cardControllerCreateElement.mock.calls.map((call) => call[1].type);
+			expect(createdTypes).toEqual([
+				ContentElementType.FILE_FOLDER,
+				ContentElementType.DRAWING,
+				ContentElementType.COLLABORATIVE_TEXT_EDITOR,
+				ContentElementType.LINK,
+				ContentElementType.LINK,
+				ContentElementType.VIDEO_CONFERENCE,
+			]);
+		});
+
+		it("should paint the card in the colour of the template", async () => {
+			const composable = setup();
+
+			await composable.applyTemplate("room-id", richBoards);
+
+			expect(cardApiMock.cardControllerUpdateCardColor).toHaveBeenCalledWith("card-1", {
+				backgroundColor: Colors.TEAL,
+			});
+		});
+
+		it("should point a board link at the board it references", async () => {
+			const composable = setup();
+
+			await composable.applyTemplate("room-id", richBoards);
+
+			// board-2 is the second board, which is created before any card exists
+			expect(elementApiMock.elementControllerUpdateElement).toHaveBeenCalledWith("element-5", {
+				data: {
+					type: ContentElementType.LINK,
+					content: { url: `${window.location.origin}/boards/board-2`, title: "Zur Organisation" },
+				},
+			});
+		});
+
+		it("should leave a drawing and a shared document empty", async () => {
+			const composable = setup();
+
+			await composable.applyTemplate("room-id", richBoards);
+
+			const filledElements = elementApiMock.elementControllerUpdateElement.mock.calls.map((call) => call[0]);
+			expect(filledElements).not.toContain("element-2");
+			expect(filledElements).not.toContain("element-3");
+		});
+
+		it("should keep the card when one content type cannot be created", async () => {
+			vi.spyOn(logger, "error").mockImplementation(vi.fn());
+			cardApiMock.cardControllerCreateElement.mockRejectedValueOnce(new Error("not enabled here"));
+			const composable = setup();
+
+			const isComplete = await composable.applyTemplate("room-id", richBoards);
+
+			expect(isComplete).toBe(true);
+			expect(cardApiMock.cardControllerCreateElement).toHaveBeenCalledTimes(6);
 		});
 	});
 

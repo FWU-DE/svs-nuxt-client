@@ -1,6 +1,6 @@
-import { RoomTemplate } from "./types";
+import { RoomTemplate, RoomTemplateElement } from "./types";
 import { MessageSchema } from "@/locales/schema";
-import { BoardLayout, ContentElementType, RoomColor, RoomFeatures } from "@api-server";
+import { BoardLayout, Colors, RoomColor, RoomFeatures } from "@api-server";
 import {
 	mdiAccountGroupOutline,
 	mdiCalendarOutline,
@@ -11,7 +11,16 @@ import {
 	mdiViewDashboardOutline,
 } from "@icons/material";
 
-const richText = (textKey: keyof MessageSchema) => ({ type: ContentElementType.RICH_TEXT as const, textKey });
+const text = (textKey: keyof MessageSchema): RoomTemplateElement => ({ kind: "text", textKey });
+const folder = (titleKey: keyof MessageSchema): RoomTemplateElement => ({ kind: "folder", titleKey });
+const boardLink = (titleKey: keyof MessageSchema, boardIndex: number): RoomTemplateElement => ({
+	kind: "boardLink",
+	titleKey,
+	boardIndex,
+});
+const drawing = (): RoomTemplateElement => ({ kind: "drawing" });
+const collaborative = (): RoomTemplateElement => ({ kind: "collaborative" });
+const videoConference = (titleKey: keyof MessageSchema): RoomTemplateElement => ({ kind: "videoConference", titleKey });
 
 export const BLANK_ROOM_TEMPLATE_ID = "blank";
 
@@ -21,6 +30,7 @@ export const BLANK_ROOM_TEMPLATE_ID = "blank";
  *
  * Texts may contain `{placeholders}` of the template params. Columns and cards with a
  * `repeatParam` are created as often as that number param says, counting `{index}` from 1.
+ * A `boardLink` points at another board of the same template by its position.
  */
 export const roomTemplates: RoomTemplate[] = [
 	{
@@ -60,11 +70,13 @@ export const roomTemplates: RoomTemplate[] = [
 						cards: [
 							{
 								titleKey: "pages.roomCreate.templates.subject.cards.welcome.title",
-								elements: [richText("pages.roomCreate.templates.subject.cards.welcome.text")],
+								color: Colors.BLUE,
+								elements: [text("pages.roomCreate.templates.subject.cards.welcome.text")],
 							},
 							{
 								titleKey: "pages.roomCreate.templates.subject.cards.rules.title",
-								elements: [richText("pages.roomCreate.templates.subject.cards.rules.text")],
+								color: Colors.BLUE,
+								elements: [text("pages.roomCreate.templates.subject.cards.rules.text")],
 							},
 						],
 					},
@@ -73,11 +85,16 @@ export const roomTemplates: RoomTemplate[] = [
 						cards: [
 							{
 								titleKey: "pages.roomCreate.templates.subject.cards.material.title",
-								elements: [richText("pages.roomCreate.templates.subject.cards.material.text")],
+								color: Colors.TEAL,
+								elements: [
+									text("pages.roomCreate.templates.subject.cards.material.text"),
+									folder("pages.roomCreate.templates.folder.material"),
+								],
 							},
 							{
 								titleKey: "pages.roomCreate.templates.subject.cards.links.title",
-								elements: [],
+								color: Colors.TEAL,
+								elements: [text("pages.roomCreate.templates.subject.cards.links.text")],
 							},
 						],
 					},
@@ -86,7 +103,8 @@ export const roomTemplates: RoomTemplate[] = [
 						cards: [
 							{
 								titleKey: "pages.roomCreate.templates.subject.cards.currentTask.title",
-								elements: [richText("pages.roomCreate.templates.subject.cards.currentTask.text")],
+								color: Colors.RED,
+								elements: [text("pages.roomCreate.templates.subject.cards.currentTask.text")],
 							},
 						],
 					},
@@ -95,7 +113,8 @@ export const roomTemplates: RoomTemplate[] = [
 						cards: [
 							{
 								titleKey: "pages.roomCreate.templates.subject.cards.nextDates.title",
-								elements: [richText("pages.roomCreate.templates.subject.cards.nextDates.text")],
+								color: Colors.AMBER,
+								elements: [text("pages.roomCreate.templates.subject.cards.nextDates.text")],
 							},
 						],
 					},
@@ -138,11 +157,13 @@ export const roomTemplates: RoomTemplate[] = [
 						cards: [
 							{
 								titleKey: "pages.roomCreate.templates.weeklyPlan.cards.goals.title",
-								elements: [richText("pages.roomCreate.templates.weeklyPlan.cards.goals.text")],
+								color: Colors.TEAL,
+								elements: [text("pages.roomCreate.templates.weeklyPlan.cards.goals.text")],
 							},
 							{
 								titleKey: "pages.roomCreate.templates.weeklyPlan.cards.tasks.title",
-								elements: [richText("pages.roomCreate.templates.weeklyPlan.cards.tasks.text")],
+								color: Colors.RED,
+								elements: [text("pages.roomCreate.templates.weeklyPlan.cards.tasks.text")],
 							},
 						],
 					},
@@ -151,7 +172,11 @@ export const roomTemplates: RoomTemplate[] = [
 						cards: [
 							{
 								titleKey: "pages.roomCreate.templates.weeklyPlan.cards.help.title",
-								elements: [richText("pages.roomCreate.templates.weeklyPlan.cards.help.text")],
+								color: Colors.BLUE,
+								elements: [
+									text("pages.roomCreate.templates.weeklyPlan.cards.help.text"),
+									folder("pages.roomCreate.templates.folder.material"),
+								],
 							},
 						],
 					},
@@ -160,7 +185,8 @@ export const roomTemplates: RoomTemplate[] = [
 						cards: [
 							{
 								titleKey: "pages.roomCreate.templates.weeklyPlan.cards.archive.title",
-								elements: [richText("pages.roomCreate.templates.weeklyPlan.cards.archive.text")],
+								color: Colors.GREY,
+								elements: [text("pages.roomCreate.templates.weeklyPlan.cards.archive.text")],
 							},
 						],
 					},
@@ -202,15 +228,23 @@ export const roomTemplates: RoomTemplate[] = [
 						cards: [
 							{
 								titleKey: "pages.roomCreate.templates.project.cards.goal.title",
-								elements: [richText("pages.roomCreate.templates.project.cards.goal.text")],
+								color: Colors.BLUE,
+								elements: [text("pages.roomCreate.templates.project.cards.goal.text")],
 							},
 							{
 								titleKey: "pages.roomCreate.templates.project.cards.team.title",
-								elements: [richText("pages.roomCreate.templates.project.cards.team.text")],
+								color: Colors.BLUE,
+								elements: [text("pages.roomCreate.templates.project.cards.team.text")],
 							},
 							{
 								titleKey: "pages.roomCreate.templates.project.cards.schedule.title",
-								elements: [richText("pages.roomCreate.templates.project.cards.schedule.text")],
+								color: Colors.BLUE,
+								elements: [text("pages.roomCreate.templates.project.cards.schedule.text")],
+							},
+							{
+								titleKey: "pages.roomCreate.templates.project.cards.ideas.title",
+								color: Colors.AMBER,
+								elements: [text("pages.roomCreate.templates.project.cards.ideas.text"), drawing()],
 							},
 						],
 					},
@@ -220,7 +254,8 @@ export const roomTemplates: RoomTemplate[] = [
 							{
 								titleKey: "pages.roomCreate.templates.project.cards.group.title",
 								repeatParam: "groups",
-								elements: [richText("pages.roomCreate.templates.project.cards.group.text")],
+								color: Colors.TEAL,
+								elements: [text("pages.roomCreate.templates.project.cards.group.text"), collaborative()],
 							},
 						],
 					},
@@ -237,7 +272,11 @@ export const roomTemplates: RoomTemplate[] = [
 						cards: [
 							{
 								titleKey: "pages.roomCreate.templates.project.cards.presentation.title",
-								elements: [richText("pages.roomCreate.templates.project.cards.presentation.text")],
+								color: Colors.GREEN,
+								elements: [
+									text("pages.roomCreate.templates.project.cards.presentation.text"),
+									folder("pages.roomCreate.templates.folder.results"),
+								],
 							},
 						],
 					},
@@ -271,11 +310,18 @@ export const roomTemplates: RoomTemplate[] = [
 						cards: [
 							{
 								titleKey: "pages.roomCreate.templates.classroom.cards.welcome.title",
-								elements: [richText("pages.roomCreate.templates.classroom.cards.welcome.text")],
+								color: Colors.AMBER,
+								elements: [text("pages.roomCreate.templates.classroom.cards.welcome.text")],
 							},
 							{
 								titleKey: "pages.roomCreate.templates.classroom.cards.thisWeek.title",
-								elements: [richText("pages.roomCreate.templates.classroom.cards.thisWeek.text")],
+								color: Colors.AMBER,
+								elements: [text("pages.roomCreate.templates.classroom.cards.thisWeek.text")],
+							},
+							{
+								// the two boards of this room point at each other
+								titleKey: "pages.roomCreate.templates.classroom.cards.toOrganisation.title",
+								elements: [boardLink("pages.roomCreate.templates.classroom.boards.organisation", 1)],
 							},
 						],
 					},
@@ -290,7 +336,8 @@ export const roomTemplates: RoomTemplate[] = [
 						cards: [
 							{
 								titleKey: "pages.roomCreate.templates.classroom.cards.dutyPlan.title",
-								elements: [richText("pages.roomCreate.templates.classroom.cards.dutyPlan.text")],
+								color: Colors.TEAL,
+								elements: [text("pages.roomCreate.templates.classroom.cards.dutyPlan.text")],
 							},
 						],
 					},
@@ -299,7 +346,8 @@ export const roomTemplates: RoomTemplate[] = [
 						cards: [
 							{
 								titleKey: "pages.roomCreate.templates.classroom.cards.classRules.title",
-								elements: [richText("pages.roomCreate.templates.classroom.cards.classRules.text")],
+								color: Colors.BLUE,
+								elements: [text("pages.roomCreate.templates.classroom.cards.classRules.text")],
 							},
 						],
 					},
@@ -308,7 +356,8 @@ export const roomTemplates: RoomTemplate[] = [
 						cards: [
 							{
 								titleKey: "pages.roomCreate.templates.classroom.cards.nextDates.title",
-								elements: [],
+								color: Colors.AMBER,
+								elements: [boardLink("pages.roomCreate.templates.classroom.boards.news", 0)],
 							},
 						],
 					},
@@ -317,7 +366,11 @@ export const roomTemplates: RoomTemplate[] = [
 						cards: [
 							{
 								titleKey: "pages.roomCreate.templates.classroom.cards.parentInfo.title",
-								elements: [richText("pages.roomCreate.templates.classroom.cards.parentInfo.text")],
+								color: Colors.PURPLE,
+								elements: [
+									text("pages.roomCreate.templates.classroom.cards.parentInfo.text"),
+									folder("pages.roomCreate.templates.folder.parents"),
+								],
 							},
 						],
 					},
@@ -351,7 +404,11 @@ export const roomTemplates: RoomTemplate[] = [
 						cards: [
 							{
 								titleKey: "pages.roomCreate.templates.team.cards.latest.title",
-								elements: [richText("pages.roomCreate.templates.team.cards.latest.text")],
+								color: Colors.AMBER,
+								elements: [
+									text("pages.roomCreate.templates.team.cards.latest.text"),
+									videoConference("pages.roomCreate.templates.team.cards.latest.conference"),
+								],
 							},
 						],
 					},
@@ -360,7 +417,11 @@ export const roomTemplates: RoomTemplate[] = [
 						cards: [
 							{
 								titleKey: "pages.roomCreate.templates.team.cards.curriculum.title",
-								elements: [richText("pages.roomCreate.templates.team.cards.curriculum.text")],
+								color: Colors.BLUE,
+								elements: [
+									text("pages.roomCreate.templates.team.cards.curriculum.text"),
+									folder("pages.roomCreate.templates.folder.material"),
+								],
 							},
 						],
 					},
@@ -369,7 +430,12 @@ export const roomTemplates: RoomTemplate[] = [
 						cards: [
 							{
 								titleKey: "pages.roomCreate.templates.team.cards.lastMeeting.title",
-								elements: [richText("pages.roomCreate.templates.team.cards.lastMeeting.text")],
+								color: Colors.GREY,
+								elements: [
+									text("pages.roomCreate.templates.team.cards.lastMeeting.text"),
+									collaborative(),
+									folder("pages.roomCreate.templates.folder.minutes"),
+								],
 							},
 						],
 					},
@@ -378,7 +444,8 @@ export const roomTemplates: RoomTemplate[] = [
 						cards: [
 							{
 								titleKey: "pages.roomCreate.templates.team.cards.responsibilities.title",
-								elements: [richText("pages.roomCreate.templates.team.cards.responsibilities.text")],
+								color: Colors.TEAL,
+								elements: [text("pages.roomCreate.templates.team.cards.responsibilities.text")],
 							},
 						],
 					},
@@ -412,7 +479,8 @@ export const roomTemplates: RoomTemplate[] = [
 						cards: [
 							{
 								titleKey: "pages.roomCreate.templates.selfStudy.cards.hook.title",
-								elements: [richText("pages.roomCreate.templates.selfStudy.cards.hook.text")],
+								color: Colors.AMBER,
+								elements: [text("pages.roomCreate.templates.selfStudy.cards.hook.text")],
 							},
 						],
 					},
@@ -421,7 +489,11 @@ export const roomTemplates: RoomTemplate[] = [
 						cards: [
 							{
 								titleKey: "pages.roomCreate.templates.selfStudy.cards.input.title",
-								elements: [richText("pages.roomCreate.templates.selfStudy.cards.input.text")],
+								color: Colors.BLUE,
+								elements: [
+									text("pages.roomCreate.templates.selfStudy.cards.input.text"),
+									folder("pages.roomCreate.templates.folder.material"),
+								],
 							},
 						],
 					},
@@ -430,7 +502,8 @@ export const roomTemplates: RoomTemplate[] = [
 						cards: [
 							{
 								titleKey: "pages.roomCreate.templates.selfStudy.cards.exercises.title",
-								elements: [richText("pages.roomCreate.templates.selfStudy.cards.exercises.text")],
+								color: Colors.TEAL,
+								elements: [text("pages.roomCreate.templates.selfStudy.cards.exercises.text"), collaborative()],
 							},
 						],
 					},
@@ -439,7 +512,8 @@ export const roomTemplates: RoomTemplate[] = [
 						cards: [
 							{
 								titleKey: "pages.roomCreate.templates.selfStudy.cards.check.title",
-								elements: [richText("pages.roomCreate.templates.selfStudy.cards.check.text")],
+								color: Colors.GREEN,
+								elements: [text("pages.roomCreate.templates.selfStudy.cards.check.text"), drawing()],
 							},
 						],
 					},

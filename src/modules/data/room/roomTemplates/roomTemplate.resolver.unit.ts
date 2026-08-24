@@ -2,7 +2,7 @@ import { defaultParamValues, resolveRoomName, resolveTemplate } from "./roomTemp
 import { getRoomTemplateById } from "./roomTemplates";
 import { RoomTemplate, RoomTemplateParamValues } from "./types";
 import { MessageSchema } from "@/locales/schema";
-import { BoardLayout, ContentElementType, RoomColor } from "@api-server";
+import { BoardLayout, RoomColor } from "@api-server";
 import { describe, expect, it } from "vitest";
 
 // stands in for vue-i18n: renders the key and fills its {placeholders} from the values
@@ -32,9 +32,7 @@ const template: RoomTemplate = {
 					cards: [
 						{
 							titleKey: "Ziele Woche {index}" as keyof MessageSchema,
-							elements: [
-								{ type: ContentElementType.RICH_TEXT, textKey: "{subject} Woche {index}" as keyof MessageSchema },
-							],
+							elements: [{ kind: "text", textKey: "{subject} Woche {index}" as keyof MessageSchema }],
 						},
 					],
 				},
@@ -59,7 +57,8 @@ describe("roomTemplate.resolver", () => {
 			const [board] = resolveTemplate(template, { subject: "Physik", weeks: 1 }, translate);
 
 			expect(board.title).toBe("Plan Physik");
-			expect(board.columns[0].cards[0].elements[0].text).toBe("Physik Woche 1");
+			const [element] = board.columns[0].cards[0].elements;
+			expect(element.kind === "text" && element.text).toBe("Physik Woche 1");
 		});
 
 		it("should repeat a column as often as its number param says", () => {

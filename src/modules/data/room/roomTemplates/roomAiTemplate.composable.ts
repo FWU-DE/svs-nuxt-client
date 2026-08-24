@@ -1,14 +1,23 @@
-import { ResolvedBoard } from "./types";
+import { ResolvedBoard, ResolvedElement } from "./types";
 import { $axios } from "@/utils/api";
-import { BoardLayout, ContentElementType } from "@api-server";
+import { BoardLayout, Colors } from "@api-server";
 import { logger } from "@util-logger";
 import { computed, ref } from "vue";
+
+type AiElement =
+	| { kind: "text"; text: string }
+	| { kind: "link"; title: string; url: string }
+	| { kind: "boardLink"; title: string; boardIndex: number }
+	| { kind: "folder"; title: string }
+	| { kind: "drawing" }
+	| { kind: "collaborative" }
+	| { kind: "videoConference"; title: string };
 
 type AiItem =
 	| { type: "roomName"; name: string }
 	| { type: "board"; title: string; layout: "columns" | "list" }
 	| { type: "column"; title: string }
-	| { type: "card"; title: string; text?: string }
+	| { type: "card"; title: string; color?: Colors; elements?: AiElement[] }
 	| { type: "error" };
 
 /**
@@ -25,6 +34,14 @@ export const useRoomAiTemplate = () => {
 	let controller: AbortController | undefined;
 
 	const isEmpty = computed(() => boards.value.length === 0);
+
+	const hasVideoConference = computed(() =>
+		boards.value.some((board) =>
+			board.columns.some((column) =>
+				column.cards.some((card) => card.elements.some((element) => element.kind === "videoConference"))
+			)
+		)
+	);
 
 	const appendItem = (item: AiItem) => {
 		const currentBoard = boards.value[boards.value.length - 1];
@@ -43,7 +60,8 @@ export const useRoomAiTemplate = () => {
 		} else if (item.type === "card" && currentColumn) {
 			currentColumn.cards.push({
 				title: item.title,
-				elements: item.text ? [{ type: ContentElementType.RICH_TEXT, text: item.text }] : [],
+				color: item.color,
+				elements: (item.elements ?? []) as ResolvedElement[],
 			});
 		} else if (item.type === "error") {
 			hasFailed.value = true;
@@ -117,6 +135,7 @@ export const useRoomAiTemplate = () => {
 		cancel,
 		generate,
 		hasFailed,
+		hasVideoConference,
 		isEmpty,
 		isGenerating,
 		reset,

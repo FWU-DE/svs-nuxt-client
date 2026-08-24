@@ -1846,6 +1846,23 @@ export default {
 	"pages.roomCreate.templates.applying": "Der Raum wird aus der Vorlage angelegt …",
 	"pages.roomCreate.templates.applyError":
 		"Nicht alle Inhalte der Vorlage konnten angelegt werden. Du kannst sie im Raum ergänzen.",
+	"pages.roomCreate.templates.element.text": "Text",
+	"pages.roomCreate.templates.element.link": "Link",
+	"pages.roomCreate.templates.element.boardLink": "Verweis auf einen Bereich",
+	"pages.roomCreate.templates.element.folder": "Dateiordner",
+	"pages.roomCreate.templates.element.drawing": "Whiteboard",
+	"pages.roomCreate.templates.element.collaborative": "Gemeinsames Textdokument",
+	"pages.roomCreate.templates.element.videoConference": "Videokonferenz",
+	"pages.roomCreate.templates.folder.material": "Materialordner",
+	"pages.roomCreate.templates.folder.results": "Abgabeordner",
+	"pages.roomCreate.templates.folder.parents": "Elternbriefe",
+	"pages.roomCreate.templates.folder.minutes": "Protokolle",
+	"pages.roomCreate.templates.subject.cards.links.text":
+		"<p>Hier passen Links zu Erklärvideos, Übungsseiten und Nachschlagewerken.</p>",
+	"pages.roomCreate.templates.project.cards.ideas.title": "Ideensammlung",
+	"pages.roomCreate.templates.project.cards.ideas.text": "<p>Erste Ideen auf dem Whiteboard sammeln und ordnen.</p>",
+	"pages.roomCreate.templates.classroom.cards.toOrganisation.title": "Zur Klassenorganisation",
+	"pages.roomCreate.templates.team.cards.latest.conference": "Teamsitzung",
 	"pages.roomCreate.ai.title": "Mit KI starten",
 	"pages.roomCreate.ai.subtitle":
 		"Beschreibe deinen Raum in eigenen Worten. Die KI schlägt eine Struktur vor, die du vor dem Anlegen prüfen kannst.",
