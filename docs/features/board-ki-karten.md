@@ -33,10 +33,16 @@ AMB und OERSI**. Der Suchbegriff ist mit dem Kartentitel vorbelegt und lässt si
 ![Materialsuche mit Treffern aus AMB und OERSI](images/board-material-search.png)
 
 Jeder Treffer zeigt, was man zur Beurteilung braucht: **Art des Materials, Bildungsstufe, Lizenz und
-Anbieter**. Übernommene Treffer werden Karten mit Beschreibung, Lizenzangabe und Link auf die Quelle.
+Anbieter** — so weit die Quelle das angibt; fehlende Angaben bleiben einfach weg. Übernommene Treffer
+werden Karten mit Beschreibung, Lizenzangabe und Link auf die Quelle.
 
 > Ein Suchwort trifft besser als ein ganzer Satz: „Fotosynthese" liefert bessere Ergebnisse als
 > „Fotosynthese Sekundarstufe I", weil die Volltextsuche sonst auf „Sekundarstufe" anspringt.
+
+Gesucht wird in **zwei Katalogen zugleich**: AMB und OERSI. Die beiden decken Unterschiedliches ab —
+schulfachliche Begriffe wie „Fotosynthese" oder „Bruchrechnen" findet praktisch nur OERSI, während
+AMB bei allgemeinen und hochschulnahen Themen stark ist. Die Trefferliste nimmt deshalb abwechselnd
+aus beiden, damit kein Katalog den anderen verdrängt.
 
 ## Nichts passiert ohne Zustimmung
 
