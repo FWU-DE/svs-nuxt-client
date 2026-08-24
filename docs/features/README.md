@@ -8,9 +8,13 @@ alle, die wissen wollen, was eine Funktion tut, ohne in den Code zu schauen.
 | [Raum-Vorlagen](raum-vorlagen.md) | sieben fertige Raumstrukturen mit Parametern statt leerem Raum |
 | [Raum mit KI erstellen](raum-mit-ki.md) | Raum in eigenen Worten beschreiben, Struktur vorschlagen lassen |
 | [Karten mit KI ergänzen](board-ki-karten.md) | Differenzieren, Übungen, einfache Sprache, Selbstcheck — und OER-Material aus AMB und OERSI |
+| [Onboarding-Assistent](onboarding-assistent.md) | vier Fragen, danach passende Funktionen und Vorlagen statt einer Tour durch alles |
 
 Die technische Sicht auf dieselben Funktionen steht in
 [`schulcloud-server/docs/room-ai-and-mcp-architecture.md`](../../../schulcloud-server/docs/room-ai-and-mcp-architecture.md).
+
+Alle vier Notizen zusammen ergeben ein PDF zum Weitergeben — siehe „PDF bauen" unten. Die Datei
+selbst liegt nicht im Repository, sie entsteht in einem Befehl neu.
 
 ## Screenshots erneuern
 
@@ -25,3 +29,12 @@ Das Skript meldet sich über die API an, setzt das Session-Cookie in ein headles
 Chrome, öffnet die Seite, klickt die gezeigte Situation zusammen und speichert den PNG. Der Server
 auf :3030 und der Client dieses Worktrees auf :4001 müssen laufen; ein anderes Board wählt man mit
 `DOCS_BOARD_ID=<id>`.
+
+## PDF bauen
+
+```bash
+node scripts/build-docs-pdf.mjs
+```
+
+pandoc setzt die Notizen zu einer Seite zusammen, dasselbe headless Chrome druckt sie. Braucht
+keinen laufenden Stack — die Bilder kommen aus `images/`.

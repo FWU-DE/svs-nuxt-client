@@ -16,8 +16,7 @@ import { join } from "node:path";
 
 const CLIENT = process.env.DOCS_CLIENT_URL ?? "http://localhost:4001";
 const API = process.env.DOCS_API_URL ?? "http://localhost:3030/api/v3";
-const CHROME =
-	process.env.CHROME_BIN ?? "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
+const CHROME = process.env.CHROME_BIN ?? "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
 const PORT = 9333;
 const OUT_DIR = new URL("../docs/features/images/", import.meta.url).pathname;
 const VIEWPORT = { width: 1440, height: 900 };
@@ -81,6 +80,49 @@ const SHOTS = [
 			}, 400);
 		})()`,
 		wait: 20000,
+	},
+	{
+		name: "onboarding-start",
+		url: "/onboarding",
+		wait: 1500,
+	},
+	{
+		name: "onboarding-suggestions",
+		url: "/onboarding",
+		script: `(() => {
+			document.querySelector('[data-testid="teacher-type-class-teacher"]').click();
+			setTimeout(() => {
+				document.querySelector('[data-testid="next-btn"]').click();
+				setTimeout(() => {
+					document.querySelector('[data-testid="experience-beginner"]').click();
+					document.querySelector('[data-testid="focus-collaboration"]').click();
+					document.querySelector('[data-testid="focus-organization"]').click();
+					setTimeout(() => document.querySelector('[data-testid="next-btn"]').click(), 400);
+				}, 500);
+			}, 400);
+		})()`,
+		wait: 2500,
+		fullPage: true,
+	},
+	{
+		name: "onboarding-templates",
+		url: "/onboarding",
+		script: `(() => {
+			document.querySelector('[data-testid="teacher-type-class-teacher"]').click();
+			setTimeout(() => {
+				document.querySelector('[data-testid="next-btn"]').click();
+				setTimeout(() => {
+					document.querySelector('[data-testid="experience-beginner"]').click();
+					document.querySelector('[data-testid="focus-collaboration"]').click();
+					setTimeout(() => {
+						document.querySelector('[data-testid="next-btn"]').click();
+						setTimeout(() => document.querySelector('[data-testid="next-btn"]').click(), 500);
+					}, 400);
+				}, 500);
+			}, 400);
+		})()`,
+		wait: 2500,
+		fullPage: true,
 	},
 	{
 		name: "board-ai-suggestion",
@@ -174,18 +216,45 @@ const connect = async (url) => {
 	return { send, close: () => socket.close() };
 };
 
+/** most shots want the window, a few are taller than it and want the whole page */
+const shape = async (client, sessionId, shot) => {
+	if (shot.fullPage !== true) return { format: "png" };
+
+	const { cssContentSize } = await client.send("Page.getLayoutMetrics", {}, sessionId);
+
+	return {
+		format: "png",
+		captureBeyondViewport: true,
+		// the emulation already renders at 2x, the clip must not scale on top of it
+		clip: { x: 0, y: 0, width: cssContentSize.width, height: cssContentSize.height, scale: 1 },
+	};
+};
+
 const capture = async (client, sessionId, shot, ids) => {
 	const path = typeof shot.url === "function" ? shot.url(ids) : shot.url;
 
 	await client.send("Page.navigate", { url: `${CLIENT}${path}` }, sessionId);
 	await sleep(3500);
 
+	// the dev server floats a devtools bubble over the page, which is nothing the product has
+	await client.send(
+		"Runtime.evaluate",
+		{
+			expression: `(() => {
+				const style = document.createElement("style");
+				style.textContent = ".vue-devtools__anchor, .vue-devtools__panel { display: none !important; }";
+				document.head.appendChild(style);
+			})()`,
+		},
+		sessionId
+	);
+
 	if (shot.script) {
 		await client.send("Runtime.evaluate", { expression: shot.script, awaitPromise: false }, sessionId);
 	}
 	await sleep(shot.wait ?? 1000);
 
-	const { data } = await client.send("Page.captureScreenshot", { format: "png" }, sessionId);
+	const { data } = await client.send("Page.captureScreenshot", await shape(client, sessionId, shot), sessionId);
 	await writeFile(join(OUT_DIR, `${shot.name}.png`), Buffer.from(data, "base64"));
 	console.log(`✓ ${shot.name}.png`);
 };
@@ -212,11 +281,7 @@ const main = async () => {
 			{ ...VIEWPORT, deviceScaleFactor: 2, mobile: false },
 			sessionId
 		);
-		await client.send(
-			"Network.setCookie",
-			{ name: "jwt", value: token, domain: "localhost", path: "/" },
-			sessionId
-		);
+		await client.send("Network.setCookie", { name: "jwt", value: token, domain: "localhost", path: "/" }, sessionId);
 
 		for (const shot of shots) {
 			await capture(client, sessionId, shot, ids);
