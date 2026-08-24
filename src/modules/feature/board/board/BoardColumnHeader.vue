@@ -39,8 +39,19 @@
 						<KebabMenuActionMoveLeft v-if="isNotFirstColumn" @click="onMoveColumnLeft" />
 						<KebabMenuActionMoveRight v-if="isNotLastColumn" @click="onMoveColumnRight" />
 					</template>
+					<KebabMenuActionAiCards
+						v-if="isAiEnabled"
+						data-testid="column-menu-ai-cards"
+						@click="isAiDialogOpen = true"
+					/>
 					<KebabMenuActionDelete :name="title" @click="onDelete" />
 				</BoardMenu>
+				<BoardAiCardsDialog
+					v-if="isAiDialogOpen"
+					v-model="isAiDialogOpen"
+					:source="{ kind: 'column', id: columnId }"
+					:target-column-id="columnId"
+				/>
 			</div>
 		</div>
 		<VDivider role="presentation" class="flex-1-0-100 border-opacity-75" />
@@ -48,13 +59,16 @@
 </template>
 
 <script setup lang="ts">
+import BoardAiCardsDialog from "../ai/BoardAiCardsDialog.vue";
 import BoardAnyTitleInput from "../shared/BoardAnyTitleInput.vue";
 import BoardColumnInteractionHandler from "./BoardColumnInteractionHandler.vue";
 import { useSafeTaskRunner } from "@/composables/async-tasks.composable";
 import { askDeletionForType } from "@/utils/confirmation-dialog.utils";
 import { useBoardAllowedOperations, useBoardFocusHandler, useBoardStore, useCourseBoardEditMode } from "@data-board";
+import { useEnvConfig } from "@data-env";
 import { BoardMenu, BoardMenuScope } from "@ui-board";
 import {
+	KebabMenuActionAiCards,
 	KebabMenuActionDelete,
 	KebabMenuActionDuplicate,
 	KebabMenuActionMoveDown,
@@ -64,7 +78,7 @@ import {
 	KebabMenuActionRename,
 } from "@ui-kebab-menu";
 import { watchDebounced } from "@vueuse/core";
-import { ref, toRef, watch } from "vue";
+import { computed, ref, toRef, watch } from "vue";
 import { useI18n } from "vue-i18n";
 
 const props = defineProps({
@@ -77,6 +91,9 @@ const props = defineProps({
 	isNotLastColumn: { type: Boolean, required: false },
 	title: { type: String, required: true },
 });
+
+const isAiDialogOpen = ref(false);
+const isAiEnabled = computed(() => useEnvConfig().value.FEATURE_BOARD_AI_CARDS_ENABLED);
 
 const emit = defineEmits([
 	"delete:column",

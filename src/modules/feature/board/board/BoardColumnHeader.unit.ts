@@ -1,9 +1,11 @@
 import BoardAnyTitleInput from "../shared/BoardAnyTitleInput.vue";
 import BoardColumnHeader from "./BoardColumnHeader.vue";
 import * as confirmDialogUtils from "@/utils/confirmation-dialog.utils";
+import { createTestEnvStore } from "@@/tests/test-utils";
 import { createTestingI18n, createTestingVuetify } from "@@/tests/test-utils/setup";
 import { useBoardAllowedOperations, useBoardFocusHandler, useBoardStore, useCourseBoardEditMode } from "@data-board";
 import { BoardColumnInteractionHandler } from "@feature-board";
+import { createTestingPinia } from "@pinia/testing";
 import {
 	KebabMenuActionDelete,
 	KebabMenuActionDuplicate,
@@ -15,6 +17,7 @@ import {
 } from "@ui-kebab-menu";
 import { shallowMount } from "@vue/test-utils";
 import { flatten } from "lodash-es";
+import { setActivePinia } from "pinia";
 import { computed } from "vue";
 
 vi.mock("@data-board");
@@ -35,6 +38,10 @@ describe("BoardColumnHeader", () => {
 		} = {},
 		props?: object
 	) => {
+		setActivePinia(createTestingPinia());
+		// the column menu offers the ai action only when the feature is on
+		createTestEnvStore({ FEATURE_BOARD_AI_CARDS_ENABLED: false });
+
 		const isEditMode = computed(() => options.isEditMode ?? true);
 		const { canEditColumn = true, canDeleteColumn = true } = options;
 

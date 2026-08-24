@@ -436,6 +436,12 @@ export interface ConfigResponse {
      * @type {boolean}
      * @memberof ConfigResponse
      */
+    FEATURE_BOARD_AI_CARDS_ENABLED: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof ConfigResponse
+     */
     FEATURE_ROOM_SHARE: boolean;
     /**
      * 
