@@ -9,11 +9,12 @@ alle, die wissen wollen, was eine Funktion tut, ohne in den Code zu schauen.
 | [Raum mit KI erstellen](raum-mit-ki.md) | Raum in eigenen Worten beschreiben, Struktur vorschlagen lassen |
 | [Karten mit KI ergänzen](board-ki-karten.md) | Differenzieren, Übungen, einfache Sprache, Selbstcheck — und OER-Material aus AMB und OERSI |
 | [Onboarding-Assistent](onboarding-assistent.md) | vier Fragen, danach passende Funktionen und Vorlagen statt einer Tour durch alles |
+| [Nostr-Suche](nostr-suche.md) | eigene Seite: offene Bildungsinhalte, Notizen und Profile im Nostr-Netz durchsuchen |
 
 Die technische Sicht auf dieselben Funktionen steht in
 [`schulcloud-server/docs/room-ai-and-mcp-architecture.md`](../../../schulcloud-server/docs/room-ai-and-mcp-architecture.md).
 
-Alle vier Notizen zusammen ergeben ein PDF zum Weitergeben — siehe „PDF bauen" unten. Die Datei
+Alle fünf Notizen zusammen ergeben ein PDF zum Weitergeben — siehe „PDF bauen" unten. Die Datei
 selbst liegt nicht im Repository, sie entsteht in einem Befehl neu.
 
 ## Screenshots erneuern

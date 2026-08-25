@@ -25,6 +25,7 @@ const NOTES = [
 	{ file: "raum-mit-ki.md", eyebrow: "Räume anlegen" },
 	{ file: "board-ki-karten.md", eyebrow: "Im Bereich arbeiten" },
 	{ file: "onboarding-assistent.md", eyebrow: "Ankommen" },
+	{ file: "nostr-suche.md", eyebrow: "Material finden" },
 ];
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -131,6 +132,7 @@ const cover = (dateLabel) => `
 		<div class="toc-row"><span>Raum mit KI erstellen</span><span>Raum in eigenen Worten beschreiben, Struktur vorschlagen lassen</span></div>
 		<div class="toc-row"><span>Karten mit KI ergänzen</span><span>Differenzieren, Übungen, einfache Sprache, Selbstcheck — und OER-Material</span></div>
 		<div class="toc-row"><span>Onboarding-Assistent</span><span>vier Fragen, danach passende Funktionen und Vorlagen statt einer Tour</span></div>
+		<div class="toc-row"><span>Nostr-Suche</span><span>eigene Seite: offene Bildungsinhalte, Notizen und Profile im Nostr-Netz</span></div>
 	</div>
 	<p class="cover-meta">Stand ${dateLabel} · Screenshots aus dem laufenden System</p>
 </section>`;

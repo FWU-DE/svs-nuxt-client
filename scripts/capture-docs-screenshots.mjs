@@ -82,6 +82,36 @@ const SHOTS = [
 		wait: 20000,
 	},
 	{
+		name: "nostr-search",
+		url: "/nostr-search",
+		client: "http://localhost:4000",
+		script: `(() => {
+			const field = document.querySelector('[data-testid="nostr-search-input"] input');
+			field.value = "Fotosynthese";
+			field.dispatchEvent(new Event("input", { bubbles: true }));
+			setTimeout(() => document.querySelector('[data-testid="nostr-search-submit"]').click(), 400);
+		})()`,
+		wait: 12000,
+		fullPage: true,
+	},
+	{
+		name: "nostr-search-relays",
+		url: "/nostr-search",
+		client: "http://localhost:4000",
+		script: `(() => {
+			// the panel keeps the per relay state, so open it before the search and let it fill
+			document.querySelector('[data-testid="nostr-relay-panel"] .v-expansion-panel-title').click();
+			setTimeout(() => {
+				const field = document.querySelector('[data-testid="nostr-search-input"] input');
+				field.value = "Fotosynthese";
+				field.dispatchEvent(new Event("input", { bubbles: true }));
+				setTimeout(() => document.querySelector('[data-testid="nostr-search-submit"]').click(), 400);
+			}, 800);
+		})()`,
+		wait: 25000,
+		fullPage: true,
+	},
+	{
 		name: "onboarding-start",
 		url: "/onboarding",
 		wait: 1500,
@@ -232,8 +262,9 @@ const shape = async (client, sessionId, shot) => {
 
 const capture = async (client, sessionId, shot, ids) => {
 	const path = typeof shot.url === "function" ? shot.url(ids) : shot.url;
+	const origin = shot.client ?? CLIENT;
 
-	await client.send("Page.navigate", { url: `${CLIENT}${path}` }, sessionId);
+	await client.send("Page.navigate", { url: `${origin}${path}` }, sessionId);
 	await sleep(3500);
 
 	// the dev server floats a devtools bubble over the page, which is nothing the product has
