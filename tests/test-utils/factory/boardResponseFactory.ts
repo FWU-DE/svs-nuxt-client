@@ -14,6 +14,7 @@ export const boardResponseFactory = Factory.define<BoardResponse>(({ sequence, p
 	allowedOperations: getAllowedOperations(params?.allowedOperations || {}),
 	readersCanEdit: false,
 	reactionType: CardReactionType.NONE,
+	commentsEnabled: false,
 }));
 
 type OperationsKey = keyof BoardResponseAllowedOperations;

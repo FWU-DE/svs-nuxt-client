@@ -70,6 +70,12 @@ export interface BoardResponse {
     reactionType: CardReactionType;
     /**
      * 
+     * @type {boolean}
+     * @memberof BoardResponse
+     */
+    commentsEnabled: boolean;
+    /**
+     * 
      * @type {BoardLayout}
      * @memberof BoardResponse
      */

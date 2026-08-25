@@ -31,6 +31,8 @@ import { BoardResponse } from '../models';
 // @ts-ignore
 import { ColumnResponse } from '../models';
 // @ts-ignore
+import { CommentsEnabledBodyParams } from '../models';
+// @ts-ignore
 import { CopyApiResponse } from '../models';
 // @ts-ignore
 import { CreateBoardBodyParams } from '../models';
@@ -416,6 +418,50 @@ export const BoardApiAxiosParamCreator = function (configuration?: Configuration
         },
         /**
          * 
+         * @summary Turn comments on the cards of a board on or off.
+         * @param {string} boardId The id of the board.
+         * @param {CommentsEnabledBodyParams} commentsEnabledBodyParams 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        boardControllerUpdateCommentsEnabled: async (boardId: string, commentsEnabledBodyParams: CommentsEnabledBodyParams, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'boardId' is not null or undefined
+            assertParamExists('boardControllerUpdateCommentsEnabled', 'boardId', boardId)
+            // verify required parameter 'commentsEnabledBodyParams' is not null or undefined
+            assertParamExists('boardControllerUpdateCommentsEnabled', 'commentsEnabledBodyParams', commentsEnabledBodyParams)
+            const localVarPath = `/boards/{boardId}/comments-enabled`
+                .replace(`{${"boardId"}}`, encodeURIComponent(String(boardId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearer required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(commentsEnabledBodyParams, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary Update the layout of a board.
          * @param {string} boardId The id of the board.
          * @param {LayoutBodyParams} layoutBodyParams 
@@ -704,6 +750,18 @@ export const BoardApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @summary Turn comments on the cards of a board on or off.
+         * @param {string} boardId The id of the board.
+         * @param {CommentsEnabledBodyParams} commentsEnabledBodyParams 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async boardControllerUpdateCommentsEnabled(boardId: string, commentsEnabledBodyParams: CommentsEnabledBodyParams, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.boardControllerUpdateCommentsEnabled(boardId, commentsEnabledBodyParams, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
          * @summary Update the layout of a board.
          * @param {string} boardId The id of the board.
          * @param {LayoutBodyParams} layoutBodyParams 
@@ -855,6 +913,17 @@ export const BoardApiFactory = function (configuration?: Configuration, basePath
         },
         /**
          * 
+         * @summary Turn comments on the cards of a board on or off.
+         * @param {string} boardId The id of the board.
+         * @param {CommentsEnabledBodyParams} commentsEnabledBodyParams 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        boardControllerUpdateCommentsEnabled(boardId: string, commentsEnabledBodyParams: CommentsEnabledBodyParams, options?: any): AxiosPromise<void> {
+            return localVarFp.boardControllerUpdateCommentsEnabled(boardId, commentsEnabledBodyParams, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @summary Update the layout of a board.
          * @param {string} boardId The id of the board.
          * @param {LayoutBodyParams} layoutBodyParams 
@@ -998,6 +1067,17 @@ export interface BoardApiInterface {
      * @memberof BoardApiInterface
      */
     boardControllerUpdateBoardTitle(boardId: string, updateBoardTitleParams: UpdateBoardTitleParams, options?: any): AxiosPromise<void>;
+
+    /**
+     * 
+     * @summary Turn comments on the cards of a board on or off.
+     * @param {string} boardId The id of the board.
+     * @param {CommentsEnabledBodyParams} commentsEnabledBodyParams 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof BoardApiInterface
+     */
+    boardControllerUpdateCommentsEnabled(boardId: string, commentsEnabledBodyParams: CommentsEnabledBodyParams, options?: any): AxiosPromise<void>;
 
     /**
      * 
@@ -1161,6 +1241,19 @@ export class BoardApi extends BaseAPI implements BoardApiInterface {
      */
     public boardControllerUpdateBoardTitle(boardId: string, updateBoardTitleParams: UpdateBoardTitleParams, options?: any) {
         return BoardApiFp(this.configuration).boardControllerUpdateBoardTitle(boardId, updateBoardTitleParams, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Turn comments on the cards of a board on or off.
+     * @param {string} boardId The id of the board.
+     * @param {CommentsEnabledBodyParams} commentsEnabledBodyParams 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof BoardApi
+     */
+    public boardControllerUpdateCommentsEnabled(boardId: string, commentsEnabledBodyParams: CommentsEnabledBodyParams, options?: any) {
+        return BoardApiFp(this.configuration).boardControllerUpdateCommentsEnabled(boardId, commentsEnabledBodyParams, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

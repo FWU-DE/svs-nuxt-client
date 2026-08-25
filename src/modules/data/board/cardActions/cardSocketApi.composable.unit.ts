@@ -233,6 +233,7 @@ describe("useCardSocketApi", () => {
 					},
 					readersCanEdit: false,
 					reactionType: CardReactionType.NONE,
+					commentsEnabled: false,
 					features: [],
 				};
 				const { dispatch } = useCardSocketApi();

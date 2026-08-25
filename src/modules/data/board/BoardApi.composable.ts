@@ -212,6 +212,21 @@ export const useBoardApi = () => {
 		throw new Error("element.type mapping is undefined for updateElementCall");
 	};
 
+	const addCardCommentCall = async (cardId: string, text: string) =>
+		cardsApi.cardControllerAddComment(cardId, { text });
+
+	const editCardCommentCall = async (cardId: string, commentId: string, text: string) =>
+		cardsApi.cardControllerEditComment(cardId, commentId, { text });
+
+	const removeCardCommentCall = async (cardId: string, commentId: string) =>
+		cardsApi.cardControllerRemoveComment(cardId, commentId);
+
+	const reportCardCommentCall = async (cardId: string, commentId: string, reason?: string) =>
+		cardsApi.cardControllerReportComment(cardId, commentId, { reason });
+
+	const updateBoardCommentsEnabledCall = async (boardId: string, commentsEnabled: boolean) =>
+		boardApi.boardControllerUpdateCommentsEnabled(boardId, { commentsEnabled });
+
 	const reactToCardCall = async (cardId: string, value?: number) =>
 		cardsApi.cardControllerReactToCard(cardId, { value });
 
@@ -342,6 +357,11 @@ export const useBoardApi = () => {
 		updateElementCall,
 		voteInPollCall,
 		reactToCardCall,
+		addCardCommentCall,
+		editCardCommentCall,
+		removeCardCommentCall,
+		reportCardCommentCall,
+		updateBoardCommentsEnabledCall,
 		updateBoardReactionTypeCall,
 		createCardCall,
 		duplicateCardCall,

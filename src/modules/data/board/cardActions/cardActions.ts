@@ -1,4 +1,7 @@
 import {
+	AddCardCommentRequestPayload,
+	CardCommentFailurePayload,
+	CardCommentSuccessPayload,
 	CreateElementFailurePayload,
 	CreateElementRequestPayload,
 	CreateElementSuccessPayload,
@@ -18,9 +21,12 @@ import {
 	MoveElementFailurePayload,
 	MoveElementRequestPayload,
 	MoveElementSuccessPayload,
+	EditCardCommentRequestPayload,
 	ReactToCardFailurePayload,
 	ReactToCardRequestPayload,
 	ReactToCardSuccessPayload,
+	RemoveCardCommentRequestPayload,
+	ReportCardCommentRequestPayload,
 	UpdateCardColorFailurePayload,
 	UpdateCardColorRequestPayload,
 	UpdateCardColorSuccessPayload,
@@ -56,6 +62,28 @@ export const moveElementFailure = createAction("move-element-failure", props<Mov
 export const updateElementRequest = createAction("update-element-request", props<UpdateElementRequestPayload>());
 export const updateElementSuccess = createAction("update-element-success", props<UpdateElementSuccessPayload>());
 export const updateElementFailure = createAction("update-element-failure", props<UpdateElementFailurePayload>());
+
+export const addCardCommentRequest = createAction("add-card-comment-request", props<AddCardCommentRequestPayload>());
+export const addCardCommentSuccess = createAction("add-card-comment-success", props<CardCommentSuccessPayload>());
+export const addCardCommentFailure = createAction("add-card-comment-failure", props<CardCommentFailurePayload>());
+
+export const editCardCommentRequest = createAction("edit-card-comment-request", props<EditCardCommentRequestPayload>());
+export const editCardCommentSuccess = createAction("edit-card-comment-success", props<CardCommentSuccessPayload>());
+export const editCardCommentFailure = createAction("edit-card-comment-failure", props<CardCommentFailurePayload>());
+
+export const removeCardCommentRequest = createAction(
+	"remove-card-comment-request",
+	props<RemoveCardCommentRequestPayload>()
+);
+export const removeCardCommentSuccess = createAction("remove-card-comment-success", props<CardCommentSuccessPayload>());
+export const removeCardCommentFailure = createAction("remove-card-comment-failure", props<CardCommentFailurePayload>());
+
+export const reportCardCommentRequest = createAction(
+	"report-card-comment-request",
+	props<ReportCardCommentRequestPayload>()
+);
+export const reportCardCommentSuccess = createAction("report-card-comment-success", props<CardCommentSuccessPayload>());
+export const reportCardCommentFailure = createAction("report-card-comment-failure", props<CardCommentFailurePayload>());
 
 export const reactToCardRequest = createAction("react-to-card-request", props<ReactToCardRequestPayload>());
 export const reactToCardSuccess = createAction("react-to-card-success", props<ReactToCardSuccessPayload>());

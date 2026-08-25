@@ -18,6 +18,7 @@ import {
 	UpdateBoardTitleRequestPayload,
 	UpdateBoardVisibilityRequestPayload,
 	UpdateColumnTitleRequestPayload,
+	UpdateBoardCommentsEnabledRequestPayload,
 	UpdateBoardReactionTypeRequestPayload,
 	UpdateReaderCanEditRequestPayload,
 } from "./boardActionPayload.types";
@@ -64,6 +65,7 @@ export const useBoardSocketApi = () => {
 			on(BoardActions.updateBoardLayoutSuccess, boardStore.updateBoardLayoutSuccess),
 			on(BoardActions.updateReaderCanEditSuccess, boardStore.updateReaderCanEditSuccess),
 			on(BoardActions.updateBoardReactionTypeSuccess, boardStore.updateBoardReactionTypeSuccess),
+			on(BoardActions.updateBoardCommentsEnabledSuccess, boardStore.updateBoardCommentsEnabledSuccess),
 			on(BoardActions.duplicateColumnSuccess, boardStore.duplicateColumnSuccess),
 		];
 
@@ -82,6 +84,7 @@ export const useBoardSocketApi = () => {
 			on(BoardActions.updateBoardLayoutFailure, reloadBoard),
 			on(BoardActions.updateReaderCanEditFailure, reloadBoard),
 			on(BoardActions.updateBoardReactionTypeFailure, reloadBoard),
+			on(BoardActions.updateBoardCommentsEnabledFailure, reloadBoard),
 			on(BoardActions.duplicateColumnFailure, reloadBoard),
 		];
 
@@ -191,6 +194,10 @@ export const useBoardSocketApi = () => {
 		emitOnSocket("update-board-reaction-type-request", payload);
 	};
 
+	const updateBoardCommentsEnabledRequest = (payload: UpdateBoardCommentsEnabledRequestPayload) => {
+		emitOnSocket("update-board-comments-enabled-request", payload);
+	};
+
 	const updateBoardLayoutRequest = (payload: UpdateBoardLayoutRequestPayload) => {
 		emitOnSocket("update-board-layout-request", payload);
 	};
@@ -245,6 +252,7 @@ export const useBoardSocketApi = () => {
 		updateBoardLayoutRequest,
 		updateReaderCanEditRequest,
 		updateBoardReactionTypeRequest,
+		updateBoardCommentsEnabledRequest,
 		duplicateColumnRequest,
 	};
 };

@@ -1,6 +1,6 @@
 <template>
 	<KebabMenuAction :icon="mdiHeartOutline" data-testid="board-menu-action-reactions">
-		{{ $t("components.board.action.reactions") }}
+		{{ $t("components.board.action.interactions") }}
 	</KebabMenuAction>
 </template>
 

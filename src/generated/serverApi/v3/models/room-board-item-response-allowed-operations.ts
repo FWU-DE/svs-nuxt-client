@@ -79,6 +79,12 @@ export interface RoomBoardItemResponseAllowedOperations {
      * @type {boolean}
      * @memberof RoomBoardItemResponseAllowedOperations
      */
+    updateBoardCommentsEnabled?: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof RoomBoardItemResponseAllowedOperations
+     */
     copyColumn?: boolean;
     /**
      * 
@@ -170,6 +176,18 @@ export interface RoomBoardItemResponseAllowedOperations {
      * @memberof RoomBoardItemResponseAllowedOperations
      */
     reactToCard?: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof RoomBoardItemResponseAllowedOperations
+     */
+    commentOnCard?: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof RoomBoardItemResponseAllowedOperations
+     */
+    moderateCardComments?: boolean;
     /**
      * 
      * @type {boolean}

@@ -1,5 +1,12 @@
 import { AnyContentElement } from "@/types/board/ContentElement";
-import { CardResponse, Colors, ContentElementType, CopyStatusEnum, PollElementResponse } from "@api-server";
+import {
+	CardCommentResponse,
+	CardResponse,
+	Colors,
+	ContentElementType,
+	CopyStatusEnum,
+	PollElementResponse,
+} from "@api-server";
 
 export type FetchCardRequestPayload = {
 	cardIds: string[];
@@ -113,6 +120,29 @@ export type UpdateElementSuccessPayload = {
 	isOwnAction: boolean;
 };
 export type UpdateElementFailurePayload = UpdateElementRequestPayload;
+
+export type AddCardCommentRequestPayload = {
+	cardId: string;
+	text: string;
+};
+export type EditCardCommentRequestPayload = AddCardCommentRequestPayload & {
+	commentId: string;
+};
+export type RemoveCardCommentRequestPayload = {
+	cardId: string;
+	commentId: string;
+};
+export type ReportCardCommentRequestPayload = RemoveCardCommentRequestPayload & {
+	reason?: string;
+};
+export type CardCommentSuccessPayload = {
+	cardId: string;
+	comment?: CardCommentResponse;
+	isOwnAction: boolean;
+};
+export type CardCommentFailurePayload = {
+	cardId: string;
+};
 
 export type ReactToCardRequestPayload = {
 	cardId: string;

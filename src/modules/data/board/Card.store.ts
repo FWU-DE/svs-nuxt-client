@@ -11,6 +11,7 @@ import {
 	UpdateCardColorSuccessPayload,
 	UpdateCardHeightSuccessPayload,
 	UpdateCardTitleSuccessPayload,
+	CardCommentSuccessPayload,
 	ReactToCardSuccessPayload,
 	UpdateElementSuccessPayload,
 	VoteInPollSuccessPayload,
@@ -288,6 +289,31 @@ export const useCardStore = defineStore("cardStore", () => {
 		card.reactions = payload.isOwnAction ? incoming : { ...incoming, ownValue: card.reactions?.ownValue };
 	};
 
+	const addCardCommentRequest = socketOrRest.addCardCommentRequest;
+	const editCardCommentRequest = socketOrRest.editCardCommentRequest;
+	const removeCardCommentRequest = socketOrRest.removeCardCommentRequest;
+	const reportCardCommentRequest = socketOrRest.reportCardCommentRequest;
+
+	/**
+	 * The room broadcast carries no comment: how a comment reads depends on who is looking
+	 * (own, reported by me, how often reported), so everyone else refetches the card instead of
+	 * being handed the acting user's view of it.
+	 */
+	const cardCommentSuccess = (payload: CardCommentSuccessPayload) => {
+		const card = cards.value[payload.cardId];
+		if (card === undefined) return;
+
+		if (!payload.isOwnAction || payload.comment === undefined) {
+			fetchCardRequest({ cardIds: [payload.cardId] });
+			return;
+		}
+
+		const comments = card.comments ?? [];
+		const index = comments.findIndex((comment) => comment.id === payload.comment?.id);
+
+		card.comments = index === -1 ? [...comments, payload.comment] : comments.with(index, payload.comment);
+	};
+
 	const voteInPollRequest = socketOrRest.voteInPollRequest;
 
 	/**
@@ -354,6 +380,11 @@ export const useCardStore = defineStore("cardStore", () => {
 		voteInPollSuccess,
 		reactToCardRequest,
 		reactToCardSuccess,
+		addCardCommentRequest,
+		editCardCommentRequest,
+		removeCardCommentRequest,
+		reportCardCommentRequest,
+		cardCommentSuccess,
 		addTextAfterTitle,
 		fetchCardRequest,
 		fetchCardSuccess,

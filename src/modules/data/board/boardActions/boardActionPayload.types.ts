@@ -190,6 +190,15 @@ export type UpdateBoardReactionTypeSuccessPayload = UpdateBoardReactionTypeReque
 };
 export type UpdateBoardReactionTypeFailurePayload = UpdateBoardReactionTypeRequestPayload;
 
+export type UpdateBoardCommentsEnabledRequestPayload = {
+	boardId: string;
+	commentsEnabled: boolean;
+};
+export type UpdateBoardCommentsEnabledSuccessPayload = UpdateBoardCommentsEnabledRequestPayload & {
+	isOwnAction: boolean;
+};
+export type UpdateBoardCommentsEnabledFailurePayload = UpdateBoardCommentsEnabledRequestPayload;
+
 export type DisconnectSocketRequestPayload = Record<string, never>;
 
 export type UpdateBoardLayoutRequestPayload = {

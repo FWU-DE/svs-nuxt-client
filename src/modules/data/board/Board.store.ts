@@ -25,6 +25,8 @@ import {
 	UpdateColumnTitleRequestPayload,
 	UpdateColumnTitleSuccessPayload,
 	UpdateReaderCanEditRequestPayload,
+	UpdateBoardCommentsEnabledRequestPayload,
+	UpdateBoardCommentsEnabledSuccessPayload,
 	UpdateBoardReactionTypeRequestPayload,
 	UpdateBoardReactionTypeSuccessPayload,
 	UpdateReaderCanEditSuccessPayload,
@@ -308,6 +310,19 @@ export const useBoardStore = defineStore("boardStore", () => {
 		reloadBoard();
 	};
 
+	const updateBoardCommentsEnabledRequest = async (
+		payload: UpdateBoardCommentsEnabledRequestPayload
+	): Promise<void> => {
+		await socketOrRest.updateBoardCommentsEnabledRequest(payload);
+	};
+
+	const updateBoardCommentsEnabledSuccess = (payload: UpdateBoardCommentsEnabledSuccessPayload) => {
+		if (!board.value) return;
+
+		board.value.commentsEnabled = payload.commentsEnabled;
+		reloadBoard();
+	};
+
 	const updateBoardLayoutRequest = async (payload: UpdateBoardLayoutRequestPayload): Promise<void> => {
 		await socketOrRest.updateBoardLayoutRequest(payload);
 	};
@@ -529,6 +544,8 @@ export const useBoardStore = defineStore("boardStore", () => {
 		updateBoardVisibilitySuccess,
 		updateBoardReactionTypeRequest,
 		updateBoardReactionTypeSuccess,
+		updateBoardCommentsEnabledRequest,
+		updateBoardCommentsEnabledSuccess,
 		updateBoardLayoutRequest,
 		updateBoardLayoutSuccess,
 		updateReaderCanEditSuccess,

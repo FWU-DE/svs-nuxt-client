@@ -95,6 +95,7 @@ describe("useBoardSocketApi", () => {
 				},
 				readersCanEdit: false,
 				reactionType: CardReactionType.NONE,
+				commentsEnabled: false,
 				features: [],
 			};
 			const { dispatch } = useBoardSocketApi();

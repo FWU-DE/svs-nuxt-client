@@ -13,13 +13,18 @@ import {
 	UpdateCardColorRequestPayload,
 	UpdateCardHeightRequestPayload,
 	UpdateCardTitleRequestPayload,
+	AddCardCommentRequestPayload,
+	EditCardCommentRequestPayload,
 	ReactToCardRequestPayload,
+	RemoveCardCommentRequestPayload,
+	ReportCardCommentRequestPayload,
 	UpdateElementRequestPayload,
 	VoteInPollRequestPayload,
 } from "./cardActionPayload.types";
 import { AnyContentElement } from "@/types/board/ContentElement";
 import { delay } from "@/utils/helpers";
 import {
+	CardCommentResponse,
 	ContentElementType,
 	CopyStatusEnum,
 	ExternalToolElementResponse,
@@ -55,6 +60,10 @@ export const useCardRestApi = () => {
 		updateElementCall,
 		voteInPollCall,
 		reactToCardCall,
+		addCardCommentCall,
+		editCardCommentCall,
+		removeCardCommentCall,
+		reportCardCommentCall,
 		moveElementCall,
 		updateCardTitle,
 		updateCardColor,
@@ -206,6 +215,29 @@ export const useCardRestApi = () => {
 		}
 	};
 
+	const commentRequest = async (cardId: string, call: () => Promise<{ data: CardCommentResponse }>) => {
+		try {
+			const response = await call();
+			cardStore.cardCommentSuccess({ cardId, comment: response.data, isOwnAction: true });
+		} catch (error) {
+			handleError(error, {
+				404: notifyWithTemplate("notUpdated", "boardCard"),
+			});
+		}
+	};
+
+	const addCardCommentRequest = async (payload: AddCardCommentRequestPayload) =>
+		commentRequest(payload.cardId, () => addCardCommentCall(payload.cardId, payload.text));
+
+	const editCardCommentRequest = async (payload: EditCardCommentRequestPayload) =>
+		commentRequest(payload.cardId, () => editCardCommentCall(payload.cardId, payload.commentId, payload.text));
+
+	const removeCardCommentRequest = async (payload: RemoveCardCommentRequestPayload) =>
+		commentRequest(payload.cardId, () => removeCardCommentCall(payload.cardId, payload.commentId));
+
+	const reportCardCommentRequest = async (payload: ReportCardCommentRequestPayload) =>
+		commentRequest(payload.cardId, () => reportCardCommentCall(payload.cardId, payload.commentId, payload.reason));
+
 	const reactToCardRequest = async (payload: ReactToCardRequestPayload) => {
 		try {
 			const response = await reactToCardCall(payload.cardId, payload.value);
@@ -350,6 +382,10 @@ export const useCardRestApi = () => {
 		updateElementRequest,
 		voteInPollRequest,
 		reactToCardRequest,
+		addCardCommentRequest,
+		editCardCommentRequest,
+		removeCardCommentRequest,
+		reportCardCommentRequest,
 		duplicateCardRequest,
 		deleteCardRequest,
 		fetchCardRequest,

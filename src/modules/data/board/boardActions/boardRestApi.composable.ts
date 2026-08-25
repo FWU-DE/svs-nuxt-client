@@ -15,6 +15,7 @@ import {
 	UpdateBoardTitleRequestPayload,
 	UpdateBoardVisibilityRequestPayload,
 	UpdateColumnTitleRequestPayload,
+	UpdateBoardCommentsEnabledRequestPayload,
 	UpdateBoardReactionTypeRequestPayload,
 	UpdateReaderCanEditRequestPayload,
 } from "./boardActionPayload.types";
@@ -45,6 +46,7 @@ export const useBoardRestApi = () => {
 		updateBoardLayoutCall,
 		updateReadersCanEditCall,
 		updateBoardReactionTypeCall,
+		updateBoardCommentsEnabledCall,
 	} = useBoardApi();
 
 	const { setEditModeId } = useSharedEditMode();
@@ -292,6 +294,20 @@ export const useBoardRestApi = () => {
 		}
 	};
 
+	const updateBoardCommentsEnabledRequest = async (payload: UpdateBoardCommentsEnabledRequestPayload) => {
+		if (boardStore.board === undefined) return;
+		const { boardId, commentsEnabled } = payload;
+
+		try {
+			await updateBoardCommentsEnabledCall(boardId, commentsEnabled);
+			boardStore.updateBoardCommentsEnabledSuccess({ boardId, commentsEnabled, isOwnAction: true });
+		} catch (error) {
+			handleError(error, {
+				404: notifyWithTemplateAndReload("notUpdated", "board"),
+			});
+		}
+	};
+
 	const updateBoardLayoutRequest = async (payload: UpdateBoardLayoutRequestPayload) => {
 		if (boardStore.board === undefined) return;
 		const { boardId, layout } = payload;
@@ -352,6 +368,7 @@ export const useBoardRestApi = () => {
 		updateBoardVisibilityRequest,
 		updateReaderCanEditRequest,
 		updateBoardReactionTypeRequest,
+		updateBoardCommentsEnabledRequest,
 		updateBoardLayoutRequest,
 		reloadBoard,
 		reloadBoardSuccess,

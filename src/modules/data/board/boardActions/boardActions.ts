@@ -41,6 +41,9 @@ import {
 	UpdateColumnTitleRequestPayload,
 	UpdateColumnTitleSuccessPayload,
 	UpdateReaderCanEditFailurePayload,
+	UpdateBoardCommentsEnabledFailurePayload,
+	UpdateBoardCommentsEnabledRequestPayload,
+	UpdateBoardCommentsEnabledSuccessPayload,
 	UpdateBoardReactionTypeFailurePayload,
 	UpdateBoardReactionTypeRequestPayload,
 	UpdateBoardReactionTypeSuccessPayload,
@@ -152,6 +155,19 @@ export const updateBoardLayoutSuccess = createAction(
 export const updateBoardLayoutFailure = createAction(
 	"update-board-layout-failure",
 	props<UpdateBoardLayoutFailurePayload>()
+);
+
+export const updateBoardCommentsEnabledRequest = createAction(
+	"update-board-comments-enabled-request",
+	props<UpdateBoardCommentsEnabledRequestPayload>()
+);
+export const updateBoardCommentsEnabledSuccess = createAction(
+	"update-board-comments-enabled-success",
+	props<UpdateBoardCommentsEnabledSuccessPayload>()
+);
+export const updateBoardCommentsEnabledFailure = createAction(
+	"update-board-comments-enabled-failure",
+	props<UpdateBoardCommentsEnabledFailurePayload>()
 );
 
 export const updateBoardReactionTypeRequest = createAction(

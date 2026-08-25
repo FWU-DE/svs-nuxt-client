@@ -114,7 +114,9 @@
 				<SelectReactionTypeDialog
 					v-model="isSelectReactionTypeDialogOpen"
 					:current-type="board.reactionType"
+					:comments-enabled="board.commentsEnabled"
 					@select="onSelectReactionType"
+					@toggle-comments="onToggleComments"
 				/>
 				<EditSettingsDialog
 					:model-value="isEditSettingsDialogOpen"
@@ -483,6 +485,12 @@ const onSelectReactionType = (reactionType: CardReactionType) => {
 	if (!board.value) return;
 
 	boardStore.updateBoardReactionTypeRequest({ boardId: board.value.id, reactionType });
+};
+
+const onToggleComments = (commentsEnabled: boolean) => {
+	if (!board.value) return;
+
+	boardStore.updateBoardCommentsEnabledRequest({ boardId: board.value.id, commentsEnabled });
 };
 
 const onUpdateBoardLayout = async () => {

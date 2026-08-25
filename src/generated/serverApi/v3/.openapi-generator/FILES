@@ -91,6 +91,9 @@ models/board-response.ts
 models/board-task-response.ts
 models/board-task-status-response.ts
 models/business-error.ts
+models/card-comment-body-params.ts
+models/card-comment-report-body-params.ts
+models/card-comment-response.ts
 models/card-list-response.ts
 models/card-reaction-body-params.ts
 models/card-reaction-type.ts
@@ -111,6 +114,7 @@ models/color-body-params.ts
 models/colors.ts
 models/column-full-response.ts
 models/column-response.ts
+models/comments-enabled-body-params.ts
 models/complete-registration-body-params.ts
 models/component-etherpad-props-impl.ts
 models/component-geogebra-props-impl.ts

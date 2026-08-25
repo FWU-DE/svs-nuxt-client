@@ -80,6 +80,15 @@
 						<CardAddElementMenu v-if="isEditMode" @add-element="onAddElement" />
 					</div>
 					<CardReactionBar v-if="card.reactions" :reactions="card.reactions" @react="onReact" />
+					<CardCommentSection
+						v-if="card.comments"
+						:comments="card.comments"
+						:can-moderate="allowedOperations.moderateCardComments ?? false"
+						@add="onAddComment"
+						@edit="onEditComment"
+						@remove="onRemoveComment"
+						@report="onReportComment"
+					/>
 				</template>
 			</VCard>
 		</CardHostInteractionHandler>
@@ -95,6 +104,7 @@ import CardAddElementMenu from "./CardAddElementMenu.vue";
 import CardHostInteractionHandler from "./CardHostInteractionHandler.vue";
 import CardSkeleton from "./CardSkeleton.vue";
 import CardTitle from "./CardTitle.vue";
+import CardCommentSection from "./CardCommentSection.vue";
 import CardReactionBar from "./CardReactionBar.vue";
 import ContentElementList from "./ContentElementList.vue";
 import { useSafeTaskRunner } from "@/composables/async-tasks.composable";
@@ -220,6 +230,17 @@ const onDeleteCard = async () => {
 const onAddElement = () => askType();
 
 const onReact = (value?: number) => cardStore.reactToCardRequest({ cardId: cardId.value, value });
+
+const onAddComment = (text: string) => cardStore.addCardCommentRequest({ cardId: cardId.value, text });
+
+const onEditComment = (commentId: string, text: string) =>
+	cardStore.editCardCommentRequest({ cardId: cardId.value, commentId, text });
+
+const onRemoveComment = (commentId: string) =>
+	cardStore.removeCardCommentRequest({ cardId: cardId.value, commentId });
+
+const onReportComment = (commentId: string) =>
+	cardStore.reportCardCommentRequest({ cardId: cardId.value, commentId });
 
 const onDeleteElement = (elementId: string) => cardStore.deleteElementRequest({ cardId: cardId.value, elementId });
 

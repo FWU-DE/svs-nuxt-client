@@ -79,6 +79,12 @@ export interface BoardResponseAllowedOperations {
      * @type {boolean}
      * @memberof BoardResponseAllowedOperations
      */
+    updateBoardCommentsEnabled: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof BoardResponseAllowedOperations
+     */
     copyColumn: boolean;
     /**
      * 
@@ -170,6 +176,18 @@ export interface BoardResponseAllowedOperations {
      * @memberof BoardResponseAllowedOperations
      */
     reactToCard: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof BoardResponseAllowedOperations
+     */
+    commentOnCard: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof BoardResponseAllowedOperations
+     */
+    moderateCardComments: boolean;
     /**
      * 
      * @type {boolean}

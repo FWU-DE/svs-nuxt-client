@@ -2,11 +2,12 @@
 	<SvsDialog
 		v-model="isOpen"
 		no-confirm
-		title="components.board.reactionType.title"
+		title="components.board.interactions.title"
 		data-testid="board-reaction-type-dialog"
 	>
 		<template #content>
-			<p class="text-body-2 text-medium-emphasis mb-4">
+			<p class="text-subtitle-2 mb-1">{{ t("components.board.reactionType.title") }}</p>
+			<p class="text-body-2 text-medium-emphasis mb-2">
 				{{ t("components.board.reactionType.description") }}
 			</p>
 			<VRadioGroup :model-value="currentType" hide-details @update:model-value="onSelect">
@@ -24,6 +25,22 @@
 					</template>
 				</VRadio>
 			</VRadioGroup>
+
+			<VDivider class="my-4" />
+
+			<p class="text-subtitle-2 mb-1">{{ t("components.board.comments.title") }}</p>
+			<p class="text-body-2 text-medium-emphasis mb-2">
+				{{ t("components.board.comments.description") }}
+			</p>
+			<VSwitch
+				:model-value="commentsEnabled"
+				:label="t('components.board.comments.toggle')"
+				density="compact"
+				color="primary"
+				hide-details
+				data-testid="board-comments-enabled-switch"
+				@update:model-value="onToggleComments"
+			/>
 		</template>
 	</SvsDialog>
 </template>
@@ -41,10 +58,15 @@ defineProps({
 		type: String as PropType<CardReactionType>,
 		default: CardReactionType.NONE,
 	},
+	commentsEnabled: {
+		type: Boolean,
+		default: false,
+	},
 });
 
 const emit = defineEmits<{
 	(e: "select", value: CardReactionType): void;
+	(e: "toggle-comments", value: boolean): void;
 }>();
 
 const { t } = useI18n();
@@ -76,6 +98,7 @@ const onSelect = (value: CardReactionType | null) => {
 	if (value === null) return;
 
 	emit("select", value);
-	isOpen.value = false;
 };
+
+const onToggleComments = (value: boolean | null) => emit("toggle-comments", value ?? false);
 </script>

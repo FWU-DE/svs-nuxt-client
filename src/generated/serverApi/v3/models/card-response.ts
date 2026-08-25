@@ -13,6 +13,7 @@
  */
 
 
+import { CardCommentResponse } from './card-comment-response';
 import { CardReactionsResponse } from './card-reactions-response';
 import { CollaborativeTextEditorElementResponse } from './collaborative-text-editor-element-response';
 import { Colors } from './colors';
@@ -83,6 +84,12 @@ export interface CardResponse {
      * @memberof CardResponse
      */
     reactions?: CardReactionsResponse;
+    /**
+     * Absent while the board has comments turned off.
+     * @type {Array<CardCommentResponse>}
+     * @memberof CardResponse
+     */
+    comments?: Array<CardCommentResponse>;
 }
 
 
