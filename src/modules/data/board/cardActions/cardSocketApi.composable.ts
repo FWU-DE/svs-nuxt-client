@@ -13,6 +13,7 @@ import {
 	UpdateCardHeightRequestPayload,
 	UpdateCardTitleRequestPayload,
 	UpdateElementRequestPayload,
+	VoteInPollRequestPayload,
 } from "./cardActionPayload.types";
 import * as CardActions from "./cardActions";
 import { handle, on, PermittedStoreActions } from "@/types/board/ActionFactory";
@@ -48,6 +49,7 @@ export const useCardSocketApi = () => {
 			on(CardActions.deleteElementSuccess, cardStore.deleteElementSuccess),
 			on(CardActions.moveElementSuccess, cardStore.moveElementSuccess),
 			on(CardActions.updateElementSuccess, cardStore.updateElementSuccess),
+			on(CardActions.voteInPollSuccess, cardStore.voteInPollSuccess),
 			on(CardActions.deleteCardSuccess, cardStore.deleteCardSuccess),
 			on(CardActions.fetchCardSuccess, cardStore.fetchCardSuccess),
 			on(CardActions.updateCardTitleSuccess, cardStore.updateCardTitleSuccess),
@@ -61,6 +63,7 @@ export const useCardSocketApi = () => {
 			on(CardActions.deleteElementFailure, ({ cardId }) => reloadBoard(cardId)),
 			on(CardActions.moveElementFailure, () => reloadBoard()),
 			on(CardActions.updateElementFailure, () => reloadBoard()),
+			on(CardActions.voteInPollFailure, () => reloadBoard()),
 			on(CardActions.fetchCardFailure, ({ cardIds }) => reloadBoard(cardIds[0])),
 			on(CardActions.updateCardTitleFailure, ({ cardId }) => reloadBoard(cardId)),
 			on(CardActions.updateCardColorFailure, ({ cardId }) => reloadBoard(cardId)),
@@ -136,6 +139,10 @@ export const useCardSocketApi = () => {
 		});
 	};
 
+	const voteInPollRequest = async (payload: VoteInPollRequestPayload) => {
+		emitOnSocket("vote-in-poll-request", payload);
+	};
+
 	const deleteCardRequest = async (payload: DeleteCardRequestPayload) => {
 		emitOnSocket("delete-card-request", payload);
 	};
@@ -177,6 +184,7 @@ export const useCardSocketApi = () => {
 		deleteElementRequest,
 		moveElementRequest,
 		updateElementRequest,
+		voteInPollRequest,
 		deleteCardRequest,
 		fetchCardRequest,
 		updateCardTitleRequest,

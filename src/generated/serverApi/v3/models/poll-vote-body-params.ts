@@ -17,21 +17,15 @@
 /**
  * 
  * @export
- * @enum {string}
+ * @interface PollVoteBodyParams
  */
-export enum ContentElementType {
-    FILE = 'file',
-    DRAWING = 'drawing',
-    LINK = 'link',
-    RICH_TEXT = 'richText',
-    EXTERNAL_TOOL = 'externalTool',
-    COLLABORATIVE_TEXT_EDITOR = 'collaborativeTextEditor',
-    VIDEO_CONFERENCE = 'videoConference',
-    FILE_FOLDER = 'fileFolder',
-    DELETED = 'deleted',
-    H5P = 'h5p',
-    POLL = 'poll'
+export interface PollVoteBodyParams {
+    /**
+     * The options to vote for. An empty list withdraws a previously cast vote.
+     * @type {Array<string>}
+     * @memberof PollVoteBodyParams
+     */
+    optionIds: Array<string>;
 }
-
 
 

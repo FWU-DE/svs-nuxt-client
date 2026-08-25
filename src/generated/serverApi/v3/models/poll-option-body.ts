@@ -17,21 +17,21 @@
 /**
  * 
  * @export
- * @enum {string}
+ * @interface PollOptionBody
  */
-export enum ContentElementType {
-    FILE = 'file',
-    DRAWING = 'drawing',
-    LINK = 'link',
-    RICH_TEXT = 'richText',
-    EXTERNAL_TOOL = 'externalTool',
-    COLLABORATIVE_TEXT_EDITOR = 'collaborativeTextEditor',
-    VIDEO_CONFERENCE = 'videoConference',
-    FILE_FOLDER = 'fileFolder',
-    DELETED = 'deleted',
-    H5P = 'h5p',
-    POLL = 'poll'
+export interface PollOptionBody {
+    /**
+     * Omit to add a new option. Keeping the id keeps the votes cast for it.
+     * @type {string}
+     * @memberof PollOptionBody
+     */
+    id?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PollOptionBody
+     */
+    text: string;
 }
-
 
 

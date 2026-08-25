@@ -26,6 +26,12 @@ export interface CreateCardBodyParams {
      * @memberof CreateCardBodyParams
      */
     requiredEmptyElements?: Array<CreateCardBodyParamsRequiredEmptyElements>;
+    /**
+     * Position within the column at which to insert the card. If omitted, the card is appended at the end.
+     * @type {number}
+     * @memberof CreateCardBodyParams
+     */
+    position?: number;
 }
 
 /**
@@ -42,7 +48,8 @@ export enum CreateCardBodyParamsRequiredEmptyElements {
     VIDEO_CONFERENCE = 'videoConference',
     FILE_FOLDER = 'fileFolder',
     DELETED = 'deleted',
-    H5P = 'h5p'
+    H5P = 'h5p',
+    POLL = 'poll'
 }
 
 

@@ -12,12 +12,20 @@ import {
 	UpdateCardHeightSuccessPayload,
 	UpdateCardTitleSuccessPayload,
 	UpdateElementSuccessPayload,
+	VoteInPollSuccessPayload,
 } from "./cardActions/cardActionPayload.types";
 import { useCardRestApi } from "./cardActions/cardRestApi.composable";
 import { useCardSocketApi } from "./cardActions/cardSocketApi.composable";
 import { useSharedEditMode } from "./edit-mode.composable";
 import { FileRecordParent } from "@/types/file/File";
-import { CardResponse, ContentElementType, CopyStatusEnum, PreferredToolResponse, ToolContextType } from "@api-server";
+import {
+	CardResponse,
+	ContentElementType,
+	CopyStatusEnum,
+	PollElementResponse,
+	PreferredToolResponse,
+	ToolContextType,
+} from "@api-server";
 import { notifyError, notifyInfo } from "@data-app";
 import { useEnvConfig } from "@data-env";
 import { CollaboraFileType, useFileStorageApi } from "@data-file";
@@ -249,8 +257,40 @@ export const useCardStore = defineStore("cardStore", () => {
 
 		if (cardId) {
 			const elementIndex = cardToUpdate.elements.findIndex((e) => e.id === payload.elementId);
-			cards.value[cardId].elements[elementIndex].content = payload.data.content;
+			const currentElement = cardToUpdate.elements[elementIndex];
+
+			// A poll update carries only the poll's definition. Assigning it wholesale would drop
+			// the tally and this reader's own ballot, which no update ever changes.
+			cards.value[cardId].elements[elementIndex].content =
+				payload.data.type === ContentElementType.POLL
+					? { ...currentElement.content, ...payload.data.content }
+					: payload.data.content;
 		}
+	};
+
+	const voteInPollRequest = socketOrRest.voteInPollRequest;
+
+	/**
+	 * The board room only ever learns the new tally, never who voted. That payload therefore
+	 * carries an empty `ownVote`, which must not overwrite the ballot this client cast — only
+	 * the voter's own response is allowed to set it.
+	 */
+	const voteInPollSuccess = (payload: VoteInPollSuccessPayload) => {
+		const cardToUpdate = Object.values(cards.value).find((c) => c.elements.some((e) => e.id === payload.elementId));
+		if (cardToUpdate === undefined) return;
+
+		const elementIndex = cardToUpdate.elements.findIndex((e) => e.id === payload.elementId);
+		const currentElement = cardToUpdate.elements[elementIndex] as PollElementResponse | undefined;
+		const ownVote =
+			currentElement?.type === ContentElementType.POLL ? currentElement.content.ownVote : [];
+
+		cards.value[cardToUpdate.id].elements[elementIndex] = {
+			...payload.pollElement,
+			content: {
+				...payload.pollElement.content,
+				ownVote: payload.isOwnAction ? payload.pollElement.content.ownVote : ownVote,
+			},
+		};
 	};
 
 	const getPreviousElementId = (elementId: string, cardId: string): string | undefined => {
@@ -290,6 +330,8 @@ export const useCardStore = defineStore("cardStore", () => {
 		deleteElementSuccess,
 		updateElementRequest,
 		updateElementSuccess,
+		voteInPollRequest,
+		voteInPollSuccess,
 		addTextAfterTitle,
 		fetchCardRequest,
 		fetchCardSuccess,

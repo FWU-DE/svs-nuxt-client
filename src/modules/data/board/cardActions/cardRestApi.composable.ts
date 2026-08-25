@@ -14,6 +14,7 @@ import {
 	UpdateCardHeightRequestPayload,
 	UpdateCardTitleRequestPayload,
 	UpdateElementRequestPayload,
+	VoteInPollRequestPayload,
 } from "./cardActionPayload.types";
 import { AnyContentElement } from "@/types/board/ContentElement";
 import { delay } from "@/utils/helpers";
@@ -51,6 +52,7 @@ export const useCardRestApi = () => {
 		deleteElementCall,
 		deleteCardCall,
 		updateElementCall,
+		voteInPollCall,
 		moveElementCall,
 		updateCardTitle,
 		updateCardColor,
@@ -202,6 +204,21 @@ export const useCardRestApi = () => {
 		}
 	};
 
+	const voteInPollRequest = async (payload: VoteInPollRequestPayload) => {
+		try {
+			const response = await voteInPollCall(payload.elementId, payload.optionIds);
+			cardStore.voteInPollSuccess({
+				elementId: payload.elementId,
+				pollElement: response.data,
+				isOwnAction: true,
+			});
+		} catch (error) {
+			handleError(error, {
+				404: notifyWithTemplate("notUpdated", "boardElement"),
+			});
+		}
+	};
+
 	const deleteCardRequest = async (payload: DeleteCardRequestPayload) => {
 		const card = cardStore.getCard(payload.cardId);
 		if (card === undefined) return;
@@ -318,6 +335,7 @@ export const useCardRestApi = () => {
 		deleteElementRequest,
 		moveElementRequest,
 		updateElementRequest,
+		voteInPollRequest,
 		duplicateCardRequest,
 		deleteCardRequest,
 		fetchCardRequest,

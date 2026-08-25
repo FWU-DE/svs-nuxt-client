@@ -1,5 +1,5 @@
 import { AnyContentElement } from "@/types/board/ContentElement";
-import { CardResponse, Colors, ContentElementType, CopyStatusEnum } from "@api-server";
+import { CardResponse, Colors, ContentElementType, CopyStatusEnum, PollElementResponse } from "@api-server";
 
 export type FetchCardRequestPayload = {
 	cardIds: string[];
@@ -113,5 +113,18 @@ export type UpdateElementSuccessPayload = {
 	isOwnAction: boolean;
 };
 export type UpdateElementFailurePayload = UpdateElementRequestPayload;
+
+export type VoteInPollRequestPayload = {
+	elementId: string;
+	optionIds: string[];
+};
+export type VoteInPollSuccessPayload = {
+	elementId: string;
+	pollElement: PollElementResponse;
+	isOwnAction: boolean;
+};
+export type VoteInPollFailurePayload = {
+	elementId: string;
+};
 
 export type DisconnectSocketRequestPayload = Record<string, never>;

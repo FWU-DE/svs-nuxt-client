@@ -39,6 +39,10 @@ import { LinkElementResponse } from '../models';
 // @ts-ignore
 import { MoveContentElementBody } from '../models';
 // @ts-ignore
+import { PollElementResponse } from '../models';
+// @ts-ignore
+import { PollVoteBodyParams } from '../models';
+// @ts-ignore
 import { RichTextElementResponse } from '../models';
 // @ts-ignore
 import { UpdateElementContentBodyParams } from '../models';
@@ -252,6 +256,50 @@ export const BoardElementApiAxiosParamCreator = function (configuration?: Config
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * 
+         * @summary Cast, change or withdraw a vote in a poll element.
+         * @param {string} contentElementId The id of the element.
+         * @param {PollVoteBodyParams} pollVoteBodyParams 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        elementControllerVoteInPoll: async (contentElementId: string, pollVoteBodyParams: PollVoteBodyParams, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'contentElementId' is not null or undefined
+            assertParamExists('elementControllerVoteInPoll', 'contentElementId', contentElementId)
+            // verify required parameter 'pollVoteBodyParams' is not null or undefined
+            assertParamExists('elementControllerVoteInPoll', 'pollVoteBodyParams', pollVoteBodyParams)
+            const localVarPath = `/elements/{contentElementId}/vote`
+                .replace(`{${"contentElementId"}}`, encodeURIComponent(String(contentElementId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearer required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(pollVoteBodyParams, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -315,8 +363,20 @@ export const BoardElementApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async elementControllerUpdateElement(contentElementId: string, updateElementContentBodyParams: UpdateElementContentBodyParams, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ExternalToolElementResponse | FileElementResponse | LinkElementResponse | RichTextElementResponse | DrawingElementResponse | VideoConferenceElementResponse | FileFolderElementResponse | H5pElementResponse>> {
+        async elementControllerUpdateElement(contentElementId: string, updateElementContentBodyParams: UpdateElementContentBodyParams, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ExternalToolElementResponse | FileElementResponse | LinkElementResponse | RichTextElementResponse | DrawingElementResponse | VideoConferenceElementResponse | FileFolderElementResponse | H5pElementResponse | PollElementResponse>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.elementControllerUpdateElement(contentElementId, updateElementContentBodyParams, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary Cast, change or withdraw a vote in a poll element.
+         * @param {string} contentElementId The id of the element.
+         * @param {PollVoteBodyParams} pollVoteBodyParams 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async elementControllerVoteInPoll(contentElementId: string, pollVoteBodyParams: PollVoteBodyParams, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PollElementResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.elementControllerVoteInPoll(contentElementId, pollVoteBodyParams, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
     }
@@ -378,8 +438,19 @@ export const BoardElementApiFactory = function (configuration?: Configuration, b
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        elementControllerUpdateElement(contentElementId: string, updateElementContentBodyParams: UpdateElementContentBodyParams, options?: any): AxiosPromise<ExternalToolElementResponse | FileElementResponse | LinkElementResponse | RichTextElementResponse | DrawingElementResponse | VideoConferenceElementResponse | FileFolderElementResponse | H5pElementResponse> {
+        elementControllerUpdateElement(contentElementId: string, updateElementContentBodyParams: UpdateElementContentBodyParams, options?: any): AxiosPromise<ExternalToolElementResponse | FileElementResponse | LinkElementResponse | RichTextElementResponse | DrawingElementResponse | VideoConferenceElementResponse | FileFolderElementResponse | H5pElementResponse | PollElementResponse> {
             return localVarFp.elementControllerUpdateElement(contentElementId, updateElementContentBodyParams, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Cast, change or withdraw a vote in a poll element.
+         * @param {string} contentElementId The id of the element.
+         * @param {PollVoteBodyParams} pollVoteBodyParams 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        elementControllerVoteInPoll(contentElementId: string, pollVoteBodyParams: PollVoteBodyParams, options?: any): AxiosPromise<PollElementResponse> {
+            return localVarFp.elementControllerVoteInPoll(contentElementId, pollVoteBodyParams, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -440,7 +511,18 @@ export interface BoardElementApiInterface {
      * @throws {RequiredError}
      * @memberof BoardElementApiInterface
      */
-    elementControllerUpdateElement(contentElementId: string, updateElementContentBodyParams: UpdateElementContentBodyParams, options?: any): AxiosPromise<ExternalToolElementResponse | FileElementResponse | LinkElementResponse | RichTextElementResponse | DrawingElementResponse | VideoConferenceElementResponse | FileFolderElementResponse | H5pElementResponse>;
+    elementControllerUpdateElement(contentElementId: string, updateElementContentBodyParams: UpdateElementContentBodyParams, options?: any): AxiosPromise<ExternalToolElementResponse | FileElementResponse | LinkElementResponse | RichTextElementResponse | DrawingElementResponse | VideoConferenceElementResponse | FileFolderElementResponse | H5pElementResponse | PollElementResponse>;
+
+    /**
+     * 
+     * @summary Cast, change or withdraw a vote in a poll element.
+     * @param {string} contentElementId The id of the element.
+     * @param {PollVoteBodyParams} pollVoteBodyParams 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof BoardElementApiInterface
+     */
+    elementControllerVoteInPoll(contentElementId: string, pollVoteBodyParams: PollVoteBodyParams, options?: any): AxiosPromise<PollElementResponse>;
 
 }
 
@@ -511,5 +593,18 @@ export class BoardElementApi extends BaseAPI implements BoardElementApiInterface
      */
     public elementControllerUpdateElement(contentElementId: string, updateElementContentBodyParams: UpdateElementContentBodyParams, options?: any) {
         return BoardElementApiFp(this.configuration).elementControllerUpdateElement(contentElementId, updateElementContentBodyParams, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Cast, change or withdraw a vote in a poll element.
+     * @param {string} contentElementId The id of the element.
+     * @param {PollVoteBodyParams} pollVoteBodyParams 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof BoardElementApi
+     */
+    public elementControllerVoteInPoll(contentElementId: string, pollVoteBodyParams: PollVoteBodyParams, options?: any) {
+        return BoardElementApiFp(this.configuration).elementControllerVoteInPoll(contentElementId, pollVoteBodyParams, options).then((request) => request(this.axios, this.basePath));
     }
 }

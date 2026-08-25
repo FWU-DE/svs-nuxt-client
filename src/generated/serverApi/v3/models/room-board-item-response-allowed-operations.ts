@@ -97,6 +97,12 @@ export interface RoomBoardItemResponseAllowedOperations {
      * @type {boolean}
      * @memberof RoomBoardItemResponseAllowedOperations
      */
+    shareColumn?: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof RoomBoardItemResponseAllowedOperations
+     */
     updateColumnTitle?: boolean;
     /**
      * 
@@ -194,6 +200,12 @@ export interface RoomBoardItemResponseAllowedOperations {
      * @memberof RoomBoardItemResponseAllowedOperations
      */
     createFileElement?: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof RoomBoardItemResponseAllowedOperations
+     */
+    voteInPoll?: boolean;
     /**
      * 
      * @type {boolean}

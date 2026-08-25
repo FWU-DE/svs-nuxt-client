@@ -30,6 +30,9 @@ import {
 	LinkContentBody,
 	LinkElementContentBody,
 	LinkElementResponse,
+	PollContentBody,
+	PollElementContentBody,
+	PollElementResponse,
 	RichTextElementContentBody,
 	RichTextElementResponse,
 	RoomApiFactory,
@@ -191,8 +194,25 @@ export const useBoardApi = () => {
 			return body;
 		}
 
+		const isPollElement = (element: AnyContentElement): element is PollElementResponse =>
+			element.type === ContentElementType.POLL;
+
+		if (isPollElement(element)) {
+			const body: PollElementContentBody = {
+				// The poll element is edited through its update body, which the response type does
+				// not describe: it has no tallies and its options may omit an id to add one.
+				content: element.content as unknown as PollContentBody,
+				type: ContentElementType.POLL,
+			};
+
+			return body;
+		}
+
 		throw new Error("element.type mapping is undefined for updateElementCall");
 	};
+
+	const voteInPollCall = async (elementId: string, optionIds: string[]) =>
+		elementApi.elementControllerVoteInPoll(elementId, { optionIds });
 
 	const createElementCall = async (
 		cardId: string,
@@ -313,6 +333,7 @@ export const useBoardApi = () => {
 		updateCardColor,
 		updateColumnTitleCall,
 		updateElementCall,
+		voteInPollCall,
 		createCardCall,
 		duplicateCardCall,
 		duplicateColumnCall,

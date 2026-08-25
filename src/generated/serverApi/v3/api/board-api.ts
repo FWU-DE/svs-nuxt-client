@@ -23,6 +23,8 @@ import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } fr
 // @ts-ignore
 import { ApiValidationError } from '../models';
 // @ts-ignore
+import { BoardAiCardsBodyParams } from '../models';
+// @ts-ignore
 import { BoardContextResponse } from '../models';
 // @ts-ignore
 import { BoardResponse } from '../models';
@@ -48,6 +50,94 @@ import { VisibilityBodyParams } from '../models';
  */
 export const BoardApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
+        /**
+         * Streams the suggestion as newline delimited json, one card per line, so that the client can show the cards while they are written. Nothing is changed on the board - the client inserts the cards the teacher accepts.
+         * @summary Suggest cards for an existing card
+         * @param {string} cardId 
+         * @param {BoardAiCardsBodyParams} boardAiCardsBodyParams 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        boardAiControllerSuggestCardsForCard: async (cardId: string, boardAiCardsBodyParams: BoardAiCardsBodyParams, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'cardId' is not null or undefined
+            assertParamExists('boardAiControllerSuggestCardsForCard', 'cardId', cardId)
+            // verify required parameter 'boardAiCardsBodyParams' is not null or undefined
+            assertParamExists('boardAiControllerSuggestCardsForCard', 'boardAiCardsBodyParams', boardAiCardsBodyParams)
+            const localVarPath = `/cards/{cardId}/ai-cards`
+                .replace(`{${"cardId"}}`, encodeURIComponent(String(cardId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearer required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(boardAiCardsBodyParams, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Like the card variant, but the ai reads every card of the column as its material.
+         * @summary Suggest cards for a whole column
+         * @param {string} columnId 
+         * @param {BoardAiCardsBodyParams} boardAiCardsBodyParams 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        boardAiControllerSuggestCardsForColumn: async (columnId: string, boardAiCardsBodyParams: BoardAiCardsBodyParams, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'columnId' is not null or undefined
+            assertParamExists('boardAiControllerSuggestCardsForColumn', 'columnId', columnId)
+            // verify required parameter 'boardAiCardsBodyParams' is not null or undefined
+            assertParamExists('boardAiControllerSuggestCardsForColumn', 'boardAiCardsBodyParams', boardAiCardsBodyParams)
+            const localVarPath = `/columns/{columnId}/ai-cards`
+                .replace(`{${"columnId"}}`, encodeURIComponent(String(columnId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearer required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(boardAiCardsBodyParams, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
         /**
          * 
          * @summary Create a board copy.
@@ -465,6 +555,30 @@ export const BoardApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = BoardApiAxiosParamCreator(configuration)
     return {
         /**
+         * Streams the suggestion as newline delimited json, one card per line, so that the client can show the cards while they are written. Nothing is changed on the board - the client inserts the cards the teacher accepts.
+         * @summary Suggest cards for an existing card
+         * @param {string} cardId 
+         * @param {BoardAiCardsBodyParams} boardAiCardsBodyParams 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async boardAiControllerSuggestCardsForCard(cardId: string, boardAiCardsBodyParams: BoardAiCardsBodyParams, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.boardAiControllerSuggestCardsForCard(cardId, boardAiCardsBodyParams, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * Like the card variant, but the ai reads every card of the column as its material.
+         * @summary Suggest cards for a whole column
+         * @param {string} columnId 
+         * @param {BoardAiCardsBodyParams} boardAiCardsBodyParams 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async boardAiControllerSuggestCardsForColumn(columnId: string, boardAiCardsBodyParams: BoardAiCardsBodyParams, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.boardAiControllerSuggestCardsForColumn(columnId, boardAiCardsBodyParams, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
          * 
          * @summary Create a board copy.
          * @param {string} boardId The id of the board.
@@ -589,6 +703,28 @@ export const BoardApiFactory = function (configuration?: Configuration, basePath
     const localVarFp = BoardApiFp(configuration)
     return {
         /**
+         * Streams the suggestion as newline delimited json, one card per line, so that the client can show the cards while they are written. Nothing is changed on the board - the client inserts the cards the teacher accepts.
+         * @summary Suggest cards for an existing card
+         * @param {string} cardId 
+         * @param {BoardAiCardsBodyParams} boardAiCardsBodyParams 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        boardAiControllerSuggestCardsForCard(cardId: string, boardAiCardsBodyParams: BoardAiCardsBodyParams, options?: any): AxiosPromise<void> {
+            return localVarFp.boardAiControllerSuggestCardsForCard(cardId, boardAiCardsBodyParams, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Like the card variant, but the ai reads every card of the column as its material.
+         * @summary Suggest cards for a whole column
+         * @param {string} columnId 
+         * @param {BoardAiCardsBodyParams} boardAiCardsBodyParams 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        boardAiControllerSuggestCardsForColumn(columnId: string, boardAiCardsBodyParams: BoardAiCardsBodyParams, options?: any): AxiosPromise<void> {
+            return localVarFp.boardAiControllerSuggestCardsForColumn(columnId, boardAiCardsBodyParams, options).then((request) => request(axios, basePath));
+        },
+        /**
          * 
          * @summary Create a board copy.
          * @param {string} boardId The id of the board.
@@ -702,6 +838,28 @@ export const BoardApiFactory = function (configuration?: Configuration, basePath
  */
 export interface BoardApiInterface {
     /**
+     * Streams the suggestion as newline delimited json, one card per line, so that the client can show the cards while they are written. Nothing is changed on the board - the client inserts the cards the teacher accepts.
+     * @summary Suggest cards for an existing card
+     * @param {string} cardId 
+     * @param {BoardAiCardsBodyParams} boardAiCardsBodyParams 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof BoardApiInterface
+     */
+    boardAiControllerSuggestCardsForCard(cardId: string, boardAiCardsBodyParams: BoardAiCardsBodyParams, options?: any): AxiosPromise<void>;
+
+    /**
+     * Like the card variant, but the ai reads every card of the column as its material.
+     * @summary Suggest cards for a whole column
+     * @param {string} columnId 
+     * @param {BoardAiCardsBodyParams} boardAiCardsBodyParams 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof BoardApiInterface
+     */
+    boardAiControllerSuggestCardsForColumn(columnId: string, boardAiCardsBodyParams: BoardAiCardsBodyParams, options?: any): AxiosPromise<void>;
+
+    /**
      * 
      * @summary Create a board copy.
      * @param {string} boardId The id of the board.
@@ -814,6 +972,32 @@ export interface BoardApiInterface {
  * @extends {BaseAPI}
  */
 export class BoardApi extends BaseAPI implements BoardApiInterface {
+    /**
+     * Streams the suggestion as newline delimited json, one card per line, so that the client can show the cards while they are written. Nothing is changed on the board - the client inserts the cards the teacher accepts.
+     * @summary Suggest cards for an existing card
+     * @param {string} cardId 
+     * @param {BoardAiCardsBodyParams} boardAiCardsBodyParams 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof BoardApi
+     */
+    public boardAiControllerSuggestCardsForCard(cardId: string, boardAiCardsBodyParams: BoardAiCardsBodyParams, options?: any) {
+        return BoardApiFp(this.configuration).boardAiControllerSuggestCardsForCard(cardId, boardAiCardsBodyParams, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Like the card variant, but the ai reads every card of the column as its material.
+     * @summary Suggest cards for a whole column
+     * @param {string} columnId 
+     * @param {BoardAiCardsBodyParams} boardAiCardsBodyParams 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof BoardApi
+     */
+    public boardAiControllerSuggestCardsForColumn(columnId: string, boardAiCardsBodyParams: BoardAiCardsBodyParams, options?: any) {
+        return BoardApiFp(this.configuration).boardAiControllerSuggestCardsForColumn(columnId, boardAiCardsBodyParams, options).then((request) => request(this.axios, this.basePath));
+    }
+
     /**
      * 
      * @summary Create a board copy.

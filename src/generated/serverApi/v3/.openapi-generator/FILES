@@ -14,6 +14,7 @@ api/board-element-api.ts
 api/board-error-report-api.ts
 api/collaborative-storage-api.ts
 api/collaborative-text-editor-api.ts
+api/content-search-api.ts
 api/course-info-api.ts
 api/course-rooms-api.ts
 api/courses-api.ts
@@ -22,6 +23,7 @@ api/deletion-request-api.ts
 api/group-api.ts
 api/helpdesk-api.ts
 api/lesson-api.ts
+api/mcpapi.ts
 api/me-api.ts
 api/media-board-api.ts
 api/media-element-api.ts
@@ -43,7 +45,6 @@ api/school-license-api.ts
 api/server-api.ts
 api/server-config-api.ts
 api/share-token-api.ts
-api/shd-api.ts
 api/submission-api.ts
 api/systems-api.ts
 api/task-api.ts
@@ -75,6 +76,7 @@ models/authorization-many-references-body-params.ts
 models/authorized-by-reference-response.ts
 models/authorized-response.ts
 models/basic-tool-config-params.ts
+models/board-ai-cards-body-params.ts
 models/board-column-board-response.ts
 models/board-context-response.ts
 models/board-element-response.ts
@@ -118,6 +120,8 @@ models/consent-response.ts
 models/consent-session-response.ts
 models/consents-response.ts
 models/content-element-type.ts
+models/content-search-list-response.ts
+models/content-search-result-response.ts
 models/context-external-tool-body-params.ts
 models/context-external-tool-configuration-status-response.ts
 models/context-external-tool-configuration-template-list-response.ts
@@ -299,6 +303,14 @@ models/patch-order-params.ts
 models/patch-visibility-params.ts
 models/period-response.ts
 models/permission.ts
+models/poll-content-body.ts
+models/poll-element-content-body.ts
+models/poll-element-content.ts
+models/poll-element-response.ts
+models/poll-option-body.ts
+models/poll-option-response.ts
+models/poll-result-visibility.ts
+models/poll-vote-body-params.ts
 models/preferred-tool-list-response.ts
 models/preferred-tool-response.ts
 models/provider-config-response.ts
@@ -321,6 +333,7 @@ models/rich-text-element-content.ts
 models/rich-text-element-response.ts
 models/rich-text.ts
 models/role-name.ts
+models/room-ai-template-body-params.ts
 models/room-board-item-response-allowed-operations.ts
 models/room-board-item-response.ts
 models/room-board-list-response.ts

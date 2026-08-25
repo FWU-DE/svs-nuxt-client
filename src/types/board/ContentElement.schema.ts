@@ -18,6 +18,26 @@ const H5pElementContentSchema = z.object({
 	contentId: z.string().nullable(),
 });
 
+const PollElementContentSchema = z.object({
+	question: z.string(),
+	options: z.array(
+		z.object({
+			id: z.string(),
+			text: z.string(),
+			count: z.number().optional(),
+			voterIds: z.array(z.string()).optional(),
+		})
+	),
+	anonymous: z.boolean(),
+	multipleChoice: z.boolean(),
+	closed: z.boolean(),
+	showResults: z.string(),
+	resultsReleased: z.boolean(),
+	resultsVisible: z.boolean(),
+	voterCount: z.number().optional(),
+	ownVote: z.array(z.string()),
+});
+
 const LinkElementContentSchema = z.object({
 	url: z.string(),
 	title: z.string(),
@@ -59,6 +79,7 @@ export const AnyContentElementSchema = z.object({
 		FileElementContentSchema,
 		FileFolderElementContentSchema,
 		H5pElementContentSchema,
+		PollElementContentSchema,
 		LinkElementContentSchema,
 		RichTextElementContentSchema,
 		DrawingElementContentSchema,

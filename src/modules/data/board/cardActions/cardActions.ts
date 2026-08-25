@@ -30,6 +30,9 @@ import {
 	UpdateElementFailurePayload,
 	UpdateElementRequestPayload,
 	UpdateElementSuccessPayload,
+	VoteInPollFailurePayload,
+	VoteInPollRequestPayload,
+	VoteInPollSuccessPayload,
 } from "./cardActionPayload.types";
 import { createAction, props } from "@/types/board/ActionFactory";
 
@@ -50,6 +53,10 @@ export const moveElementFailure = createAction("move-element-failure", props<Mov
 export const updateElementRequest = createAction("update-element-request", props<UpdateElementRequestPayload>());
 export const updateElementSuccess = createAction("update-element-success", props<UpdateElementSuccessPayload>());
 export const updateElementFailure = createAction("update-element-failure", props<UpdateElementFailurePayload>());
+
+export const voteInPollRequest = createAction("vote-in-poll-request", props<VoteInPollRequestPayload>());
+export const voteInPollSuccess = createAction("vote-in-poll-success", props<VoteInPollSuccessPayload>());
+export const voteInPollFailure = createAction("vote-in-poll-failure", props<VoteInPollFailurePayload>());
 
 export const deleteCardRequest = createAction("delete-card-request", props<DeleteCardRequestPayload>());
 export const deleteCardSuccess = createAction("delete-card-success", props<DeleteCardSuccessPayload>());

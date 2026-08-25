@@ -9,6 +9,7 @@ import {
 	LinkElementResponse,
 	ParentNodeInfoResponse,
 	ParentNodeType,
+	PollElementResponse,
 	RichTextElementResponse,
 	VideoConferenceElementResponse,
 } from "@api-server";
@@ -24,7 +25,8 @@ export type AnyContentElement =
 	| DrawingElementResponse
 	| CollaborativeTextEditorElementResponse
 	| VideoConferenceElementResponse
-	| H5pElementResponse;
+	| H5pElementResponse
+	| PollElementResponse;
 
 export type ParentNodeInfo = ParentNodeInfoResponse;
 

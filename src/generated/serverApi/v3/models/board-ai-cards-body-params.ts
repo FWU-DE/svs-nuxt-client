@@ -17,35 +17,33 @@
 /**
  * 
  * @export
- * @interface ShareTokenPayloadResponse
+ * @interface BoardAiCardsBodyParams
  */
-export interface ShareTokenPayloadResponse {
+export interface BoardAiCardsBodyParams {
     /**
-     * 
+     * Which kind of cards the ai should write for the given card or column
      * @type {string}
-     * @memberof ShareTokenPayloadResponse
+     * @memberof BoardAiCardsBodyParams
      */
-    parentType: ShareTokenPayloadResponseParentType;
+    preset: BoardAiCardsBodyParamsPreset;
     /**
-     * 
+     * What the teacher asks for, used by the free preset
      * @type {string}
-     * @memberof ShareTokenPayloadResponse
+     * @memberof BoardAiCardsBodyParams
      */
-    parentId: string;
+    prompt?: string;
 }
 
 /**
     * @export
     * @enum {string}
     */
-export enum ShareTokenPayloadResponseParentType {
-    COURSES = 'courses',
-    TASKS = 'tasks',
-    LESSONS = 'lessons',
-    COLUMN_BOARD = 'columnBoard',
-    ROOM = 'room',
-    CARD = 'card',
-    COLUMN = 'column'
+export enum BoardAiCardsBodyParamsPreset {
+    DIFFERENTIATE = 'differentiate',
+    EXERCISES = 'exercises',
+    SIMPLIFY = 'simplify',
+    SELF_CHECK = 'selfCheck',
+    FREE = 'free'
 }
 
 

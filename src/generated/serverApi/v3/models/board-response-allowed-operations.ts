@@ -97,6 +97,12 @@ export interface BoardResponseAllowedOperations {
      * @type {boolean}
      * @memberof BoardResponseAllowedOperations
      */
+    shareColumn: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof BoardResponseAllowedOperations
+     */
     updateColumnTitle: boolean;
     /**
      * 
@@ -194,6 +200,12 @@ export interface BoardResponseAllowedOperations {
      * @memberof BoardResponseAllowedOperations
      */
     createFileElement: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof BoardResponseAllowedOperations
+     */
+    voteInPoll: boolean;
     /**
      * 
      * @type {boolean}
