@@ -15,12 +15,11 @@
 					backgroundColor: cardBackground,
 					borderLeft: cardBorderColor ? `3px solid ${cardBorderColor}` : undefined,
 				}"
-				:class="{ 'drag-disabled': isEditMode }"
 				tabindex="0"
 				min-height="120px"
 				:elevation="cardElevation"
 				:ripple="false"
-				:hover="isHovered && allowedOperations?.moveCard"
+				:hover="isHovered && allowedOperations?.moveCard && !isEditMode"
 				:data-testid="cardTestId"
 				:data-scroll-target="getShareLinkId(cardId, BoardMenuScope.CARD)"
 			>
@@ -33,6 +32,7 @@
 						:value="card.title"
 						scope="card"
 						:is-focused="isFocusedById"
+						:focus-title-on-edit-start="focusTitleOnEditStart"
 						class="mx-n4 mb-n2"
 						:has-edit-permission="allowedOperations?.updateCardTitle"
 						@update:value="onUpdateCardTitle"
@@ -42,6 +42,11 @@
 					<div v-if="!isDetailView" class="board-menu" :class="boardMenuClasses">
 						<DetailViewButton class="mr-1" @open-detail-view="onOpenDetailView" />
 						<BoardMenu v-if="hasMenuItem" :scope="BoardMenuScope.CARD" has-background :data-testid="boardMenuTestId">
+							<KebabMenuActionAdd
+								v-if="allowedOperations?.createCard"
+								:text="t('components.board.action.addCard')"
+								@click="onCreateCard"
+							/>
 							<KebabMenuActionEdit v-if="allowedOperations?.deleteCard && !isEditMode" @click="onStartEditMode" />
 							<SvsColorPickerMenu
 								v-if="allowedOperations.updateCardColor"
@@ -125,6 +130,7 @@ import { useEnvConfig } from "@data-env";
 import { BoardMenu, BoardMenuScope, DetailViewButton } from "@ui-board";
 import { SvsColorPickerMenu } from "@ui-controls";
 import {
+	KebabMenuActionAdd,
 	KebabMenuActionAiCards,
 	KebabMenuActionDelete,
 	KebabMenuActionDuplicate,
@@ -136,6 +142,7 @@ import {
 import { useShareBoardLink } from "@util-board";
 import { useDebounceFn, useElementHover, useElementSize } from "@vueuse/core";
 import { computed, onMounted, ref, toRef } from "vue";
+import { useI18n } from "vue-i18n";
 import { useRoute, useRouter } from "vue-router";
 
 type Props = {
@@ -143,6 +150,7 @@ type Props = {
 	cardId: string;
 	rowIndex: number;
 	columnIndex: number;
+	focusTitleOnEditStart?: boolean;
 };
 
 const props = defineProps<Props>();
@@ -152,7 +160,10 @@ const emit = defineEmits<{
 	(e: "move:card", cardId: string): void;
 	(e: "reload:board"): void;
 	(e: "share:card", cardId: string): void;
+	(e: "create:card", cardId: string): void;
 }>();
+
+const { t } = useI18n();
 
 const { allowedOperations } = useBoardAllowedOperations();
 
@@ -213,7 +224,7 @@ const { askType } = useAddElementDialog(cardStore.createElementRequest, cardId.v
 
 const hasMenuItem = computed(() =>
 	Object.keys(allowedOperations.value || {}).some((key) =>
-		["copyCard", "deleteCard", "moveCard", "shareBoard", "shareCard", "updateCardTitle"].includes(key)
+		["createCard", "copyCard", "deleteCard", "moveCard", "shareBoard", "shareCard", "updateCardTitle"].includes(key)
 	)
 );
 
@@ -221,6 +232,9 @@ const onMoveCardKeyboard = (event: KeyboardEvent) => emit("move:card-keyboard", 
 const onMoveCard = (cardId: string) => emit("move:card", cardId);
 const onShareCard = () => {
 	emit("share:card", props.cardId);
+};
+const onCreateCard = () => {
+	emit("create:card", props.cardId);
 };
 
 const _updateCardTitle = (newTitle: string) => {

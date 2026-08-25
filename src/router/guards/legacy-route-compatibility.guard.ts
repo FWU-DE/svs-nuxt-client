@@ -15,6 +15,11 @@ export const legacyCompatibilityGuard: NavigationGuard = (to: RouteLocationNorma
 		};
 	}
 
+	// the browser is already here, assigning the same address again would reload for ever
+	if (window.location.pathname === to.path) {
+		return true;
+	}
+
 	window.location.assign(to.fullPath);
 	return false;
 };

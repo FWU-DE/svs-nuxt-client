@@ -1,6 +1,5 @@
 import { useI18nGlobal } from "@/plugins/i18n";
 import { $axios } from "@/utils/api";
-import { formatUtc } from "@/utils/date-time.utils";
 import { RoomApiFactory, RoomStatsItemResponse } from "@api-server";
 import { notifyError, useSchoolStoreRefs } from "@data-app";
 import { defineStore } from "pinia";
@@ -17,37 +16,50 @@ export const useAdministrationRoomStore = defineStore("administrationRoomStore",
 
 	const sortAndFormatList = (list: RoomStatsItemResponse[]) => {
 		const userSchoolName = schoolDetails.value.name;
-		return list
-			.map((room) => ({
-				...room,
-				createdAt: formatUtc(room.createdAt, "date") ?? room.createdAt,
-			}))
-			.sort((a, b) => {
-				if (!a.owner && b.owner) return -1;
-				if (a.owner && !b.owner) return 1;
+		return list.sort((a, b) => {
+			if (!a.owner && b.owner) return -1;
+			if (a.owner && !b.owner) return 1;
 
-				if (a.schoolName === userSchoolName && b.schoolName !== userSchoolName) return -1;
-				if (a.schoolName !== userSchoolName && b.schoolName === userSchoolName) return 1;
+			if (a.schoolName === userSchoolName && b.schoolName !== userSchoolName) return -1;
+			if (a.schoolName !== userSchoolName && b.schoolName === userSchoolName) return 1;
 
-				return a.schoolName.localeCompare(b.schoolName) || a.name.localeCompare(b.name);
-			});
+			return a.schoolName.localeCompare(b.schoolName) || a.name.localeCompare(b.name);
+		});
+	};
+
+	const fetchAllRoomPages = async (batchSize = 500) => {
+		const rooms: RoomStatsItemResponse[] = [];
+
+		const firstBatch = (await roomApi.roomControllerGetRoomStats(0, batchSize)).data;
+		rooms.push(...firstBatch.data);
+
+		if (firstBatch.total > batchSize) {
+			for (let skip = batchSize; skip < firstBatch.total; skip += batchSize) {
+				const nextBatch = (await roomApi.roomControllerGetRoomStats(skip, batchSize)).data;
+				rooms.push(...nextBatch.data);
+			}
+		}
+
+		return rooms;
 	};
 
 	const fetchRooms = async () => {
 		try {
 			isLoading.value = true;
-			const { data } = (await roomApi.roomControllerGetRoomStats()).data;
+			const rooms: RoomStatsItemResponse[] = await fetchAllRoomPages();
 
-			if (data && data.length === 0) {
+			if (rooms.length === 0) {
 				isEmptyList.value = true;
+				roomList.value = [];
 				return;
 			}
 
 			isEmptyList.value = false;
-			roomList.value = sortAndFormatList(data);
+			roomList.value = sortAndFormatList(rooms);
 		} catch {
 			notifyError(t("pages.rooms.administration.error.load"));
 			isEmptyList.value = true;
+			roomList.value = [];
 		} finally {
 			isLoading.value = false;
 		}

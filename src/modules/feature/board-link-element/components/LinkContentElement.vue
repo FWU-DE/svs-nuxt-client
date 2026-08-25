@@ -1,10 +1,16 @@
 <template>
+	<EmptyElement
+		v-if="!isEditMode && !computedElement.content.url && canManageLinkElements"
+		:icon="mdiLink"
+		:title="t('components.cardElement.LinkElement.noLink')"
+	/>
 	<VCard
+		v-else-if="isEditMode || computedElement.content.url"
 		ref="linkContentElement"
-		class="mb-4"
+		class="content-element-card mb-4"
 		data-testid="board-link-element"
-		:class="{ 'd-none': isHidden }"
-		:variant="outlined"
+		:class="{ 'content-element-card-edit-mode': isEditMode }"
+		:variant="cardVariant"
 		:ripple="false"
 		:aria-label="ariaLabel"
 		v-bind="isEditMode ? {} : { href: sanitizedUrl, target: target, rel: 'noopener noreferrer' }"
@@ -19,7 +25,8 @@
 			:title="computedElement.content.title"
 			:image-url="modelValue.imageUrl"
 			:is-edit-mode="isEditMode"
-			><BoardMenu
+		>
+			<BoardMenu
 				:scope="BoardMenuScope.LINK_ELEMENT"
 				has-background
 				:data-testid="`element-menu-button-${columnIndex}-${rowIndex}-${elementIndex}`"
@@ -29,8 +36,13 @@
 				<KebabMenuActionDelete @click="onDelete" />
 			</BoardMenu>
 		</LinkContentElementDisplay>
-		<LinkContentElementCreate v-if="isEditMode" :existing-url="sanitizedUrl" @create:url="onCreateUrl"
-			><BoardMenu :scope="BoardMenuScope.LINK_ELEMENT" has-background>
+		<LinkContentElementCreate
+			v-if="isEditMode"
+			:existing-url="sanitizedUrl"
+			:autofocus="autofocus"
+			@create:url="onCreateUrl"
+		>
+			<BoardMenu :scope="BoardMenuScope.LINK_ELEMENT" has-background>
 				<KebabMenuActionMoveUp v-if="isNotFirstElement" @click="onMoveUp" />
 				<KebabMenuActionMoveDown v-if="isNotLastElement" @click="onMoveDown" />
 				<KebabMenuActionDelete @click="onDelete" />
@@ -49,27 +61,26 @@ import { convertDownloadToPreviewUrl, isPreviewPossible } from "@/utils/fileHelp
 import { FileRecordParentType } from "@api-file-storage";
 import { LinkElementResponse } from "@api-server";
 import { sanitizeUrl } from "@braintree/sanitize-url";
-import { useBoardFocusHandler, useContentElementState } from "@data-board";
+import { useBoardAllowedOperations, useBoardFocusHandler, useContentElementState } from "@data-board";
 import { useFileStorageApi } from "@data-file";
-import { BoardMenu, BoardMenuScope } from "@ui-board";
+import { mdiLink } from "@icons/material";
+import { BoardMenu, BoardMenuScope, EmptyElement } from "@ui-board";
 import { KebabMenuActionDelete, KebabMenuActionMoveDown, KebabMenuActionMoveUp } from "@ui-kebab-menu";
 import { useElementFocus } from "@util-board";
-import { computed, ComputedRef, PropType, ref, toRef } from "vue";
+import { computed, ref, toRef, watch } from "vue";
 import { useI18n } from "vue-i18n";
 
-const props = defineProps({
-	element: {
-		type: Object as PropType<LinkElementResponse>,
-		required: true,
-	},
-	isEditMode: { type: Boolean, required: true },
-	isDetailView: { type: Boolean, required: true },
-	isNotFirstElement: { type: Boolean, required: false },
-	isNotLastElement: { type: Boolean, required: false },
-	columnIndex: { type: Number, required: true },
-	rowIndex: { type: Number, required: true },
-	elementIndex: { type: Number, required: true },
-});
+const props = defineProps<{
+	element: LinkElementResponse;
+	isEditMode: boolean;
+	isDetailView: boolean;
+	isNotFirstElement?: boolean;
+	isNotLastElement?: boolean;
+	columnIndex: number;
+	rowIndex: number;
+	elementIndex: number;
+}>();
+
 const emit = defineEmits<{
 	(e: "delete:element", id: string): void;
 	(e: "move-keyboard:edit", event: KeyboardEvent): void;
@@ -78,15 +89,21 @@ const emit = defineEmits<{
 }>();
 
 const { t } = useI18n();
+const { allowedOperations } = useBoardAllowedOperations();
 const linkContentElement = ref(null);
 const isLoading = ref(false);
 const element = toRef(props, "element");
 
-const outlined = computed(() =>
+const cardVariant = computed(() =>
 	props.isEditMode === true || computedElement.value.content.url !== "" ? "outlined" : "text"
 );
 
-useBoardFocusHandler(element.value.id, linkContentElement);
+const canManageLinkElements = computed(() => allowedOperations.value.updateElement);
+
+const autofocus = ref(false);
+useBoardFocusHandler(element.value.id, linkContentElement, () => {
+	autofocus.value = true;
+});
 
 const { modelValue, computedElement } = useContentElementState(props, {
 	autoSaveDebounce: 100,
@@ -96,7 +113,7 @@ const sanitizedUrl = computed(() =>
 	computedElement.value.content.url ? sanitizeUrl(computedElement.value.content.url) : ""
 );
 
-const target: ComputedRef<string> = computed(() => {
+const target = computed<string>(() => {
 	if (computedElement.value.content.url) {
 		const url = new URL(sanitizedUrl.value);
 
@@ -107,8 +124,6 @@ const target: ComputedRef<string> = computed(() => {
 
 	return "_blank";
 });
-
-const isHidden = computed(() => !props.isEditMode && !computedElement.value.content.url);
 
 const { getMetaTags } = useMetaTagExtractorApi();
 const { uploadFromUrl } = useFileStorageApi();
@@ -189,4 +204,13 @@ const onClick = (event: MouseEvent | KeyboardEvent) => {
 		focusNodeFromHash();
 	}
 };
+
+watch(
+	() => props.isEditMode,
+	(newVal) => {
+		if (!newVal) {
+			autofocus.value = false;
+		}
+	}
+);
 </script>

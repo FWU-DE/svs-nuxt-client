@@ -249,6 +249,7 @@ export default {
 	"common.words.courses": "Cursos",
 	"common.words.draft": "Borrador",
 	"common.words.drafts": "Borradores",
+	"common.words.external": "externo",
 	"common.words.languages.de": "Alemán",
 	"common.words.languages.en": "Inglés",
 	"common.words.languages.es": "Español",
@@ -463,6 +464,7 @@ export default {
 	"components.board.action.moveRight": "Mover a la derecha",
 	"components.board.action.moveUp": "Levantar",
 	"components.board.action.changeLayout": "Cambiar vista",
+	"components.board.action.fixColumns": "Fijar columnas",
 	"components.board.action.shareLink.card": "Copiar enlace a la tarjeta",
 	"components.board.column.defaultTitle": "Columna",
 	"components.board.column.ghost.column.placeholder": "Añadir columna",
@@ -593,6 +595,7 @@ export default {
 	"components.cardElement.collaborativeTextEditorElement.alert.info.visible":
 		"Este Etherpad es visible y editable para todos los participantes en el curso.",
 	"components.cardElement.externalToolElement": "Herramienta externa",
+	"components.cardElement.externalToolElement.noElement": "No hay herramienta",
 	"components.cardElement.mediaExternalToolElement": "Medio",
 	"components.cardElement.fileElement": "Archivo",
 	"components.cardElement.fileElement.altDescription":
@@ -602,6 +605,7 @@ export default {
 		"El formato de audio no es compatible con este navegador / sistema operativo.",
 	"components.cardElement.fileElement.caption": "Descripción",
 	"components.cardElement.fileElement.emptyAlt": "Aquí tenéis una imagen con el siguiente nombre",
+	"components.cardElement.fileElement.noElement": "No hay archivo",
 	"components.cardElement.fileElement.pdfAlt": "Imagen de vista previa para ",
 	"components.cardElement.fileElement.collaboraFile": "Archivo",
 	"components.cardElement.fileElement.previewError": "No se ha podido cargar la vista previa.",
@@ -616,6 +620,7 @@ export default {
 	"components.cardElement.LinkElement": "Enlace",
 	"components.cardElement.LinkElement.create.label": "Inserte la dirección del enlace",
 	"components.cardElement.LinkElement.edit.label": "Editar la dirección del enlace",
+	"components.cardElement.LinkElement.noLink": "No hay enlace",
 	"components.cardElement.LinkElement.validation.success": "La dirección del enlace es válida",
 	"components.cardElement.notification.visibleAndEditable":
 		"Esta pizarra es visible y editable para todos los participantes en el curso.",
@@ -630,6 +635,7 @@ export default {
 	"components.cardElement.deletedElement.warning.externalToolElement":
 		"La herramienta {toolName} no está disponible. Por favor comuníquese con el administrador de la escuela.",
 	"components.cardElement.h5pElement": "Elemento de aprendizaje interactivo",
+	"components.cardElement.h5pElement.noElement": "No hay elemento de aprendizaje",
 	"components.cardElement.h5pElement.create": "Crear elemento de aprendizaje...",
 	"components.cardElement.h5pElement.title.error.load":
 		"No se pudo cargar el título de un elemento de aprendizaje interactivo.",
@@ -687,6 +693,8 @@ export default {
 	"components.molecules.ContentCardMenu.action.share": "Compartir",
 	"components.molecules.ContextMenu.action.close": "Cerrar menú contextual",
 	"components.molecules.import.card.options.title": "Importar tarjeta",
+	"components.molecules.import.column.options.title": "Importar sección",
+	"components.molecules.import.column.question": "¿Dónde se debe importar la sección{title}?",
 	"components.molecules.import.columnBoard.label": "Título del tablero",
 	"components.molecules.label.room": "Seleccionar sala",
 	"components.molecules.label.board": "Seleccionar tablero",
@@ -722,7 +730,9 @@ export default {
 	"components.molecules.import.options.failure.invalidToken": "El token en el enlace es desconocido o ha caducado.",
 	"components.molecules.import.options.failure.permissionError": "Desafortunadamente, falta la autorización necesaria.",
 	"components.molecules.import.options.loadingMessage": "Importación en curso...",
-	"components.molecules.import.options.success": "{name} importado con éxito",
+	"components.molecules.import.options.success": '{type} "{name}" importado con éxito',
+	"components.molecules.import.options.successWithDestination":
+		'{type} "{name}" importado con éxito en {destinationType} "{destinationName}"',
 	"components.molecules.import.options.tableHeader.InfoText": "No se importará el siguiente contenido:",
 	"components.molecules.import.room.label": "Nombre de la sala",
 	"components.molecules.import.room.options.title": "Importar sala",
@@ -756,6 +766,11 @@ export default {
 	"components.molecules.share.card.options.infoText":
 		"Con el siguiente enlace, la tarjeta puede ser importada como copia por otros personas.",
 	"components.molecules.share.card.result.linkLabel": "Enlace a la copia de la tarjeta",
+	"components.molecules.share.column.options.infoText":
+		"Mediante el siguiente enlace, otras personas pueden importar esta sección a una sala.",
+	"components.molecules.share.column.result.linkLabel": "Enlace a la copia de la sección",
+	"components.molecules.share.column.mail.subject": "Sección para importar",
+	"components.molecules.share.column.mail.body": "Enlace a la sección: ",
 	"components.molecules.share.columnBoard.options.infoText":
 		"Con el siguiente enlace, el tablero puede ser importado como copia por otros profesores. Los datos personales no se importarán.",
 	"components.molecules.share.columnBoard.result.linkLabel": "Enlace a la copia del tablón",
@@ -894,6 +909,7 @@ export default {
 	"components.organisms.TasksDashboardMain.tab.drafts": "Borradores",
 	"components.organisms.TasksDashboardMain.tab.finished": "Terminado",
 	"components.organisms.TasksDashboardMain.tab.open": "Abrir",
+	"components.room.error.404": "Sala no encontrada",
 	"components.roomForm.labels.roomName": "Nombre de la sala",
 	"components.roomForm.labels.timePeriod": "Periodo de tiempo",
 	"components.roomForm.labels.timePeriod.from": "Periodo de tiempo desde",
@@ -972,6 +988,7 @@ export default {
 	"feature-copy.copyInfo.type.ofLesson": "de la lección",
 	"feature-copy.copyInfo.type.ofRoom": "de la sala",
 	"feature-copy.copyInfo.type.ofCard": "de la tarjeta",
+	"feature-copy.copyInfo.type.ofColumn": "de la sección",
 	"feature-course-sync.EndCourseSyncDialog.title": "Finalizar sincronización",
 	"feature-course-sync.EndCourseSyncDialog":
 		"¿Debería realmente detenerse la sincronización del curso {courseName} con el grupo de usuarios {groupName}?",
@@ -1037,8 +1054,9 @@ export default {
 	"mixins.typeMeta.types.video": "Vídeo",
 	"mixins.typeMeta.types.webpage": "Página web",
 	"loggedin.text.backupFeatures":
-		"Haga una copia de seguridad de sus contenidos de la nube y utilice también la nueva función para exportar cursos. {helpLink}",
-	"loggedin.text.backupFeatures.helpLink": "Más información y ayuda disponible aquí",
+		"La dBildungscloud se desactivará el 14 de septiembre de 2026, ya que finaliza el proyecto subvencionado en el que se basa. A partir de esa fecha, la dBildungscloud ya no estará disponible para el funcionamiento de los centros educativos ni para la enseñanza. Por favor, haga una copia de seguridad de sus datos antes de esa fecha. {helpLink}.",
+	"loggedin.text.backupFeatures.helpLink":
+		"Aquí encontrará más información y consejos sobre cómo realizar copias de seguridad",
 	"loggedin.text.schoolInTransferPhaseContactAdmin":
 		"La escuela está en fase de transferencia al nuevo año escolar. No se pueden crear clases ni usuarios. ¡Ponte en contacto con el administrador de la escuela!",
 	"loggedin.text.schoolInTransferPhaseStartNew":
@@ -1649,6 +1667,10 @@ export default {
 	"pages.courseRooms.publishCard.error": "Se ha producido un error al publicar la tarjeta.",
 	"pages.courseRooms.restoreTask.error": "Se ha producido un error al restaurar la tarea.",
 	"pages.courseRooms.sortElements.error": "Se ha producido un error al ordenar las tarjetas.",
+	"pages.courseRooms.tools.videoConference.notEnabled.teacher":
+		"Las videoconferencias están deshabilitadas para la escuela. Por favor, consulte con el administrador de la escuela.",
+	"pages.courseRooms.tools.videoConference.notEnabled.participant":
+		"Las videoconferencias están deshabilitadas para la escuela. Por favor, consulte con el profesor.",
 	"pages.files.overview.courseFiles": "Archivos del curso",
 	"pages.files.overview.favorites": "Favoritos",
 	"pages.files.overview.personalFiles": "Archivos personales",
@@ -2425,4 +2447,5 @@ export default {
 	"pages.folder.dropZone.emptyState.title": "Suelta los archivos aquí para subirlos",
 	"pages.folder.dropZone.emptyState.orText": "o",
 	"pages.folder.dropZone.emptyState.browse": "buscar tus archivos",
+	"pages.folder.error.404": "Carpeta no encontrada",
 };

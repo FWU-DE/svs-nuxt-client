@@ -100,6 +100,7 @@ const {
 	breadcrumbs,
 	fetchAllowedOperations,
 	fetchFileFolderElement,
+	fileFolderElement,
 	folderName,
 	mapNodeTypeToPathType,
 	parent,
@@ -258,6 +259,13 @@ const onCreateCollaboraFile = async (payload: CreateCollaboraFilePayload) => {
 			edit: allowedOperations.value.createFileElement.toString(),
 		},
 	}).href;
+
+	/******************************************************************************
+	 * e2e tests (hpi-schul-cloud/e2e-system-tests) depend on this window.open() call
+	 * to intercept the editor URL via a stub. Do NOT replace this with an
+	 * <a target="_blank"> link, router navigation, or any other mechanism that bypasses
+	 * window.open — doing so will break the e2e tests.
+	 ******************************************************************************/
 	window.open(url, "_blank");
 };
 
@@ -303,6 +311,11 @@ onMounted(async () => {
 	}
 
 	await fetchFileFolderElement(props.folderId);
+	if (!fileFolderElement.value) {
+		isLoading.value = false;
+		return;
+	}
+
 	try {
 		await fetchFiles(folderId.value, FileRecordParent.BOARDNODES);
 	} catch {

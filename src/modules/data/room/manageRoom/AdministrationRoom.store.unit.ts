@@ -1,5 +1,4 @@
 import { initializeAxios } from "@/utils/api";
-import { formatUtc } from "@/utils/date-time.utils";
 import {
 	expectNotification,
 	mockApi,
@@ -56,9 +55,43 @@ describe("useAdministrationRoomStore", () => {
 
 			await roomAdminStore.fetchRooms();
 
-			expect(roomAdministrationApiMock.roomControllerGetRoomStats).toHaveBeenCalled();
+			expect(roomAdministrationApiMock.roomControllerGetRoomStats).toHaveBeenCalledWith(0, 500);
 			expect(roomAdminStore.isLoading).toBe(false);
 			expect(roomAdminStore.isEmptyList).toBe(false);
+		});
+
+		it("should fetch all room pages", async () => {
+			const firstPage = roomStatsListResponseFactory.build({
+				data: roomStatsItemResponseFactory.buildList(500),
+				total: 600,
+				skip: 0,
+				limit: 500,
+			});
+			const secondPage = roomStatsListResponseFactory.build({
+				data: roomStatsItemResponseFactory.buildList(100),
+				total: 600,
+				skip: 500,
+				limit: 500,
+			});
+			const { roomAdminStore } = setup();
+
+			roomAdministrationApiMock.roomControllerGetRoomStats
+				.mockResolvedValueOnce(
+					mockApiResponse<RoomStatsListResponse>({
+						data: firstPage,
+					})
+				)
+				.mockResolvedValueOnce(
+					mockApiResponse<RoomStatsListResponse>({
+						data: secondPage,
+					})
+				);
+
+			await roomAdminStore.fetchRooms();
+
+			expect(roomAdministrationApiMock.roomControllerGetRoomStats).toHaveBeenNthCalledWith(1, 0, 500);
+			expect(roomAdministrationApiMock.roomControllerGetRoomStats).toHaveBeenNthCalledWith(2, 500, 500);
+			expect(roomAdminStore.roomList).toHaveLength(600);
 		});
 
 		it("should return empty list if no rooms are found", async () => {
@@ -92,12 +125,7 @@ describe("useAdministrationRoomStore", () => {
 
 			await roomAdminStore.fetchRooms();
 
-			const expectedRoomList = mockRoomList.data.map((room) => ({
-				...room,
-				createdAt: formatUtc(room.createdAt, "date"),
-			}));
-
-			expect(roomAdminStore.roomList).toEqual(expectedRoomList);
+			expect(roomAdminStore.roomList).toEqual(mockRoomList.data);
 		});
 
 		it("should handle errors and show failure notification", async () => {
@@ -113,7 +141,7 @@ describe("useAdministrationRoomStore", () => {
 		});
 
 		describe("sortAndFormatList", () => {
-			it("should format createdAt date", async () => {
+			it("should keep createdAt as raw ISO string", async () => {
 				const mockRoomList = roomStatsListResponseFactory.build();
 				const { roomAdminStore } = setup();
 
@@ -125,9 +153,7 @@ describe("useAdministrationRoomStore", () => {
 
 				await roomAdminStore.fetchRooms();
 
-				const expectedDate = formatUtc(mockRoomList.data[0].createdAt, "date");
-
-				expect(roomAdminStore.roomList[0].createdAt).toBe(expectedDate);
+				expect(roomAdminStore.roomList[0].createdAt).toBe(mockRoomList.data[0].createdAt);
 			});
 
 			it("should sort and format the room list correctly", async () => {
@@ -176,12 +202,7 @@ describe("useAdministrationRoomStore", () => {
 						roomsFromAnotherSchool[1],
 					],
 				});
-				const sortedAndFormattedRoomList = sortedList.data.map((room) => ({
-					...room,
-					createdAt: formatUtc(room.createdAt, "date"),
-				}));
-
-				expect(roomAdminStore.roomList).toEqual(sortedAndFormattedRoomList);
+				expect(roomAdminStore.roomList).toEqual(sortedList.data);
 			});
 		});
 	});

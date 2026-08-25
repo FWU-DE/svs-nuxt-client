@@ -255,6 +255,7 @@ export default {
 	"common.words.courses": "Мій курс",
 	"common.words.draft": "Чернетка",
 	"common.words.drafts": "Чернетки",
+	"common.words.external": "зовнішній",
 	"common.words.languages.de": "Німецька",
 	"common.words.languages.en": "Англійська",
 	"common.words.languages.es": "Іспанська",
@@ -465,6 +466,7 @@ export default {
 	"components.board.action.moveRight": "Перемістіться праворуч",
 	"components.board.action.moveUp": "Рухатися вгору",
 	"components.board.action.changeLayout": "Змінити вигляд",
+	"components.board.action.fixColumns": "Зафіксувати стовпці",
 	"components.board.action.shareLink.card": "Скопіювати посилання на Карту",
 	"components.board.column.defaultTitle": "Столбець",
 	"components.board.column.ghost.column.placeholder": "Додати стовпець",
@@ -592,6 +594,7 @@ export default {
 	"components.cardElement.collaborativeTextEditorElement.alert.info.visible":
 		"Цей Etherpad є видимою і доступною для редагування для всіх учасників курсу.",
 	"components.cardElement.externalToolElement": "Зовнішній інструмент",
+	"components.cardElement.externalToolElement.noElement": "Інструмент відсутній",
 	"components.cardElement.mediaExternalToolElement": "Середній",
 	"components.cardElement.fileElement": "Файл",
 	"components.cardElement.fileElement.altDescription": "Короткий опис допомагає людям, які не бачать зображення.",
@@ -600,6 +603,7 @@ export default {
 		"Формат аудіо не підтримується цим браузером / операційною системою.",
 	"components.cardElement.fileElement.caption": "опис",
 	"components.cardElement.fileElement.emptyAlt": "Ось зображення з такою назвою",
+	"components.cardElement.fileElement.noElement": "Файл відсутній",
 	"components.cardElement.fileElement.pdfAlt": "попередній перегляд зображення для ",
 	"components.cardElement.fileElement.collaboraFile": "Документ",
 	"components.cardElement.fileElement.previewError": "Не вдалося завантажити попередній перегляд.",
@@ -614,6 +618,7 @@ export default {
 	"components.cardElement.LinkElement": "Посилання",
 	"components.cardElement.LinkElement.create.label": "Вставити адресу посилання",
 	"components.cardElement.LinkElement.edit.label": "Редагувати адресу посилання",
+	"components.cardElement.LinkElement.noLink": "Посилання відсутнє",
 	"components.cardElement.LinkElement.validation.success": "URL-адреса дійсна",
 	"components.cardElement.notification.visibleAndEditable":
 		"Ця дошка є видимою і доступною для редагування для всіх учасників курсу.",
@@ -628,6 +633,7 @@ export default {
 	"components.cardElement.deletedElement.warning.externalToolElement":
 		"Інструмент {toolName} недоступний. Будь ласка, зверніться до адміністратора школи.",
 	"components.cardElement.h5pElement": "Інтерактивний елемент навчання",
+	"components.cardElement.h5pElement.noElement": "Елемент навчання відсутній",
 	"components.cardElement.h5pElement.create": "Створіть елемент навчання...",
 	"components.cardElement.h5pElement.title.error.load":
 		"Не вдалося завантажити назву інтерактивного навчального елемента.",
@@ -685,6 +691,8 @@ export default {
 	"components.molecules.ContentCardMenu.action.share": "Надати спільний доступ",
 	"components.molecules.ContextMenu.action.close": "Закрити контекстне меню",
 	"components.molecules.import.card.options.title": "Імпортувати картку",
+	"components.molecules.import.column.options.title": "Імпортувати розділ",
+	"components.molecules.import.column.question": "Куди слід імпортувати розділ{title}?",
 	"components.molecules.import.columnBoard.label": "Назва дошки",
 	"components.molecules.label.room": "Оберіть кімнату",
 	"components.molecules.label.board": "Оберіть дошку",
@@ -720,7 +728,9 @@ export default {
 	"components.molecules.import.options.failure.invalidToken": "Маркер у посиланні невідомий або термін дії минув.",
 	"components.molecules.import.options.failure.permissionError": "На жаль, відсутній необхідний дозвіл.",
 	"components.molecules.import.options.loadingMessage": "Виконується імпорту...",
-	"components.molecules.import.options.success": "{name} успішно імпортовано",
+	"components.molecules.import.options.success": '{type} "{name}" успішно імпортовано',
+	"components.molecules.import.options.successWithDestination":
+		'{type} "{name}" успішно імпортовано в {destinationType} "{destinationName}"',
 	"components.molecules.import.options.tableHeader.InfoText": "Наступний вміст не буде імпортовано:",
 	"components.molecules.import.room.label": "Назва кімнати",
 	"components.molecules.import.room.options.title": "Імпортувати кімнату",
@@ -754,6 +764,11 @@ export default {
 	"components.molecules.share.card.options.infoText":
 		"За наступним посиланням цю картка можуть імпортувати як копію інші особи.",
 	"components.molecules.share.card.result.linkLabel": "Посилання на копію картки",
+	"components.molecules.share.column.options.infoText":
+		"За допомогою наведеного нижче посилання цей розділ можна імпортувати в кімнату іншим користувачам.",
+	"components.molecules.share.column.result.linkLabel": "Посилання на копію розділу",
+	"components.molecules.share.column.mail.subject": "Розділ для імпорту",
+	"components.molecules.share.column.mail.body": "Посилання на розділ: ",
 	"components.molecules.share.columnBoard.options.infoText":
 		"За наступним посиланням завдання можуть імпортувати як копію інші вчителі. Особисті дані не будуть імпортовані.",
 	"components.molecules.share.columnBoard.result.linkLabel": "Посилання на копію дошки",
@@ -890,6 +905,7 @@ export default {
 	"components.organisms.TasksDashboardMain.tab.drafts": "Чернетки",
 	"components.organisms.TasksDashboardMain.tab.finished": "Завершено",
 	"components.organisms.TasksDashboardMain.tab.open": "Відкрити",
+	"components.room.error.404": "Кімнату не знайдено",
 	"components.roomForm.labels.roomName": "Назва кімнати",
 	"components.roomForm.labels.timePeriod": "Період часу",
 	"components.roomForm.labels.timePeriod.from": "Період від",
@@ -968,6 +984,7 @@ export default {
 	"feature-copy.copyInfo.type.ofLesson": "уроку",
 	"feature-copy.copyInfo.type.ofRoom": "кімнати",
 	"feature-copy.copyInfo.type.ofCard": "картки",
+	"feature-copy.copyInfo.type.ofColumn": "розділу",
 	"feature-course-sync.EndCourseSyncDialog.title": "Завершити синхронізацію",
 	"feature-course-sync.EndCourseSyncDialog":
 		"Чи дійсно слід припинити синхронізацію курсу {courseName} із групою користувачів {groupName}?",
@@ -1033,8 +1050,9 @@ export default {
 	"mixins.typeMeta.types.video": "Відео",
 	"mixins.typeMeta.types.webpage": "Веб-сайт",
 	"loggedin.text.backupFeatures":
-		"Зробіть резервну копію вашого контенту в хмарі та використовуйте також нову функцію для експорту курсів. {helpLink}",
-	"loggedin.text.backupFeatures.helpLink": "Додаткову інформацію та допомогу можна знайти тут.",
+		"Сервіс dBildungscloud буде вимкнено 14 вересня 2026 року, оскільки закінчується термін дії відповідного грантового проєкту. З цього моменту сервіс dBildungscloud більше не буде доступний для шкільної діяльності та проведення занять. Просимо вас до цього часу створити резервні копії своїх даних. {helpLink}.",
+	"loggedin.text.backupFeatures.helpLink":
+		"Додаткову інформацію та вказівки щодо резервного копіювання даних можна знайти тут",
 	"loggedin.text.schoolInTransferPhaseContactAdmin":
 		"Школа перебуває у фазі переходу до нового навчального року. Не можна створювати класи та користувачів.",
 	"loggedin.text.schoolInTransferPhaseStartNew":
@@ -1632,6 +1650,10 @@ export default {
 	"pages.courseRooms.publishCard.error": "Під час публікації картки виникла помилка.",
 	"pages.courseRooms.restoreTask.error": "Під час відновлення завдання виникла помилка.",
 	"pages.courseRooms.sortElements.error": "Під час сортування карток виникла помилка.",
+	"pages.courseRooms.tools.videoConference.notEnabled.teacher":
+		"Відеоконференції вимкнено для школи. Будь ласка, зверніться до адміністратора школи.",
+	"pages.courseRooms.tools.videoConference.notEnabled.participant":
+		"Відеоконференції вимкнено для школи. Будь ласка, зверніться до викладача.",
 	"pages.files.overview.courseFiles": "Файли курсу",
 	"pages.files.overview.favorites": "Обрані",
 	"pages.files.overview.personalFiles": "Мої особисті справи",
@@ -2392,4 +2414,5 @@ export default {
 	"pages.folder.dropZone.emptyState.title": "Перетягніть файли сюди для завантаження",
 	"pages.folder.dropZone.emptyState.orText": "або",
 	"pages.folder.dropZone.emptyState.browse": "оглянути файли",
+	"pages.folder.error.404": "Папку не знайдено",
 };

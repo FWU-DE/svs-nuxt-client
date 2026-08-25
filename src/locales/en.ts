@@ -246,6 +246,7 @@ export default {
 	"common.words.courses": "Courses",
 	"common.words.draft": "Draft",
 	"common.words.drafts": "Drafts",
+	"common.words.external": "external",
 	"common.words.languages.de": "German",
 	"common.words.languages.en": "English",
 	"common.words.languages.es": "Spanish",
@@ -453,6 +454,7 @@ export default {
 	"components.board.action.moveRight": "Move right",
 	"components.board.action.moveUp": "Move up",
 	"components.board.action.changeLayout": "Change layout",
+	"components.board.action.fixColumns": "Fix columns",
 	"components.board.action.shareLink.card": "Copy link to card",
 	"components.board.column.defaultTitle": "Column",
 	"components.board.column.ghost.column.placeholder": "Add column",
@@ -581,6 +583,7 @@ export default {
 	"components.cardElement.collaborativeTextEditorElement.alert.info.visible":
 		"This Etherpad is visible and editable for all course participants.",
 	"components.cardElement.externalToolElement": "External tool",
+	"components.cardElement.externalToolElement.noElement": "No tool available",
 	"components.cardElement.mediaExternalToolElement": "Medium",
 	"components.cardElement.fileElement": "File",
 	"components.cardElement.fileElement.altDescription": "A short description helps people who cannot see the picture.",
@@ -589,6 +592,7 @@ export default {
 		"The audio format is not supported by this browser/operating system.",
 	"components.cardElement.fileElement.caption": "Caption",
 	"components.cardElement.fileElement.emptyAlt": "Here is an image with the following name",
+	"components.cardElement.fileElement.noElement": "No file available",
 	"components.cardElement.fileElement.pdfAlt": "Preview image for ",
 	"components.cardElement.fileElement.collaboraFile": "Document",
 	"components.cardElement.fileElement.previewError": "Failed to load the preview.",
@@ -603,6 +607,7 @@ export default {
 	"components.cardElement.LinkElement": "Link",
 	"components.cardElement.LinkElement.create.label": "Insert link address",
 	"components.cardElement.LinkElement.edit.label": "Edit link address",
+	"components.cardElement.LinkElement.noLink": "No link available",
 	"components.cardElement.LinkElement.validation.success": "The link address is valid",
 	"components.cardElement.notification.visibleAndEditable":
 		"This whiteboard is visible and editable for all course participants.",
@@ -617,6 +622,7 @@ export default {
 	"components.cardElement.deletedElement.warning.externalToolElement":
 		"Tool {toolName} not available. Please contact the school administrator.",
 	"components.cardElement.h5pElement": "Interactive learning element",
+	"components.cardElement.h5pElement.noElement": "No learning element available",
 	"components.cardElement.h5pElement.create": "Create learning element...",
 	"components.cardElement.h5pElement.title.error.load":
 		"The title of an interactive learning element could not be loaded.",
@@ -674,6 +680,8 @@ export default {
 	"components.molecules.ContentCardMenu.action.share": "Share",
 	"components.molecules.ContextMenu.action.close": "Close context menu",
 	"components.molecules.import.card.options.title": "Import card",
+	"components.molecules.import.column.options.title": "Import section",
+	"components.molecules.import.column.question": "Where should the section{title} be imported?",
 	"components.molecules.import.columnBoard.label": "Board title",
 	"components.molecules.label.room": "Select room",
 	"components.molecules.label.board": "Select board",
@@ -709,7 +717,9 @@ export default {
 	"components.molecules.import.options.failure.permissionError":
 		"Unfortunately, the necessary authorization is missing.",
 	"components.molecules.import.options.loadingMessage": "Import in progress...",
-	"components.molecules.import.options.success": "{name} imported successfully",
+	"components.molecules.import.options.success": '{type} "{name}" imported successfully',
+	"components.molecules.import.options.successWithDestination":
+		'{type} "{name}" successfully imported into {destinationType} "{destinationName}"',
 	"components.molecules.import.options.tableHeader.InfoText": "The following content will not be imported:",
 	"components.molecules.import.room.label": "Room name",
 	"components.molecules.import.room.options.title": "Import room",
@@ -750,6 +760,11 @@ export default {
 	"components.molecules.share.card.options.infoText":
 		"With the following link, the card can be imported by other people.",
 	"components.molecules.share.card.result.linkLabel": "Link card copy",
+	"components.molecules.share.column.options.infoText":
+		"The following link allows others to import this section into a room.",
+	"components.molecules.share.column.result.linkLabel": "Link section copy",
+	"components.molecules.share.column.mail.subject": "Section to import",
+	"components.molecules.share.column.mail.body": "Link to the section: ",
 	"components.molecules.share.courses.options.infoText":
 		"With the following link, the course can be imported as a copy by other teachers.",
 	"components.molecules.shareImport.options.restrictions.infoText.personalData": "Personal data",
@@ -875,6 +890,7 @@ export default {
 	"components.organisms.TasksDashboardMain.tab.drafts": "Drafts",
 	"components.organisms.TasksDashboardMain.tab.finished": "Finished",
 	"components.organisms.TasksDashboardMain.tab.open": "Open",
+	"components.room.error.404": "Room not found",
 	"components.roomForm.labels.roomName": "Name of the room",
 	"components.roomForm.labels.timePeriod": "Time period",
 	"components.roomForm.labels.timePeriod.from": "Time period from",
@@ -952,6 +968,7 @@ export default {
 	"feature-copy.copyInfo.type.ofLesson": "of the lesson",
 	"feature-copy.copyInfo.type.ofRoom": "of the room",
 	"feature-copy.copyInfo.type.ofCard": "of the card",
+	"feature-copy.copyInfo.type.ofColumn": "of the section",
 	"feature-course-sync.EndCourseSyncDialog.title": "End synchronization",
 	"feature-course-sync.EndCourseSyncDialog":
 		"Should the synchronization of the course {courseName} with the user group {groupName} really be stopped?",
@@ -1017,8 +1034,8 @@ export default {
 	"mixins.typeMeta.types.video": "Video",
 	"mixins.typeMeta.types.webpage": "Website",
 	"loggedin.text.backupFeatures":
-		"Back up your cloud content and also use the new function for exporting courses. {helpLink}",
-	"loggedin.text.backupFeatures.helpLink": "More information and instructions can be found here.",
+		"The dBildungscloud will be deactivated on September 14, 2026, as the underlying grant project is coming to an end. As of that date, the dBildungscloud will no longer be available for school operations and instruction. Please back up your data by then. {helpLink}.",
+	"loggedin.text.backupFeatures.helpLink": "You can find more information and tips on data backup here",
 	"loggedin.text.schoolInTransferPhaseContactAdmin":
 		"The school is in the transfer phase to the new school year. No classes and users can be created. Please contact the school administrator!",
 	"loggedin.text.schoolInTransferPhaseStartNew":
@@ -1616,6 +1633,10 @@ export default {
 	"pages.courseRooms.publishCard.error": "An error occurred while publishing the card.",
 	"pages.courseRooms.restoreTask.error": "An error occurred while restoring the task.",
 	"pages.courseRooms.sortElements.error": "An error occurred while sorting the cards.",
+	"pages.courseRooms.tools.videoConference.notEnabled.teacher":
+		"Video conferences are disabled for the school. Please refer to the school administrator.",
+	"pages.courseRooms.tools.videoConference.notEnabled.participant":
+		"Video conferences are disabled for the school. Please refer to the teacher.",
 	"pages.files.overview.courseFiles": "Course files",
 	"pages.files.overview.favorites": "Favourites",
 	"pages.files.overview.personalFiles": "My personal files",
@@ -2369,4 +2390,5 @@ export default {
 	"pages.folder.dropZone.emptyState.title": "Drop files here to upload",
 	"pages.folder.dropZone.emptyState.orText": "or",
 	"pages.folder.dropZone.emptyState.browse": "browse your files",
+	"pages.folder.error.404": "Folder not found",
 };

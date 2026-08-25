@@ -259,6 +259,7 @@ export default {
 	"common.words.courses": "Kurse",
 	"common.words.draft": "Entwurf",
 	"common.words.drafts": "Entwürfe",
+	"common.words.external": "extern",
 	"common.words.languages.de": "Deutsch",
 	"common.words.languages.en": "Englisch",
 	"common.words.languages.es": "Spanisch",
@@ -467,6 +468,7 @@ export default {
 	"components.board.action.moveRight": "Nach rechts verschieben",
 	"components.board.action.moveUp": "Nach oben verschieben",
 	"components.board.action.changeLayout": "Ansicht ändern",
+	"components.board.action.fixColumns": "Spalten fixieren",
 	"components.board.action.shareLink.card": "Link zur Karte kopieren",
 	"components.board.column.defaultTitle": "Abschnitt",
 	"components.board.column.ghost.column.placeholder": "Abschnitt hinzufügen",
@@ -601,6 +603,7 @@ export default {
 	"components.cardElement.collaborativeTextEditorElement.alert.info.visible":
 		"Dieses Etherpad ist für alle Kursteilnehmenden sichtbar und bearbeitbar.",
 	"components.cardElement.externalToolElement": "Externes Tool",
+	"components.cardElement.externalToolElement.noElement": "Kein Tool vorhanden",
 	"components.cardElement.mediaExternalToolElement": "Medium",
 	"components.cardElement.fileElement": "Datei",
 	"components.cardElement.fileElement.altDescription":
@@ -610,6 +613,7 @@ export default {
 		"Das Audioformat wird von diesem Browser / Betriebssystem nicht unterstützt.",
 	"components.cardElement.fileElement.caption": "Beschreibung",
 	"components.cardElement.fileElement.emptyAlt": "Hier ist ein Bild mit folgendem Namen",
+	"components.cardElement.fileElement.noElement": "Keine Datei vorhanden",
 	"components.cardElement.fileElement.pdfAlt": "Vorschaubild für ",
 	"components.cardElement.fileElement.collaboraFile": "Dokument",
 	"components.cardElement.fileElement.previewError": "Laden der Vorschau fehlgeschlagen.",
@@ -624,6 +628,7 @@ export default {
 	"components.cardElement.LinkElement": "Link",
 	"components.cardElement.LinkElement.create.label": "Link-Adresse einfügen",
 	"components.cardElement.LinkElement.edit.label": "Link-Adresse bearbeiten",
+	"components.cardElement.LinkElement.noLink": "Kein Link vorhanden",
 	"components.cardElement.LinkElement.validation.success": "Link-Adresse gültig",
 	"components.cardElement.notification.visibleAndEditable":
 		"Dieses Whiteboard ist für alle Kursteilnehmenden sichtbar und bearbeitbar.",
@@ -638,6 +643,7 @@ export default {
 	"components.cardElement.deletedElement.warning.externalToolElement":
 		"Tool {toolName} nicht verfügbar. Bitte an Schuladministrator:in wenden.",
 	"components.cardElement.h5pElement": "Interaktives Lernelement",
+	"components.cardElement.h5pElement.noElement": "Kein Lernelement vorhanden",
 	"components.cardElement.h5pElement.create": "Lernelement erstellen...",
 	"components.cardElement.h5pElement.title.error.load":
 		"Der Titel eines interaktiven Lernelements konnte nicht geladen werden.",
@@ -706,6 +712,8 @@ export default {
 		"Mit der Berechtigung „Bearbeiten“ können Karten nur innerhalb des selben Raumes in andere Bereiche verschoben werden.",
 	"components.molecules.move.card.message.success": "Karte erfolgreich in den Bereich {link} - {column} verschoben",
 	"components.molecules.import.card.options.title": "Karte importieren",
+	"components.molecules.import.column.options.title": "Abschnitt importieren",
+	"components.molecules.import.column.question": "Wohin soll der Abschnitt{title} importiert werden?",
 	"components.molecules.import.columnBoard.label": "Titel des Bereichs",
 	"components.molecules.import.columnBoard.rename": "Bei Bedarf kann der Name des Bereiches umbenannt werden: ",
 	"components.molecules.import.columnBoard.options.infoText": "Der Bereich kann im Folgenden umbenannt werden. ",
@@ -731,7 +739,9 @@ export default {
 	"components.molecules.import.options.failure.invalidToken": "Das Token im Link ist unbekannt oder abgelaufen.",
 	"components.molecules.import.options.failure.permissionError": "Leider fehlt die notwendige Berechtigung.",
 	"components.molecules.import.options.loadingMessage": "Import läuft...",
-	"components.molecules.import.options.success": "{name} wurde erfolgreich importiert",
+	"components.molecules.import.options.success": '{type} "{name}" erfolgreich importiert',
+	"components.molecules.import.options.successWithDestination":
+		'{type} "{name}" erfolgreich in {destinationType} "{destinationName}" importiert',
 	"components.molecules.import.options.tableHeader.InfoText": "Folgende Inhalte werden nicht importiert:",
 	"components.molecules.import.room.options.title": "Raum importieren",
 	"components.molecules.import.room.rename": "Bei Bedarf kann der Name des Raumes umbenannt werden: ",
@@ -777,6 +787,11 @@ export default {
 	"components.molecules.share.card.options.infoText":
 		"Mit dem folgenden Link kann diese Karte von anderen Personen importiert werden.",
 	"components.molecules.share.card.result.linkLabel": "Link Karten-Kopie",
+	"components.molecules.share.column.options.infoText":
+		"Mit dem folgenden Link kann dieser Abschnitt von anderen Personen in einen Raum importiert werden.",
+	"components.molecules.share.column.result.linkLabel": "Link Abschnitt-Kopie",
+	"components.molecules.share.column.mail.subject": "Abschnitt zum Importieren",
+	"components.molecules.share.column.mail.body": "Link zum Abschnitt: ",
 	"components.molecules.share.columnBoard.options.infoText":
 		"Mit dem folgenden Link kann der Bereich als Kopie von anderen Lehrkräften importiert werden.",
 	"components.molecules.share.columnBoard.result.linkLabel": "Link Bereich-Kopie",
@@ -901,6 +916,7 @@ export default {
 	"components.organisms.TasksDashboardMain.tab.drafts": "Entwürfe",
 	"components.organisms.TasksDashboardMain.tab.finished": "Abgeschlossen",
 	"components.organisms.TasksDashboardMain.tab.open": "Offen",
+	"components.room.error.404": "Raum nicht gefunden",
 	"components.roomForm.labels.roomName": "Name des Raumes",
 	"components.roomForm.labels.timePeriod": "Zeitraum",
 	"components.roomForm.labels.timePeriod.from": "Zeitraum von",
@@ -978,6 +994,7 @@ export default {
 	"feature-copy.copyInfo.type.ofLesson": "des Themas",
 	"feature-copy.copyInfo.type.ofRoom": "des Raumes",
 	"feature-copy.copyInfo.type.ofCard": "der Karte",
+	"feature-copy.copyInfo.type.ofColumn": "des Abschnitts",
 	"feature-course-sync.EndCourseSyncDialog.title": "Synchronisation beenden",
 	"feature-course-sync.EndCourseSyncDialog":
 		"Soll die Synchronisation des Kurses {courseName} mit der Nutzendengruppe {groupName} wirklich beendet werden?",
@@ -1043,8 +1060,8 @@ export default {
 	"mixins.typeMeta.types.video": "Video",
 	"mixins.typeMeta.types.webpage": "Webseite",
 	"loggedin.text.backupFeatures":
-		"Sichern Sie Ihre Inhalte der Cloud und nutzen Sie auch die neue Funktion zum Export von Kursen. {helpLink}",
-	"loggedin.text.backupFeatures.helpLink": "Weitere Informationen und Hilfestellungen sind hier zu finden.",
+		"Die dBildungscloud wird zum 14.09.2026 deaktiviert, da das zugrundeliegende Förderprojekt endet. Ab diesem Zeitpunkt steht die dBildungscloud nicht mehr für Schulbetrieb und Unterricht zur Verfügung. Bitte sichern Sie bis dahin Ihre Daten. {helpLink}.",
+	"loggedin.text.backupFeatures.helpLink": "Weitere Informationen und Hinweise zur Datensicherung finden Sie hier",
 	"loggedin.text.schoolInTransferPhaseContactAdmin":
 		"Die Schule befindet sich in der Transferphase zum neuen Schuljahr. Es können keine Klassen und Nutzer:innen angelegt werden. Bitte kontaktiere deinen Schul-Admin!",
 	"loggedin.text.schoolInTransferPhaseStartNew":
@@ -1650,6 +1667,10 @@ export default {
 	"pages.courseRooms.publishCard.error": "Beim Veröffentlichen der Karte ist ein Fehler aufgetreten.",
 	"pages.courseRooms.restoreTask.error": "Beim Wiederherstellen der Aufgabe ist ein Fehler aufgetreten.",
 	"pages.courseRooms.sortElements.error": "Beim Sortieren der Karten ist ein Fehler aufgetreten.",
+	"pages.courseRooms.tools.videoConference.notEnabled.teacher":
+		"Videokonferenzen sind für die Schule deaktiviert. Bitte an den Schul-Admin wenden.",
+	"pages.courseRooms.tools.videoConference.notEnabled.participant":
+		"Videokonferenzen sind für die Schule deaktiviert. Bitte an die Lehrkraft wenden.",
 	"pages.files.overview.courseFiles": "Kurs-Dateien",
 	"pages.files.overview.favorites": "Favoriten",
 	"pages.files.overview.personalFiles": "Meine persönlichen Dateien",
@@ -2416,4 +2437,5 @@ export default {
 	"pages.folder.dropZone.emptyState.title": "Dateien hier ablegen zum Hochladen",
 	"pages.folder.dropZone.emptyState.orText": "oder",
 	"pages.folder.dropZone.emptyState.browse": "Dateien durchsuchen",
+	"pages.folder.error.404": "Ordner nicht gefunden",
 };
