@@ -16,6 +16,7 @@
 import { BoardFeature } from './board-feature';
 import { BoardLayout } from './board-layout';
 import { BoardResponseAllowedOperations } from './board-response-allowed-operations';
+import { CardReactionType } from './card-reaction-type';
 import { ColumnResponse } from './column-response';
 import { TimestampsResponse } from './timestamps-response';
 
@@ -61,6 +62,12 @@ export interface BoardResponse {
      * @memberof BoardResponse
      */
     readersCanEdit: boolean;
+    /**
+     * 
+     * @type {CardReactionType}
+     * @memberof BoardResponse
+     */
+    reactionType: CardReactionType;
     /**
      * 
      * @type {BoardLayout}

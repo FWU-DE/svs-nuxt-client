@@ -18,6 +18,9 @@ import {
 	MoveElementFailurePayload,
 	MoveElementRequestPayload,
 	MoveElementSuccessPayload,
+	ReactToCardFailurePayload,
+	ReactToCardRequestPayload,
+	ReactToCardSuccessPayload,
 	UpdateCardColorFailurePayload,
 	UpdateCardColorRequestPayload,
 	UpdateCardColorSuccessPayload,
@@ -53,6 +56,10 @@ export const moveElementFailure = createAction("move-element-failure", props<Mov
 export const updateElementRequest = createAction("update-element-request", props<UpdateElementRequestPayload>());
 export const updateElementSuccess = createAction("update-element-success", props<UpdateElementSuccessPayload>());
 export const updateElementFailure = createAction("update-element-failure", props<UpdateElementFailurePayload>());
+
+export const reactToCardRequest = createAction("react-to-card-request", props<ReactToCardRequestPayload>());
+export const reactToCardSuccess = createAction("react-to-card-success", props<ReactToCardSuccessPayload>());
+export const reactToCardFailure = createAction("react-to-card-failure", props<ReactToCardFailurePayload>());
 
 export const voteInPollRequest = createAction("vote-in-poll-request", props<VoteInPollRequestPayload>());
 export const voteInPollSuccess = createAction("vote-in-poll-success", props<VoteInPollSuccessPayload>());

@@ -12,6 +12,7 @@ import {
 	UpdateCardColorRequestPayload,
 	UpdateCardHeightRequestPayload,
 	UpdateCardTitleRequestPayload,
+	ReactToCardRequestPayload,
 	UpdateElementRequestPayload,
 	VoteInPollRequestPayload,
 } from "./cardActionPayload.types";
@@ -50,6 +51,7 @@ export const useCardSocketApi = () => {
 			on(CardActions.moveElementSuccess, cardStore.moveElementSuccess),
 			on(CardActions.updateElementSuccess, cardStore.updateElementSuccess),
 			on(CardActions.voteInPollSuccess, cardStore.voteInPollSuccess),
+			on(CardActions.reactToCardSuccess, cardStore.reactToCardSuccess),
 			on(CardActions.deleteCardSuccess, cardStore.deleteCardSuccess),
 			on(CardActions.fetchCardSuccess, cardStore.fetchCardSuccess),
 			on(CardActions.updateCardTitleSuccess, cardStore.updateCardTitleSuccess),
@@ -64,6 +66,7 @@ export const useCardSocketApi = () => {
 			on(CardActions.moveElementFailure, () => reloadBoard()),
 			on(CardActions.updateElementFailure, () => reloadBoard()),
 			on(CardActions.voteInPollFailure, () => reloadBoard()),
+			on(CardActions.reactToCardFailure, ({ cardId }) => reloadBoard(cardId)),
 			on(CardActions.fetchCardFailure, ({ cardIds }) => reloadBoard(cardIds[0])),
 			on(CardActions.updateCardTitleFailure, ({ cardId }) => reloadBoard(cardId)),
 			on(CardActions.updateCardColorFailure, ({ cardId }) => reloadBoard(cardId)),
@@ -139,6 +142,10 @@ export const useCardSocketApi = () => {
 		});
 	};
 
+	const reactToCardRequest = async (payload: ReactToCardRequestPayload) => {
+		emitOnSocket("react-to-card-request", payload);
+	};
+
 	const voteInPollRequest = async (payload: VoteInPollRequestPayload) => {
 		emitOnSocket("vote-in-poll-request", payload);
 	};
@@ -185,6 +192,7 @@ export const useCardSocketApi = () => {
 		moveElementRequest,
 		updateElementRequest,
 		voteInPollRequest,
+		reactToCardRequest,
 		deleteCardRequest,
 		fetchCardRequest,
 		updateCardTitleRequest,

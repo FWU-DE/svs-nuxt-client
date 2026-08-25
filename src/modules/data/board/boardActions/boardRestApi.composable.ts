@@ -15,6 +15,7 @@ import {
 	UpdateBoardTitleRequestPayload,
 	UpdateBoardVisibilityRequestPayload,
 	UpdateColumnTitleRequestPayload,
+	UpdateBoardReactionTypeRequestPayload,
 	UpdateReaderCanEditRequestPayload,
 } from "./boardActionPayload.types";
 import * as BoardActions from "./boardActions";
@@ -43,6 +44,7 @@ export const useBoardRestApi = () => {
 		updateBoardVisibilityCall,
 		updateBoardLayoutCall,
 		updateReadersCanEditCall,
+		updateBoardReactionTypeCall,
 	} = useBoardApi();
 
 	const { setEditModeId } = useSharedEditMode();
@@ -276,6 +278,20 @@ export const useBoardRestApi = () => {
 		}
 	};
 
+	const updateBoardReactionTypeRequest = async (payload: UpdateBoardReactionTypeRequestPayload) => {
+		if (boardStore.board === undefined) return;
+		const { boardId, reactionType } = payload;
+
+		try {
+			await updateBoardReactionTypeCall(boardId, reactionType);
+			boardStore.updateBoardReactionTypeSuccess({ boardId, reactionType, isOwnAction: true });
+		} catch (error) {
+			handleError(error, {
+				404: notifyWithTemplateAndReload("notUpdated", "board"),
+			});
+		}
+	};
+
 	const updateBoardLayoutRequest = async (payload: UpdateBoardLayoutRequestPayload) => {
 		if (boardStore.board === undefined) return;
 		const { boardId, layout } = payload;
@@ -335,6 +351,7 @@ export const useBoardRestApi = () => {
 		updateBoardTitleRequest,
 		updateBoardVisibilityRequest,
 		updateReaderCanEditRequest,
+		updateBoardReactionTypeRequest,
 		updateBoardLayoutRequest,
 		reloadBoard,
 		reloadBoardSuccess,

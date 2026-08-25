@@ -25,6 +25,8 @@ import {
 	UpdateColumnTitleRequestPayload,
 	UpdateColumnTitleSuccessPayload,
 	UpdateReaderCanEditRequestPayload,
+	UpdateBoardReactionTypeRequestPayload,
+	UpdateBoardReactionTypeSuccessPayload,
 	UpdateReaderCanEditSuccessPayload,
 } from "./boardActions/boardActionPayload.types";
 import { useBoardRestApi } from "./boardActions/boardRestApi.composable";
@@ -291,6 +293,21 @@ export const useBoardStore = defineStore("boardStore", () => {
 		if (!isOwnAction) socketOrRest.fetchBoardRequest({ boardId: board.value.id });
 	};
 
+	const updateBoardReactionTypeRequest = async (payload: UpdateBoardReactionTypeRequestPayload): Promise<void> => {
+		await socketOrRest.updateBoardReactionTypeRequest(payload);
+	};
+
+	/**
+	 * Turning reactions off or switching the kind changes what every card's reaction totals
+	 * mean, so the cards are refetched rather than patched in place.
+	 */
+	const updateBoardReactionTypeSuccess = (payload: UpdateBoardReactionTypeSuccessPayload) => {
+		if (!board.value) return;
+
+		board.value.reactionType = payload.reactionType;
+		reloadBoard();
+	};
+
 	const updateBoardLayoutRequest = async (payload: UpdateBoardLayoutRequestPayload): Promise<void> => {
 		await socketOrRest.updateBoardLayoutRequest(payload);
 	};
@@ -510,6 +527,8 @@ export const useBoardStore = defineStore("boardStore", () => {
 		updateBoardTitleSuccess,
 		updateBoardVisibilityRequest,
 		updateBoardVisibilitySuccess,
+		updateBoardReactionTypeRequest,
+		updateBoardReactionTypeSuccess,
 		updateBoardLayoutRequest,
 		updateBoardLayoutSuccess,
 		updateReaderCanEditSuccess,

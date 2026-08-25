@@ -46,6 +46,10 @@
 					v-if="allowedOperations.updateReadersCanEditSetting && isRoomBoard"
 					@click="onEditBoardSettings"
 				/>
+				<KebabMenuActionReactions
+					v-if="areInteractiveElementsEnabled && allowedOperations.updateBoardReactionType"
+					@click="onChangeReactions"
+				/>
 				<KebabMenuActionChangeLayout @click="onChangeBoardLayout" />
 				<KebabMenuActionDelete :name="title" @click="onDeleteBoard" />
 			</BoardMenu>
@@ -59,6 +63,7 @@ import BoardAnyTitleInput from "../shared/BoardAnyTitleInput.vue";
 import InlineEditInteractionHandler from "../shared/InlineEditInteractionHandler.vue";
 import BoardEditableChip from "./BoardEditableChip.vue";
 import KebabMenuActionEditingSettings from "./KebabMenuActionEditingSettings.vue";
+import KebabMenuActionReactions from "./KebabMenuActionReactions.vue";
 import { askDeletionForType } from "@/utils/confirmation-dialog.utils";
 import { upperCaseFirstChar } from "@/utils/textFormatting";
 import { useBoardAllowedOperations, useBoardFocusHandler, useCourseBoardEditMode } from "@data-board";
@@ -95,6 +100,7 @@ const emit = defineEmits([
 	"update:visibility",
 	"delete:board",
 	"change-layout",
+	"change-reactions",
 	"edit:settings",
 ]);
 
@@ -173,6 +179,14 @@ const onDeleteBoard = async () => {
 const onChangeBoardLayout = async () => {
 	emit("change-layout");
 };
+
+const onChangeReactions = () => {
+	emit("change-reactions");
+};
+
+const areInteractiveElementsEnabled = computed(
+	() => useEnvConfig().value.FEATURE_COLUMN_BOARD_INTERACTIVE_ELEMENTS_ENABLED
+);
 
 const onEditBoardSettings = () => {
 	emit("edit:settings");

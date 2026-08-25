@@ -9,6 +9,7 @@ import {
 	BoardElementApiFactory,
 	BoardLayout,
 	BoardResponse,
+	CardReactionType,
 	CardResponse,
 	Colors,
 	ColumnResponse,
@@ -211,6 +212,12 @@ export const useBoardApi = () => {
 		throw new Error("element.type mapping is undefined for updateElementCall");
 	};
 
+	const reactToCardCall = async (cardId: string, value?: number) =>
+		cardsApi.cardControllerReactToCard(cardId, { value });
+
+	const updateBoardReactionTypeCall = async (boardId: string, reactionType: CardReactionType) =>
+		boardApi.boardControllerUpdateReactionType(boardId, { reactionType });
+
 	const voteInPollCall = async (elementId: string, optionIds: string[]) =>
 		elementApi.elementControllerVoteInPoll(elementId, { optionIds });
 
@@ -334,6 +341,8 @@ export const useBoardApi = () => {
 		updateColumnTitleCall,
 		updateElementCall,
 		voteInPollCall,
+		reactToCardCall,
+		updateBoardReactionTypeCall,
 		createCardCall,
 		duplicateCardCall,
 		duplicateColumnCall,

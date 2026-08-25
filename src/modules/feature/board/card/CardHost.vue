@@ -79,6 +79,7 @@
 						/>
 						<CardAddElementMenu v-if="isEditMode" @add-element="onAddElement" />
 					</div>
+					<CardReactionBar v-if="card.reactions" :reactions="card.reactions" @react="onReact" />
 				</template>
 			</VCard>
 		</CardHostInteractionHandler>
@@ -94,6 +95,7 @@ import CardAddElementMenu from "./CardAddElementMenu.vue";
 import CardHostInteractionHandler from "./CardHostInteractionHandler.vue";
 import CardSkeleton from "./CardSkeleton.vue";
 import CardTitle from "./CardTitle.vue";
+import CardReactionBar from "./CardReactionBar.vue";
 import ContentElementList from "./ContentElementList.vue";
 import { useSafeTaskRunner } from "@/composables/async-tasks.composable";
 import { ElementMove, verticalCursorKeys } from "@/types/board/DragAndDrop";
@@ -216,6 +218,8 @@ const onDeleteCard = async () => {
 };
 
 const onAddElement = () => askType();
+
+const onReact = (value?: number) => cardStore.reactToCardRequest({ cardId: cardId.value, value });
 
 const onDeleteElement = (elementId: string) => cardStore.deleteElementRequest({ cardId: cardId.value, elementId });
 

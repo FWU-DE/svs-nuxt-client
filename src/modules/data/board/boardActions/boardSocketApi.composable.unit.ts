@@ -17,7 +17,7 @@ import {
 	mockedPiniaStoreTyping,
 	mountComposable,
 } from "@@/tests/test-utils";
-import { BoardLayout, CopyStatusEnum, MoveCardResponse } from "@api-server";
+import { BoardLayout, CardReactionType, CopyStatusEnum, MoveCardResponse } from "@api-server";
 import { useAppStore } from "@data-app";
 import { useBoardStore, useForceRender, useSocketConnection } from "@data-board";
 import { createTestingPinia } from "@pinia/testing";
@@ -94,6 +94,7 @@ describe("useBoardSocketApi", () => {
 					deletedAt: undefined,
 				},
 				readersCanEdit: false,
+				reactionType: CardReactionType.NONE,
 				features: [],
 			};
 			const { dispatch } = useBoardSocketApi();

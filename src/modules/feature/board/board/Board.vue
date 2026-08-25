@@ -31,6 +31,7 @@
 						@share:board="onShareBoard"
 						@delete:board="openDeleteBoardDialog(boardId)"
 						@change-layout="onUpdateBoardLayout"
+						@change-reactions="onChangeReactions"
 						@edit:settings="onEditBoardSettings"
 					/>
 				</template>
@@ -110,6 +111,11 @@
 					:current-layout="board.layout"
 					@select="onSelectBoardLayout"
 				/>
+				<SelectReactionTypeDialog
+					v-model="isSelectReactionTypeDialogOpen"
+					:current-type="board.reactionType"
+					@select="onSelectReactionType"
+				/>
 				<EditSettingsDialog
 					:model-value="isEditSettingsDialogOpen"
 					:is-draft-mode="!isBoardVisible"
@@ -145,11 +151,13 @@ import EditSettingsDialog from "../shared/EditSettingsDialog.vue";
 import BoardColumn from "./BoardColumn.vue";
 import BoardColumnGhost from "./BoardColumnGhost.vue";
 import BoardHeader from "./BoardHeader.vue";
+import SelectReactionTypeDialog from "./SelectReactionTypeDialog.vue";
 import { ColumnMove } from "@/types/board/DragAndDrop";
 import { HttpStatusCode } from "@/types/enum/http-status-code.enum";
 import {
 	BoardExternalReferenceType,
 	BoardLayout,
+	CardReactionType,
 	ColumnResponse,
 	ShareTokenBodyParamsParentType,
 	ToolContextType,
@@ -462,6 +470,20 @@ const openDeleteBoardDialog = async (id: string) => {
 };
 
 const isSelectBoardLayoutDialogOpen = ref(false);
+
+const isSelectReactionTypeDialogOpen = ref(false);
+
+const onChangeReactions = () => {
+	if (!allowedOperations.value.updateBoardReactionType) return;
+
+	isSelectReactionTypeDialogOpen.value = true;
+};
+
+const onSelectReactionType = (reactionType: CardReactionType) => {
+	if (!board.value) return;
+
+	boardStore.updateBoardReactionTypeRequest({ boardId: board.value.id, reactionType });
+};
 
 const onUpdateBoardLayout = async () => {
 	if (!allowedOperations.value.updateBoardLayout) return;

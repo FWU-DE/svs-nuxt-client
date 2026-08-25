@@ -11,6 +11,7 @@ import {
 	UpdateCardColorSuccessPayload,
 	UpdateCardHeightSuccessPayload,
 	UpdateCardTitleSuccessPayload,
+	ReactToCardSuccessPayload,
 	UpdateElementSuccessPayload,
 	VoteInPollSuccessPayload,
 } from "./cardActions/cardActionPayload.types";
@@ -268,6 +269,25 @@ export const useCardStore = defineStore("cardStore", () => {
 		}
 	};
 
+	const reactToCardRequest = socketOrRest.reactToCardRequest;
+
+	/**
+	 * The room broadcast reports the new totals with no `ownValue`, because a reaction is not
+	 * public. Only the reacting client's own answer may set it.
+	 */
+	const reactToCardSuccess = (payload: ReactToCardSuccessPayload) => {
+		const card = cards.value[payload.cardId];
+		if (card === undefined) return;
+
+		const incoming = payload.card.reactions;
+		if (incoming === undefined) {
+			card.reactions = undefined;
+			return;
+		}
+
+		card.reactions = payload.isOwnAction ? incoming : { ...incoming, ownValue: card.reactions?.ownValue };
+	};
+
 	const voteInPollRequest = socketOrRest.voteInPollRequest;
 
 	/**
@@ -332,6 +352,8 @@ export const useCardStore = defineStore("cardStore", () => {
 		updateElementSuccess,
 		voteInPollRequest,
 		voteInPollSuccess,
+		reactToCardRequest,
+		reactToCardSuccess,
 		addTextAfterTitle,
 		fetchCardRequest,
 		fetchCardSuccess,

@@ -13,6 +13,7 @@
  */
 
 
+import { CardReactionsResponse } from './card-reactions-response';
 import { CollaborativeTextEditorElementResponse } from './collaborative-text-editor-element-response';
 import { Colors } from './colors';
 import { DeletedElementResponse } from './deleted-element-response';
@@ -76,6 +77,12 @@ export interface CardResponse {
      * @memberof CardResponse
      */
     timestamps: TimestampsResponse;
+    /**
+     * Absent while the board has reactions turned off.
+     * @type {CardReactionsResponse}
+     * @memberof CardResponse
+     */
+    reactions?: CardReactionsResponse;
 }
 
 

@@ -18,6 +18,7 @@ import {
 	UpdateBoardTitleRequestPayload,
 	UpdateBoardVisibilityRequestPayload,
 	UpdateColumnTitleRequestPayload,
+	UpdateBoardReactionTypeRequestPayload,
 	UpdateReaderCanEditRequestPayload,
 } from "./boardActionPayload.types";
 import * as BoardActions from "./boardActions";
@@ -62,6 +63,7 @@ export const useBoardSocketApi = () => {
 			on(BoardActions.updateBoardVisibilitySuccess, boardStore.updateBoardVisibilitySuccess),
 			on(BoardActions.updateBoardLayoutSuccess, boardStore.updateBoardLayoutSuccess),
 			on(BoardActions.updateReaderCanEditSuccess, boardStore.updateReaderCanEditSuccess),
+			on(BoardActions.updateBoardReactionTypeSuccess, boardStore.updateBoardReactionTypeSuccess),
 			on(BoardActions.duplicateColumnSuccess, boardStore.duplicateColumnSuccess),
 		];
 
@@ -79,6 +81,7 @@ export const useBoardSocketApi = () => {
 			on(BoardActions.updateBoardVisibilityFailure, reloadBoard),
 			on(BoardActions.updateBoardLayoutFailure, reloadBoard),
 			on(BoardActions.updateReaderCanEditFailure, reloadBoard),
+			on(BoardActions.updateBoardReactionTypeFailure, reloadBoard),
 			on(BoardActions.duplicateColumnFailure, reloadBoard),
 		];
 
@@ -184,6 +187,10 @@ export const useBoardSocketApi = () => {
 		emitOnSocket("update-readers-can-edit-request", payload);
 	};
 
+	const updateBoardReactionTypeRequest = (payload: UpdateBoardReactionTypeRequestPayload) => {
+		emitOnSocket("update-board-reaction-type-request", payload);
+	};
+
 	const updateBoardLayoutRequest = (payload: UpdateBoardLayoutRequestPayload) => {
 		emitOnSocket("update-board-layout-request", payload);
 	};
@@ -237,6 +244,7 @@ export const useBoardSocketApi = () => {
 		updateBoardVisibilityRequest,
 		updateBoardLayoutRequest,
 		updateReaderCanEditRequest,
+		updateBoardReactionTypeRequest,
 		duplicateColumnRequest,
 	};
 };

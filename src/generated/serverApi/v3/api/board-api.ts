@@ -39,6 +39,8 @@ import { CreateBoardResponse } from '../models';
 // @ts-ignore
 import { LayoutBodyParams } from '../models';
 // @ts-ignore
+import { ReactionTypeBodyParams } from '../models';
+// @ts-ignore
 import { ReadersCanEditBodyParams } from '../models';
 // @ts-ignore
 import { UpdateBoardTitleParams } from '../models';
@@ -458,6 +460,50 @@ export const BoardApiAxiosParamCreator = function (configuration?: Configuration
         },
         /**
          * 
+         * @summary Update the reaction kind for the cards of a board.
+         * @param {string} boardId The id of the board.
+         * @param {ReactionTypeBodyParams} reactionTypeBodyParams 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        boardControllerUpdateReactionType: async (boardId: string, reactionTypeBodyParams: ReactionTypeBodyParams, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'boardId' is not null or undefined
+            assertParamExists('boardControllerUpdateReactionType', 'boardId', boardId)
+            // verify required parameter 'reactionTypeBodyParams' is not null or undefined
+            assertParamExists('boardControllerUpdateReactionType', 'reactionTypeBodyParams', reactionTypeBodyParams)
+            const localVarPath = `/boards/{boardId}/reaction-type`
+                .replace(`{${"boardId"}}`, encodeURIComponent(String(boardId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearer required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(reactionTypeBodyParams, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary Update the visibility of a board.
          * @param {string} boardId The id of the board.
          * @param {ReadersCanEditBodyParams} readersCanEditBodyParams 
@@ -670,6 +716,18 @@ export const BoardApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @summary Update the reaction kind for the cards of a board.
+         * @param {string} boardId The id of the board.
+         * @param {ReactionTypeBodyParams} reactionTypeBodyParams 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async boardControllerUpdateReactionType(boardId: string, reactionTypeBodyParams: ReactionTypeBodyParams, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.boardControllerUpdateReactionType(boardId, reactionTypeBodyParams, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
          * @summary Update the visibility of a board.
          * @param {string} boardId The id of the board.
          * @param {ReadersCanEditBodyParams} readersCanEditBodyParams 
@@ -808,6 +866,17 @@ export const BoardApiFactory = function (configuration?: Configuration, basePath
         },
         /**
          * 
+         * @summary Update the reaction kind for the cards of a board.
+         * @param {string} boardId The id of the board.
+         * @param {ReactionTypeBodyParams} reactionTypeBodyParams 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        boardControllerUpdateReactionType(boardId: string, reactionTypeBodyParams: ReactionTypeBodyParams, options?: any): AxiosPromise<void> {
+            return localVarFp.boardControllerUpdateReactionType(boardId, reactionTypeBodyParams, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @summary Update the visibility of a board.
          * @param {string} boardId The id of the board.
          * @param {ReadersCanEditBodyParams} readersCanEditBodyParams 
@@ -940,6 +1009,17 @@ export interface BoardApiInterface {
      * @memberof BoardApiInterface
      */
     boardControllerUpdateLayout(boardId: string, layoutBodyParams: LayoutBodyParams, options?: any): AxiosPromise<void>;
+
+    /**
+     * 
+     * @summary Update the reaction kind for the cards of a board.
+     * @param {string} boardId The id of the board.
+     * @param {ReactionTypeBodyParams} reactionTypeBodyParams 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof BoardApiInterface
+     */
+    boardControllerUpdateReactionType(boardId: string, reactionTypeBodyParams: ReactionTypeBodyParams, options?: any): AxiosPromise<void>;
 
     /**
      * 
@@ -1094,6 +1174,19 @@ export class BoardApi extends BaseAPI implements BoardApiInterface {
      */
     public boardControllerUpdateLayout(boardId: string, layoutBodyParams: LayoutBodyParams, options?: any) {
         return BoardApiFp(this.configuration).boardControllerUpdateLayout(boardId, layoutBodyParams, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Update the reaction kind for the cards of a board.
+     * @param {string} boardId The id of the board.
+     * @param {ReactionTypeBodyParams} reactionTypeBodyParams 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof BoardApi
+     */
+    public boardControllerUpdateReactionType(boardId: string, reactionTypeBodyParams: ReactionTypeBodyParams, options?: any) {
+        return BoardApiFp(this.configuration).boardControllerUpdateReactionType(boardId, reactionTypeBodyParams, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

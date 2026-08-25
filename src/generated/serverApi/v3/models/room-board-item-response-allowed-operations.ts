@@ -73,6 +73,12 @@ export interface RoomBoardItemResponseAllowedOperations {
      * @type {boolean}
      * @memberof RoomBoardItemResponseAllowedOperations
      */
+    updateBoardReactionType?: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof RoomBoardItemResponseAllowedOperations
+     */
     copyColumn?: boolean;
     /**
      * 
@@ -158,6 +164,12 @@ export interface RoomBoardItemResponseAllowedOperations {
      * @memberof RoomBoardItemResponseAllowedOperations
      */
     updateCardColor?: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof RoomBoardItemResponseAllowedOperations
+     */
+    reactToCard?: boolean;
     /**
      * 
      * @type {boolean}

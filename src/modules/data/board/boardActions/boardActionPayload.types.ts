@@ -2,6 +2,7 @@ import { ColumnMove } from "@/types/board/DragAndDrop";
 import {
 	BoardLayout,
 	BoardResponse,
+	CardReactionType,
 	CardResponse,
 	CardSkeletonResponse,
 	ColumnFullResponse,
@@ -179,6 +180,15 @@ export type UpdateReaderCanEditSuccessPayload = {
 	isOwnAction: boolean;
 };
 export type UpdateReaderCanEditFailurePayload = UpdateReaderCanEditRequestPayload;
+
+export type UpdateBoardReactionTypeRequestPayload = {
+	boardId: string;
+	reactionType: CardReactionType;
+};
+export type UpdateBoardReactionTypeSuccessPayload = UpdateBoardReactionTypeRequestPayload & {
+	isOwnAction: boolean;
+};
+export type UpdateBoardReactionTypeFailurePayload = UpdateBoardReactionTypeRequestPayload;
 
 export type DisconnectSocketRequestPayload = Record<string, never>;
 

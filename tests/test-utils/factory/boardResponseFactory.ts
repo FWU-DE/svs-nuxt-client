@@ -1,5 +1,5 @@
 import { timestampsResponseFactory } from "./timestampsResponseFactory";
-import { BoardLayout, BoardResponse, BoardResponseAllowedOperations } from "@api-server";
+import { BoardLayout, BoardResponse, BoardResponseAllowedOperations, CardReactionType } from "@api-server";
 import { Factory } from "fishery";
 
 export const boardResponseFactory = Factory.define<BoardResponse>(({ sequence, params }) => ({
@@ -13,6 +13,7 @@ export const boardResponseFactory = Factory.define<BoardResponse>(({ sequence, p
 	permissions: [],
 	allowedOperations: getAllowedOperations(params?.allowedOperations || {}),
 	readersCanEdit: false,
+	reactionType: CardReactionType.NONE,
 }));
 
 type OperationsKey = keyof BoardResponseAllowedOperations;

@@ -41,6 +41,9 @@ import {
 	UpdateColumnTitleRequestPayload,
 	UpdateColumnTitleSuccessPayload,
 	UpdateReaderCanEditFailurePayload,
+	UpdateBoardReactionTypeFailurePayload,
+	UpdateBoardReactionTypeRequestPayload,
+	UpdateBoardReactionTypeSuccessPayload,
 	UpdateReaderCanEditRequestPayload,
 	UpdateReaderCanEditSuccessPayload,
 } from "./boardActionPayload.types";
@@ -149,6 +152,19 @@ export const updateBoardLayoutSuccess = createAction(
 export const updateBoardLayoutFailure = createAction(
 	"update-board-layout-failure",
 	props<UpdateBoardLayoutFailurePayload>()
+);
+
+export const updateBoardReactionTypeRequest = createAction(
+	"update-board-reaction-type-request",
+	props<UpdateBoardReactionTypeRequestPayload>()
+);
+export const updateBoardReactionTypeSuccess = createAction(
+	"update-board-reaction-type-success",
+	props<UpdateBoardReactionTypeSuccessPayload>()
+);
+export const updateBoardReactionTypeFailure = createAction(
+	"update-board-reaction-type-failure",
+	props<UpdateBoardReactionTypeFailurePayload>()
 );
 
 export const updateReaderCanEditRequest = createAction(

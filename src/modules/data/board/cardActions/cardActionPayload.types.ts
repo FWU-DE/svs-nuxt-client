@@ -114,6 +114,19 @@ export type UpdateElementSuccessPayload = {
 };
 export type UpdateElementFailurePayload = UpdateElementRequestPayload;
 
+export type ReactToCardRequestPayload = {
+	cardId: string;
+	value?: number;
+};
+export type ReactToCardSuccessPayload = {
+	cardId: string;
+	card: CardResponse;
+	isOwnAction: boolean;
+};
+export type ReactToCardFailurePayload = {
+	cardId: string;
+};
+
 export type VoteInPollRequestPayload = {
 	elementId: string;
 	optionIds: string[];

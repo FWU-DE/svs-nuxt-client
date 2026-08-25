@@ -73,6 +73,12 @@ export interface BoardResponseAllowedOperations {
      * @type {boolean}
      * @memberof BoardResponseAllowedOperations
      */
+    updateBoardReactionType: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof BoardResponseAllowedOperations
+     */
     copyColumn: boolean;
     /**
      * 
@@ -158,6 +164,12 @@ export interface BoardResponseAllowedOperations {
      * @memberof BoardResponseAllowedOperations
      */
     updateCardColor: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof BoardResponseAllowedOperations
+     */
+    reactToCard: boolean;
     /**
      * 
      * @type {boolean}

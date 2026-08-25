@@ -92,6 +92,9 @@ models/board-task-response.ts
 models/board-task-status-response.ts
 models/business-error.ts
 models/card-list-response.ts
+models/card-reaction-body-params.ts
+models/card-reaction-type.ts
+models/card-reactions-response.ts
 models/card-response.ts
 models/card-skeleton-response.ts
 models/change-language-params.ts
@@ -318,6 +321,7 @@ models/pseudonym-response.ts
 models/public-system-list-response.ts
 models/public-system-response.ts
 models/range-date.ts
+models/reaction-type-body-params.ts
 models/readers-can-edit-body-params.ts
 models/redirect-response.ts
 models/registration-body-params.ts
