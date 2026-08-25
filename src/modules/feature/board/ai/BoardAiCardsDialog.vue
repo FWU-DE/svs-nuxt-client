@@ -94,6 +94,7 @@
 				<div v-if="isSearchMode && results.length > 0" class="d-flex flex-column ga-2">
 					<p class="text-caption text-medium-emphasis">
 						{{ t("components.board.ai.search.relays", { relays: relays.join(", ") }) }}
+						<span v-if="searchedFor">{{ t("components.board.ai.search.topic", { topic: searchedFor }) }}</span>
 					</p>
 					<VSheet
 						v-for="(result, index) in results"
@@ -218,6 +219,7 @@ const {
 	reset: resetSearch,
 	results,
 	search,
+	searchedFor,
 } = useContentSearch();
 
 const mode = ref<BoardAiMode>("differentiate");

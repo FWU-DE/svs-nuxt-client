@@ -481,6 +481,7 @@ export default {
 	"components.board.ai.search.placeholder": "напр. фотосинтез",
 	"components.board.ai.search.button": "Шукати матеріали",
 	"components.board.ai.search.relays": "Пошук у: {relays}.",
+	"components.board.ai.search.topic": "Пошук за запитом «{topic}».",
 	"components.board.ai.search.empty": "Нічого не знайдено. Спробуйте інший запит.",
 	"components.board.ai.search.error": "Пошук матеріалів зараз недоступний.",
 	"components.board.ai.title": "Додати картки за допомогою ші",

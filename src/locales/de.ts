@@ -482,6 +482,7 @@ export default {
 	"components.board.ai.search.placeholder": "z. B. Fotosynthese",
 	"components.board.ai.search.button": "Material suchen",
 	"components.board.ai.search.relays": "Gesucht wird in: {relays}.",
+	"components.board.ai.search.topic": "Gesucht wurde nach „{topic}“.",
 	"components.board.ai.search.empty": "Dazu wurde nichts gefunden. Versuche einen anderen Suchbegriff.",
 	"components.board.ai.search.error": "Die Materialsuche ist gerade nicht erreichbar.",
 	"components.board.ai.title": "Karten mit KI ergänzen",

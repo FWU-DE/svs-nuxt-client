@@ -479,6 +479,7 @@ export default {
 	"components.board.ai.search.placeholder": "p. ej. fotosíntesis",
 	"components.board.ai.search.button": "Buscar material",
 	"components.board.ai.search.relays": "Se ha buscado en: {relays}.",
+	"components.board.ai.search.topic": "Se ha buscado «{topic}».",
 	"components.board.ai.search.empty": "No se encontró nada. Prueba otro término.",
 	"components.board.ai.search.error": "La búsqueda de material no está disponible en este momento.",
 	"components.board.ai.title": "Añadir tarjetas con ia",

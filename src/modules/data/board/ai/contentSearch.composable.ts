@@ -24,6 +24,7 @@ const relayName = (relay: string): string =>
 export const useContentSearch = () => {
 	const results = ref<ContentSearchResult[]>([]);
 	const relays = ref<string[]>([]);
+	const searchedFor = ref("");
 	const isSearching = ref(false);
 	const hasFailed = ref(false);
 	const hasSearched = ref(false);
@@ -43,9 +44,15 @@ export const useContentSearch = () => {
 
 			if (!response.ok) throw new Error(`content search failed: ${response.status}`);
 
-			const payload = (await response.json()) as { data: ContentSearchResult[]; relays?: string[] };
+			const payload = (await response.json()) as {
+				data: ContentSearchResult[];
+				relays?: string[];
+				query?: string;
+			};
 			results.value = payload.data;
 			relays.value = (payload.relays ?? []).map(relayName);
+			// a question of several words is searched by its topic, and the teacher should see which
+			searchedFor.value = payload.query !== undefined && payload.query !== query ? payload.query : "";
 		} catch (error) {
 			hasFailed.value = true;
 			logger.error("Could not search for educational material", error);
@@ -58,6 +65,7 @@ export const useContentSearch = () => {
 	const reset = () => {
 		results.value = [];
 		relays.value = [];
+		searchedFor.value = "";
 		hasFailed.value = false;
 		hasSearched.value = false;
 	};
@@ -71,5 +79,6 @@ export const useContentSearch = () => {
 		reset,
 		results,
 		search,
+		searchedFor,
 	};
 };

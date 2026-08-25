@@ -468,6 +468,7 @@ export default {
 	"components.board.ai.search.placeholder": "e.g. photosynthesis",
 	"components.board.ai.search.button": "Search material",
 	"components.board.ai.search.relays": "Searched in: {relays}.",
+	"components.board.ai.search.topic": "Searched for “{topic}”.",
 	"components.board.ai.search.empty": "Nothing found for this. Try another search term.",
 	"components.board.ai.search.error": "The material search cannot be reached right now.",
 	"components.board.ai.title": "Add cards with ai",

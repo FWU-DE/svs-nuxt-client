@@ -36,8 +36,10 @@ Jeder Treffer zeigt, was man zur Beurteilung braucht: **Art des Materials, Bildu
 Anbieter** — so weit die Quelle das angibt; fehlende Angaben bleiben einfach weg. Übernommene Treffer
 werden Karten mit Beschreibung, Lizenzangabe und Link auf die Quelle.
 
-> Ein Suchwort trifft besser als ein ganzer Satz: „Fotosynthese" liefert bessere Ergebnisse als
-> „Fotosynthese Sekundarstufe I", weil die Volltextsuche sonst auf „Sekundarstufe" anspringt.
+Ein ganzer Satz im Suchfeld ist kein Problem mehr: Gesucht wird nach dem **Thema** darin, sortiert
+wird gegen die ganze Eingabe. „Zellteilung Mitose Arbeitsblatt" sucht also „Zellteilung" und stellt
+die Treffer nach vorn, in denen auch Mitose und Arbeitsblatt vorkommen. Unter der Trefferliste steht,
+wonach tatsächlich gesucht wurde.
 
 Gesucht wird in **drei Katalogen zugleich**, und sie decken Unterschiedliches ab:
 
