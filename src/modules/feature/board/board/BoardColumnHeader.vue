@@ -44,8 +44,16 @@
 						<KebabMenuActionMoveLeft v-if="isNotFirstColumn" @click="onMoveColumnLeft" />
 						<KebabMenuActionMoveRight v-if="isNotLastColumn" @click="onMoveColumnRight" />
 					</template>
+					<KebabMenuActionAiCards v-if="isAiEnabled" data-testid="column-menu-ai-cards" @click.stop="openAiDialog" />
 					<KebabMenuActionDelete :name="title" @click="onDelete" />
 				</BoardMenu>
+				<BoardAiCardsDialog
+					v-if="isAiDialogOpen"
+					v-model="isAiDialogOpen"
+					:source="{ kind: 'column', id: columnId }"
+					:target-column-id="columnId"
+					:source-title="title"
+				/>
 			</div>
 		</div>
 		<VDivider role="presentation" class="flex-1-0-100 border-opacity-75" />
@@ -53,6 +61,7 @@
 </template>
 
 <script setup lang="ts">
+import BoardAiCardsDialog from "../ai/BoardAiCardsDialog.vue";
 import BoardAnyTitleInput from "../shared/BoardAnyTitleInput.vue";
 import BoardColumnInteractionHandler from "./BoardColumnInteractionHandler.vue";
 import { useSafeTaskRunner } from "@/composables/async-tasks.composable";
@@ -61,6 +70,7 @@ import { useBoardAllowedOperations, useBoardFocusHandler, useBoardStore, useCour
 import { useEnvConfig } from "@data-env";
 import { BoardMenu, BoardMenuScope } from "@ui-board";
 import {
+	KebabMenuActionAiCards,
 	KebabMenuActionDelete,
 	KebabMenuActionDuplicate,
 	KebabMenuActionMoveDown,
@@ -84,6 +94,12 @@ const props = defineProps({
 	isNotLastColumn: { type: Boolean, required: false },
 	title: { type: String, required: true },
 });
+
+const isAiDialogOpen = ref(false);
+const isAiEnabled = computed(() => useEnvConfig().value.FEATURE_BOARD_AI_CARDS_ENABLED);
+
+// the menu closes on this very click, and vuetify would read that as a click outside the dialog
+const openAiDialog = () => setTimeout(() => (isAiDialogOpen.value = true));
 
 const emit = defineEmits([
 	"delete:column",

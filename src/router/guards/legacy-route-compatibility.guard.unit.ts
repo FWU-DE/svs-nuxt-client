@@ -6,9 +6,15 @@ vi.mock("@/router/legacy-client-route", () => ({
 	isLegacyClient: vi.fn(),
 }));
 
+vi.mock("@/router/legacy-view-migration", () => ({
+	isKnownLegacyViewPath: vi.fn(),
+}));
+
 import { isLegacyClient } from "@/router/legacy-client-route";
+import { isKnownLegacyViewPath } from "@/router/legacy-view-migration";
 
 const mockedIsLegacyClient = vi.mocked(isLegacyClient);
+const mockedIsKnownLegacyViewPath = vi.mocked(isKnownLegacyViewPath);
 
 const buildLocation = (path: string, fullPath = path): RouteLocationNormalized =>
 	({
@@ -20,6 +26,7 @@ describe("legacyCompatibilityGuard", () => {
 	beforeEach(() => {
 		vi.clearAllMocks();
 		vi.stubGlobal("location", { pathname: "/", assign: vi.fn() });
+		mockedIsKnownLegacyViewPath.mockReturnValue(false);
 	});
 
 	const dashboardLocation = buildLocation("/dashboard");
@@ -67,6 +74,26 @@ describe("legacyCompatibilityGuard", () => {
 				const result = legacyCompatibilityGuard(buildLocation("/boards/1"), homeLocation, vi.fn());
 
 				expect(result).toBe(true);
+				expect(window.location.assign).not.toHaveBeenCalled();
+			});
+		});
+
+		describe("when the view has a migration page", () => {
+			it("should route to the migration page instead of the legacy client", () => {
+				mockedIsLegacyClient.mockReturnValue(true);
+				mockedIsKnownLegacyViewPath.mockReturnValue(true);
+
+				const result = legacyCompatibilityGuard(
+					buildLocation("/teams", "/teams?activeTab=events"),
+					homeLocation,
+					vi.fn()
+				);
+
+				expect(result).toEqual({
+					path: "/legacy-view-migration",
+					query: { path: "/teams?activeTab=events" },
+					replace: true,
+				});
 				expect(window.location.assign).not.toHaveBeenCalled();
 			});
 		});

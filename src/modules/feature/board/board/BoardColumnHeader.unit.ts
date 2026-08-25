@@ -42,6 +42,10 @@ describe("BoardColumnHeader", () => {
 		} = {},
 		props?: object
 	) => {
+		setActivePinia(createTestingPinia());
+		// the column menu offers the ai action only when the feature is on
+		createTestEnvStore({ FEATURE_BOARD_AI_CARDS_ENABLED: false });
+
 		const isEditMode = computed(() => options.isEditMode ?? true);
 		const { canEditColumn = true, canDeleteColumn = true } = options;
 

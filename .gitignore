@@ -38,3 +38,6 @@ __snapshots__
 
 # IntelliJ
 .idea/
+
+# generated from docs/features/*.md by scripts/build-docs-pdf.mjs
+docs/features/svs-neue-funktionen.pdf

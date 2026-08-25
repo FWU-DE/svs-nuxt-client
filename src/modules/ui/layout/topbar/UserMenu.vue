@@ -16,6 +16,9 @@
 		<VList>
 			<VListItem data-testid="active-user"> {{ user.firstName }} {{ user.lastName }} ({{ userRole }}) </VListItem>
 			<VDivider />
+			<VListItem href="/onboarding" :prepend-icon="mdiLightbulbOnOutline" data-testid="onboarding-link">
+				Onboarding-Assistent
+			</VListItem>
 			<LanguageMenu />
 			<VListItem href="/account" data-testid="account-link">
 				{{ $t("global.topbar.settings") }}
@@ -40,6 +43,7 @@ import LanguageMenu from "./LanguageMenu.vue";
 import { MeUserResponse } from "@api-server";
 import { useSystem } from "@data-access";
 import { useAppStore, useAppStoreRefs } from "@data-app";
+import { mdiLightbulbOnOutline } from "@icons/material";
 import { safariAriaOwnsWorkaround } from "@util-device-detection";
 import { computed, PropType, toRef } from "vue";
 import { useI18n } from "vue-i18n";

@@ -80,6 +80,8 @@
 				</template>
 			</SvsLoading>
 
+			<DashboardCalendarEvents v-if="isTeacher || isStudent" />
+
 			<DashboardTasks v-if="isTeacher || isStudent" />
 
 			<DashboardReleaseDialog />
@@ -96,7 +98,7 @@ import { NewsTargetModel, Permission, SchulcloudTheme } from "@api-server";
 import { useNewsList } from "@data-access";
 import { useAppStore, useAppStoreRefs, useSchoolStoreRefs } from "@data-app";
 import { useEnvConfig } from "@data-env";
-import { DashboardReleaseDialog, DashboardTasks } from "@feature-dashboard";
+import { DashboardCalendarEvents, DashboardReleaseDialog, DashboardTasks } from "@feature-dashboard";
 import { RenderHTML } from "@feature-render-html";
 import { mdiNewspaperVariantOutline } from "@icons/material";
 import { InfoAlert, WarningAlert } from "@ui-alert";
