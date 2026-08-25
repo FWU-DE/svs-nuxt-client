@@ -17,6 +17,7 @@ import {
 	ReactToCardRequestPayload,
 	RemoveCardCommentRequestPayload,
 	ReportCardCommentRequestPayload,
+	SetChecklistItemCheckedRequestPayload,
 	UpdateElementRequestPayload,
 	VoteInPollRequestPayload,
 } from "./cardActionPayload.types";
@@ -55,6 +56,7 @@ export const useCardSocketApi = () => {
 			on(CardActions.moveElementSuccess, cardStore.moveElementSuccess),
 			on(CardActions.updateElementSuccess, cardStore.updateElementSuccess),
 			on(CardActions.voteInPollSuccess, cardStore.voteInPollSuccess),
+			on(CardActions.setChecklistItemCheckedSuccess, cardStore.setChecklistItemCheckedSuccess),
 			on(CardActions.reactToCardSuccess, cardStore.reactToCardSuccess),
 			on(CardActions.addCardCommentSuccess, cardStore.cardCommentSuccess),
 			on(CardActions.editCardCommentSuccess, cardStore.cardCommentSuccess),
@@ -74,6 +76,7 @@ export const useCardSocketApi = () => {
 			on(CardActions.moveElementFailure, () => reloadBoard()),
 			on(CardActions.updateElementFailure, () => reloadBoard()),
 			on(CardActions.voteInPollFailure, () => reloadBoard()),
+			on(CardActions.setChecklistItemCheckedFailure, () => reloadBoard()),
 			on(CardActions.reactToCardFailure, ({ cardId }) => reloadBoard(cardId)),
 			on(CardActions.addCardCommentFailure, ({ cardId }) => reloadBoard(cardId)),
 			on(CardActions.editCardCommentFailure, ({ cardId }) => reloadBoard(cardId)),
@@ -174,6 +177,10 @@ export const useCardSocketApi = () => {
 		emitOnSocket("react-to-card-request", payload);
 	};
 
+	const setChecklistItemCheckedRequest = async (payload: SetChecklistItemCheckedRequestPayload) => {
+		emitOnSocket("set-checklist-item-checked-request", payload);
+	};
+
 	const voteInPollRequest = async (payload: VoteInPollRequestPayload) => {
 		emitOnSocket("vote-in-poll-request", payload);
 	};
@@ -220,6 +227,7 @@ export const useCardSocketApi = () => {
 		moveElementRequest,
 		updateElementRequest,
 		voteInPollRequest,
+		setChecklistItemCheckedRequest,
 		reactToCardRequest,
 		addCardCommentRequest,
 		editCardCommentRequest,

@@ -18,6 +18,7 @@ import {
 	ReactToCardRequestPayload,
 	RemoveCardCommentRequestPayload,
 	ReportCardCommentRequestPayload,
+	SetChecklistItemCheckedRequestPayload,
 	UpdateElementRequestPayload,
 	VoteInPollRequestPayload,
 } from "./cardActionPayload.types";
@@ -59,6 +60,7 @@ export const useCardRestApi = () => {
 		deleteCardCall,
 		updateElementCall,
 		voteInPollCall,
+		setChecklistItemCheckedCall,
 		reactToCardCall,
 		addCardCommentCall,
 		editCardCommentCall,
@@ -238,6 +240,21 @@ export const useCardRestApi = () => {
 	const reportCardCommentRequest = async (payload: ReportCardCommentRequestPayload) =>
 		commentRequest(payload.cardId, () => reportCardCommentCall(payload.cardId, payload.commentId, payload.reason));
 
+	const setChecklistItemCheckedRequest = async (payload: SetChecklistItemCheckedRequestPayload) => {
+		try {
+			const response = await setChecklistItemCheckedCall(payload.elementId, payload.itemId, payload.checked);
+			cardStore.setChecklistItemCheckedSuccess({
+				elementId: payload.elementId,
+				element: response.data,
+				isOwnAction: true,
+			});
+		} catch (error) {
+			handleError(error, {
+				404: notifyWithTemplate("notUpdated", "boardElement"),
+			});
+		}
+	};
+
 	const reactToCardRequest = async (payload: ReactToCardRequestPayload) => {
 		try {
 			const response = await reactToCardCall(payload.cardId, payload.value);
@@ -381,6 +398,7 @@ export const useCardRestApi = () => {
 		moveElementRequest,
 		updateElementRequest,
 		voteInPollRequest,
+		setChecklistItemCheckedRequest,
 		reactToCardRequest,
 		addCardCommentRequest,
 		editCardCommentRequest,

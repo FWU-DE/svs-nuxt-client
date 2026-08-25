@@ -36,6 +36,7 @@ import {
 	PollElementResponse,
 	RichTextElementContentBody,
 	RichTextElementResponse,
+	UpdateElementContentBodyParams,
 	RoomApiFactory,
 	VideoConferenceElementContentBody,
 	VideoConferenceElementResponse,
@@ -209,6 +210,22 @@ export const useBoardApi = () => {
 			return body;
 		}
 
+		const simpleContentTypes: ContentElementType[] = [
+			ContentElementType.DEADLINE,
+			ContentElementType.CODE,
+			ContentElementType.FORMULA,
+			ContentElementType.CHECKLIST,
+		];
+
+		if (simpleContentTypes.includes(element.type)) {
+			// These four send their content shape unchanged; the server drops the response-only
+			// fields a checklist carries (the checked state is not a setting).
+			return {
+				content: element.content,
+				type: element.type,
+			} as unknown as UpdateElementContentBodyParams["data"];
+		}
+
 		throw new Error("element.type mapping is undefined for updateElementCall");
 	};
 
@@ -232,6 +249,9 @@ export const useBoardApi = () => {
 
 	const updateBoardReactionTypeCall = async (boardId: string, reactionType: CardReactionType) =>
 		boardApi.boardControllerUpdateReactionType(boardId, { reactionType });
+
+	const setChecklistItemCheckedCall = async (elementId: string, itemId: string, checked: boolean) =>
+		elementApi.elementControllerSetChecklistItemChecked(elementId, itemId, { checked });
 
 	const voteInPollCall = async (elementId: string, optionIds: string[]) =>
 		elementApi.elementControllerVoteInPoll(elementId, { optionIds });
@@ -356,6 +376,7 @@ export const useBoardApi = () => {
 		updateColumnTitleCall,
 		updateElementCall,
 		voteInPollCall,
+		setChecklistItemCheckedCall,
 		reactToCardCall,
 		addCardCommentCall,
 		editCardCommentCall,

@@ -13,6 +13,7 @@ import {
 	UpdateCardTitleSuccessPayload,
 	CardCommentSuccessPayload,
 	ReactToCardSuccessPayload,
+	SetChecklistItemCheckedSuccessPayload,
 	UpdateElementSuccessPayload,
 	VoteInPollSuccessPayload,
 } from "./cardActions/cardActionPayload.types";
@@ -270,6 +271,20 @@ export const useCardStore = defineStore("cardStore", () => {
 		}
 	};
 
+	const setChecklistItemCheckedRequest = socketOrRest.setChecklistItemCheckedRequest;
+
+	/**
+	 * A checklist is shared state, so unlike a poll ballot or a reaction the payload means the
+	 * same to everyone and can be applied as it arrives.
+	 */
+	const setChecklistItemCheckedSuccess = (payload: SetChecklistItemCheckedSuccessPayload) => {
+		const cardToUpdate = Object.values(cards.value).find((c) => c.elements.some((e) => e.id === payload.elementId));
+		if (cardToUpdate === undefined) return;
+
+		const elementIndex = cardToUpdate.elements.findIndex((e) => e.id === payload.elementId);
+		cards.value[cardToUpdate.id].elements[elementIndex] = payload.element;
+	};
+
 	const reactToCardRequest = socketOrRest.reactToCardRequest;
 
 	/**
@@ -378,6 +393,8 @@ export const useCardStore = defineStore("cardStore", () => {
 		updateElementSuccess,
 		voteInPollRequest,
 		voteInPollSuccess,
+		setChecklistItemCheckedRequest,
+		setChecklistItemCheckedSuccess,
 		reactToCardRequest,
 		reactToCardSuccess,
 		addCardCommentRequest,

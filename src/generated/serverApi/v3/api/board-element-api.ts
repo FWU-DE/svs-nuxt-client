@@ -23,6 +23,14 @@ import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } fr
 // @ts-ignore
 import { ApiValidationError } from '../models';
 // @ts-ignore
+import { ChecklistElementResponse } from '../models';
+// @ts-ignore
+import { ChecklistItemCheckedBodyParams } from '../models';
+// @ts-ignore
+import { CodeElementResponse } from '../models';
+// @ts-ignore
+import { DeadlineElementResponse } from '../models';
+// @ts-ignore
 import { DrawingElementResponse } from '../models';
 // @ts-ignore
 import { ElementWithParentHierarchyResponse } from '../models';
@@ -32,6 +40,8 @@ import { ExternalToolElementResponse } from '../models';
 import { FileElementResponse } from '../models';
 // @ts-ignore
 import { FileFolderElementResponse } from '../models';
+// @ts-ignore
+import { FormulaElementResponse } from '../models';
 // @ts-ignore
 import { H5pElementResponse } from '../models';
 // @ts-ignore
@@ -214,6 +224,54 @@ export const BoardElementApiAxiosParamCreator = function (configuration?: Config
         },
         /**
          * 
+         * @summary Tick or untick an item of a checklist element.
+         * @param {string} contentElementId 
+         * @param {string} itemId 
+         * @param {ChecklistItemCheckedBodyParams} checklistItemCheckedBodyParams 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        elementControllerSetChecklistItemChecked: async (contentElementId: string, itemId: string, checklistItemCheckedBodyParams: ChecklistItemCheckedBodyParams, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'contentElementId' is not null or undefined
+            assertParamExists('elementControllerSetChecklistItemChecked', 'contentElementId', contentElementId)
+            // verify required parameter 'itemId' is not null or undefined
+            assertParamExists('elementControllerSetChecklistItemChecked', 'itemId', itemId)
+            // verify required parameter 'checklistItemCheckedBodyParams' is not null or undefined
+            assertParamExists('elementControllerSetChecklistItemChecked', 'checklistItemCheckedBodyParams', checklistItemCheckedBodyParams)
+            const localVarPath = `/elements/{contentElementId}/checklist/{itemId}`
+                .replace(`{${"contentElementId"}}`, encodeURIComponent(String(contentElementId)))
+                .replace(`{${"itemId"}}`, encodeURIComponent(String(itemId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearer required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(checklistItemCheckedBodyParams, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary Update a single content element.
          * @param {string} contentElementId The id of the element.
          * @param {UpdateElementContentBodyParams} updateElementContentBodyParams 
@@ -357,13 +415,26 @@ export const BoardElementApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @summary Tick or untick an item of a checklist element.
+         * @param {string} contentElementId 
+         * @param {string} itemId 
+         * @param {ChecklistItemCheckedBodyParams} checklistItemCheckedBodyParams 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async elementControllerSetChecklistItemChecked(contentElementId: string, itemId: string, checklistItemCheckedBodyParams: ChecklistItemCheckedBodyParams, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ChecklistElementResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.elementControllerSetChecklistItemChecked(contentElementId, itemId, checklistItemCheckedBodyParams, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
          * @summary Update a single content element.
          * @param {string} contentElementId The id of the element.
          * @param {UpdateElementContentBodyParams} updateElementContentBodyParams 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async elementControllerUpdateElement(contentElementId: string, updateElementContentBodyParams: UpdateElementContentBodyParams, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ExternalToolElementResponse | FileElementResponse | LinkElementResponse | RichTextElementResponse | DrawingElementResponse | VideoConferenceElementResponse | FileFolderElementResponse | H5pElementResponse | PollElementResponse>> {
+        async elementControllerUpdateElement(contentElementId: string, updateElementContentBodyParams: UpdateElementContentBodyParams, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ExternalToolElementResponse | FileElementResponse | LinkElementResponse | RichTextElementResponse | DrawingElementResponse | VideoConferenceElementResponse | FileFolderElementResponse | H5pElementResponse | PollElementResponse | DeadlineElementResponse | CodeElementResponse | FormulaElementResponse | ChecklistElementResponse>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.elementControllerUpdateElement(contentElementId, updateElementContentBodyParams, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -432,13 +503,25 @@ export const BoardElementApiFactory = function (configuration?: Configuration, b
         },
         /**
          * 
+         * @summary Tick or untick an item of a checklist element.
+         * @param {string} contentElementId 
+         * @param {string} itemId 
+         * @param {ChecklistItemCheckedBodyParams} checklistItemCheckedBodyParams 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        elementControllerSetChecklistItemChecked(contentElementId: string, itemId: string, checklistItemCheckedBodyParams: ChecklistItemCheckedBodyParams, options?: any): AxiosPromise<ChecklistElementResponse> {
+            return localVarFp.elementControllerSetChecklistItemChecked(contentElementId, itemId, checklistItemCheckedBodyParams, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @summary Update a single content element.
          * @param {string} contentElementId The id of the element.
          * @param {UpdateElementContentBodyParams} updateElementContentBodyParams 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        elementControllerUpdateElement(contentElementId: string, updateElementContentBodyParams: UpdateElementContentBodyParams, options?: any): AxiosPromise<ExternalToolElementResponse | FileElementResponse | LinkElementResponse | RichTextElementResponse | DrawingElementResponse | VideoConferenceElementResponse | FileFolderElementResponse | H5pElementResponse | PollElementResponse> {
+        elementControllerUpdateElement(contentElementId: string, updateElementContentBodyParams: UpdateElementContentBodyParams, options?: any): AxiosPromise<ExternalToolElementResponse | FileElementResponse | LinkElementResponse | RichTextElementResponse | DrawingElementResponse | VideoConferenceElementResponse | FileFolderElementResponse | H5pElementResponse | PollElementResponse | DeadlineElementResponse | CodeElementResponse | FormulaElementResponse | ChecklistElementResponse> {
             return localVarFp.elementControllerUpdateElement(contentElementId, updateElementContentBodyParams, options).then((request) => request(axios, basePath));
         },
         /**
@@ -504,6 +587,18 @@ export interface BoardElementApiInterface {
 
     /**
      * 
+     * @summary Tick or untick an item of a checklist element.
+     * @param {string} contentElementId 
+     * @param {string} itemId 
+     * @param {ChecklistItemCheckedBodyParams} checklistItemCheckedBodyParams 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof BoardElementApiInterface
+     */
+    elementControllerSetChecklistItemChecked(contentElementId: string, itemId: string, checklistItemCheckedBodyParams: ChecklistItemCheckedBodyParams, options?: any): AxiosPromise<ChecklistElementResponse>;
+
+    /**
+     * 
      * @summary Update a single content element.
      * @param {string} contentElementId The id of the element.
      * @param {UpdateElementContentBodyParams} updateElementContentBodyParams 
@@ -511,7 +606,7 @@ export interface BoardElementApiInterface {
      * @throws {RequiredError}
      * @memberof BoardElementApiInterface
      */
-    elementControllerUpdateElement(contentElementId: string, updateElementContentBodyParams: UpdateElementContentBodyParams, options?: any): AxiosPromise<ExternalToolElementResponse | FileElementResponse | LinkElementResponse | RichTextElementResponse | DrawingElementResponse | VideoConferenceElementResponse | FileFolderElementResponse | H5pElementResponse | PollElementResponse>;
+    elementControllerUpdateElement(contentElementId: string, updateElementContentBodyParams: UpdateElementContentBodyParams, options?: any): AxiosPromise<ExternalToolElementResponse | FileElementResponse | LinkElementResponse | RichTextElementResponse | DrawingElementResponse | VideoConferenceElementResponse | FileFolderElementResponse | H5pElementResponse | PollElementResponse | DeadlineElementResponse | CodeElementResponse | FormulaElementResponse | ChecklistElementResponse>;
 
     /**
      * 
@@ -580,6 +675,20 @@ export class BoardElementApi extends BaseAPI implements BoardElementApiInterface
      */
     public elementControllerReadPermission(contentElementId: string, options?: any) {
         return BoardElementApiFp(this.configuration).elementControllerReadPermission(contentElementId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Tick or untick an item of a checklist element.
+     * @param {string} contentElementId 
+     * @param {string} itemId 
+     * @param {ChecklistItemCheckedBodyParams} checklistItemCheckedBodyParams 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof BoardElementApi
+     */
+    public elementControllerSetChecklistItemChecked(contentElementId: string, itemId: string, checklistItemCheckedBodyParams: ChecklistItemCheckedBodyParams, options?: any) {
+        return BoardElementApiFp(this.configuration).elementControllerSetChecklistItemChecked(contentElementId, itemId, checklistItemCheckedBodyParams, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

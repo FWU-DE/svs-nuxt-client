@@ -11,12 +11,16 @@ import {
 import { useEnvConfig } from "@data-env";
 import { useAddCollaboraFile } from "@feature-collabora";
 import {
+	mdiCheckboxMarkedOutline,
+	mdiClockOutline,
+	mdiCodeTags,
 	mdiFileDocumentOutline,
 	mdiFolderOpenOutline,
 	mdiFormatText,
 	mdiLink,
 	mdiPoll,
 	mdiPresentation,
+	mdiSigma,
 	mdiPuzzleOutline,
 	mdiTextBoxEditOutline,
 	mdiTrayArrowUp,
@@ -168,6 +172,35 @@ export const useAddElementDialog = (createElementRequestFn: CreateElementRequest
 				action: () => onElementClick(ContentElementType.POLL),
 				testId: "create-element-poll",
 			});
+		}
+
+		if (envConfig.value.FEATURE_COLUMN_BOARD_INTERACTIVE_ELEMENTS_ENABLED) {
+			options.push(
+				{
+					icon: mdiClockOutline,
+					label: t("components.elementTypeSelection.elements.deadlineElement.subtitle"),
+					action: () => onElementClick(ContentElementType.DEADLINE),
+					testId: "create-element-deadline",
+				},
+				{
+					icon: mdiCheckboxMarkedOutline,
+					label: t("components.elementTypeSelection.elements.checklistElement.subtitle"),
+					action: () => onElementClick(ContentElementType.CHECKLIST),
+					testId: "create-element-checklist",
+				},
+				{
+					icon: mdiCodeTags,
+					label: t("components.elementTypeSelection.elements.codeElement.subtitle"),
+					action: () => onElementClick(ContentElementType.CODE),
+					testId: "create-element-code",
+				},
+				{
+					icon: mdiSigma,
+					label: t("components.elementTypeSelection.elements.formulaElement.subtitle"),
+					action: () => onElementClick(ContentElementType.FORMULA),
+					testId: "create-element-formula",
+				}
+			);
 		}
 
 		if (envConfig.value.FEATURE_COLUMN_BOARD_COLLABORA_ENABLED) {

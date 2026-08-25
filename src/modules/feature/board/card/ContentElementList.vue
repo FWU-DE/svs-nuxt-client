@@ -37,6 +37,10 @@ import { FileContentElement } from "@feature-board-file-element";
 import { FolderContentElement } from "@feature-board-folder-element";
 import { H5pElement } from "@feature-board-h5p-element";
 import { LinkContentElement } from "@feature-board-link-element";
+import { ChecklistElement } from "@feature-board-checklist-element";
+import { CodeElement } from "@feature-board-code-element";
+import { DeadlineElement } from "@feature-board-deadline-element";
+import { FormulaElement } from "@feature-board-formula-element";
 import { PollElement } from "@feature-board-poll-element";
 import { RichTextContentElement } from "@feature-board-text-element";
 import { VideoConferenceContentElement } from "@feature-board-video-conference-element";
@@ -143,6 +147,26 @@ const mapToComponent = (type: ContentElementType) => {
 		case ContentElementType.POLL:
 			if (envConfig.value.FEATURE_COLUMN_BOARD_INTERACTIVE_ELEMENTS_ENABLED) {
 				return PollElement;
+			}
+			break;
+		case ContentElementType.DEADLINE:
+			if (envConfig.value.FEATURE_COLUMN_BOARD_INTERACTIVE_ELEMENTS_ENABLED) {
+				return DeadlineElement;
+			}
+			break;
+		case ContentElementType.CODE:
+			if (envConfig.value.FEATURE_COLUMN_BOARD_INTERACTIVE_ELEMENTS_ENABLED) {
+				return CodeElement;
+			}
+			break;
+		case ContentElementType.FORMULA:
+			if (envConfig.value.FEATURE_COLUMN_BOARD_INTERACTIVE_ELEMENTS_ENABLED) {
+				return FormulaElement;
+			}
+			break;
+		case ContentElementType.CHECKLIST:
+			if (envConfig.value.FEATURE_COLUMN_BOARD_INTERACTIVE_ELEMENTS_ENABLED) {
+				return ChecklistElement;
 			}
 			break;
 		case ContentElementType.H5P:

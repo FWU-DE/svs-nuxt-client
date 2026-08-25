@@ -7,6 +7,10 @@ import {
 	FileFolderElementResponse,
 	H5pElementResponse,
 	LinkElementResponse,
+	ChecklistElementResponse,
+	CodeElementResponse,
+	DeadlineElementResponse,
+	FormulaElementResponse,
 	ParentNodeInfoResponse,
 	ParentNodeType,
 	PollElementResponse,
@@ -26,7 +30,11 @@ export type AnyContentElement =
 	| CollaborativeTextEditorElementResponse
 	| VideoConferenceElementResponse
 	| H5pElementResponse
-	| PollElementResponse;
+	| PollElementResponse
+	| DeadlineElementResponse
+	| CodeElementResponse
+	| FormulaElementResponse
+	| ChecklistElementResponse;
 
 export type ParentNodeInfo = ParentNodeInfoResponse;
 

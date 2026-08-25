@@ -38,6 +38,25 @@ const PollElementContentSchema = z.object({
 	ownVote: z.array(z.string()),
 });
 
+const DeadlineElementContentSchema = z.object({
+	title: z.string(),
+	dueDate: z.string().nullable(),
+});
+
+const CodeElementContentSchema = z.object({
+	code: z.string(),
+	language: z.string(),
+});
+
+const FormulaElementContentSchema = z.object({
+	latex: z.string(),
+});
+
+const ChecklistElementContentSchema = z.object({
+	title: z.string(),
+	items: z.array(z.object({ id: z.string(), text: z.string(), checked: z.boolean() })),
+});
+
 const LinkElementContentSchema = z.object({
 	url: z.string(),
 	title: z.string(),
@@ -80,6 +99,10 @@ export const AnyContentElementSchema = z.object({
 		FileFolderElementContentSchema,
 		H5pElementContentSchema,
 		PollElementContentSchema,
+		DeadlineElementContentSchema,
+		CodeElementContentSchema,
+		FormulaElementContentSchema,
+		ChecklistElementContentSchema,
 		LinkElementContentSchema,
 		RichTextElementContentSchema,
 		DrawingElementContentSchema,

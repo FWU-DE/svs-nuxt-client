@@ -2,6 +2,7 @@ import { AnyContentElement } from "@/types/board/ContentElement";
 import {
 	CardCommentResponse,
 	CardResponse,
+	ChecklistElementResponse,
 	Colors,
 	ContentElementType,
 	CopyStatusEnum,
@@ -155,6 +156,20 @@ export type ReactToCardSuccessPayload = {
 };
 export type ReactToCardFailurePayload = {
 	cardId: string;
+};
+
+export type SetChecklistItemCheckedRequestPayload = {
+	elementId: string;
+	itemId: string;
+	checked: boolean;
+};
+export type SetChecklistItemCheckedSuccessPayload = {
+	elementId: string;
+	element: ChecklistElementResponse;
+	isOwnAction: boolean;
+};
+export type SetChecklistItemCheckedFailurePayload = {
+	elementId: string;
 };
 
 export type VoteInPollRequestPayload = {

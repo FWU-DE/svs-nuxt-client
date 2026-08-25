@@ -15,13 +15,17 @@
 
 import { CardCommentResponse } from './card-comment-response';
 import { CardReactionsResponse } from './card-reactions-response';
+import { ChecklistElementResponse } from './checklist-element-response';
+import { CodeElementResponse } from './code-element-response';
 import { CollaborativeTextEditorElementResponse } from './collaborative-text-editor-element-response';
 import { Colors } from './colors';
+import { DeadlineElementResponse } from './deadline-element-response';
 import { DeletedElementResponse } from './deleted-element-response';
 import { DrawingElementResponse } from './drawing-element-response';
 import { ExternalToolElementResponse } from './external-tool-element-response';
 import { FileElementResponse } from './file-element-response';
 import { FileFolderElementResponse } from './file-folder-element-response';
+import { FormulaElementResponse } from './formula-element-response';
 import { H5pElementResponse } from './h5p-element-response';
 import { LinkElementResponse } from './link-element-response';
 import { PollElementResponse } from './poll-element-response';
@@ -62,10 +66,10 @@ export interface CardResponse {
     height: number;
     /**
      * 
-     * @type {Array<ExternalToolElementResponse | FileElementResponse | LinkElementResponse | RichTextElementResponse | DrawingElementResponse | CollaborativeTextEditorElementResponse | DeletedElementResponse | VideoConferenceElementResponse | FileFolderElementResponse | H5pElementResponse | PollElementResponse>}
+     * @type {Array<ExternalToolElementResponse | FileElementResponse | LinkElementResponse | RichTextElementResponse | DrawingElementResponse | CollaborativeTextEditorElementResponse | DeletedElementResponse | VideoConferenceElementResponse | FileFolderElementResponse | H5pElementResponse | PollElementResponse | DeadlineElementResponse | CodeElementResponse | FormulaElementResponse | ChecklistElementResponse>}
      * @memberof CardResponse
      */
-    elements: Array<ExternalToolElementResponse | FileElementResponse | LinkElementResponse | RichTextElementResponse | DrawingElementResponse | CollaborativeTextEditorElementResponse | DeletedElementResponse | VideoConferenceElementResponse | FileFolderElementResponse | H5pElementResponse | PollElementResponse>;
+    elements: Array<ExternalToolElementResponse | FileElementResponse | LinkElementResponse | RichTextElementResponse | DrawingElementResponse | CollaborativeTextEditorElementResponse | DeletedElementResponse | VideoConferenceElementResponse | FileFolderElementResponse | H5pElementResponse | PollElementResponse | DeadlineElementResponse | CodeElementResponse | FormulaElementResponse | ChecklistElementResponse>;
     /**
      * 
      * @type {VisibilitySettingsResponse}

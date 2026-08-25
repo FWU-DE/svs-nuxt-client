@@ -26,6 +26,9 @@ import {
 	ReactToCardRequestPayload,
 	ReactToCardSuccessPayload,
 	RemoveCardCommentRequestPayload,
+	SetChecklistItemCheckedFailurePayload,
+	SetChecklistItemCheckedRequestPayload,
+	SetChecklistItemCheckedSuccessPayload,
 	ReportCardCommentRequestPayload,
 	UpdateCardColorFailurePayload,
 	UpdateCardColorRequestPayload,
@@ -88,6 +91,19 @@ export const reportCardCommentFailure = createAction("report-card-comment-failur
 export const reactToCardRequest = createAction("react-to-card-request", props<ReactToCardRequestPayload>());
 export const reactToCardSuccess = createAction("react-to-card-success", props<ReactToCardSuccessPayload>());
 export const reactToCardFailure = createAction("react-to-card-failure", props<ReactToCardFailurePayload>());
+
+export const setChecklistItemCheckedRequest = createAction(
+	"set-checklist-item-checked-request",
+	props<SetChecklistItemCheckedRequestPayload>()
+);
+export const setChecklistItemCheckedSuccess = createAction(
+	"set-checklist-item-checked-success",
+	props<SetChecklistItemCheckedSuccessPayload>()
+);
+export const setChecklistItemCheckedFailure = createAction(
+	"set-checklist-item-checked-failure",
+	props<SetChecklistItemCheckedFailurePayload>()
+);
 
 export const voteInPollRequest = createAction("vote-in-poll-request", props<VoteInPollRequestPayload>());
 export const voteInPollSuccess = createAction("vote-in-poll-success", props<VoteInPollSuccessPayload>());

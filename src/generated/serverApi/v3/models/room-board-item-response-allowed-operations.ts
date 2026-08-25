@@ -241,6 +241,12 @@ export interface RoomBoardItemResponseAllowedOperations {
      * @type {boolean}
      * @memberof RoomBoardItemResponseAllowedOperations
      */
+    checkChecklistItem?: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof RoomBoardItemResponseAllowedOperations
+     */
     manageVideoConference?: boolean;
     /**
      * 

@@ -241,6 +241,12 @@ export interface BoardResponseAllowedOperations {
      * @type {boolean}
      * @memberof BoardResponseAllowedOperations
      */
+    checkChecklistItem: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof BoardResponseAllowedOperations
+     */
     manageVideoConference: boolean;
     /**
      * 
