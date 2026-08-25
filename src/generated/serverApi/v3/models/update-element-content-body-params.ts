@@ -24,6 +24,7 @@ import { FormulaElementContentBody } from './formula-element-content-body';
 import { H5pElementContentBody } from './h5p-element-content-body';
 import { LinkElementContentBody } from './link-element-content-body';
 import { PollElementContentBody } from './poll-element-content-body';
+import { RecordingElementContentBody } from './recording-element-content-body';
 import { RichTextElementContentBody } from './rich-text-element-content-body';
 import { VideoConferenceElementContentBody } from './video-conference-element-content-body';
 
@@ -35,10 +36,10 @@ import { VideoConferenceElementContentBody } from './video-conference-element-co
 export interface UpdateElementContentBodyParams {
     /**
      * 
-     * @type {FileElementContentBody | LinkElementContentBody | RichTextElementContentBody | ExternalToolElementContentBody | DrawingElementContentBody | VideoConferenceElementContentBody | FileFolderElementContentBody | H5pElementContentBody | PollElementContentBody | DeadlineElementContentBody | CodeElementContentBody | FormulaElementContentBody | ChecklistElementContentBody}
+     * @type {FileElementContentBody | LinkElementContentBody | RichTextElementContentBody | ExternalToolElementContentBody | DrawingElementContentBody | VideoConferenceElementContentBody | FileFolderElementContentBody | H5pElementContentBody | PollElementContentBody | DeadlineElementContentBody | CodeElementContentBody | FormulaElementContentBody | ChecklistElementContentBody | RecordingElementContentBody}
      * @memberof UpdateElementContentBodyParams
      */
-    data: FileElementContentBody | LinkElementContentBody | RichTextElementContentBody | ExternalToolElementContentBody | DrawingElementContentBody | VideoConferenceElementContentBody | FileFolderElementContentBody | H5pElementContentBody | PollElementContentBody | DeadlineElementContentBody | CodeElementContentBody | FormulaElementContentBody | ChecklistElementContentBody;
+    data: FileElementContentBody | LinkElementContentBody | RichTextElementContentBody | ExternalToolElementContentBody | DrawingElementContentBody | VideoConferenceElementContentBody | FileFolderElementContentBody | H5pElementContentBody | PollElementContentBody | DeadlineElementContentBody | CodeElementContentBody | FormulaElementContentBody | ChecklistElementContentBody | RecordingElementContentBody;
 }
 
 

@@ -346,6 +346,11 @@ models/public-system-response.ts
 models/range-date.ts
 models/reaction-type-body-params.ts
 models/readers-can-edit-body-params.ts
+models/recording-content-body.ts
+models/recording-element-content-body.ts
+models/recording-element-content.ts
+models/recording-element-response.ts
+models/recording-media-type.ts
 models/redirect-response.ts
 models/registration-body-params.ts
 models/registration-item-response.ts

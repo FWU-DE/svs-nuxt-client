@@ -58,6 +58,7 @@
 			"@feature-board-code-element": ["./src/modules/feature/board-code-element"],
 			"@feature-board-formula-element": ["./src/modules/feature/board-formula-element"],
 			"@feature-board-checklist-element": ["./src/modules/feature/board-checklist-element"],
+			"@feature-board-recording-element": ["./src/modules/feature/board-recording-element"],
 			"@feature-board": ["./src/modules/feature/board"],
 			"@feature-dashboard": ["./src/modules/feature/dashboard"],
 			"@feature-course-sync": ["./src/modules/feature/course-sync"],

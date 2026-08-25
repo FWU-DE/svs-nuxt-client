@@ -57,6 +57,11 @@ const ChecklistElementContentSchema = z.object({
 	items: z.array(z.object({ id: z.string(), text: z.string(), checked: z.boolean() })),
 });
 
+const RecordingElementContentSchema = z.object({
+	mediaType: z.string(),
+	caption: z.string(),
+});
+
 const LinkElementContentSchema = z.object({
 	url: z.string(),
 	title: z.string(),
@@ -103,6 +108,7 @@ export const AnyContentElementSchema = z.object({
 		CodeElementContentSchema,
 		FormulaElementContentSchema,
 		ChecklistElementContentSchema,
+		RecordingElementContentSchema,
 		LinkElementContentSchema,
 		RichTextElementContentSchema,
 		DrawingElementContentSchema,

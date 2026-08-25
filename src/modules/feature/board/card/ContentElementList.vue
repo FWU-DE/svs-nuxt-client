@@ -42,6 +42,7 @@ import { CodeElement } from "@feature-board-code-element";
 import { DeadlineElement } from "@feature-board-deadline-element";
 import { FormulaElement } from "@feature-board-formula-element";
 import { PollElement } from "@feature-board-poll-element";
+import { RecordingElement } from "@feature-board-recording-element";
 import { RichTextContentElement } from "@feature-board-text-element";
 import { VideoConferenceContentElement } from "@feature-board-video-conference-element";
 import { PropType } from "vue";
@@ -167,6 +168,11 @@ const mapToComponent = (type: ContentElementType) => {
 		case ContentElementType.CHECKLIST:
 			if (envConfig.value.FEATURE_COLUMN_BOARD_INTERACTIVE_ELEMENTS_ENABLED) {
 				return ChecklistElement;
+			}
+			break;
+		case ContentElementType.RECORDING:
+			if (envConfig.value.FEATURE_COLUMN_BOARD_INTERACTIVE_ELEMENTS_ENABLED) {
+				return RecordingElement;
 			}
 			break;
 		case ContentElementType.H5P:

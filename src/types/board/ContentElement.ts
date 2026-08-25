@@ -14,6 +14,7 @@ import {
 	ParentNodeInfoResponse,
 	ParentNodeType,
 	PollElementResponse,
+	RecordingElementResponse,
 	RichTextElementResponse,
 	VideoConferenceElementResponse,
 } from "@api-server";
@@ -34,7 +35,8 @@ export type AnyContentElement =
 	| DeadlineElementResponse
 	| CodeElementResponse
 	| FormulaElementResponse
-	| ChecklistElementResponse;
+	| ChecklistElementResponse
+	| RecordingElementResponse;
 
 export type ParentNodeInfo = ParentNodeInfoResponse;
 

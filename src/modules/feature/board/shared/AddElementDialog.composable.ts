@@ -18,6 +18,7 @@ import {
 	mdiFolderOpenOutline,
 	mdiFormatText,
 	mdiLink,
+	mdiMicrophoneOutline,
 	mdiPoll,
 	mdiPresentation,
 	mdiSigma,
@@ -199,6 +200,12 @@ export const useAddElementDialog = (createElementRequestFn: CreateElementRequest
 					label: t("components.elementTypeSelection.elements.formulaElement.subtitle"),
 					action: () => onElementClick(ContentElementType.FORMULA),
 					testId: "create-element-formula",
+				},
+				{
+					icon: mdiMicrophoneOutline,
+					label: t("components.elementTypeSelection.elements.recordingElement.subtitle"),
+					action: () => onElementClick(ContentElementType.RECORDING),
+					testId: "create-element-recording",
 				}
 			);
 		}

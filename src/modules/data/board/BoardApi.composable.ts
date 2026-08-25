@@ -215,6 +215,7 @@ export const useBoardApi = () => {
 			ContentElementType.CODE,
 			ContentElementType.FORMULA,
 			ContentElementType.CHECKLIST,
+			ContentElementType.RECORDING,
 		];
 
 		if (simpleContentTypes.includes(element.type)) {

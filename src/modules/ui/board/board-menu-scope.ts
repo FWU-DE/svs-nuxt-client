@@ -17,4 +17,5 @@ export enum BoardMenuScope {
 	CODE_ELEMENT = "codeElement",
 	FORMULA_ELEMENT = "formulaElement",
 	CHECKLIST_ELEMENT = "checklistElement",
+	RECORDING_ELEMENT = "recordingElement",
 }

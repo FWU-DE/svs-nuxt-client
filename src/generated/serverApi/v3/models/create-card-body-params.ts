@@ -53,7 +53,8 @@ export enum CreateCardBodyParamsRequiredEmptyElements {
     DEADLINE = 'deadline',
     CODE = 'code',
     FORMULA = 'formula',
-    CHECKLIST = 'checklist'
+    CHECKLIST = 'checklist',
+    RECORDING = 'recording'
 }
 
 
