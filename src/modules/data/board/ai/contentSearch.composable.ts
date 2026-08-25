@@ -13,12 +13,17 @@ export interface ContentSearchResult {
 	subjects: string[];
 }
 
+/** wss://amb-relay.edufeed.org -> AMB, so the caption reads like a name and not like an address */
+const relayName = (relay: string): string =>
+	(relay.split("//").pop() ?? relay).split(".")[0].replace("-relay", "").toUpperCase();
+
 /**
- * Searches open educational material. The server asks the amb relay and oersi for us, so the
- * client only has to hand over what the teacher is looking for.
+ * Searches open educational material. The server asks the catalogues for us and answers with the
+ * ones it asked, so the client only has to hand over what the teacher is looking for.
  */
 export const useContentSearch = () => {
 	const results = ref<ContentSearchResult[]>([]);
+	const relays = ref<string[]>([]);
 	const isSearching = ref(false);
 	const hasFailed = ref(false);
 	const hasSearched = ref(false);
@@ -38,8 +43,9 @@ export const useContentSearch = () => {
 
 			if (!response.ok) throw new Error(`content search failed: ${response.status}`);
 
-			const payload = (await response.json()) as { data: ContentSearchResult[] };
+			const payload = (await response.json()) as { data: ContentSearchResult[]; relays?: string[] };
 			results.value = payload.data;
+			relays.value = (payload.relays ?? []).map(relayName);
 		} catch (error) {
 			hasFailed.value = true;
 			logger.error("Could not search for educational material", error);
@@ -51,6 +57,7 @@ export const useContentSearch = () => {
 
 	const reset = () => {
 		results.value = [];
+		relays.value = [];
 		hasFailed.value = false;
 		hasSearched.value = false;
 	};
@@ -60,6 +67,7 @@ export const useContentSearch = () => {
 		hasSearched,
 		isEmpty,
 		isSearching,
+		relays,
 		reset,
 		results,
 		search,

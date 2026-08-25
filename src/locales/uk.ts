@@ -476,11 +476,11 @@ export default {
 	"components.board.ai.action": "Доповнити за допомогою ші",
 	"components.board.ai.preset.material": "Знайти матеріали",
 	"components.board.ai.preset.material.hint":
-		"Пошук відкритих освітніх матеріалів у amb та oersi і вставлення їх як карток із посиланням.",
+		"Пошук відкритих освітніх матеріалів і вставлення їх як карток із посиланням.",
 	"components.board.ai.search.label": "Пошуковий запит",
 	"components.board.ai.search.placeholder": "напр. фотосинтез",
 	"components.board.ai.search.button": "Шукати матеріали",
-	"components.board.ai.search.relays": "Пошук виконується в релеї amb та в релеї oersi.",
+	"components.board.ai.search.relays": "Пошук у: {relays}.",
 	"components.board.ai.search.empty": "Нічого не знайдено. Спробуйте інший запит.",
 	"components.board.ai.search.error": "Пошук матеріалів зараз недоступний.",
 	"components.board.ai.title": "Додати картки за допомогою ші",

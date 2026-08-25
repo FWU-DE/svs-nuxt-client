@@ -474,11 +474,11 @@ export default {
 	"components.board.ai.action": "Completar con ia",
 	"components.board.ai.preset.material": "Buscar material",
 	"components.board.ai.preset.material.hint":
-		"Busca recursos educativos abiertos de amb y oersi e insértalos como tarjetas con enlace.",
+		"Busca recursos educativos abiertos e insértalos como tarjetas con enlace.",
 	"components.board.ai.search.label": "Término de búsqueda",
 	"components.board.ai.search.placeholder": "p. ej. fotosíntesis",
 	"components.board.ai.search.button": "Buscar material",
-	"components.board.ai.search.relays": "Se busca en el relay amb y en el relay oersi.",
+	"components.board.ai.search.relays": "Se ha buscado en: {relays}.",
 	"components.board.ai.search.empty": "No se encontró nada. Prueba otro término.",
 	"components.board.ai.search.error": "La búsqueda de material no está disponible en este momento.",
 	"components.board.ai.title": "Añadir tarjetas con ia",

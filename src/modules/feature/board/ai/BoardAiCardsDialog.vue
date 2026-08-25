@@ -92,7 +92,9 @@
 
 				<!-- found material -->
 				<div v-if="isSearchMode && results.length > 0" class="d-flex flex-column ga-2">
-					<p class="text-caption text-medium-emphasis">{{ t("components.board.ai.search.relays") }}</p>
+					<p class="text-caption text-medium-emphasis">
+						{{ t("components.board.ai.search.relays", { relays: relays.join(", ") }) }}
+					</p>
 					<VSheet
 						v-for="(result, index) in results"
 						:key="index"
@@ -208,7 +210,15 @@ const isOpen = defineModel({ type: Boolean, required: true });
 const { t } = useI18n();
 const boardStore = useBoardStore();
 const { cards, generate, hasFailed, insert, isGenerating, isInserting, reset } = useBoardAiCards();
-const { hasFailed: searchFailed, hasSearched, isSearching, reset: resetSearch, results, search } = useContentSearch();
+const {
+	hasFailed: searchFailed,
+	hasSearched,
+	isSearching,
+	relays,
+	reset: resetSearch,
+	results,
+	search,
+} = useContentSearch();
 
 const mode = ref<BoardAiMode>("differentiate");
 const prompt = ref("");

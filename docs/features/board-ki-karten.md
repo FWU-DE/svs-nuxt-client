@@ -28,7 +28,7 @@ Grundlage ist das, worauf du zeigst: Im **Kartenmenü** liest die KI genau diese
 ## Material finden
 
 Das sechste Preset fragt kein Modell, sondern einen Katalog: die **offenen Bildungsmaterialien aus
-AMB und OERSI**. Der Suchbegriff ist mit dem Kartentitel vorbelegt und lässt sich ändern.
+AMB, OERSI und SODIX**. Der Suchbegriff ist mit dem Kartentitel vorbelegt und lässt sich ändern.
 
 ![Materialsuche mit Treffern aus AMB und OERSI](images/board-material-search.png)
 
@@ -39,10 +39,15 @@ werden Karten mit Beschreibung, Lizenzangabe und Link auf die Quelle.
 > Ein Suchwort trifft besser als ein ganzer Satz: „Fotosynthese" liefert bessere Ergebnisse als
 > „Fotosynthese Sekundarstufe I", weil die Volltextsuche sonst auf „Sekundarstufe" anspringt.
 
-Gesucht wird in **zwei Katalogen zugleich**: AMB und OERSI. Die beiden decken Unterschiedliches ab —
-schulfachliche Begriffe wie „Fotosynthese" oder „Bruchrechnen" findet praktisch nur OERSI, während
-AMB bei allgemeinen und hochschulnahen Themen stark ist. Die Trefferliste nimmt deshalb abwechselnd
-aus beiden, damit kein Katalog den anderen verdrängt.
+Gesucht wird in **drei Katalogen zugleich**, und sie decken Unterschiedliches ab:
+
+| Katalog | Stärke |
+| --- | --- |
+| **SODIX** | Schulmaterial mit Bildungsstufe und Fach — Landesmedienzentren, Siemens Stiftung, Verlage |
+| **OERSI** | schulfachliche Begriffe wie „Fotosynthese" oder „Bruchrechnen", oft Videos und Skripte |
+| **AMB** | allgemeine und hochschulnahe Themen; bei Schulbegriffen häufig ohne Treffer |
+
+Die Trefferliste nimmt abwechselnd aus allen dreien, damit kein Katalog die anderen verdrängt.
 
 ## Nichts passiert ohne Zustimmung
 
