@@ -29,6 +29,7 @@ import {
 	UpdateBoardCommentsEnabledSuccessPayload,
 	UpdateBoardReactionTypeRequestPayload,
 	UpdateBoardReactionTypeSuccessPayload,
+	UpdateColumnSettingsSuccessPayload,
 	UpdateReaderCanEditSuccessPayload,
 } from "./boardActions/boardActionPayload.types";
 import { useBoardRestApi } from "./boardActions/boardRestApi.composable";
@@ -303,6 +304,16 @@ export const useBoardStore = defineStore("boardStore", () => {
 	 * Turning reactions off or switching the kind changes what every card's reaction totals
 	 * mean, so the cards are refetched rather than patched in place.
 	 */
+	const updateColumnSettingsRequest = socketOrRest.updateColumnSettingsRequest;
+
+	/**
+	 * What a column change means for each of its cards depends on what that card overrides
+	 * itself, so everyone reloads rather than being handed a resolved answer.
+	 */
+	const updateColumnSettingsSuccess = (_payload: UpdateColumnSettingsSuccessPayload) => {
+		void reloadBoard();
+	};
+
 	const updateBoardReactionTypeSuccess = (payload: UpdateBoardReactionTypeSuccessPayload) => {
 		if (!board.value) return;
 
@@ -543,6 +554,8 @@ export const useBoardStore = defineStore("boardStore", () => {
 		updateBoardVisibilityRequest,
 		updateBoardVisibilitySuccess,
 		updateBoardReactionTypeRequest,
+		updateColumnSettingsRequest,
+		updateColumnSettingsSuccess,
 		updateBoardReactionTypeSuccess,
 		updateBoardCommentsEnabledRequest,
 		updateBoardCommentsEnabledSuccess,

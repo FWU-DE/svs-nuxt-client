@@ -242,7 +242,7 @@ export const useBoardApi = () => {
 	const reportCardCommentCall = async (cardId: string, commentId: string, reason?: string) =>
 		cardsApi.cardControllerReportComment(cardId, commentId, { reason });
 
-	const updateBoardCommentsEnabledCall = async (boardId: string, commentsEnabled: boolean) =>
+	const updateBoardCommentsEnabledCall = async (boardId: string, commentsEnabled: boolean | null) =>
 		boardApi.boardControllerUpdateCommentsEnabled(boardId, { commentsEnabled });
 
 	const updateCardSettingsCall = async (
@@ -253,7 +253,12 @@ export const useBoardApi = () => {
 	const reactToCardCall = async (cardId: string, value?: number) =>
 		cardsApi.cardControllerReactToCard(cardId, { value });
 
-	const updateBoardReactionTypeCall = async (boardId: string, reactionType: CardReactionType) =>
+	const updateColumnSettingsCall = async (
+		columnId: string,
+		settings: { commentsEnabled?: boolean | null; reactionType?: CardReactionType | null }
+	) => boardColumnApi.columnControllerUpdateColumnSettings(columnId, settings);
+
+	const updateBoardReactionTypeCall = async (boardId: string, reactionType: CardReactionType | null) =>
 		boardApi.boardControllerUpdateReactionType(boardId, { reactionType });
 
 	const setChecklistItemCheckedCall = async (elementId: string, itemId: string, checked: boolean) =>
@@ -391,6 +396,7 @@ export const useBoardApi = () => {
 		reportCardCommentCall,
 		updateBoardCommentsEnabledCall,
 		updateBoardReactionTypeCall,
+		updateColumnSettingsCall,
 		createCardCall,
 		duplicateCardCall,
 		duplicateColumnCall,

@@ -14,6 +14,30 @@
 			<div class="mb-8">
 				<RoomColorPicker v-model:color="roomData.color" />
 			</div>
+			<div class="mb-8">
+				<div class="mb-1 text-subtitle-1">
+					{{ t("components.roomForm.labels.feedback.title") }}
+				</div>
+				<p class="checkbox-label mb-3">
+					{{ t("components.roomForm.labels.feedback.helperText") }}
+				</p>
+				<VCheckbox
+					v-model="roomData.commentsEnabled"
+					class="align-start"
+					data-testid="room-comments-checkbox"
+					:label="t('components.roomForm.labels.feedback.comments')"
+				/>
+				<VSelect
+					v-model="roomData.reactionType"
+					:items="reactionTypeItems"
+					:label="t('components.roomForm.labels.feedback.reactions')"
+					density="compact"
+					variant="outlined"
+					hide-details
+					data-testid="room-reaction-type-select"
+				/>
+			</div>
+
 			<div class="mb-16">
 				<div class="mb-1 text-subtitle-1">
 					{{ t("components.roomForm.labels.videoConference.title") }}
@@ -53,7 +77,7 @@
 import RoomColorPicker from "./RoomColorPicker/RoomColorPicker.vue";
 import { RoomCreateParams, RoomUpdateParams } from "@/types/room/Room";
 import { askCancel } from "@/utils/confirmation-dialog.utils";
-import { RoomFeatures } from "@api-server";
+import { CardReactionType, RoomFeatures } from "@api-server";
 import { isNonEmptyString, isOfMaxLength, useOpeningTagValidator } from "@util-validators";
 import { computed, PropType, ref, useTemplateRef } from "vue";
 import { useI18n } from "vue-i18n";
@@ -70,6 +94,17 @@ const emit = defineEmits(["save", "cancel"]);
 const { t } = useI18n();
 
 const roomData = computed(() => props.room);
+
+/**
+ * The room only sets the default; a board, a column or a single card may overrule it. "Aus" is
+ * therefore not a ban, it is the starting point — which is why it is the default.
+ */
+const reactionTypeItems = computed(() => [
+	{ value: CardReactionType.NONE, title: t("components.roomForm.labels.feedback.reactions.none") },
+	{ value: CardReactionType.LIKE, title: t("components.roomForm.labels.feedback.reactions.like") },
+	{ value: CardReactionType.STAR, title: t("components.roomForm.labels.feedback.reactions.star") },
+	{ value: CardReactionType.VOTE, title: t("components.roomForm.labels.feedback.reactions.vote") },
+]);
 const initialRoomData = ref(JSON.stringify(roomData.value));
 const roomForm = useTemplateRef("roomForm");
 

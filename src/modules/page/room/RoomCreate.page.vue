@@ -12,6 +12,7 @@
 <script setup lang="ts">
 import { ApiResponseError } from "@/types/common/commons";
 import { RoomColor, RoomCreateParams } from "@/types/room/Room";
+import { CardReactionType } from "@api-server";
 import { buildPageTitle } from "@/utils/pageTitle";
 import { notifyError } from "@data-app";
 import { useRoomStore } from "@data-room";
@@ -30,6 +31,9 @@ const roomData = ref<RoomCreateParams>({
 	name: "",
 	color: RoomColor.BLUE_GREY,
 	features: [],
+	// Off by default, so a new room starts out behaving like every board did before.
+	commentsEnabled: false,
+	reactionType: CardReactionType.NONE,
 });
 
 const { createRoom } = useRoomStore();

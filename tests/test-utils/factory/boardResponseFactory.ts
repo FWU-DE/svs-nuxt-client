@@ -10,11 +10,12 @@ export const boardResponseFactory = Factory.define<BoardResponse>(({ sequence, p
 	isVisible: false,
 	layout: BoardLayout.COLUMNS,
 	features: [],
-	permissions: [],
 	allowedOperations: getAllowedOperations(params?.allowedOperations || {}),
 	readersCanEdit: false,
-	reactionType: CardReactionType.NONE,
-	commentsEnabled: false,
+	reactionType: null,
+	commentsEnabled: null,
+	roomReactionType: CardReactionType.NONE,
+	roomCommentsEnabled: false,
 }));
 
 type OperationsKey = keyof BoardResponseAllowedOperations;

@@ -39,6 +39,7 @@
 						<KebabMenuActionMoveLeft v-if="isNotFirstColumn" @click="onMoveColumnLeft" />
 						<KebabMenuActionMoveRight v-if="isNotLastColumn" @click="onMoveColumnRight" />
 					</template>
+					<KebabMenuActionColumnSettings v-if="canChangeSettings" @click="emit('settings:column')" />
 					<KebabMenuActionDelete :name="title" @click="onDelete" />
 				</BoardMenu>
 			</div>
@@ -53,6 +54,7 @@ import BoardColumnInteractionHandler from "./BoardColumnInteractionHandler.vue";
 import { useSafeTaskRunner } from "@/composables/async-tasks.composable";
 import { askDeletionForType } from "@/utils/confirmation-dialog.utils";
 import { useBoardAllowedOperations, useBoardFocusHandler, useBoardStore, useCourseBoardEditMode } from "@data-board";
+import KebabMenuActionColumnSettings from "../column/KebabMenuActionColumnSettings.vue";
 import { BoardMenu, BoardMenuScope } from "@ui-board";
 import {
 	KebabMenuActionDelete,
@@ -64,12 +66,13 @@ import {
 	KebabMenuActionRename,
 } from "@ui-kebab-menu";
 import { watchDebounced } from "@vueuse/core";
-import { ref, toRef, watch } from "vue";
+import { computed, ref, toRef, watch } from "vue";
 import { useI18n } from "vue-i18n";
 
 const props = defineProps({
 	canEditColumn: { type: Boolean, required: true },
 	canDeleteColumn: { type: Boolean, required: true },
+	canChangeSettings: { type: Boolean, required: false },
 	columnId: { type: String, required: true },
 	index: { type: Number, required: true },
 	isListBoard: { type: Boolean, required: true },
@@ -80,6 +83,7 @@ const props = defineProps({
 
 const emit = defineEmits([
 	"delete:column",
+	"settings:column",
 	"move:column-down",
 	"move:column-left",
 	"move:column-right",
@@ -89,6 +93,8 @@ const emit = defineEmits([
 const { t } = useI18n();
 
 const { allowedOperations } = useBoardAllowedOperations();
+
+
 
 const columnId = toRef(props, "columnId");
 const columnTitle = toRef(props, "title");

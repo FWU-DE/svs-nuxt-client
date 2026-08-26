@@ -1,6 +1,7 @@
 import { AnyContentElement } from "@/types/board/ContentElement";
 import {
 	CardCommentResponse,
+	CardReactionType,
 	CardResponse,
 	ChecklistElementResponse,
 	Colors,
@@ -149,6 +150,7 @@ export type UpdateCardSettingsRequestPayload = {
 	cardId: string;
 	commentsEnabled?: boolean | null;
 	readersCanEdit?: boolean | null;
+	reactionType?: CardReactionType | null;
 };
 export type UpdateCardSettingsSuccessPayload = {
 	cardId: string;

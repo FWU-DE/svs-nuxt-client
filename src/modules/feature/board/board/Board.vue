@@ -115,6 +115,8 @@
 					v-model="isSelectReactionTypeDialogOpen"
 					:current-type="board.reactionType"
 					:comments-enabled="board.commentsEnabled"
+					:room-reaction-type="board.roomReactionType"
+					:room-comments-enabled="board.roomCommentsEnabled"
 					@select="onSelectReactionType"
 					@toggle-comments="onToggleComments"
 				/>
@@ -481,13 +483,13 @@ const onChangeReactions = () => {
 	isSelectReactionTypeDialogOpen.value = true;
 };
 
-const onSelectReactionType = (reactionType: CardReactionType) => {
+const onSelectReactionType = (reactionType: CardReactionType | null) => {
 	if (!board.value) return;
 
 	boardStore.updateBoardReactionTypeRequest({ boardId: board.value.id, reactionType });
 };
 
-const onToggleComments = (commentsEnabled: boolean) => {
+const onToggleComments = (commentsEnabled: boolean | null) => {
 	if (!board.value) return;
 
 	boardStore.updateBoardCommentsEnabledRequest({ boardId: board.value.id, commentsEnabled });

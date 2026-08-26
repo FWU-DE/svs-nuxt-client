@@ -181,9 +181,23 @@ export type UpdateReaderCanEditSuccessPayload = {
 };
 export type UpdateReaderCanEditFailurePayload = UpdateReaderCanEditRequestPayload;
 
+export type UpdateColumnSettingsRequestPayload = {
+	columnId: string;
+	commentsEnabled?: boolean | null;
+	reactionType?: CardReactionType | null;
+};
+export type UpdateColumnSettingsSuccessPayload = {
+	columnId: string;
+	isOwnAction: boolean;
+};
+export type UpdateColumnSettingsFailurePayload = {
+	columnId: string;
+};
+
 export type UpdateBoardReactionTypeRequestPayload = {
 	boardId: string;
-	reactionType: CardReactionType;
+	/** null puts the board back under the room's setting. */
+	reactionType: CardReactionType | null;
 };
 export type UpdateBoardReactionTypeSuccessPayload = UpdateBoardReactionTypeRequestPayload & {
 	isOwnAction: boolean;
@@ -192,7 +206,8 @@ export type UpdateBoardReactionTypeFailurePayload = UpdateBoardReactionTypeReque
 
 export type UpdateBoardCommentsEnabledRequestPayload = {
 	boardId: string;
-	commentsEnabled: boolean;
+	/** null puts the board back under the room's setting. */
+	commentsEnabled: boolean | null;
 };
 export type UpdateBoardCommentsEnabledSuccessPayload = UpdateBoardCommentsEnabledRequestPayload & {
 	isOwnAction: boolean;

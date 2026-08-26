@@ -1,43 +1,36 @@
 <template>
-	<SvsDialog v-model="isOpen" no-confirm title="components.boardCard.settings.title" data-testid="card-settings-dialog">
+	<SvsDialog
+		v-model="isOpen"
+		no-confirm
+		title="components.boardColumn.settings.title"
+		data-testid="column-settings-dialog"
+	>
 		<template #content>
 			<p class="text-body-2 text-medium-emphasis mb-4">
-				{{ t("components.boardCard.settings.description") }}
+				{{ t("components.boardColumn.settings.description") }}
 			</p>
 
 			<VSelect
 				:model-value="String(commentsEnabled)"
-				:items="options(t('components.board.comments.toggle'))"
+				:items="commentOptions"
 				:label="t('components.board.comments.title')"
 				density="compact"
 				variant="outlined"
 				class="mb-3"
 				hide-details
-				data-testid="card-settings-comments"
-				@update:model-value="onChange('commentsEnabled', $event)"
+				data-testid="column-settings-comments"
+				@update:model-value="onCommentsChange"
 			/>
 
 			<VSelect
-				:model-value="reactionType ?? 'null'"
+				:model-value="reactionType ?? INHERIT"
 				:items="reactionOptions"
 				:label="t('components.board.reactionType.title')"
 				density="compact"
 				variant="outlined"
-				class="mb-3"
 				hide-details
-				data-testid="card-settings-reactions"
+				data-testid="column-settings-reactions"
 				@update:model-value="onReactionChange"
-			/>
-
-			<VSelect
-				:model-value="String(readersCanEdit)"
-				:items="options(t('components.boardCard.settings.readersCanEdit'))"
-				:label="t('components.boardCard.settings.editing')"
-				density="compact"
-				variant="outlined"
-				hide-details
-				data-testid="card-settings-editing"
-				@update:model-value="onChange('readersCanEdit', $event)"
 			/>
 		</template>
 	</SvsDialog>
@@ -53,44 +46,45 @@ const isOpen = defineModel({ type: Boolean, required: true });
 
 defineProps({
 	commentsEnabled: { type: [Boolean, null] as PropType<boolean | null>, default: null },
-	readersCanEdit: { type: [Boolean, null] as PropType<boolean | null>, default: null },
 	reactionType: { type: String as PropType<CardReactionType | null>, default: null },
 });
 
 const emit = defineEmits<{
-	(e: "change", field: "commentsEnabled" | "readersCanEdit", value: boolean | null): void;
+	(e: "change-comments", value: boolean | null): void;
 	(e: "change-reactions", value: CardReactionType | null): void;
 }>();
 
 const { t } = useI18n();
 
 /**
- * Three states, not two: "follows the board" has to stay distinguishable from "off here", or a
- * card could never be handed back to the board setting.
+ * A select cannot hold null, so "follows the board" travels as this sentinel and becomes null
+ * again on the way out — the third state is what lets a column be handed back to its board.
  */
-const options = (onLabel: string) => [
-	{ value: "null", title: t("components.boardCard.settings.inherit") },
-	{ value: "true", title: onLabel },
+const INHERIT = "null";
+
+const commentOptions = computed(() => [
+	{ value: INHERIT, title: t("components.boardColumn.settings.inherit") },
+	{ value: "true", title: t("components.board.comments.toggle") },
 	{ value: "false", title: t("components.boardCard.settings.off") },
-];
+]);
 
 const reactionOptions = computed(() => [
-	{ value: "null", title: t("components.boardCard.settings.inherit") },
+	{ value: INHERIT, title: t("components.boardColumn.settings.inherit") },
 	{ value: CardReactionType.NONE, title: t("components.board.reactionType.none") },
 	{ value: CardReactionType.LIKE, title: t("components.board.reactionType.like") },
 	{ value: CardReactionType.STAR, title: t("components.board.reactionType.star") },
 	{ value: CardReactionType.VOTE, title: t("components.board.reactionType.vote") },
 ]);
 
+const onCommentsChange = (value: string | null) => {
+	if (value === null) return;
+
+	emit("change-comments", value === INHERIT ? null : value === "true");
+};
+
 const onReactionChange = (value: string | null) => {
 	if (value === null) return;
 
-	emit("change-reactions", value === "null" ? null : (value as CardReactionType));
-};
-
-const onChange = (field: "commentsEnabled" | "readersCanEdit", value: string | null) => {
-	if (value === null) return;
-
-	emit("change", field, value === "null" ? null : value === "true");
+	emit("change-reactions", value === INHERIT ? null : (value as CardReactionType));
 };
 </script>

@@ -88,7 +88,9 @@
 						v-model="isSettingsDialogOpen"
 						:comments-enabled="card.commentsEnabled ?? null"
 						:readers-can-edit="card.readersCanEdit ?? null"
+						:reaction-type="card.cardReactionType ?? null"
 						@change="onChangeCardSetting"
+						@change-reactions="onChangeCardReactions"
 					/>
 					<CardCommentSection
 						v-if="card.comments"
@@ -124,7 +126,7 @@ import { ElementMove, verticalCursorKeys } from "@/types/board/DragAndDrop";
 import { colorToHexLighten3, colorToHexLighten5 } from "@/utils/color.utils";
 import { askDeletionForType } from "@/utils/confirmation-dialog.utils";
 import { delay } from "@/utils/helpers";
-import { Colors } from "@api-server";
+import { CardReactionType, Colors } from "@api-server";
 import {
 	useBoardAllowedOperations,
 	useBoardFocusHandler,
@@ -248,6 +250,10 @@ const areInteractiveElementsEnabled = computed(
 
 const onChangeCardSetting = (field: "commentsEnabled" | "readersCanEdit", value: boolean | null) => {
 	cardStore.updateCardSettingsRequest({ cardId: cardId.value, [field]: value });
+};
+
+const onChangeCardReactions = (reactionType: CardReactionType | null) => {
+	cardStore.updateCardSettingsRequest({ cardId: cardId.value, reactionType });
 };
 
 const onAddElement = () => askType();

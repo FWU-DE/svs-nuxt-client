@@ -20,6 +20,7 @@ import {
 	UpdateColumnTitleRequestPayload,
 	UpdateBoardCommentsEnabledRequestPayload,
 	UpdateBoardReactionTypeRequestPayload,
+	UpdateColumnSettingsRequestPayload,
 	UpdateReaderCanEditRequestPayload,
 } from "./boardActionPayload.types";
 import * as BoardActions from "./boardActions";
@@ -65,6 +66,7 @@ export const useBoardSocketApi = () => {
 			on(BoardActions.updateBoardLayoutSuccess, boardStore.updateBoardLayoutSuccess),
 			on(BoardActions.updateReaderCanEditSuccess, boardStore.updateReaderCanEditSuccess),
 			on(BoardActions.updateBoardReactionTypeSuccess, boardStore.updateBoardReactionTypeSuccess),
+			on(BoardActions.updateColumnSettingsSuccess, boardStore.updateColumnSettingsSuccess),
 			on(BoardActions.updateBoardCommentsEnabledSuccess, boardStore.updateBoardCommentsEnabledSuccess),
 			on(BoardActions.duplicateColumnSuccess, boardStore.duplicateColumnSuccess),
 		];
@@ -190,6 +192,10 @@ export const useBoardSocketApi = () => {
 		emitOnSocket("update-readers-can-edit-request", payload);
 	};
 
+	const updateColumnSettingsRequest = (payload: UpdateColumnSettingsRequestPayload) => {
+		emitOnSocket("update-column-settings-request", payload);
+	};
+
 	const updateBoardReactionTypeRequest = (payload: UpdateBoardReactionTypeRequestPayload) => {
 		emitOnSocket("update-board-reaction-type-request", payload);
 	};
@@ -253,6 +259,7 @@ export const useBoardSocketApi = () => {
 		updateReaderCanEditRequest,
 		updateBoardReactionTypeRequest,
 		updateBoardCommentsEnabledRequest,
+		updateColumnSettingsRequest,
 		duplicateColumnRequest,
 	};
 };
