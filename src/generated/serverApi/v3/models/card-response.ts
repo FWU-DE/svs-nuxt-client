@@ -95,6 +95,18 @@ export interface CardResponse {
      * @memberof CardResponse
      */
     comments?: Array<CardCommentResponse>;
+    /**
+     * This card\'s own comment setting. null means it follows the board.
+     * @type {boolean}
+     * @memberof CardResponse
+     */
+    commentsEnabled?: boolean | null;
+    /**
+     * This card\'s own editing setting. null means it follows the board.
+     * @type {boolean}
+     * @memberof CardResponse
+     */
+    readersCanEdit?: boolean | null;
 }
 
 

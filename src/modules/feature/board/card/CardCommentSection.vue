@@ -29,13 +29,15 @@
 				auto-grow
 				density="compact"
 				variant="outlined"
-				hide-details
 				class="mt-2"
 				:maxlength="MAX_LENGTH"
 				:label="t('components.boardCard.comment.placeholder')"
+				:hint="t('components.boardCard.comment.hint')"
+				persistent-hint
 				data-testid="card-comment-input"
 				@click.stop
 				@keydown.stop
+				@keydown.enter.exact.prevent="onSubmit"
 			/>
 			<div class="d-flex justify-end mt-1">
 				<VBtn size="small" variant="tonal" :disabled="!isDraftValid" data-testid="card-comment-submit" @click.stop="onSubmit">

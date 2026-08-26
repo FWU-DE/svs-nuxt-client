@@ -32,6 +32,18 @@ export interface CodeContentBody {
      * @memberof CodeContentBody
      */
     language: string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof CodeContentBody
+     */
+    showLineNumbers: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof CodeContentBody
+     */
+    syntaxHighlighting: boolean;
 }
 
 

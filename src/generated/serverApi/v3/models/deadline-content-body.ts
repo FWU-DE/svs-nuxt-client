@@ -32,6 +32,12 @@ export interface DeadlineContentBody {
      * @memberof DeadlineContentBody
      */
     dueDate?: string;
+    /**
+     * List this deadline in the calendar of everyone who can see the board.
+     * @type {boolean}
+     * @memberof DeadlineContentBody
+     */
+    showInCalendar: boolean;
 }
 
 

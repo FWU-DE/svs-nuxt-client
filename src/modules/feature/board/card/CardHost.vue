@@ -56,6 +56,10 @@
 							<KebabMenuActionExport v-if="allowedOperations?.moveCard" @click="onMoveCard(cardId)" />
 							<KebabMenuActionShare v-if="allowedOperations?.shareCard" @click="onShareCard" />
 							<KebabMenuActionShareLink :scope="BoardMenuScope.CARD" @click="onCopyShareLink" />
+							<KebabMenuActionCardSettings
+								v-if="areInteractiveElementsEnabled && allowedOperations?.updateCardSettings"
+								@click="isSettingsDialogOpen = true"
+							/>
 							<KebabMenuActionDelete
 								v-if="allowedOperations?.deleteCard"
 								:name="card.title"
@@ -80,6 +84,12 @@
 						<CardAddElementMenu v-if="isEditMode" @add-element="onAddElement" />
 					</div>
 					<CardReactionBar v-if="card.reactions" :reactions="card.reactions" @react="onReact" />
+					<CardSettingsDialog
+						v-model="isSettingsDialogOpen"
+						:comments-enabled="card.commentsEnabled ?? null"
+						:readers-can-edit="card.readersCanEdit ?? null"
+						@change="onChangeCardSetting"
+					/>
 					<CardCommentSection
 						v-if="card.comments"
 						:comments="card.comments"
@@ -106,6 +116,8 @@ import CardSkeleton from "./CardSkeleton.vue";
 import CardTitle from "./CardTitle.vue";
 import CardCommentSection from "./CardCommentSection.vue";
 import CardReactionBar from "./CardReactionBar.vue";
+import CardSettingsDialog from "./CardSettingsDialog.vue";
+import KebabMenuActionCardSettings from "./KebabMenuActionCardSettings.vue";
 import ContentElementList from "./ContentElementList.vue";
 import { useSafeTaskRunner } from "@/composables/async-tasks.composable";
 import { ElementMove, verticalCursorKeys } from "@/types/board/DragAndDrop";
@@ -120,6 +132,7 @@ import {
 	useCardStore,
 	useCourseBoardEditMode,
 } from "@data-board";
+import { useEnvConfig } from "@data-env";
 import { BoardMenu, BoardMenuScope, DetailViewButton } from "@ui-board";
 import { SvsColorPickerMenu } from "@ui-controls";
 import {
@@ -225,6 +238,16 @@ const onDeleteCard = async () => {
 	if (shouldDelete && card.value?.id) {
 		emit("delete:card", card.value.id);
 	}
+};
+
+const isSettingsDialogOpen = ref(false);
+
+const areInteractiveElementsEnabled = computed(
+	() => useEnvConfig().value.FEATURE_COLUMN_BOARD_INTERACTIVE_ELEMENTS_ENABLED
+);
+
+const onChangeCardSetting = (field: "commentsEnabled" | "readersCanEdit", value: boolean | null) => {
+	cardStore.updateCardSettingsRequest({ cardId: cardId.value, [field]: value });
 };
 
 const onAddElement = () => askType();

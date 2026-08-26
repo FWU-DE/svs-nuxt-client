@@ -15,6 +15,7 @@ import {
 	AddCardCommentRequestPayload,
 	EditCardCommentRequestPayload,
 	ReactToCardRequestPayload,
+	UpdateCardSettingsRequestPayload,
 	RemoveCardCommentRequestPayload,
 	ReportCardCommentRequestPayload,
 	SetChecklistItemCheckedRequestPayload,
@@ -58,6 +59,7 @@ export const useCardSocketApi = () => {
 			on(CardActions.voteInPollSuccess, cardStore.voteInPollSuccess),
 			on(CardActions.setChecklistItemCheckedSuccess, cardStore.setChecklistItemCheckedSuccess),
 			on(CardActions.reactToCardSuccess, cardStore.reactToCardSuccess),
+			on(CardActions.updateCardSettingsSuccess, cardStore.updateCardSettingsSuccess),
 			on(CardActions.addCardCommentSuccess, cardStore.cardCommentSuccess),
 			on(CardActions.editCardCommentSuccess, cardStore.cardCommentSuccess),
 			on(CardActions.removeCardCommentSuccess, cardStore.cardCommentSuccess),
@@ -78,6 +80,7 @@ export const useCardSocketApi = () => {
 			on(CardActions.voteInPollFailure, () => reloadBoard()),
 			on(CardActions.setChecklistItemCheckedFailure, () => reloadBoard()),
 			on(CardActions.reactToCardFailure, ({ cardId }) => reloadBoard(cardId)),
+			on(CardActions.updateCardSettingsFailure, ({ cardId }) => reloadBoard(cardId)),
 			on(CardActions.addCardCommentFailure, ({ cardId }) => reloadBoard(cardId)),
 			on(CardActions.editCardCommentFailure, ({ cardId }) => reloadBoard(cardId)),
 			on(CardActions.removeCardCommentFailure, ({ cardId }) => reloadBoard(cardId)),
@@ -173,6 +176,10 @@ export const useCardSocketApi = () => {
 		emitOnSocket("report-card-comment-request", payload);
 	};
 
+	const updateCardSettingsRequest = async (payload: UpdateCardSettingsRequestPayload) => {
+		emitOnSocket("update-card-settings-request", payload);
+	};
+
 	const reactToCardRequest = async (payload: ReactToCardRequestPayload) => {
 		emitOnSocket("react-to-card-request", payload);
 	};
@@ -229,6 +236,7 @@ export const useCardSocketApi = () => {
 		voteInPollRequest,
 		setChecklistItemCheckedRequest,
 		reactToCardRequest,
+		updateCardSettingsRequest,
 		addCardCommentRequest,
 		editCardCommentRequest,
 		removeCardCommentRequest,

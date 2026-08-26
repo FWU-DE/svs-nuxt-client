@@ -32,6 +32,18 @@ export interface CodeElementContent {
      * @memberof CodeElementContent
      */
     language: string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof CodeElementContent
+     */
+    showLineNumbers: boolean;
+    /**
+     * Highlighting happens in the client; the code is always stored verbatim.
+     * @type {boolean}
+     * @memberof CodeElementContent
+     */
+    syntaxHighlighting: boolean;
 }
 
 

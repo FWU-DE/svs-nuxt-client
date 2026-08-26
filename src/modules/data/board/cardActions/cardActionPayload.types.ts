@@ -145,6 +145,20 @@ export type CardCommentFailurePayload = {
 	cardId: string;
 };
 
+export type UpdateCardSettingsRequestPayload = {
+	cardId: string;
+	commentsEnabled?: boolean | null;
+	readersCanEdit?: boolean | null;
+};
+export type UpdateCardSettingsSuccessPayload = {
+	cardId: string;
+	card: CardResponse;
+	isOwnAction: boolean;
+};
+export type UpdateCardSettingsFailurePayload = {
+	cardId: string;
+};
+
 export type ReactToCardRequestPayload = {
 	cardId: string;
 	value?: number;

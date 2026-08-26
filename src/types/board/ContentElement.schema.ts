@@ -41,11 +41,14 @@ const PollElementContentSchema = z.object({
 const DeadlineElementContentSchema = z.object({
 	title: z.string(),
 	dueDate: z.string().nullable(),
+	showInCalendar: z.boolean(),
 });
 
 const CodeElementContentSchema = z.object({
 	code: z.string(),
 	language: z.string(),
+	showLineNumbers: z.boolean(),
+	syntaxHighlighting: z.boolean(),
 });
 
 const FormulaElementContentSchema = z.object({

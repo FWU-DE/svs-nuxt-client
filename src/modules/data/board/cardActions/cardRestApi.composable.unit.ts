@@ -109,6 +109,78 @@ describe("useCardRestApi", () => {
 		return { boardStore, cardStore, card, preferredExternalToolStore };
 	};
 
+	describe("card comments", () => {
+		const buildComment = () => ({
+			id: "comment-1",
+			text: "Eine Frage",
+			authorId: "user-1",
+			authorName: "Marie Muster",
+			isOwn: true,
+			isRemoved: false,
+			removedByModerator: false,
+			isEdited: false,
+			ownReport: false,
+			timestamps: { createdAt: "2026-01-01T00:00:00Z", lastUpdatedAt: "2026-01-01T00:00:00Z" },
+		});
+
+		it("should post the comment and hand the saved one to the store", async () => {
+			const { cardStore, card } = setup();
+			const comment = buildComment();
+			mockedBoardApiCalls.addCardCommentCall.mockResolvedValue({ data: comment } as never);
+			const { addCardCommentRequest } = useCardRestApi();
+
+			await addCardCommentRequest({ cardId: card.id, text: "Eine Frage" });
+
+			expect(mockedBoardApiCalls.addCardCommentCall).toHaveBeenCalledWith(card.id, "Eine Frage");
+			expect(cardStore.cardCommentSuccess).toHaveBeenCalledWith({
+				cardId: card.id,
+				comment,
+				isOwnAction: true,
+			});
+		});
+
+		it("should not tell the store a comment was saved when the request failed", async () => {
+			const { cardStore, card } = setup();
+			mockedBoardApiCalls.addCardCommentCall.mockRejectedValue(new Error("boom"));
+			const { addCardCommentRequest } = useCardRestApi();
+
+			await addCardCommentRequest({ cardId: card.id, text: "Eine Frage" });
+
+			expect(cardStore.cardCommentSuccess).not.toHaveBeenCalled();
+			expect(mockedErrorHandler.handleError).toHaveBeenCalled();
+		});
+
+		it("should send an edit for the right comment", async () => {
+			const { card } = setup();
+			mockedBoardApiCalls.editCardCommentCall.mockResolvedValue({ data: buildComment() } as never);
+			const { editCardCommentRequest } = useCardRestApi();
+
+			await editCardCommentRequest({ cardId: card.id, commentId: "comment-1", text: "Korrigiert" });
+
+			expect(mockedBoardApiCalls.editCardCommentCall).toHaveBeenCalledWith(card.id, "comment-1", "Korrigiert");
+		});
+
+		it("should send a removal for the right comment", async () => {
+			const { card } = setup();
+			mockedBoardApiCalls.removeCardCommentCall.mockResolvedValue({ data: buildComment() } as never);
+			const { removeCardCommentRequest } = useCardRestApi();
+
+			await removeCardCommentRequest({ cardId: card.id, commentId: "comment-1" });
+
+			expect(mockedBoardApiCalls.removeCardCommentCall).toHaveBeenCalledWith(card.id, "comment-1");
+		});
+
+		it("should pass the report reason through", async () => {
+			const { card } = setup();
+			mockedBoardApiCalls.reportCardCommentCall.mockResolvedValue({ data: buildComment() } as never);
+			const { reportCardCommentRequest } = useCardRestApi();
+
+			await reportCardCommentRequest({ cardId: card.id, commentId: "comment-1", reason: "Beleidigend" });
+
+			expect(mockedBoardApiCalls.reportCardCommentCall).toHaveBeenCalledWith(card.id, "comment-1", "Beleidigend");
+		});
+	});
+
 	describe("createElementRequest", () => {
 		it("should not call createElementSuccess action when card is undefined", async () => {
 			const { cardStore } = setup();

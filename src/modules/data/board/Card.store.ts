@@ -13,6 +13,7 @@ import {
 	UpdateCardTitleSuccessPayload,
 	CardCommentSuccessPayload,
 	ReactToCardSuccessPayload,
+	UpdateCardSettingsSuccessPayload,
 	SetChecklistItemCheckedSuccessPayload,
 	UpdateElementSuccessPayload,
 	VoteInPollSuccessPayload,
@@ -271,6 +272,21 @@ export const useCardStore = defineStore("cardStore", () => {
 		}
 	};
 
+	const updateCardSettingsRequest = socketOrRest.updateCardSettingsRequest;
+
+	/**
+	 * A settings change alters what the card shows and what people may do on it, and the answer
+	 * differs per reader — so everyone but the acting client refetches instead of being handed
+	 * that client's view.
+	 */
+	const updateCardSettingsSuccess = (payload: UpdateCardSettingsSuccessPayload) => {
+		if (payload.isOwnAction) {
+			cards.value[payload.cardId] = payload.card;
+		} else {
+			fetchCardRequest({ cardIds: [payload.cardId] });
+		}
+	};
+
 	const setChecklistItemCheckedRequest = socketOrRest.setChecklistItemCheckedRequest;
 
 	/**
@@ -397,6 +413,8 @@ export const useCardStore = defineStore("cardStore", () => {
 		setChecklistItemCheckedSuccess,
 		reactToCardRequest,
 		reactToCardSuccess,
+		updateCardSettingsRequest,
+		updateCardSettingsSuccess,
 		addCardCommentRequest,
 		editCardCommentRequest,
 		removeCardCommentRequest,

@@ -17,27 +17,21 @@
 /**
  * 
  * @export
- * @interface DeadlineElementContent
+ * @interface CardSettingsBodyParams
  */
-export interface DeadlineElementContent {
+export interface CardSettingsBodyParams {
     /**
-     * 
-     * @type {string}
-     * @memberof DeadlineElementContent
-     */
-    title: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof DeadlineElementContent
-     */
-    dueDate: string | null;
-    /**
-     * Whether the deadline is listed in the calendar of everyone who sees the board.
+     * null follows the board setting.
      * @type {boolean}
-     * @memberof DeadlineElementContent
+     * @memberof CardSettingsBodyParams
      */
-    showInCalendar: boolean;
+    commentsEnabled?: boolean | null;
+    /**
+     * null follows the board setting.
+     * @type {boolean}
+     * @memberof CardSettingsBodyParams
+     */
+    readersCanEdit?: boolean | null;
 }
 
 

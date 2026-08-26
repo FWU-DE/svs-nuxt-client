@@ -35,6 +35,8 @@ import { CardReactionBodyParams } from '../models';
 // @ts-ignore
 import { CardResponse } from '../models';
 // @ts-ignore
+import { CardSettingsBodyParams } from '../models';
+// @ts-ignore
 import { ColorBodyParams } from '../models';
 // @ts-ignore
 import { CreateContentElementBodyParams } from '../models';
@@ -591,6 +593,50 @@ export const BoardCardApiAxiosParamCreator = function (configuration?: Configura
         },
         /**
          * 
+         * @summary Override the board\'s comment and editing settings for a single card.
+         * @param {string} cardId The id of the card.
+         * @param {CardSettingsBodyParams} cardSettingsBodyParams 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        cardControllerUpdateCardSettings: async (cardId: string, cardSettingsBodyParams: CardSettingsBodyParams, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'cardId' is not null or undefined
+            assertParamExists('cardControllerUpdateCardSettings', 'cardId', cardId)
+            // verify required parameter 'cardSettingsBodyParams' is not null or undefined
+            assertParamExists('cardControllerUpdateCardSettings', 'cardSettingsBodyParams', cardSettingsBodyParams)
+            const localVarPath = `/cards/{cardId}/settings`
+                .replace(`{${"cardId"}}`, encodeURIComponent(String(cardId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearer required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(cardSettingsBodyParams, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary Update the title of a single card.
          * @param {string} cardId The id of the card.
          * @param {RenameBodyParams} renameBodyParams 
@@ -788,6 +834,18 @@ export const BoardCardApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @summary Override the board\'s comment and editing settings for a single card.
+         * @param {string} cardId The id of the card.
+         * @param {CardSettingsBodyParams} cardSettingsBodyParams 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async cardControllerUpdateCardSettings(cardId: string, cardSettingsBodyParams: CardSettingsBodyParams, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CardResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.cardControllerUpdateCardSettings(cardId, cardSettingsBodyParams, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
          * @summary Update the title of a single card.
          * @param {string} cardId The id of the card.
          * @param {RenameBodyParams} renameBodyParams 
@@ -941,6 +999,17 @@ export const BoardCardApiFactory = function (configuration?: Configuration, base
         },
         /**
          * 
+         * @summary Override the board\'s comment and editing settings for a single card.
+         * @param {string} cardId The id of the card.
+         * @param {CardSettingsBodyParams} cardSettingsBodyParams 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        cardControllerUpdateCardSettings(cardId: string, cardSettingsBodyParams: CardSettingsBodyParams, options?: any): AxiosPromise<CardResponse> {
+            return localVarFp.cardControllerUpdateCardSettings(cardId, cardSettingsBodyParams, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @summary Update the title of a single card.
          * @param {string} cardId The id of the card.
          * @param {RenameBodyParams} renameBodyParams 
@@ -1089,6 +1158,17 @@ export interface BoardCardApiInterface {
      * @memberof BoardCardApiInterface
      */
     cardControllerUpdateCardHeight(cardId: string, setHeightBodyParams: SetHeightBodyParams, options?: any): AxiosPromise<void>;
+
+    /**
+     * 
+     * @summary Override the board\'s comment and editing settings for a single card.
+     * @param {string} cardId The id of the card.
+     * @param {CardSettingsBodyParams} cardSettingsBodyParams 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof BoardCardApiInterface
+     */
+    cardControllerUpdateCardSettings(cardId: string, cardSettingsBodyParams: CardSettingsBodyParams, options?: any): AxiosPromise<CardResponse>;
 
     /**
      * 
@@ -1263,6 +1343,19 @@ export class BoardCardApi extends BaseAPI implements BoardCardApiInterface {
      */
     public cardControllerUpdateCardHeight(cardId: string, setHeightBodyParams: SetHeightBodyParams, options?: any) {
         return BoardCardApiFp(this.configuration).cardControllerUpdateCardHeight(cardId, setHeightBodyParams, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Override the board\'s comment and editing settings for a single card.
+     * @param {string} cardId The id of the card.
+     * @param {CardSettingsBodyParams} cardSettingsBodyParams 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof BoardCardApi
+     */
+    public cardControllerUpdateCardSettings(cardId: string, cardSettingsBodyParams: CardSettingsBodyParams, options?: any) {
+        return BoardCardApiFp(this.configuration).cardControllerUpdateCardSettings(cardId, cardSettingsBodyParams, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

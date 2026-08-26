@@ -31,6 +31,9 @@ import {
 	SetChecklistItemCheckedSuccessPayload,
 	ReportCardCommentRequestPayload,
 	UpdateCardColorFailurePayload,
+	UpdateCardSettingsFailurePayload,
+	UpdateCardSettingsRequestPayload,
+	UpdateCardSettingsSuccessPayload,
 	UpdateCardColorRequestPayload,
 	UpdateCardColorSuccessPayload,
 	UpdateCardHeightFailurePayload,
@@ -87,6 +90,19 @@ export const reportCardCommentRequest = createAction(
 );
 export const reportCardCommentSuccess = createAction("report-card-comment-success", props<CardCommentSuccessPayload>());
 export const reportCardCommentFailure = createAction("report-card-comment-failure", props<CardCommentFailurePayload>());
+
+export const updateCardSettingsRequest = createAction(
+	"update-card-settings-request",
+	props<UpdateCardSettingsRequestPayload>()
+);
+export const updateCardSettingsSuccess = createAction(
+	"update-card-settings-success",
+	props<UpdateCardSettingsSuccessPayload>()
+);
+export const updateCardSettingsFailure = createAction(
+	"update-card-settings-failure",
+	props<UpdateCardSettingsFailurePayload>()
+);
 
 export const reactToCardRequest = createAction("react-to-card-request", props<ReactToCardRequestPayload>());
 export const reactToCardSuccess = createAction("react-to-card-success", props<ReactToCardSuccessPayload>());

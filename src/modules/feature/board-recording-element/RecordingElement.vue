@@ -35,6 +35,15 @@
 						</VBtn>
 					</VBtnToggle>
 
+					<AudioWaveform
+						v-if="!isVideo && (recorder.state.value === 'recording' || fileRecord)"
+						:analyser="recorder.state.value === 'recording' ? recorder.analyser.value : undefined"
+						:audio-url="recorder.state.value === 'recording' ? undefined : fileRecord?.url"
+						:progress="playbackProgress"
+						class="mb-2"
+						@seek="onSeek"
+					/>
+
 					<video
 						v-if="isVideo && recorder.state.value === 'recording'"
 						ref="preview"
@@ -54,7 +63,16 @@
 							preload="metadata"
 							data-testid="recording-player"
 						/>
-						<audio v-else :src="fileRecord.url" class="w-100" controls preload="metadata" data-testid="recording-player" />
+						<audio
+							v-else
+							ref="player"
+							:src="fileRecord.url"
+							class="w-100"
+							controls
+							preload="metadata"
+							data-testid="recording-player"
+							@timeupdate="onTimeUpdate"
+						/>
 					</template>
 
 					<VAlert
@@ -121,6 +139,7 @@
 </template>
 
 <script setup lang="ts">
+import AudioWaveform from "./AudioWaveform.vue";
 import { useMediaRecorder } from "./useMediaRecorder.composable";
 import { FileRecordParent } from "@/types/file/File";
 import { askDeletionForType } from "@/utils/confirmation-dialog.utils";
@@ -157,11 +176,25 @@ useBoardFocusHandler(element.value.id, ref(null));
 
 const { modelValue } = useContentElementState(props, { autoSaveDebounce: 400 });
 
-const { fetchFiles, upload, getFileRecordsByParentId } = useFileStorageApi();
+const { fetchFiles, upload, getFileRecordsByParentId, deleteFiles } = useFileStorageApi();
 
 const recorder = useMediaRecorder();
 const preview = useTemplateRef<HTMLVideoElement>("preview");
+const player = useTemplateRef<HTMLAudioElement>("player");
 const isUploading = ref(false);
+const playbackProgress = ref(0);
+
+const onTimeUpdate = () => {
+	const audio = player.value;
+	playbackProgress.value = audio && audio.duration > 0 ? audio.currentTime / audio.duration : 0;
+};
+
+const onSeek = (ratio: number) => {
+	const audio = player.value;
+	if (audio && audio.duration > 0) {
+		audio.currentTime = ratio * audio.duration;
+	}
+};
 
 const isVideo = computed(() => element.value.content.mediaType === RecordingMediaType.VIDEO);
 const fileRecord = computed(() => getFileRecordsByParentId(element.value.id)[0]);
@@ -194,11 +227,22 @@ const onStop = async () => {
 
 	isUploading.value = true;
 	try {
+		// A recording element holds exactly one recording. Re-recording therefore deletes the
+		// previous file first: otherwise the new take would queue up behind the old one, which
+		// is still the one the player shows, and the old file would linger in the storage with
+		// nothing pointing at it.
+		const previous = getFileRecordsByParentId(element.value.id);
+		if (previous.length > 0) {
+			await deleteFiles(previous);
+		}
+
 		const extension = blob.type.includes("webm") ? "webm" : blob.type.split("/")[1]?.split(";")[0] || "bin";
-		const name = `${isVideo.value ? "video" : "audio"}-${element.value.id}.${extension}`;
+		// The name has to differ between takes, or a cached URL keeps serving the old audio.
+		const name = `${isVideo.value ? "video" : "audio"}-${element.value.id}-${blob.size}.${extension}`;
 
 		await upload(new File([blob], name, { type: blob.type }), element.value.id, FileRecordParent.BOARDNODES);
 		await fetchFiles(element.value.id, FileRecordParent.BOARDNODES);
+		playbackProgress.value = 0;
 	} finally {
 		isUploading.value = false;
 	}

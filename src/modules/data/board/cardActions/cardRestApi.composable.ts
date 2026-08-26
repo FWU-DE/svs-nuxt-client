@@ -16,6 +16,7 @@ import {
 	AddCardCommentRequestPayload,
 	EditCardCommentRequestPayload,
 	ReactToCardRequestPayload,
+	UpdateCardSettingsRequestPayload,
 	RemoveCardCommentRequestPayload,
 	ReportCardCommentRequestPayload,
 	SetChecklistItemCheckedRequestPayload,
@@ -62,6 +63,7 @@ export const useCardRestApi = () => {
 		voteInPollCall,
 		setChecklistItemCheckedCall,
 		reactToCardCall,
+		updateCardSettingsCall,
 		addCardCommentCall,
 		editCardCommentCall,
 		removeCardCommentCall,
@@ -255,6 +257,18 @@ export const useCardRestApi = () => {
 		}
 	};
 
+	const updateCardSettingsRequest = async (payload: UpdateCardSettingsRequestPayload) => {
+		try {
+			const { cardId, ...settings } = payload;
+			const response = await updateCardSettingsCall(cardId, settings);
+			cardStore.updateCardSettingsSuccess({ cardId, card: response.data, isOwnAction: true });
+		} catch (error) {
+			handleError(error, {
+				404: notifyWithTemplate("notUpdated", "boardCard"),
+			});
+		}
+	};
+
 	const reactToCardRequest = async (payload: ReactToCardRequestPayload) => {
 		try {
 			const response = await reactToCardCall(payload.cardId, payload.value);
@@ -400,6 +414,7 @@ export const useCardRestApi = () => {
 		voteInPollRequest,
 		setChecklistItemCheckedRequest,
 		reactToCardRequest,
+		updateCardSettingsRequest,
 		addCardCommentRequest,
 		editCardCommentRequest,
 		removeCardCommentRequest,

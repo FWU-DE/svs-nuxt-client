@@ -27,6 +27,8 @@ import { BoardAiCardsBodyParams } from '../models';
 // @ts-ignore
 import { BoardContextResponse } from '../models';
 // @ts-ignore
+import { BoardDeadlineListResponse } from '../models';
+// @ts-ignore
 import { BoardResponse } from '../models';
 // @ts-ignore
 import { ColumnResponse } from '../models';
@@ -346,6 +348,40 @@ export const BoardApiAxiosParamCreator = function (configuration?: Configuration
             assertParamExists('boardControllerGetBoardSkeleton', 'boardId', boardId)
             const localVarPath = `/boards/{boardId}`
                 .replace(`{${"boardId"}}`, encodeURIComponent(String(boardId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearer required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary List the board deadlines that are marked for the calendar.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        boardControllerGetDeadlines: async (options: any = {}): Promise<RequestArgs> => {
+            const localVarPath = `/boards/deadlines`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -738,6 +774,16 @@ export const BoardApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @summary List the board deadlines that are marked for the calendar.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async boardControllerGetDeadlines(options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BoardDeadlineListResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.boardControllerGetDeadlines(options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
          * @summary Update the title of a board.
          * @param {string} boardId The id of the board.
          * @param {UpdateBoardTitleParams} updateBoardTitleParams 
@@ -902,6 +948,15 @@ export const BoardApiFactory = function (configuration?: Configuration, basePath
         },
         /**
          * 
+         * @summary List the board deadlines that are marked for the calendar.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        boardControllerGetDeadlines(options?: any): AxiosPromise<BoardDeadlineListResponse> {
+            return localVarFp.boardControllerGetDeadlines(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @summary Update the title of a board.
          * @param {string} boardId The id of the board.
          * @param {UpdateBoardTitleParams} updateBoardTitleParams 
@@ -1056,6 +1111,15 @@ export interface BoardApiInterface {
      * @memberof BoardApiInterface
      */
     boardControllerGetBoardSkeleton(boardId: string, options?: any): AxiosPromise<BoardResponse>;
+
+    /**
+     * 
+     * @summary List the board deadlines that are marked for the calendar.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof BoardApiInterface
+     */
+    boardControllerGetDeadlines(options?: any): AxiosPromise<BoardDeadlineListResponse>;
 
     /**
      * 
@@ -1228,6 +1292,17 @@ export class BoardApi extends BaseAPI implements BoardApiInterface {
      */
     public boardControllerGetBoardSkeleton(boardId: string, options?: any) {
         return BoardApiFp(this.configuration).boardControllerGetBoardSkeleton(boardId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary List the board deadlines that are marked for the calendar.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof BoardApi
+     */
+    public boardControllerGetDeadlines(options?: any) {
+        return BoardApiFp(this.configuration).boardControllerGetDeadlines(options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

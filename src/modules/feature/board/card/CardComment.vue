@@ -36,6 +36,10 @@
 				<div class="flex-grow-1 min-width-0">
 					<p class="text-caption text-medium-emphasis mb-0">
 						<span data-testid="card-comment-author">{{ comment.authorName }}</span>
+						<span> · </span>
+						<time :datetime="comment.timestamps.lastUpdatedAt" :title="absoluteDate" data-testid="card-comment-date">
+							{{ relativeDate }}
+						</time>
 						<span v-if="comment.isEdited"> · {{ t("components.boardCard.comment.edited") }}</span>
 						<span
 							v-if="comment.reportCount"
@@ -88,8 +92,11 @@
 </template>
 
 <script setup lang="ts">
+// Importing the util registers the dayjs plugins this component needs (relativeTime, localizedFormat).
+import "@/utils/date-time.utils";
 import { CardCommentResponse } from "@api-server";
 import { mdiDotsVertical } from "@icons/material";
+import dayjs from "dayjs";
 import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
 
@@ -112,6 +119,11 @@ const isEditing = ref(false);
 const draft = ref("");
 
 const isDraftValid = computed(() => draft.value.trim().length > 0);
+
+// Relative in the line, exact in the tooltip: "vor 3 Minuten" is what a reader wants while a
+// thread is live, the timestamp is what they want when it matters.
+const relativeDate = computed(() => dayjs(props.comment.timestamps.lastUpdatedAt).fromNow());
+const absoluteDate = computed(() => dayjs(props.comment.timestamps.lastUpdatedAt).format("LLL"));
 
 const onStartEdit = () => {
 	draft.value = props.comment.text;

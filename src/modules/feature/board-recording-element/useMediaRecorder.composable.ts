@@ -12,10 +12,13 @@ export const useMediaRecorder = () => {
 	const error = ref<string | undefined>(undefined);
 	const elapsedSeconds = ref(0);
 	const previewStream = ref<MediaStream | undefined>(undefined);
+	/** Live signal for the waveform; only alive while recording. */
+	const analyser = ref<AnalyserNode | undefined>(undefined);
 
 	let recorder: MediaRecorder | undefined;
 	let chunks: Blob[] = [];
 	let ticker: ReturnType<typeof setInterval> | undefined;
+	let audioContext: AudioContext | undefined;
 
 	const isSupported = (): boolean =>
 		typeof window !== "undefined" && typeof window.MediaRecorder !== "undefined" && !!navigator.mediaDevices;
@@ -23,6 +26,25 @@ export const useMediaRecorder = () => {
 	const releaseStream = () => {
 		previewStream.value?.getTracks().forEach((track) => track.stop());
 		previewStream.value = undefined;
+		analyser.value = undefined;
+		void audioContext?.close();
+		audioContext = undefined;
+	};
+
+	/**
+	 * Taps the microphone signal for the waveform. Decoration, so a browser without Web Audio
+	 * simply records without a picture instead of failing.
+	 */
+	const attachAnalyser = (stream: MediaStream) => {
+		try {
+			audioContext = new AudioContext();
+			const node = audioContext.createAnalyser();
+			node.fftSize = 1024;
+			audioContext.createMediaStreamSource(stream).connect(node);
+			analyser.value = node;
+		} catch {
+			analyser.value = undefined;
+		}
 	};
 
 	const stopTicker = () => {
@@ -44,6 +66,7 @@ export const useMediaRecorder = () => {
 		try {
 			const stream = await navigator.mediaDevices.getUserMedia({ audio: true, video });
 			previewStream.value = stream;
+			attachAnalyser(stream);
 			chunks = [];
 			recorder = new MediaRecorder(stream);
 			recorder.ondataavailable = (event) => {
@@ -102,6 +125,7 @@ export const useMediaRecorder = () => {
 		error: readonly(error),
 		elapsedSeconds: readonly(elapsedSeconds),
 		previewStream,
+		analyser,
 		isSupported,
 		start,
 		stop,

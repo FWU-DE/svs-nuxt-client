@@ -245,6 +245,11 @@ export const useBoardApi = () => {
 	const updateBoardCommentsEnabledCall = async (boardId: string, commentsEnabled: boolean) =>
 		boardApi.boardControllerUpdateCommentsEnabled(boardId, { commentsEnabled });
 
+	const updateCardSettingsCall = async (
+		cardId: string,
+		settings: { commentsEnabled?: boolean | null; readersCanEdit?: boolean | null }
+	) => cardsApi.cardControllerUpdateCardSettings(cardId, settings);
+
 	const reactToCardCall = async (cardId: string, value?: number) =>
 		cardsApi.cardControllerReactToCard(cardId, { value });
 
@@ -379,6 +384,7 @@ export const useBoardApi = () => {
 		voteInPollCall,
 		setChecklistItemCheckedCall,
 		reactToCardCall,
+		updateCardSettingsCall,
 		addCardCommentCall,
 		editCardCommentCall,
 		removeCardCommentCall,

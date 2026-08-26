@@ -66,6 +66,53 @@ describe("CardCommentSection", () => {
 
 			expect(wrapper.emitted("add")?.at(-1)).toEqual(["Eine Frage"]);
 		});
+
+		it("should send it on Enter, which is what people expect of a comment box", async () => {
+			const { wrapper } = setup();
+			await open(wrapper);
+
+			await wrapper.findComponent({ name: "VTextarea" }).setValue("Per Enter");
+			await wrapper.find("[data-testid=card-comment-input] textarea").trigger("keydown.enter");
+
+			expect(wrapper.emitted("add")?.at(-1)).toEqual(["Per Enter"]);
+		});
+
+		it("should not send on Shift+Enter, which writes a second line", async () => {
+			const { wrapper } = setup();
+			await open(wrapper);
+
+			await wrapper.findComponent({ name: "VTextarea" }).setValue("Erste Zeile");
+			await wrapper
+				.find("[data-testid=card-comment-input] textarea")
+				.trigger("keydown.enter", { shiftKey: true });
+
+			expect(wrapper.emitted("add")).toBeUndefined();
+		});
+
+		it("should clear the box after sending, so the next comment starts empty", async () => {
+			const { wrapper } = setup();
+			await open(wrapper);
+
+			await wrapper.findComponent({ name: "VTextarea" }).setValue("Eine Frage");
+			await wrapper.find("[data-testid=card-comment-submit]").trigger("click");
+
+			expect((wrapper.find("[data-testid=card-comment-input] textarea").element as HTMLTextAreaElement).value).toBe("");
+		});
+	});
+
+	describe("when a comment carries a date", () => {
+		it("should show it relative and keep the exact one in the tooltip", async () => {
+			const twoHoursAgo = new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString();
+			const { wrapper } = setup({
+				comments: [buildComment({ timestamps: { createdAt: twoHoursAgo, lastUpdatedAt: twoHoursAgo } })],
+			});
+			await open(wrapper);
+
+			const date = wrapper.find("[data-testid=card-comment-date]");
+			expect(date.text()).not.toBe("");
+			expect(date.attributes("title")).toContain("2026");
+			expect(date.attributes("datetime")).toBe(twoHoursAgo);
+		});
 	});
 
 	describe("when a removed comment is shown", () => {

@@ -79,6 +79,8 @@ models/basic-tool-config-params.ts
 models/board-ai-cards-body-params.ts
 models/board-column-board-response.ts
 models/board-context-response.ts
+models/board-deadline-list-response.ts
+models/board-deadline-response.ts
 models/board-element-response.ts
 models/board-error-report-body-params.ts
 models/board-external-reference-type.ts
@@ -99,6 +101,7 @@ models/card-reaction-body-params.ts
 models/card-reaction-type.ts
 models/card-reactions-response.ts
 models/card-response.ts
+models/card-settings-body-params.ts
 models/card-skeleton-response.ts
 models/change-language-params.ts
 models/change-room-role-body-params.ts
