@@ -111,7 +111,7 @@ const onLatexChange = (value: string) => {
 };
 
 const onDelete = async () => {
-	const shouldDelete = await askDeletionForType("boardElement");
+	const shouldDelete = await askDeletionForType("components.cardElement.formulaElement");
 	if (shouldDelete) {
 		emit("delete:element", element.value.id);
 	}

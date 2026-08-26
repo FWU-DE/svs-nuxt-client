@@ -497,6 +497,7 @@ export default {
 	"components.board.menu.formulaElement": "Налаштування формули",
 	"components.board.menu.checklistElement": "Налаштування списку",
 	"components.board.menu.recordingElement": "Налаштування запису",
+	"components.cardElement.recordingElement": "Запис",
 	"components.cardElement.recordingElement.audio": "Запис голосу",
 	"components.cardElement.recordingElement.video": "Відеозапис",
 	"components.cardElement.recordingElement.caption": "Підпис",

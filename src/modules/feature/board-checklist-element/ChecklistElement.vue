@@ -174,7 +174,7 @@ const onToggle = (itemId: string, checked: boolean | null) => {
 };
 
 const onDelete = async () => {
-	const shouldDelete = await askDeletionForType("boardElement");
+	const shouldDelete = await askDeletionForType("components.cardElement.checklistElement");
 	if (shouldDelete) {
 		emit("delete:element", element.value.id);
 	}

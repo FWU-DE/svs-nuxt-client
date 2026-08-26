@@ -485,6 +485,7 @@ export default {
 	"components.board.menu.formulaElement": "Formula settings",
 	"components.board.menu.checklistElement": "Checklist settings",
 	"components.board.menu.recordingElement": "Recording settings",
+	"components.cardElement.recordingElement": "Recording",
 	"components.cardElement.recordingElement.audio": "Voice recording",
 	"components.cardElement.recordingElement.video": "Video recording",
 	"components.cardElement.recordingElement.caption": "Caption",

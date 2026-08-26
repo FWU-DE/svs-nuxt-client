@@ -203,7 +203,7 @@ const onCopy = async () => {
 };
 
 const onDelete = async () => {
-	const shouldDelete = await askDeletionForType("boardElement");
+	const shouldDelete = await askDeletionForType("components.cardElement.codeElement");
 	if (shouldDelete) {
 		emit("delete:element", element.value.id);
 	}

@@ -163,7 +163,7 @@ const onShowInCalendarChange = (value: boolean | null) => {
 };
 
 const onDelete = async () => {
-	const shouldDelete = await askDeletionForType("boardElement");
+	const shouldDelete = await askDeletionForType("components.cardElement.deadlineElement");
 	if (shouldDelete) {
 		emit("delete:element", element.value.id);
 	}

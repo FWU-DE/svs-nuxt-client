@@ -259,7 +259,7 @@ const onCaptionChange = (value: string) => {
 };
 
 const onDelete = async () => {
-	const shouldDelete = await askDeletionForType("boardElement");
+	const shouldDelete = await askDeletionForType("components.cardElement.recordingElement");
 	if (shouldDelete) {
 		emit("delete:element", element.value.id);
 	}

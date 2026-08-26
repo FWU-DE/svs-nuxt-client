@@ -499,6 +499,7 @@ export default {
 	"components.board.menu.formulaElement": "Formel-Einstellungen",
 	"components.board.menu.checklistElement": "Checklisten-Einstellungen",
 	"components.board.menu.recordingElement": "Aufnahme-Einstellungen",
+	"components.cardElement.recordingElement": "Aufnahme",
 	"components.cardElement.recordingElement.audio": "Sprachaufnahme",
 	"components.cardElement.recordingElement.video": "Videoaufnahme",
 	"components.cardElement.recordingElement.caption": "Beschriftung",
