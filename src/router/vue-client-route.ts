@@ -25,6 +25,7 @@ const vueRoutes = [
 	`^/administration/school-settings/tool-configuration/${mongoId}/?$`,
 	`^/administration/school-settings/provisioning-options/?$`,
 	`^/administration/migration/?$`,
+	`^/administration/former-memberships/?$`,
 	`^/administration/groups/classes/?$`,
 	`^/administration/groups/classes/${mongoId}/?$`,
 	`^/administration/rooms/new/?$`,

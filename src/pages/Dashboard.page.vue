@@ -5,6 +5,7 @@
 		</template>
 		<template #default>
 			<Announcement class="mt-6" />
+			<FormerMembershipsBanner class="mt-6" />
 			<!-- Teams to Rooms Migration Alert, should completely be deleted after migration -->
 			<WarningAlert v-if="!isDbc" class="mt-6" data-testid="teams-to-rooms-migration-alert">
 				<span class="font-weight-bold">{{ t("loggedin.text.teamsToRooms") }}</span>
@@ -97,6 +98,7 @@ import { useNewsList } from "@data-access";
 import { useAppStore, useAppStoreRefs, useSchoolStoreRefs } from "@data-app";
 import { useEnvConfig } from "@data-env";
 import { DashboardReleaseDialog, DashboardTasks } from "@feature-dashboard";
+import { FormerMembershipsBanner } from "@feature-former-membership";
 import { RenderHTML } from "@feature-render-html";
 import { mdiNewspaperVariantOutline } from "@icons/material";
 import { InfoAlert, WarningAlert } from "@ui-alert";

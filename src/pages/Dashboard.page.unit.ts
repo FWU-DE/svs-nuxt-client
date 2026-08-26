@@ -88,7 +88,10 @@ describe("DashboardPage", () => {
 		);
 
 		const wrapper = mount(DashboardPage, {
-			global: { plugins: [createTestingVuetify(), createTestingI18n()], stubs: ["DashboardTasks"] },
+			global: {
+				plugins: [createTestingVuetify(), createTestingI18n()],
+				stubs: ["DashboardTasks", "FormerMembershipsBanner"],
+			},
 		});
 
 		return { wrapper };

@@ -991,6 +991,7 @@ export default {
 	"global.sidebar.item.files-old": "Dateien",
 	"global.sidebar.item.filesPersonal": "Persönliche Dateien",
 	"global.sidebar.item.filesShared": "Geteilte Dateien",
+	"global.sidebar.item.formerMemberships": "Ehemalige Mitgliedschaften",
 	"global.sidebar.item.helpArea": "Hilfebereich",
 	"global.sidebar.item.helpSection": "Hilfeartikel",
 	"global.sidebar.item.management": "Verwaltung",
@@ -1703,6 +1704,25 @@ export default {
 	"pages.rooms.fab.add.course": "Neuer Kurs",
 	"pages.rooms.fab.add.syncedCourse": "Neuer synchronisierter Kurs",
 	"pages.rooms.fab.import.course": "Kurs importieren",
+	"pages.formerMemberships.title": "Ehemalige Mitgliedschaften",
+	"pages.formerMemberships.info":
+		"Nach einem Dienststellenwechsel haben Sie den Zugriff auf folgende Kurse/Räume verloren. Sie können hier eine Kopie in Ihre aktuelle Schule mitnehmen oder den Eintrag verwerfen.",
+	"pages.formerMemberships.table.name": "Name",
+	"pages.formerMemberships.table.type": "Typ",
+	"pages.formerMemberships.reclaim.action": "Übernehmen",
+	"pages.formerMemberships.reclaim.confirmation":
+		"Möchten Sie eine Kopie von „{itemName}“ in Ihre aktuelle Schule mitnehmen? Das Original bleibt unverändert erhalten.",
+	"pages.formerMemberships.reclaim.success":
+		"Eine Kopie von „{itemName}“ wurde in Ihre aktuelle Schule übernommen.",
+	"pages.formerMemberships.reclaim.error": "Die Kopie konnte nicht erstellt werden.",
+	"pages.formerMemberships.reclaim.noLongerAvailable":
+		"„{itemName}“ existiert nicht mehr und kann nicht kopiert werden.",
+	"pages.formerMemberships.discard.action": "Verwerfen",
+	"pages.formerMemberships.discard.confirmation":
+		"Möchten Sie „{itemName}“ verwerfen? Dies kann nicht rückgängig gemacht werden.",
+	"pages.formerMemberships.discard.success": "„{itemName}“ wurde verworfen.",
+	"pages.formerMemberships.discard.error": "„{itemName}“ konnte nicht verworfen werden.",
+	"pages.formerMemberships.dashboardBanner.dismiss": "Nicht mehr anzeigen",
 	"pages.rooms.groupName": "Kurse",
 	"pages.rooms.headerSection.archived": "Archiv",
 	"pages.rooms.headerSection.synchronized": "Synchronisiert",

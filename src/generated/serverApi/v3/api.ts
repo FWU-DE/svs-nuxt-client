@@ -32,6 +32,7 @@ export * from './api/course-rooms-api';
 export * from './api/courses-api';
 export * from './api/dashboard-api';
 export * from './api/deletion-request-api';
+export * from './api/former-membership-api';
 export * from './api/group-api';
 export * from './api/helpdesk-api';
 export * from './api/lesson-api';

@@ -239,6 +239,11 @@ export const useSidebarItems = () => {
 					testId: "sidebar-management-school",
 					permissions: [Permission.ADMIN_VIEW],
 				},
+				{
+					title: "global.sidebar.item.formerMemberships",
+					to: "/administration/former-memberships",
+					testId: "sidebar-management-former-memberships",
+				},
 			],
 		},
 		{

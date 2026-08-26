@@ -30,6 +30,11 @@ export const routes: Readonly<RouteRecordRaw>[] = [
 		name: "administration-migration",
 	},
 	{
+		path: "/administration/former-memberships",
+		component: () => import("@/pages/administration/FormerMemberships.page.vue"),
+		name: "administration-former-memberships",
+	},
+	{
 		path: "/administration/school-settings",
 		component: () => import("@/pages/administration/SchoolSettings.page.vue"),
 		name: "administration-school-settings",
