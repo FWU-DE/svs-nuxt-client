@@ -11,6 +11,7 @@ import {
 	mdiFolderOpenOutline,
 	mdiFormatListChecks,
 	mdiHelpCircleOutline,
+	mdiMagnify,
 	mdiNewspaperVariantOutline,
 	mdiSchoolOutline,
 	mdiViewGridOutline,
@@ -88,6 +89,12 @@ export const useSidebarItems = () => {
 			href: "/news",
 			icon: mdiNewspaperVariantOutline,
 			testId: "sidebar-news",
+		},
+		{
+			title: "global.sidebar.item.nostrSearch",
+			to: "/nostr-search",
+			icon: mdiMagnify,
+			testId: "sidebar-nostr-search",
 		},
 		{
 			title: "feature.media-shelf.title",
