@@ -92,10 +92,56 @@
 				</VBtn>
 			</div>
 		</VForm>
+
+		<VCard class="mt-6" variant="outlined" data-testid="onboarding-reset-card">
+			<VCardItem>
+				<template #prepend>
+					<VIcon :icon="mdiLightbulbOnOutline" />
+				</template>
+				<VCardTitle>Onboarding-Assistent</VCardTitle>
+				<VCardSubtitle>Fortschritt des Einrichtungsassistenten verwalten.</VCardSubtitle>
+			</VCardItem>
+			<VCardText>
+				<p class="text-medium-emphasis mb-4">
+					Setzt Ihre Angaben und den Fortschritt des Onboarding-Assistenten zurück. Der Assistent erscheint danach
+					wieder im Menü und kann komplett neu durchlaufen werden.
+				</p>
+				<VBtn
+					color="primary"
+					variant="outlined"
+					:prepend-icon="mdiRestore"
+					data-testid="onboarding-reset-btn"
+					@click="confirmResetOpen = true"
+				>
+					Onboarding zurücksetzen
+				</VBtn>
+			</VCardText>
+		</VCard>
+
+		<VDialog v-model="confirmResetOpen" max-width="460" data-testid="onboarding-reset-dialog">
+			<VCard>
+				<VCardItem>
+					<VCardTitle>Onboarding zurücksetzen?</VCardTitle>
+				</VCardItem>
+				<VCardText>
+					Ihre bisherigen Angaben und der erkundete Fortschritt gehen verloren. Möchten Sie fortfahren?
+				</VCardText>
+				<VCardActions>
+					<VSpacer />
+					<VBtn variant="text" data-testid="onboarding-reset-cancel" @click="confirmResetOpen = false">
+						{{ t("common.actions.cancel") }}
+					</VBtn>
+					<VBtn color="primary" variant="flat" data-testid="onboarding-reset-confirm" @click="resetOnboarding">
+						Zurücksetzen
+					</VBtn>
+				</VCardActions>
+			</VCard>
+		</VDialog>
 	</DefaultWireframe>
 </template>
 
 <script setup lang="ts">
+import { useOnboardingWizard } from "@/composables/onboarding-wizard.composable";
 import { $axios } from "@/utils/api";
 import { buildPageTitle } from "@/utils/pageTitle";
 import { AccountApiFactory, PatchMyAccountParams } from "@api-server";
@@ -105,7 +151,9 @@ import {
 	mdiContentSave,
 	mdiEyeOffOutline,
 	mdiEyeOutline,
+	mdiLightbulbOnOutline,
 	mdiLockOutline,
+	mdiRestore,
 } from "@icons/material";
 import { DefaultWireframe } from "@ui-layout";
 import { useTitle } from "@vueuse/core";
@@ -118,6 +166,15 @@ const appStore = useAppStore();
 const accountApi = AccountApiFactory(undefined, "/v3", $axios);
 
 useTitle(buildPageTitle(t("pages.accountSettings.title")));
+
+const { reset: resetWizard } = useOnboardingWizard();
+const confirmResetOpen = ref(false);
+
+const resetOnboarding = () => {
+	resetWizard();
+	confirmResetOpen.value = false;
+	notifySuccess("Onboarding-Assistent wurde zurückgesetzt.");
+};
 
 const form = reactive({
 	firstName: "",
