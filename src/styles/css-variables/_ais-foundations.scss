@@ -1,0 +1,67 @@
+// AIS Design System – foundations
+//
+// Source: Figma "02-AIS Design System (Modules)", node 1684-1112 (DescriptionLists).
+// The AIS design system is shadcn/ui-derived; the Figma variable names are kept
+// verbatim (`base/muted` -> `--ais-base-muted`) so they stay greppable against
+// the design file.
+//
+// SCOPE: this layer carries the AIS *shape* language – type scale, spacing,
+// radii, borders, elevation. The brand palettes of the three federal states
+// (and the default theme) are deliberately NOT touched: every brand-carrying
+// slot below resolves to the active Vuetify theme color, so a purple AIS mock
+// renders blue under `n21` / `brb` / `thr`.
+//
+// Values marked (figma) are read from the design file. Values marked (derived)
+// continue the scale the confirmed tokens belong to and should be confirmed
+// against the foundations page before they are relied on.
+
+:root {
+	/* ---------- color / brand – follows the active theme, never hard-coded ---------- */
+	--ais-base-primary: rgb(var(--v-theme-primary));
+	--ais-base-primary-foreground: rgb(var(--v-theme-on-primary));
+	--ais-base-primary-muted: rgb(var(--v-theme-primary-lighten));
+	--ais-base-accent-foreground: rgb(var(--v-theme-primary));
+	--ais-base-input: rgb(var(--v-theme-primary)); // AIS field labels are primary-colored
+
+	/* ---------- color / neutrals ---------- */
+	--ais-base-background: rgb(var(--v-theme-background));
+	--ais-base-card: rgb(var(--v-theme-white));
+	--ais-base-foreground: rgb(var(--v-theme-on-surface));
+	--ais-base-muted: rgb(var(--v-theme-surface-light));
+	--ais-base-muted-foreground: #727272; // (figma) base/muted-foreground – no theme equivalent
+	--ais-base-border: #e5e5e5; // (figma) base/border – no theme equivalent
+
+	/* ---------- color / semantic tags ---------- */
+	--ais-tag-alpha-background: #e5e1fe; // (figma) base/tag-alpha-background
+	--ais-tag-alpha-foreground: #5042b1; // (figma) base/tag-alpha-foreground
+	--ais-tag-beta-background: #e3fffa; // (figma) base/tag-beta-background
+	--ais-tag-beta-foreground: #00745f; // (figma) colors/tag-beta-foreground-light
+	--ais-info-background: #f0f9ff; // (figma) colors/info-light
+	--ais-info-foreground: #0369a1; // (figma) base/info-foreground
+
+	/* ---------- spacing ----------
+	   Declared as the base for component work; no consumer yet, so changing a
+	   value here has no visual effect until a component opts in. */
+	--ais-spacing-3xs: 2px; // (figma) spacing/3xs
+	--ais-spacing-2xs: 4px; // (figma) spacing/2xs
+	--ais-spacing-xs: 8px; // (figma) spacing/xs
+	--ais-spacing-sm: 12px; // (figma) spacing/sm
+	--ais-spacing-md: 16px; // (figma) spacing/md
+	--ais-spacing-lg: 24px; // (figma) spacing/stack/lg
+	--ais-spacing-xl: 32px; // (figma) spacing/gap/xl
+	--ais-spacing-2xl: 40px; // (figma) spacing/gap/2xl, spacing/stack/2xl
+
+	/* ---------- radius ---------- */
+	--ais-radius-md: 8px; // (derived) shadcn control radius
+	--ais-radius-lg: 12px; // (derived) half of rounded-xl
+	--ais-radius-xl: 16px; // (figma) border-radius/rounded-xl
+	--ais-radius-2xl: 24px; // (figma) border-radius/rounded-2xl
+	--ais-radius-full: 9999px; // (figma) border-radius/rounded-full
+
+	/* ---------- border ---------- */
+	--ais-border-width: 1px; // (figma) border-width/border
+
+	/* ---------- elevation ---------- */
+	// (figma) shadow/sm – two stacked drop shadows
+	--ais-shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.1);
+}
