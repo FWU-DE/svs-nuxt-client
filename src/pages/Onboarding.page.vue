@@ -1,9 +1,9 @@
 <template>
-	<DefaultWireframe max-width="short" main-with-bottom-padding>
+	<DefaultWireframe max-width="full" main-with-bottom-padding>
 		<template #header>
 			<h1 data-testid="onboarding-title" class="d-flex align-center">
 				<VIcon :icon="mdiLightbulbOnOutline" class="mr-3" color="primary" />
-				Onboarding-Assistent
+				Willkommen in der {{ instanceTitle }}
 			</h1>
 			<p class="text-medium-emphasis mt-2 mb-0">
 				In wenigen Schritten zu den passenden Funktionen und sofort nutzbaren Vorlagen.
@@ -212,7 +212,14 @@
 				>
 					{{ step === 1 ? "Empfehlungen anzeigen" : "Weiter" }}
 				</VBtn>
-				<VBtn v-else color="primary" :prepend-icon="mdiCheck" to="/dashboard" data-testid="finish-btn">
+				<VBtn
+					v-else
+					color="primary"
+					:prepend-icon="mdiCheck"
+					to="/dashboard"
+					data-testid="finish-btn"
+					@click="complete"
+				>
 					Fertig – zum Dashboard
 				</VBtn>
 			</div>
@@ -249,6 +256,7 @@
 <script setup lang="ts">
 import { type TemplateItem, useOnboardingWizard } from "@/composables/onboarding-wizard.composable";
 import { buildPageTitle } from "@/utils/pageTitle";
+import { useEnvConfig } from "@data-env";
 import {
 	mdiArrowLeft,
 	mdiArrowRight,
@@ -260,7 +268,7 @@ import {
 } from "@icons/material";
 import { DefaultWireframe } from "@ui-layout";
 import { useTitle } from "@vueuse/core";
-import { ref } from "vue";
+import { computed, ref } from "vue";
 
 const {
 	step,
@@ -272,6 +280,7 @@ const {
 	toggleFocus,
 	next,
 	back,
+	complete,
 	reset,
 	teacherTypeOptions,
 	schoolFormOptions,
@@ -280,6 +289,8 @@ const {
 } = useOnboardingWizard();
 
 useTitle(buildPageTitle("Onboarding-Assistent"));
+
+const instanceTitle = computed(() => useEnvConfig().value.SC_TITLE || "Schulcloud");
 
 const stepLabels = ["Lehrkrafttyp", "Eigenschaften", "Funktionen", "Vorlagen"];
 
