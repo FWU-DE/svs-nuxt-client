@@ -18,6 +18,27 @@
 			<template #element>
 				<div class="pb-2 pr-1">
 					<template v-if="isEditMode">
+						<VSelect
+							:model-value="modelValue.progressMode"
+							:items="progressModeItems"
+							:label="t('components.cardElement.checklistElement.progressMode')"
+							density="compact"
+							variant="outlined"
+							hide-details
+							class="mb-3"
+							data-testid="checklist-progress-mode-select"
+							@update:model-value="onProgressModeChange"
+						/>
+						<VAlert
+							v-if="showModeResetHint"
+							type="info"
+							variant="tonal"
+							density="compact"
+							class="mb-3"
+							data-testid="checklist-mode-reset-hint"
+						>
+							{{ t("components.cardElement.checklistElement.modeResetHint") }}
+						</VAlert>
 						<VTextField
 							:model-value="modelValue.title"
 							:label="t('components.cardElement.checklistElement.title')"
@@ -75,6 +96,12 @@
 						/>
 						<p v-if="element.content.items.length > 0" class="text-caption text-medium-emphasis mt-1 mb-0" data-testid="checklist-progress">
 							{{ t("components.cardElement.checklistElement.progress", { done: checkedCount, total: element.content.items.length }) }}
+							<span v-if="isPerUser" class="ml-1" data-testid="checklist-personal-hint">
+								· {{ t("components.cardElement.checklistElement.personal") }}
+							</span>
+							<span v-if="participantCount !== undefined" class="ml-1" data-testid="checklist-participants">
+								· {{ t("components.cardElement.checklistElement.participants", { count: participantCount }) }}
+							</span>
 						</p>
 					</template>
 				</div>
@@ -86,7 +113,7 @@
 <script setup lang="ts">
 import { askDeletionForType } from "@/utils/confirmation-dialog.utils";
 import { AnyContentElement } from "@/types/board/ContentElement";
-import { ChecklistContentBody, ChecklistElementResponse } from "@api-server";
+import { ChecklistContentBody, ChecklistElementResponse, ChecklistProgressMode } from "@api-server";
 import { useBoardFocusHandler, useCardStore } from "@data-board";
 import { mdiCheckboxMarkedOutline, mdiPlus, mdiTrashCanOutline } from "@icons/material";
 import { BoardMenu, BoardMenuScope, ContentElementBar } from "@ui-board";
@@ -118,7 +145,23 @@ const element = toRef(props, "element");
 
 useBoardFocusHandler(element.value.id, ref(null));
 
-const checkedCount = computed(() => element.value.content.items.filter((item) => item.checked).length);
+const checkedCount = computed(() => element.value.content.completedCount);
+const isPerUser = computed(() => element.value.content.progressMode === ChecklistProgressMode.PER_USER);
+
+const progressModeItems = computed(() => [
+	{ value: ChecklistProgressMode.SHARED, title: t("components.cardElement.checklistElement.progressMode.shared") },
+	{ value: ChecklistProgressMode.PER_USER, title: t("components.cardElement.checklistElement.progressMode.perUser") },
+]);
+
+// Switching the mode drops the progress, because a shared tick and a personal one are not the
+// same claim. Say so before the change lands rather than after.
+const showModeResetHint = ref(false);
+
+const onProgressModeChange = (progressMode: ChecklistProgressMode) => {
+	showModeResetHint.value = progressMode !== element.value.content.progressMode;
+	modelValue.value = { ...modelValue.value, progressMode };
+};
+const participantCount = computed(() => element.value.content.participantCount);
 
 /**
  * Like the poll, the checklist edits its own definition rather than the element content: a new
@@ -128,6 +171,7 @@ const checkedCount = computed(() => element.value.content.items.filter((item) =>
 const toContentBody = (content: ChecklistElementResponse["content"]): ChecklistContentBody => ({
 	title: content.title,
 	items: content.items.map((item) => ({ id: item.id, text: item.text })),
+	progressMode: content.progressMode,
 });
 
 const modelValue = ref<ChecklistContentBody>(toContentBody(element.value.content));

@@ -1,7 +1,7 @@
 import ChecklistElement from "./ChecklistElement.vue";
 import de from "@/locales/de";
 import { createTestingI18n, createTestingVuetify } from "@@/tests/test-utils/setup";
-import { ChecklistElementResponse, ContentElementType } from "@api-server";
+import { ChecklistElementResponse, ChecklistProgressMode, ContentElementType } from "@api-server";
 import { createTestingPinia } from "@pinia/testing";
 import { flushPromises, mount } from "@vue/test-utils";
 import { setActivePinia } from "pinia";
@@ -25,6 +25,9 @@ const buildElement = (items: ChecklistElementResponse["content"]["items"] = []):
 	timestamps: { createdAt: "2026-01-01T00:00:00Z", lastUpdatedAt: "2026-01-01T00:00:00Z" },
 	content: {
 		title: "Schritte",
+		progressMode: ChecklistProgressMode.SHARED,
+		// The server reports the progress; one of the two default items is ticked.
+		completedCount: 1,
 		items: items.length
 			? items
 			: [
@@ -67,10 +70,16 @@ describe("ChecklistElement", () => {
 			expect(wrapper.text()).toContain("Zweiter Schritt");
 		});
 
-		it("should show the shared progress", () => {
+		it("should show the shared progress the server reported", () => {
 			const { wrapper } = setup();
 
-			expect(wrapper.find("[data-testid=checklist-progress]").text()).toContain("1");
+			expect(wrapper.find("[data-testid=checklist-progress]").text()).toContain("1 von 2");
+		});
+
+		it("should not show the personal hint for a shared list", () => {
+			const { wrapper } = setup();
+
+			expect(wrapper.find("[data-testid=checklist-personal-hint]").exists()).toBe(false);
 		});
 
 		it("should send a tick without going through the element update", async () => {
@@ -84,6 +93,35 @@ describe("ChecklistElement", () => {
 				checked: true,
 			});
 			expect(updateElementRequest).not.toHaveBeenCalled();
+		});
+	});
+
+	describe("when the list is personal", () => {
+		const personal = (extra: Partial<ChecklistElementResponse["content"]> = {}) => {
+			const element = buildElement();
+
+			return {
+				...element,
+				content: { ...element.content, progressMode: ChecklistProgressMode.PER_USER, ...extra },
+			};
+		};
+
+		it("should say that the ticks are only the reader's own", () => {
+			const { wrapper } = setup({ element: personal() });
+
+			expect(wrapper.find("[data-testid=checklist-personal-hint]").exists()).toBe(true);
+		});
+
+		it("should show how many people started once the server reports it", () => {
+			const { wrapper } = setup({ element: personal({ participantCount: 4 }) });
+
+			expect(wrapper.find("[data-testid=checklist-participants]").text()).toContain("4");
+		});
+
+		it("should not show a participant count to someone who is not given one", () => {
+			const { wrapper } = setup({ element: personal() });
+
+			expect(wrapper.find("[data-testid=checklist-participants]").exists()).toBe(false);
 		});
 	});
 
