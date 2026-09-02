@@ -2,4 +2,6 @@
 @use "./css-variables/index" as *;
 @use "@/styles/settings.scss" as *;
 @use "vuetify" as *;
+// AIS/VIDIS surface treatment – loaded after vuetify so it wins on equal specificity
+@use "./utility/ais-surfaces" as *;
 @use "./scrollbar.scss" as *;

@@ -1,0 +1,50 @@
+// AIS/VIDIS surface treatment.
+//
+// The design system draws surfaces as a hairline border plus shadow/sm instead
+// of Vuetify's material elevation ramp, and separates rows with a 1px rule in
+// the same border color. Radii come from settings.scss; only the color and the
+// shadow are applied here.
+
+.v-card {
+	&--variant-elevated,
+	&--variant-flat {
+		border: var(--ais-border-width) solid var(--ais-base-border);
+		box-shadow: var(--ais-shadow-sm);
+	}
+}
+
+// (figma) Separator – 1px in base/border
+.v-divider {
+	border-color: var(--ais-base-border);
+	opacity: 1;
+}
+
+// Bordered fields (AIS uses outlined controls, not underlined ones)
+.v-field--variant-outlined .v-field__outline {
+	--v-field-border-opacity: 1;
+
+	color: var(--ais-base-border);
+}
+
+// Neutral tag – (figma) TagFilter: base/muted fill, base/border hairline
+.v-chip--variant-outlined,
+.v-chip--variant-tonal.v-chip--neutral {
+	background-color: var(--ais-base-muted);
+	border-color: var(--ais-base-border);
+}
+
+// AIS field label – primary colored, body/sm semibold
+.ais-label {
+	color: var(--ais-base-input);
+	font-size: var(--text-sm);
+	font-weight: var(--font-weight-semibold);
+	line-height: 20px;
+}
+
+// AIS secondary copy – body/sm regular in base/muted-foreground
+.ais-description {
+	color: var(--ais-base-muted-foreground);
+	font-size: var(--text-sm);
+	font-weight: var(--font-weight-normal);
+	line-height: 20px;
+}
