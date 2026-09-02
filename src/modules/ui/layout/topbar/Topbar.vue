@@ -40,6 +40,7 @@
 			class="school-logo mr-3"
 			data-testid="school-logo"
 		/>
+		<OnboardingStatus v-if="user" class="mr-2" />
 		<UserMenu v-if="user" :user="user" :role-names="roleNames" class="mr-3" />
 	</VToolbar>
 </template>
@@ -47,6 +48,7 @@
 <script setup lang="ts">
 import CloudLogo from "../CloudLogo.vue";
 import CloudStatusMessages from "./CloudStatusMessages.vue";
+import OnboardingStatus from "./OnboardingStatus.vue";
 import PageShare from "./PageShare.vue";
 import TopbarItem from "./TopbarItem.vue";
 import UserMenu from "./UserMenu.vue";

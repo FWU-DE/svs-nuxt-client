@@ -23,14 +23,13 @@ import {
 	mdiFileDocumentOutline,
 	mdiFileTreeOutline,
 	mdiHumanMaleBoard,
-	mdiLightbulbOnOutline,
 	mdiPlaylistCheck,
 	mdiPresentation,
 	mdiPuzzleOutline,
 	mdiSchoolOutline,
 	mdiViewDashboardOutline,
 } from "@icons/material";
-import { computed, reactive, ref } from "vue";
+import { computed, reactive, ref, watch } from "vue";
 
 /* ------------------------------------------------------------------ Typen */
 
@@ -551,16 +550,92 @@ function defaultTeacherType(): TeacherType | null {
 	return null;
 }
 
+/* ------------------------------------------------------------ Schritte */
+
+export interface WizardStep {
+	index: number;
+	label: string;
+	icon: string;
+}
+
+export const wizardSteps: WizardStep[] = [
+	{ index: 0, label: "Lehrkrafttyp", icon: mdiAccountSupervisorCircleOutline },
+	{ index: 1, label: "Eigenschaften", icon: mdiCogOutline },
+	{ index: 2, label: "Funktionen", icon: mdiViewDashboardOutline },
+	{ index: 3, label: "Vorlagen", icon: mdiFileDocumentOutline },
+];
+
+/* ------------------------------------ Geteilter, persistierter Zustand */
+
+const STORAGE_KEY = "svs-onboarding-progress";
+
+// Singleton-State: Seite und Header-Indikator teilen sich denselben Fortschritt.
+const step = ref(0);
+const answers = reactive<WizardAnswers>({
+	teacherType: null,
+	schoolForm: null,
+	experience: null,
+	focusAreas: [],
+});
+const exploredSteps = ref<number[]>([]);
+const completed = ref(false);
+let hydrated = false;
+
+const persist = () => {
+	try {
+		localStorage.setItem(
+			STORAGE_KEY,
+			JSON.stringify({ step: step.value, answers, exploredSteps: exploredSteps.value, completed: completed.value })
+		);
+	} catch {
+		/* localStorage nicht verfügbar */
+	}
+};
+
+const markExplored = (index: number) => {
+	if (!exploredSteps.value.includes(index)) {
+		exploredSteps.value = [...exploredSteps.value, index];
+		persist();
+	}
+};
+
+const hydrate = () => {
+	if (hydrated) return;
+	hydrated = true;
+
+	let restored = false;
+	try {
+		const raw = localStorage.getItem(STORAGE_KEY);
+		if (raw) {
+			const data = JSON.parse(raw);
+			if (data.answers) Object.assign(answers, data.answers);
+			if (typeof data.step === "number") step.value = data.step;
+			if (Array.isArray(data.exploredSteps)) exploredSteps.value = data.exploredSteps;
+			if (typeof data.completed === "boolean") completed.value = data.completed;
+			restored = true;
+		}
+	} catch {
+		/* defekter Eintrag -> Default */
+	}
+
+	if (!restored && answers.teacherType === null) {
+		answers.teacherType = defaultTeacherType();
+	}
+
+	// Aktuellen Schritt als erkundet markieren und künftige Änderungen verfolgen.
+	markExplored(step.value);
+	watch(step, (value) => {
+		markExplored(value);
+		persist();
+	});
+	watch(answers, persist, { deep: true });
+	watch(completed, persist);
+};
+
 /* ----------------------------------------------------------- Composable */
 
 export function useOnboardingWizard() {
-	const step = ref(0);
-	const answers = reactive<WizardAnswers>({
-		teacherType: defaultTeacherType(),
-		schoolForm: null,
-		experience: null,
-		focusAreas: [],
-	});
+	hydrate();
 
 	const suggestions = computed(() => scoreFeatures(answers));
 	const topSuggestions = computed(() => suggestions.value.slice(0, 6));
@@ -585,13 +660,30 @@ export function useOnboardingWizard() {
 	const back = () => {
 		if (step.value > 0) step.value -= 1;
 	};
+	const goToStep = (index: number) => {
+		if (index >= 0 && index < wizardSteps.length) step.value = index;
+	};
+	const complete = () => {
+		completed.value = true;
+		wizardSteps.forEach((s) => markExplored(s.index));
+	};
 	const reset = () => {
 		step.value = 0;
 		answers.teacherType = defaultTeacherType();
 		answers.schoolForm = null;
 		answers.experience = null;
 		answers.focusAreas = [];
+		exploredSteps.value = [0];
+		completed.value = false;
+		persist();
 	};
+
+	// Erkundungs-/Abschlussstatus für Seite und Header
+	const isExplored = (index: number) => computed(() => exploredSteps.value.includes(index));
+	const openSteps = computed(() => wizardSteps.filter((s) => !exploredSteps.value.includes(s.index)));
+	const exploredCount = computed(() => exploredSteps.value.length);
+	const isOnboardingComplete = computed(() => completed.value);
+	const isOnboardingStarted = computed(() => exploredSteps.value.length > 0 || answers.teacherType !== null);
 
 	return {
 		step,
@@ -604,7 +696,17 @@ export function useOnboardingWizard() {
 		toggleFocus,
 		next,
 		back,
+		goToStep,
+		complete,
 		reset,
+		// Fortschritt / Status
+		wizardSteps,
+		exploredSteps,
+		isExplored,
+		openSteps,
+		exploredCount,
+		isOnboardingComplete,
+		isOnboardingStarted,
 		// Optionen für die Oberfläche
 		teacherTypeOptions,
 		schoolFormOptions,
