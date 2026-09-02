@@ -13,19 +13,26 @@
  */
 
 
+import { CardReactionType } from './card-reaction-type';
 
 /**
  * 
  * @export
- * @interface CommentsEnabledBodyParams
+ * @interface ColumnSettingsBodyParams
  */
-export interface CommentsEnabledBodyParams {
+export interface ColumnSettingsBodyParams {
     /**
-     * Whether participants may comment on the cards of this board. null follows whatever the room is set to.
+     * null follows the board setting.
      * @type {boolean}
-     * @memberof CommentsEnabledBodyParams
+     * @memberof ColumnSettingsBodyParams
      */
-    commentsEnabled: boolean | null;
+    commentsEnabled?: boolean | null;
+    /**
+     * null follows the board setting.
+     * @type {CardReactionType}
+     * @memberof ColumnSettingsBodyParams
+     */
+    reactionType?: CardReactionType | null;
 }
 
 

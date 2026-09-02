@@ -17,15 +17,12 @@
 /**
  * 
  * @export
- * @interface CommentsEnabledBodyParams
+ * @enum {string}
  */
-export interface CommentsEnabledBodyParams {
-    /**
-     * Whether participants may comment on the cards of this board. null follows whatever the room is set to.
-     * @type {boolean}
-     * @memberof CommentsEnabledBodyParams
-     */
-    commentsEnabled: boolean | null;
+export enum ChecklistProgressMode {
+    SHARED = 'shared',
+    PER_USER = 'perUser'
 }
+
 
 

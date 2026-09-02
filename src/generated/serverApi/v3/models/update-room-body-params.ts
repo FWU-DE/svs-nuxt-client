@@ -13,6 +13,7 @@
  */
 
 
+import { CardReactionType } from './card-reaction-type';
 import { RoomColor } from './room-color';
 import { RoomFeatures } from './room-features';
 
@@ -52,6 +53,18 @@ export interface UpdateRoomBodyParams {
      * @memberof UpdateRoomBodyParams
      */
     features: Array<RoomFeatures>;
+    /**
+     * Whether cards in this room allow comments by default. Boards, columns and cards may each overrule it. Omitted means off, so a client that does not know the setting — and every board that existed before it — keeps behaving as it did.
+     * @type {boolean}
+     * @memberof UpdateRoomBodyParams
+     */
+    commentsEnabled?: boolean;
+    /**
+     * The feedback kind cards in this room use by default. Omitted means none.
+     * @type {CardReactionType}
+     * @memberof UpdateRoomBodyParams
+     */
+    reactionType?: CardReactionType;
 }
 
 

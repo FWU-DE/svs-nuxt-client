@@ -14,6 +14,7 @@
 
 
 import { CardCommentResponse } from './card-comment-response';
+import { CardReactionType } from './card-reaction-type';
 import { CardReactionsResponse } from './card-reactions-response';
 import { ChecklistElementResponse } from './checklist-element-response';
 import { CodeElementResponse } from './code-element-response';
@@ -107,6 +108,12 @@ export interface CardResponse {
      * @memberof CardResponse
      */
     readersCanEdit?: boolean | null;
+    /**
+     * This card\'s own feedback setting. null means it follows the column.
+     * @type {CardReactionType}
+     * @memberof CardResponse
+     */
+    cardReactionType?: CardReactionType | null;
 }
 
 

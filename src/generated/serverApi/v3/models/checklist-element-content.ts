@@ -14,6 +14,7 @@
 
 
 import { ChecklistItemResponse } from './checklist-item-response';
+import { ChecklistProgressMode } from './checklist-progress-mode';
 
 /**
  * 
@@ -33,6 +34,24 @@ export interface ChecklistElementContent {
      * @memberof ChecklistElementContent
      */
     items: Array<ChecklistItemResponse>;
+    /**
+     * 
+     * @type {ChecklistProgressMode}
+     * @memberof ChecklistElementContent
+     */
+    progressMode: ChecklistProgressMode;
+    /**
+     * Items the requesting user sees as done, out of items.length.
+     * @type {number}
+     * @memberof ChecklistElementContent
+     */
+    completedCount: number;
+    /**
+     * How many people ticked at least one item. Only present for a personal list and only for someone who may edit the element.
+     * @type {number}
+     * @memberof ChecklistElementContent
+     */
+    participantCount?: number;
 }
 
 

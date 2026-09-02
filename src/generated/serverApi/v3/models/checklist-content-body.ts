@@ -14,6 +14,7 @@
 
 
 import { ChecklistItemBody } from './checklist-item-body';
+import { ChecklistProgressMode } from './checklist-progress-mode';
 
 /**
  * 
@@ -33,6 +34,12 @@ export interface ChecklistContentBody {
      * @memberof ChecklistContentBody
      */
     items: Array<ChecklistItemBody>;
+    /**
+     * Switching the mode starts the progress over: a shared tick is not a personal one.
+     * @type {ChecklistProgressMode}
+     * @memberof ChecklistContentBody
+     */
+    progressMode: ChecklistProgressMode;
 }
 
 

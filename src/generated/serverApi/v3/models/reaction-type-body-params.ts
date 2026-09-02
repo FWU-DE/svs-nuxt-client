@@ -22,11 +22,11 @@ import { CardReactionType } from './card-reaction-type';
  */
 export interface ReactionTypeBodyParams {
     /**
-     * The reaction kind for every card on this board. \'none\' turns reactions off.
+     * The reaction kind for the cards of this board. \'none\' turns reactions off here; null follows whatever the room is set to.
      * @type {CardReactionType}
      * @memberof ReactionTypeBodyParams
      */
-    reactionType: CardReactionType;
+    reactionType: CardReactionType | null;
 }
 
 

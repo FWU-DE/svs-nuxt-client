@@ -13,6 +13,7 @@
  */
 
 
+import { CardReactionType } from './card-reaction-type';
 
 /**
  * 
@@ -32,6 +33,12 @@ export interface CardSettingsBodyParams {
      * @memberof CardSettingsBodyParams
      */
     readersCanEdit?: boolean | null;
+    /**
+     * null follows the column, and through it the board.
+     * @type {CardReactionType}
+     * @memberof CardSettingsBodyParams
+     */
+    reactionType?: CardReactionType | null;
 }
 
 

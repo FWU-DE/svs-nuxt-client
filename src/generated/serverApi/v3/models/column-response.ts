@@ -13,6 +13,7 @@
  */
 
 
+import { CardReactionType } from './card-reaction-type';
 import { CardSkeletonResponse } from './card-skeleton-response';
 import { TimestampsResponse } from './timestamps-response';
 
@@ -46,6 +47,18 @@ export interface ColumnResponse {
      * @memberof ColumnResponse
      */
     timestamps: TimestampsResponse;
+    /**
+     * This column\'s own comment setting. null follows the board.
+     * @type {boolean}
+     * @memberof ColumnResponse
+     */
+    commentsEnabled: boolean | null;
+    /**
+     * This column\'s own feedback setting. null follows the board.
+     * @type {CardReactionType}
+     * @memberof ColumnResponse
+     */
+    reactionType: CardReactionType | null;
 }
 
 

@@ -15,7 +15,7 @@
 
 
 /**
- * 
+ * The feedback kind cards in this room use by default. Omitted means none.
  * @export
  * @enum {string}
  */

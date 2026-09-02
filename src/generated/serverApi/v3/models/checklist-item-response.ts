@@ -33,11 +33,17 @@ export interface ChecklistItemResponse {
      */
     text: string;
     /**
-     * 
+     * In a shared list the group\'s tick, in a personal list the requesting user\'s own tick.
      * @type {boolean}
      * @memberof ChecklistItemResponse
      */
     checked: boolean;
+    /**
+     * How many people ticked this item. Only present for a personal list and only for someone who may edit the element — and it is a count, never a list of names.
+     * @type {number}
+     * @memberof ChecklistItemResponse
+     */
+    checkedCount?: number;
 }
 
 

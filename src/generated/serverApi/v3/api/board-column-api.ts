@@ -27,6 +27,8 @@ import { CardResponse } from '../models';
 // @ts-ignore
 import { ColumnFullResponse } from '../models';
 // @ts-ignore
+import { ColumnSettingsBodyParams } from '../models';
+// @ts-ignore
 import { CreateCardBodyParams } from '../models';
 // @ts-ignore
 import { MoveColumnBodyParams } from '../models';
@@ -202,6 +204,50 @@ export const BoardColumnApiAxiosParamCreator = function (configuration?: Configu
         },
         /**
          * 
+         * @summary Override the board\'s comment and feedback settings for a single column.
+         * @param {string} columnId The id of the column.
+         * @param {ColumnSettingsBodyParams} columnSettingsBodyParams 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        columnControllerUpdateColumnSettings: async (columnId: string, columnSettingsBodyParams: ColumnSettingsBodyParams, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'columnId' is not null or undefined
+            assertParamExists('columnControllerUpdateColumnSettings', 'columnId', columnId)
+            // verify required parameter 'columnSettingsBodyParams' is not null or undefined
+            assertParamExists('columnControllerUpdateColumnSettings', 'columnSettingsBodyParams', columnSettingsBodyParams)
+            const localVarPath = `/columns/{columnId}/settings`
+                .replace(`{${"columnId"}}`, encodeURIComponent(String(columnId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearer required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(columnSettingsBodyParams, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary Update the title of a single column.
          * @param {string} columnId The id of the column.
          * @param {RenameBodyParams} renameBodyParams 
@@ -302,6 +348,18 @@ export const BoardColumnApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @summary Override the board\'s comment and feedback settings for a single column.
+         * @param {string} columnId The id of the column.
+         * @param {ColumnSettingsBodyParams} columnSettingsBodyParams 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async columnControllerUpdateColumnSettings(columnId: string, columnSettingsBodyParams: ColumnSettingsBodyParams, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.columnControllerUpdateColumnSettings(columnId, columnSettingsBodyParams, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
          * @summary Update the title of a single column.
          * @param {string} columnId The id of the column.
          * @param {RenameBodyParams} renameBodyParams 
@@ -366,6 +424,17 @@ export const BoardColumnApiFactory = function (configuration?: Configuration, ba
         },
         /**
          * 
+         * @summary Override the board\'s comment and feedback settings for a single column.
+         * @param {string} columnId The id of the column.
+         * @param {ColumnSettingsBodyParams} columnSettingsBodyParams 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        columnControllerUpdateColumnSettings(columnId: string, columnSettingsBodyParams: ColumnSettingsBodyParams, options?: any): AxiosPromise<void> {
+            return localVarFp.columnControllerUpdateColumnSettings(columnId, columnSettingsBodyParams, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @summary Update the title of a single column.
          * @param {string} columnId The id of the column.
          * @param {RenameBodyParams} renameBodyParams 
@@ -425,6 +494,17 @@ export interface BoardColumnApiInterface {
      * @memberof BoardColumnApiInterface
      */
     columnControllerMoveColumn(columnId: string, moveColumnBodyParams: MoveColumnBodyParams, options?: any): AxiosPromise<void>;
+
+    /**
+     * 
+     * @summary Override the board\'s comment and feedback settings for a single column.
+     * @param {string} columnId The id of the column.
+     * @param {ColumnSettingsBodyParams} columnSettingsBodyParams 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof BoardColumnApiInterface
+     */
+    columnControllerUpdateColumnSettings(columnId: string, columnSettingsBodyParams: ColumnSettingsBodyParams, options?: any): AxiosPromise<void>;
 
     /**
      * 
@@ -494,6 +574,19 @@ export class BoardColumnApi extends BaseAPI implements BoardColumnApiInterface {
      */
     public columnControllerMoveColumn(columnId: string, moveColumnBodyParams: MoveColumnBodyParams, options?: any) {
         return BoardColumnApiFp(this.configuration).columnControllerMoveColumn(columnId, moveColumnBodyParams, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Override the board\'s comment and feedback settings for a single column.
+     * @param {string} columnId The id of the column.
+     * @param {ColumnSettingsBodyParams} columnSettingsBodyParams 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof BoardColumnApi
+     */
+    public columnControllerUpdateColumnSettings(columnId: string, columnSettingsBodyParams: ColumnSettingsBodyParams, options?: any) {
+        return BoardColumnApiFp(this.configuration).columnControllerUpdateColumnSettings(columnId, columnSettingsBodyParams, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

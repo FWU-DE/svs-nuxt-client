@@ -88,6 +88,9 @@ models/board-feature.ts
 models/board-layout.ts
 models/board-lesson-response.ts
 models/board-parent-type.ts
+models/board-preview-card-response.ts
+models/board-preview-column-response.ts
+models/board-preview-response.ts
 models/board-response-allowed-operations.ts
 models/board-response.ts
 models/board-task-response.ts
@@ -112,6 +115,7 @@ models/checklist-element-response.ts
 models/checklist-item-body.ts
 models/checklist-item-checked-body-params.ts
 models/checklist-item-response.ts
+models/checklist-progress-mode.ts
 models/class-info-response.ts
 models/class-info-search-list-response.ts
 models/class-response.ts
@@ -128,6 +132,7 @@ models/color-body-params.ts
 models/colors.ts
 models/column-full-response.ts
 models/column-response.ts
+models/column-settings-body-params.ts
 models/comments-enabled-body-params.ts
 models/complete-registration-body-params.ts
 models/component-etherpad-props-impl.ts

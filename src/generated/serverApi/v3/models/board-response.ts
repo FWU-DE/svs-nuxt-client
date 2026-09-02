@@ -63,17 +63,29 @@ export interface BoardResponse {
      */
     readersCanEdit: boolean;
     /**
-     * 
+     * This board\'s own feedback setting. null follows the room.
      * @type {CardReactionType}
      * @memberof BoardResponse
      */
-    reactionType: CardReactionType;
+    reactionType: CardReactionType | null;
     /**
-     * 
+     * What the room defaults to.
+     * @type {CardReactionType}
+     * @memberof BoardResponse
+     */
+    roomReactionType: CardReactionType;
+    /**
+     * This board\'s own comment setting. null follows the room.
      * @type {boolean}
      * @memberof BoardResponse
      */
-    commentsEnabled: boolean;
+    commentsEnabled: boolean | null;
+    /**
+     * What the room defaults to.
+     * @type {boolean}
+     * @memberof BoardResponse
+     */
+    roomCommentsEnabled: boolean;
     /**
      * 
      * @type {BoardLayout}
