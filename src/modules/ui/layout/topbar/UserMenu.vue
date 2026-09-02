@@ -43,8 +43,8 @@ import LanguageMenu from "./LanguageMenu.vue";
 import { MeUserResponse } from "@api-server";
 import { useSystem } from "@data-access";
 import { useAppStore, useAppStoreRefs } from "@data-app";
-import { safariAriaOwnsWorkaround } from "@util-device-detection";
 import { mdiLightbulbOnOutline } from "@icons/material";
+import { safariAriaOwnsWorkaround } from "@util-device-detection";
 import { computed, PropType, toRef } from "vue";
 import { useI18n } from "vue-i18n";
 

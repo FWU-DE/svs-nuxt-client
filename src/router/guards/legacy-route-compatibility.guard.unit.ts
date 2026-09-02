@@ -1,42 +1,101 @@
-import { legacyCompatibilityGuard } from "./legacy-route-compatibility.guard";
+import { legacyCompatibilityGuard } from "@/router/guards/legacy-route-compatibility.guard";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { RouteLocationNormalized } from "vue-router";
 
-const assignMock = vi.fn();
+vi.mock("@/router/legacy-client-route", () => ({
+	isLegacyClient: vi.fn(),
+}));
 
-vi.stubGlobal("location", {
-	assign: assignMock,
-});
+vi.mock("@/router/legacy-view-migration", () => ({
+	isKnownLegacyViewPath: vi.fn(),
+}));
+
+import { isLegacyClient } from "@/router/legacy-client-route";
+import { isKnownLegacyViewPath } from "@/router/legacy-view-migration";
+
+const mockedIsLegacyClient = vi.mocked(isLegacyClient);
+const mockedIsKnownLegacyViewPath = vi.mocked(isKnownLegacyViewPath);
+
+const buildLocation = (path: string, fullPath = path): RouteLocationNormalized =>
+	({
+		path,
+		fullPath,
+	}) as RouteLocationNormalized;
 
 describe("legacyCompatibilityGuard", () => {
-	afterEach(() => {
+	beforeEach(() => {
 		vi.clearAllMocks();
+		vi.stubGlobal("location", { pathname: "/", assign: vi.fn() });
+		mockedIsKnownLegacyViewPath.mockReturnValue(false);
 	});
 
-	const route = (path: string, fullPath = path): RouteLocationNormalized =>
-		({ path, fullPath }) as RouteLocationNormalized;
+	const dashboardLocation = buildLocation("/dashboard");
+	const homeLocation = buildLocation("/");
+	const homeworkLocation = buildLocation("/homework");
 
-	it("allows Vue client routes", () => {
-		const result = legacyCompatibilityGuard(route("/dashboard"), route("/"), vi.fn());
+	describe("when the path belongs to the Vue client", () => {
+		it("should allow navigation", () => {
+			mockedIsLegacyClient.mockReturnValue(false);
 
-		expect(result).toBe(true);
-		expect(assignMock).not.toHaveBeenCalled();
-	});
+			const result = legacyCompatibilityGuard(dashboardLocation, homeLocation, vi.fn());
 
-	it("routes known legacy views to the Nuxt migration page", () => {
-		const result = legacyCompatibilityGuard(route("/teams", "/teams?activeTab=events"), route("/"), vi.fn());
-
-		expect(result).toEqual({
-			path: "/legacy-view-migration",
-			query: { path: "/teams?activeTab=events" },
-			replace: true,
+			expect(result).toBe(true);
+			expect(window.location.assign).not.toHaveBeenCalled();
 		});
-		expect(assignMock).not.toHaveBeenCalled();
 	});
 
-	it("keeps forwarding unknown legacy paths to the legacy client", () => {
-		const result = legacyCompatibilityGuard(route("/unknown-legacy", "/unknown-legacy?x=1"), route("/"), vi.fn());
+	describe("when the path belongs to the legacy client", () => {
+		it("should leave the Vue client", () => {
+			mockedIsLegacyClient.mockReturnValue(true);
+			vi.stubGlobal("location", { pathname: "/dashboard", assign: vi.fn() });
 
-		expect(result).toBe(false);
-		expect(assignMock).toHaveBeenCalledWith("/unknown-legacy?x=1");
+			const result = legacyCompatibilityGuard(homeworkLocation, dashboardLocation, vi.fn());
+
+			expect(result).toBe(false);
+			expect(window.location.assign).toHaveBeenCalledWith("/homework");
+		});
+
+		describe("when leaving the Vue client", () => {
+			it("should forward query parameters", () => {
+				mockedIsLegacyClient.mockReturnValue(true);
+				vi.stubGlobal("location", { pathname: "/dashboard", assign: vi.fn() });
+
+				legacyCompatibilityGuard(buildLocation("/homework", "/homework?tab=open"), dashboardLocation, vi.fn());
+
+				expect(window.location.assign).toHaveBeenCalledWith("/homework?tab=open");
+			});
+		});
+
+		describe("when the browser is already on the legacy path", () => {
+			it("should not redirect", () => {
+				mockedIsLegacyClient.mockReturnValue(true);
+				vi.stubGlobal("location", { pathname: "/boards/1", assign: vi.fn() });
+
+				const result = legacyCompatibilityGuard(buildLocation("/boards/1"), homeLocation, vi.fn());
+
+				expect(result).toBe(true);
+				expect(window.location.assign).not.toHaveBeenCalled();
+			});
+		});
+
+		describe("when the view has a migration page", () => {
+			it("should route to the migration page instead of the legacy client", () => {
+				mockedIsLegacyClient.mockReturnValue(true);
+				mockedIsKnownLegacyViewPath.mockReturnValue(true);
+
+				const result = legacyCompatibilityGuard(
+					buildLocation("/teams", "/teams?activeTab=events"),
+					homeLocation,
+					vi.fn()
+				);
+
+				expect(result).toEqual({
+					path: "/legacy-view-migration",
+					query: { path: "/teams?activeTab=events" },
+					replace: true,
+				});
+				expect(window.location.assign).not.toHaveBeenCalled();
+			});
+		});
 	});
 });

@@ -15,12 +15,11 @@
 					backgroundColor: cardBackground,
 					borderLeft: cardBorderColor ? `3px solid ${cardBorderColor}` : undefined,
 				}"
-				:class="{ 'drag-disabled': isEditMode }"
 				tabindex="0"
 				min-height="120px"
 				:elevation="cardElevation"
 				:ripple="false"
-				:hover="isHovered && allowedOperations?.moveCard"
+				:hover="isHovered && allowedOperations?.moveCard && !isEditMode"
 				:data-testid="cardTestId"
 				:data-scroll-target="getShareLinkId(cardId, BoardMenuScope.CARD)"
 			>
@@ -33,6 +32,7 @@
 						:value="card.title"
 						scope="card"
 						:is-focused="isFocusedById"
+						:focus-title-on-edit-start="focusTitleOnEditStart"
 						class="mx-n4 mb-n2"
 						:has-edit-permission="allowedOperations?.updateCardTitle"
 						@update:value="onUpdateCardTitle"
@@ -42,6 +42,11 @@
 					<div v-if="!isDetailView" class="board-menu" :class="boardMenuClasses">
 						<DetailViewButton class="mr-1" @open-detail-view="onOpenDetailView" />
 						<BoardMenu v-if="hasMenuItem" :scope="BoardMenuScope.CARD" has-background :data-testid="boardMenuTestId">
+							<KebabMenuActionAdd
+								v-if="allowedOperations?.createCard"
+								:text="t('components.board.action.addCard')"
+								@click="onCreateCard"
+							/>
 							<KebabMenuActionEdit v-if="allowedOperations?.deleteCard && !isEditMode" @click="onStartEditMode" />
 							<SvsColorPickerMenu
 								v-if="allowedOperations.updateCardColor"
@@ -54,6 +59,11 @@
 								@click="duplicateCard"
 							/>
 							<KebabMenuActionExport v-if="allowedOperations?.moveCard" @click="onMoveCard(cardId)" />
+							<KebabMenuActionAiCards
+								v-if="isAiEnabled && allowedOperations?.createCard && targetColumnId"
+								data-testid="card-menu-ai-cards"
+								@click.stop="openAiDialog"
+							/>
 							<KebabMenuActionShare v-if="allowedOperations?.shareCard" @click="onShareCard" />
 							<KebabMenuActionShareLink :scope="BoardMenuScope.CARD" @click="onCopyShareLink" />
 							<KebabMenuActionCardSettings
@@ -67,6 +77,13 @@
 								@click="onDeleteCard"
 							/>
 						</BoardMenu>
+						<BoardAiCardsDialog
+							v-if="isAiDialogOpen && targetColumnId"
+							v-model="isAiDialogOpen"
+							:source="{ kind: 'card', id: cardId }"
+							:target-column-id="targetColumnId"
+							:source-title="card?.title ?? ''"
+						/>
 					</div>
 
 					<div :class="{ 'mt-n2': hasCardTitle }">
@@ -111,6 +128,7 @@
 </template>
 
 <script setup lang="ts">
+import BoardAiCardsDialog from "../ai/BoardAiCardsDialog.vue";
 import { useAddElementDialog } from "../shared/AddElementDialog.composable";
 import CardAddElementMenu from "./CardAddElementMenu.vue";
 import CardCommentSection from "./CardCommentSection.vue";
@@ -138,6 +156,8 @@ import { useEnvConfig } from "@data-env";
 import { BoardMenu, BoardMenuScope, DetailViewButton } from "@ui-board";
 import { SvsColorPickerMenu } from "@ui-controls";
 import {
+	KebabMenuActionAdd,
+	KebabMenuActionAiCards,
 	KebabMenuActionDelete,
 	KebabMenuActionDuplicate,
 	KebabMenuActionEdit,
@@ -148,6 +168,7 @@ import {
 import { useShareBoardLink } from "@util-board";
 import { useDebounceFn, useElementHover, useElementSize } from "@vueuse/core";
 import { computed, onMounted, ref, toRef } from "vue";
+import { useI18n } from "vue-i18n";
 import { useRoute, useRouter } from "vue-router";
 
 type Props = {
@@ -155,6 +176,7 @@ type Props = {
 	cardId: string;
 	rowIndex: number;
 	columnIndex: number;
+	focusTitleOnEditStart?: boolean;
 };
 
 const props = defineProps<Props>();
@@ -164,9 +186,19 @@ const emit = defineEmits<{
 	(e: "move:card", cardId: string): void;
 	(e: "reload:board"): void;
 	(e: "share:card", cardId: string): void;
+	(e: "create:card", cardId: string): void;
 }>();
 
+const { t } = useI18n();
+
 const { allowedOperations } = useBoardAllowedOperations();
+
+const isAiDialogOpen = ref(false);
+const isAiEnabled = computed(() => useEnvConfig().value.FEATURE_BOARD_AI_CARDS_ENABLED);
+const targetColumnId = computed(() => useBoardStore().getColumnId(props.columnIndex));
+
+// the menu closes on this very click, and vuetify would read that as a click outside the dialog
+const openAiDialog = () => setTimeout(() => (isAiDialogOpen.value = true));
 const cardHost = ref(null);
 const cardId = toRef(props, "cardId");
 const { isFocusContained, isFocusedById } = useBoardFocusHandler(cardId.value, cardHost);
@@ -218,7 +250,7 @@ const { askType } = useAddElementDialog(cardStore.createElementRequest, cardId.v
 
 const hasMenuItem = computed(() =>
 	Object.keys(allowedOperations.value || {}).some((key) =>
-		["copyCard", "deleteCard", "moveCard", "shareBoard", "shareCard", "updateCardTitle"].includes(key)
+		["createCard", "copyCard", "deleteCard", "moveCard", "shareBoard", "shareCard", "updateCardTitle"].includes(key)
 	)
 );
 
@@ -226,6 +258,9 @@ const onMoveCardKeyboard = (event: KeyboardEvent) => emit("move:card-keyboard", 
 const onMoveCard = (cardId: string) => emit("move:card", cardId);
 const onShareCard = () => {
 	emit("share:card", props.cardId);
+};
+const onCreateCard = () => {
+	emit("create:card", props.cardId);
 };
 
 const _updateCardTitle = (newTitle: string) => {

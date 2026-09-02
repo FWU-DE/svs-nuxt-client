@@ -21,6 +21,7 @@ const apiTypeToEntityType: Record<string, ContentItemTypeEnum> = {
 	[ShareTokenInfoResponseParentType.COLUMN_BOARD]: ContentItemTypeEnum.ColumnBoard,
 	[ShareTokenInfoResponseParentType.ROOM]: ContentItemTypeEnum.Room,
 	[ShareTokenInfoResponseParentType.CARD]: ContentItemTypeEnum.Card,
+	[ShareTokenInfoResponseParentType.COLUMN]: ContentItemTypeEnum.Column,
 };
 
 export const useCopyContent = (copyItemType: Ref<ContentItemTypeEnum | undefined>) => {
@@ -130,6 +131,20 @@ export const useCopyContent = (copyItemType: Ref<ContentItemTypeEnum | undefined
 				},
 			],
 		},
+		[ContentItemTypeEnum.Column]: {
+			text: t("feature-copy.copyInfo.text.nextStep", { type: t("feature-copy.copyInfo.type.ofColumn") }),
+			info: t("feature-copy.copyInfo.checkPrivacyAndCopyright"),
+			warnings: [
+				{
+					testId: "copy-info-etherpad",
+					text: t("feature-copy.copyInfo.text.alert.Etherpad"),
+				},
+				{
+					testId: "copy-info-whiteboard",
+					text: t("feature-copy.copyInfo.text.alert.whiteboard"),
+				},
+			],
+		},
 	}));
 
 	const copyContent = computed(() =>
@@ -149,6 +164,7 @@ export const useCopyContent = (copyItemType: Ref<ContentItemTypeEnum | undefined
 		[ContentItemTypeEnum.ColumnBoard]: "components.board",
 		[ContentItemTypeEnum.Room]: "common.labels.room",
 		[ContentItemTypeEnum.Card]: "components.boardCard",
+		[ContentItemTypeEnum.Column]: "components.boardColumn",
 	};
 
 	const text = computed(() => copyContent.value.text);

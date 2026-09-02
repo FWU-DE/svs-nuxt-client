@@ -31,6 +31,11 @@
 						data-testid="kebab-menu-action-duplicate-column"
 						@click="duplicateColumn"
 					/>
+					<KebabMenuActionShare
+						v-if="isShareEnabled && allowedOperations?.shareColumn"
+						data-testid="kebab-menu-action-share-column"
+						@click="onShareColumn"
+					/>
 					<template v-if="isListBoard">
 						<KebabMenuActionMoveUp v-if="isNotFirstColumn" @click="onMoveColumnUp" />
 						<KebabMenuActionMoveDown v-if="isNotLastColumn" @click="onMoveColumnDown" />
@@ -40,8 +45,16 @@
 						<KebabMenuActionMoveRight v-if="isNotLastColumn" @click="onMoveColumnRight" />
 					</template>
 					<KebabMenuActionColumnSettings v-if="canChangeSettings" @click="emit('settings:column')" />
+					<KebabMenuActionAiCards v-if="isAiEnabled" data-testid="column-menu-ai-cards" @click.stop="openAiDialog" />
 					<KebabMenuActionDelete :name="title" @click="onDelete" />
 				</BoardMenu>
+				<BoardAiCardsDialog
+					v-if="isAiDialogOpen"
+					v-model="isAiDialogOpen"
+					:source="{ kind: 'column', id: columnId }"
+					:target-column-id="columnId"
+					:source-title="title"
+				/>
 			</div>
 		</div>
 		<VDivider role="presentation" class="flex-1-0-100 border-opacity-75" />
@@ -49,14 +62,17 @@
 </template>
 
 <script setup lang="ts">
+import BoardAiCardsDialog from "../ai/BoardAiCardsDialog.vue";
 import KebabMenuActionColumnSettings from "../column/KebabMenuActionColumnSettings.vue";
 import BoardAnyTitleInput from "../shared/BoardAnyTitleInput.vue";
 import BoardColumnInteractionHandler from "./BoardColumnInteractionHandler.vue";
 import { useSafeTaskRunner } from "@/composables/async-tasks.composable";
 import { askDeletionForType } from "@/utils/confirmation-dialog.utils";
 import { useBoardAllowedOperations, useBoardFocusHandler, useBoardStore, useCourseBoardEditMode } from "@data-board";
+import { useEnvConfig } from "@data-env";
 import { BoardMenu, BoardMenuScope } from "@ui-board";
 import {
+	KebabMenuActionAiCards,
 	KebabMenuActionDelete,
 	KebabMenuActionDuplicate,
 	KebabMenuActionMoveDown,
@@ -64,9 +80,10 @@ import {
 	KebabMenuActionMoveRight,
 	KebabMenuActionMoveUp,
 	KebabMenuActionRename,
+	KebabMenuActionShare,
 } from "@ui-kebab-menu";
 import { watchDebounced } from "@vueuse/core";
-import { ref, toRef, watch } from "vue";
+import { computed, ref, toRef, watch } from "vue";
 import { useI18n } from "vue-i18n";
 
 const props = defineProps({
@@ -81,6 +98,12 @@ const props = defineProps({
 	title: { type: String, required: true },
 });
 
+const isAiDialogOpen = ref(false);
+const isAiEnabled = computed(() => useEnvConfig().value.FEATURE_BOARD_AI_CARDS_ENABLED);
+
+// the menu closes on this very click, and vuetify would read that as a click outside the dialog
+const openAiDialog = () => setTimeout(() => (isAiDialogOpen.value = true));
+
 const emit = defineEmits([
 	"delete:column",
 	"settings:column",
@@ -88,11 +111,15 @@ const emit = defineEmits([
 	"move:column-left",
 	"move:column-right",
 	"move:column-up",
+	"share:column",
 	"update:title",
 ]);
 const { t } = useI18n();
 
 const { allowedOperations } = useBoardAllowedOperations();
+
+const envConfig = useEnvConfig();
+const isShareEnabled = computed(() => envConfig.value.FEATURE_COLUMN_BOARD_SHARE);
 
 const columnId = toRef(props, "columnId");
 const columnTitle = toRef(props, "title");
@@ -156,6 +183,8 @@ const onUpdateTitle = (newTitle: string) => (updatedTitle.value = newTitle);
 const { run: duplicateColumn } = useSafeTaskRunner(async () => {
 	await boardStore.duplicateColumn({ columnId: props.columnId });
 });
+
+const onShareColumn = () => emit("share:column", props.columnId);
 
 const emitTitleUpdate = () => {
 	if (lastEmittedTitle.value !== updatedTitle.value) {

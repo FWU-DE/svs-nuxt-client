@@ -36,6 +36,14 @@
 						>
 							{{ room.boardCount }} {{ t("common.words.board", room.boardCount) }}
 						</VChip>
+						<VChip
+							v-if="isExternalSchool"
+							size="small"
+							class="text-decoration-none"
+							:data-testid="`room--external-school-${index}`"
+						>
+							{{ t("common.words.external") }}
+						</VChip>
 					</div>
 				</div>
 			</RouterLink>
@@ -57,6 +65,7 @@
 
 <script setup lang="ts">
 import { RoomItem } from "@/types/room/Room";
+import { useSchoolStoreRefs } from "@data-app";
 import { mdiAccountMultipleOutline, mdiLock, mdiViewDashboardOutline } from "@icons/material";
 import { computed, PropType } from "vue";
 import { useI18n } from "vue-i18n";
@@ -70,6 +79,10 @@ const props = defineProps({
 });
 
 const { t } = useI18n();
+
+const { schoolDetails } = useSchoolStoreRefs();
+
+const isExternalSchool = computed(() => schoolDetails.value?.id !== props.room.schoolId);
 
 const roomPath = computed(() => `/rooms/${props.room.id}`);
 const roomShortName = computed(() => props.room?.name?.slice(0, 2) ?? "");
