@@ -1,6 +1,6 @@
 import CardReactionBar from "./CardReactionBar.vue";
-import { createTestingI18n, createTestingVuetify } from "@@/tests/test-utils/setup";
 import de from "@/locales/de";
+import { createTestingI18n, createTestingVuetify } from "@@/tests/test-utils/setup";
 import { CardReactionsResponse, CardReactionType } from "@api-server";
 import { mount } from "@vue/test-utils";
 

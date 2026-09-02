@@ -82,9 +82,7 @@ describe("CardCommentSection", () => {
 			await open(wrapper);
 
 			await wrapper.findComponent({ name: "VTextarea" }).setValue("Erste Zeile");
-			await wrapper
-				.find("[data-testid=card-comment-input] textarea")
-				.trigger("keydown.enter", { shiftKey: true });
+			await wrapper.find("[data-testid=card-comment-input] textarea").trigger("keydown.enter", { shiftKey: true });
 
 			expect(wrapper.emitted("add")).toBeUndefined();
 		});

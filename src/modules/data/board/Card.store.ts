@@ -1,6 +1,7 @@
 import { CreateCardSuccessPayload } from "./boardActions/boardActionPayload.types";
 import { useBoardFocusHandler } from "./BoardFocusHandler.composable";
 import {
+	CardCommentSuccessPayload,
 	CreateElementRequestPayload,
 	CreateElementSuccessPayload,
 	DeleteCardSuccessPayload,
@@ -8,13 +9,12 @@ import {
 	DuplicateCardSuccessPayload,
 	FetchCardSuccessPayload,
 	MoveElementSuccessPayload,
+	ReactToCardSuccessPayload,
+	SetChecklistItemCheckedSuccessPayload,
 	UpdateCardColorSuccessPayload,
 	UpdateCardHeightSuccessPayload,
-	UpdateCardTitleSuccessPayload,
-	CardCommentSuccessPayload,
-	ReactToCardSuccessPayload,
 	UpdateCardSettingsSuccessPayload,
-	SetChecklistItemCheckedSuccessPayload,
+	UpdateCardTitleSuccessPayload,
 	UpdateElementSuccessPayload,
 	VoteInPollSuccessPayload,
 } from "./cardActions/cardActionPayload.types";
@@ -358,8 +358,7 @@ export const useCardStore = defineStore("cardStore", () => {
 
 		const elementIndex = cardToUpdate.elements.findIndex((e) => e.id === payload.elementId);
 		const currentElement = cardToUpdate.elements[elementIndex] as PollElementResponse | undefined;
-		const ownVote =
-			currentElement?.type === ContentElementType.POLL ? currentElement.content.ownVote : [];
+		const ownVote = currentElement?.type === ContentElementType.POLL ? currentElement.content.ownVote : [];
 
 		cards.value[cardToUpdate.id].elements[elementIndex] = {
 			...payload.pollElement,

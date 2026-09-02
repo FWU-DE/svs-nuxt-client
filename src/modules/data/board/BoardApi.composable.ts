@@ -36,8 +36,8 @@ import {
 	PollElementResponse,
 	RichTextElementContentBody,
 	RichTextElementResponse,
-	UpdateElementContentBodyParams,
 	RoomApiFactory,
+	UpdateElementContentBodyParams,
 	VideoConferenceElementContentBody,
 	VideoConferenceElementResponse,
 } from "@api-server";

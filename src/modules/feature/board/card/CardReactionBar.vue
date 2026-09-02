@@ -53,14 +53,7 @@
 
 <script setup lang="ts">
 import { CardReactionsResponse, CardReactionType } from "@api-server";
-import {
-	mdiArrowDownBold,
-	mdiArrowUpBold,
-	mdiHeart,
-	mdiHeartOutline,
-	mdiStar,
-	mdiStarOutline,
-} from "@icons/material";
+import { mdiArrowDownBold, mdiArrowUpBold, mdiHeart, mdiHeartOutline, mdiStar, mdiStarOutline } from "@icons/material";
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
 

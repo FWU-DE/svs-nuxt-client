@@ -85,17 +85,17 @@
 
 <script setup lang="ts">
 import CardHost from "../card/CardHost.vue";
+import ColumnSettingsDialog from "../column/ColumnSettingsDialog.vue";
 import BoardAddCardButton from "./BoardAddCardButton.vue";
 import BoardColumnHeader from "./BoardColumnHeader.vue";
-import ColumnSettingsDialog from "../column/ColumnSettingsDialog.vue";
 import { BoardColumn } from "@/types/board/Board";
+import { CardReactionType } from "@api-server";
 import { useBoardAllowedOperations, useBoardStore, useForceRender, useSharedEditMode } from "@data-board";
 import { useEnvConfig } from "@data-env";
 import { extractDataAttribute, useDragAndDrop } from "@util-board";
 import { useDebounceFn } from "@vueuse/core";
 import { SortableEvent } from "sortablejs";
 import { Sortable } from "sortablejs-vue3";
-import { CardReactionType } from "@api-server";
 import { computed, ref, toRef } from "vue";
 
 type Props = {

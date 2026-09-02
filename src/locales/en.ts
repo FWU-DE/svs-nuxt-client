@@ -493,14 +493,17 @@ export default {
 	"components.cardElement.recordingElement.start": "Start recording",
 	"components.cardElement.recordingElement.again": "Record again",
 	"components.cardElement.recordingElement.stop": "Stop recording",
-	"components.cardElement.recordingElement.unsupported": "This browser cannot record. The recording can be uploaded as a file instead.",
-	"components.cardElement.recordingElement.denied": "Without access to the microphone or camera there is nothing to record. Access can be granted in the browser settings.",
+	"components.cardElement.recordingElement.unsupported":
+		"This browser cannot record. The recording can be uploaded as a file instead.",
+	"components.cardElement.recordingElement.denied":
+		"Without access to the microphone or camera there is nothing to record. Access can be granted in the browser settings.",
 	"components.elementTypeSelection.elements.recordingElement.subtitle": "Voice or video recording",
 	"components.cardElement.deadlineElement": "Deadline",
 	"components.cardElement.deadlineElement.title": "Label",
 	"components.cardElement.deadlineElement.dueDate": "Due",
 	"components.cardElement.deadlineElement.showInCalendar": "Also show in the calendar",
-	"components.cardElement.deadlineElement.showInCalendar.hint": "Appears in the calendar of everyone who can see this board. The date stays managed here.",
+	"components.cardElement.deadlineElement.showInCalendar.hint":
+		"Appears in the calendar of everyone who can see this board. The date stays managed here.",
 	"components.cardElement.deadlineElement.inCalendar": "In the calendar",
 	"components.cardElement.deadlineElement.noDate": "No date set",
 	"components.cardElement.deadlineElement.remaining": "Due {time}",
@@ -539,14 +542,17 @@ export default {
 	"components.board.action.interactions": "Reactions and comments",
 	"components.board.interactions.title": "Reactions and comments",
 	"components.board.comments.title": "Comments",
-	"components.board.comments.description": "Everyone who can see the board may comment on its cards. Teachers can remove any comment, and only they see reports.",
+	"components.board.comments.description":
+		"Everyone who can see the board may comment on its cards. Teachers can remove any comment, and only they see reports.",
 	"components.board.comments.toggle": "Allow comments",
 	"components.boardCard.comment.count": "Comments ({count})",
 	"components.boardColumn.settings.title": "Column settings",
-	"components.boardColumn.settings.description": "This column may differ from the board. Individual cards may in turn differ from the column.",
+	"components.boardColumn.settings.description":
+		"This column may differ from the board. Individual cards may in turn differ from the column.",
 	"components.boardColumn.settings.inherit": "Follow the board",
 	"components.boardCard.settings.title": "Card settings",
-	"components.boardCard.settings.description": "This card may differ from the board. \"Follow the board\" means a change to the board changes this card too.",
+	"components.boardCard.settings.description":
+		'This card may differ from the board. "Follow the board" means a change to the board changes this card too.',
 	"components.boardCard.settings.inherit": "Follow the board",
 	"components.boardCard.settings.off": "Off",
 	"components.boardCard.settings.editing": "Editing",
@@ -562,7 +568,8 @@ export default {
 	"components.boardCard.comment.alreadyReported": "Already reported",
 	"components.boardCard.comment.reported": "reported {count}×",
 	"components.board.reactionType.title": "Reactions on cards",
-	"components.board.reactionType.description": "Applies to every card of this board. Nobody can see who reacted — only the total.",
+	"components.board.reactionType.description":
+		"Applies to every card of this board. Nobody can see who reacted — only the total.",
 	"components.board.reactionType.none": "Off",
 	"components.board.reactionType.none.hint": "Cards have no reaction bar.",
 	"components.board.reactionType.like": "Like",
@@ -686,7 +693,8 @@ export default {
 	"components.cardElement.pollElement.votedBy": "{count} voted visibly",
 	"components.cardElement.pollElement.share": "{percent} percent",
 	"components.cardElement.pollElement.withdraw": "Withdraw vote",
-	"components.cardElement.pollElement.voteResetHint": "Changing the answers or the anonymity setting clears the votes cast so far.",
+	"components.cardElement.pollElement.voteResetHint":
+		"Changing the answers or the anonymity setting clears the votes cast so far.",
 	"components.elementTypeSelection.elements.pollElement.subtitle": "Poll",
 	"components.cardElement.folderElement.untitled": "Untitled folder",
 	"components.cardElement.folderElement.storage.error":
@@ -972,7 +980,8 @@ export default {
 	"components.roomForm.labels.timePeriod.from": "Time period from",
 	"components.roomForm.labels.timePeriod.to": "Time period to",
 	"components.roomForm.labels.feedback.title": "Feedback",
-	"components.roomForm.labels.feedback.helperText": "The default for the boards of this room. Individual boards, columns and cards may differ.",
+	"components.roomForm.labels.feedback.helperText":
+		"The default for the boards of this room. Individual boards, columns and cards may differ.",
 	"components.roomForm.labels.feedback.comments": "Allow comments on cards",
 	"components.roomForm.labels.feedback.reactions": "Reactions on cards",
 	"components.roomForm.labels.feedback.reactions.none": "None",

@@ -234,8 +234,8 @@ describe("useCardSocketApi", () => {
 					readersCanEdit: false,
 					reactionType: CardReactionType.NONE,
 					commentsEnabled: null,
-		roomReactionType: CardReactionType.NONE,
-		roomCommentsEnabled: false,
+					roomReactionType: CardReactionType.NONE,
+					roomCommentsEnabled: false,
 					features: [],
 				};
 				const { dispatch } = useCardSocketApi();

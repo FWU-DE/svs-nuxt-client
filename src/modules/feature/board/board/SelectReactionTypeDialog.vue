@@ -118,9 +118,7 @@ const inheritedReactionLabel = computed(() =>
 
 const inheritedCommentsLabel = computed(() =>
 	t("components.board.settings.inheritedValue", {
-		value: props.roomCommentsEnabled
-			? t("components.board.comments.toggle")
-			: t("components.board.settings.off"),
+		value: props.roomCommentsEnabled ? t("components.board.comments.toggle") : t("components.board.settings.off"),
 	})
 );
 

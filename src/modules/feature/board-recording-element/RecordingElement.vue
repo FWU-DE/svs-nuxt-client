@@ -2,7 +2,10 @@
 	<VCard class="mb-4" data-testid="board-recording-element" variant="outlined" :ripple="false">
 		<ContentElementBar :icon="isVideo ? mdiVideoOutline : mdiMicrophoneOutline">
 			<template #title>
-				{{ element.content.caption || t(isVideo ? "components.cardElement.recordingElement.video" : "components.cardElement.recordingElement.audio") }}
+				{{
+					element.content.caption ||
+					t(isVideo ? "components.cardElement.recordingElement.video" : "components.cardElement.recordingElement.audio")
+				}}
 			</template>
 			<template v-if="isEditMode" #menu>
 				<BoardMenu
@@ -107,10 +110,20 @@
 							data-testid="recording-start"
 							@click.stop="onStart"
 						>
-							{{ fileRecord ? t("components.cardElement.recordingElement.again") : t("components.cardElement.recordingElement.start") }}
+							{{
+								fileRecord
+									? t("components.cardElement.recordingElement.again")
+									: t("components.cardElement.recordingElement.start")
+							}}
 						</VBtn>
 						<template v-else>
-							<VBtn size="small" variant="tonal" :prepend-icon="mdiStop" data-testid="recording-stop" @click.stop="onStop">
+							<VBtn
+								size="small"
+								variant="tonal"
+								:prepend-icon="mdiStop"
+								data-testid="recording-stop"
+								@click.stop="onStop"
+							>
 								{{ t("components.cardElement.recordingElement.stop") }}
 							</VBtn>
 							<VBtn size="small" variant="text" data-testid="recording-cancel" @click.stop="recorder.cancel">

@@ -505,14 +505,17 @@ export default {
 	"components.cardElement.recordingElement.start": "Почати запис",
 	"components.cardElement.recordingElement.again": "Записати ще раз",
 	"components.cardElement.recordingElement.stop": "Зупинити запис",
-	"components.cardElement.recordingElement.unsupported": "Цей браузер не вміє записувати. Запис можна завантажити як файл.",
-	"components.cardElement.recordingElement.denied": "Без доступу до мікрофона чи камери записати нічого не вдасться. Доступ надається в налаштуваннях браузера.",
+	"components.cardElement.recordingElement.unsupported":
+		"Цей браузер не вміє записувати. Запис можна завантажити як файл.",
+	"components.cardElement.recordingElement.denied":
+		"Без доступу до мікрофона чи камери записати нічого не вдасться. Доступ надається в налаштуваннях браузера.",
 	"components.elementTypeSelection.elements.recordingElement.subtitle": "Запис голосу або відео",
 	"components.cardElement.deadlineElement": "Термін",
 	"components.cardElement.deadlineElement.title": "Назва",
 	"components.cardElement.deadlineElement.dueDate": "Термін до",
 	"components.cardElement.deadlineElement.showInCalendar": "Показувати також у календарі",
-	"components.cardElement.deadlineElement.showInCalendar.hint": "З'явиться в календарі всіх, хто бачить цю дошку. Дата залишається тут.",
+	"components.cardElement.deadlineElement.showInCalendar.hint":
+		"З'явиться в календарі всіх, хто бачить цю дошку. Дата залишається тут.",
 	"components.cardElement.deadlineElement.inCalendar": "У календарі",
 	"components.cardElement.deadlineElement.noDate": "Термін не вказано",
 	"components.cardElement.deadlineElement.remaining": "Термін {time}",
@@ -551,14 +554,17 @@ export default {
 	"components.board.action.interactions": "Реакції та коментарі",
 	"components.board.interactions.title": "Реакції та коментарі",
 	"components.board.comments.title": "Коментарі",
-	"components.board.comments.description": "Кожен, хто бачить дошку, може коментувати картки. Учителі можуть видалити будь-який коментар, скарги бачать лише вони.",
+	"components.board.comments.description":
+		"Кожен, хто бачить дошку, може коментувати картки. Учителі можуть видалити будь-який коментар, скарги бачать лише вони.",
 	"components.board.comments.toggle": "Дозволити коментарі",
 	"components.boardCard.comment.count": "Коментарі ({count})",
 	"components.boardColumn.settings.title": "Налаштування колонки",
-	"components.boardColumn.settings.description": "Ця колонка може відрізнятися від дошки. Окремі картки можуть відрізнятися від колонки.",
+	"components.boardColumn.settings.description":
+		"Ця колонка може відрізнятися від дошки. Окремі картки можуть відрізнятися від колонки.",
 	"components.boardColumn.settings.inherit": "Як на дошці",
 	"components.boardCard.settings.title": "Налаштування картки",
-	"components.boardCard.settings.description": "Ця картка може відрізнятися від дошки. «Як на дошці» означає, що зміна дошки змінює і картку.",
+	"components.boardCard.settings.description":
+		"Ця картка може відрізнятися від дошки. «Як на дошці» означає, що зміна дошки змінює і картку.",
 	"components.boardCard.settings.inherit": "Як на дошці",
 	"components.boardCard.settings.off": "Вимкнено",
 	"components.boardCard.settings.editing": "Редагування",
@@ -574,7 +580,8 @@ export default {
 	"components.boardCard.comment.alreadyReported": "Скаргу вже подано",
 	"components.boardCard.comment.reported": "скарг: {count}",
 	"components.board.reactionType.title": "Реакції на картках",
-	"components.board.reactionType.description": "Діє для всіх карток цієї дошки. Хто саме відреагував, не бачить ніхто — лише підсумок.",
+	"components.board.reactionType.description":
+		"Діє для всіх карток цієї дошки. Хто саме відреагував, не бачить ніхто — лише підсумок.",
 	"components.board.reactionType.none": "Вимкнено",
 	"components.board.reactionType.none.hint": "Картки без панелі реакцій.",
 	"components.board.reactionType.like": "Подобається",
@@ -844,7 +851,8 @@ export default {
 	"components.molecules.MintEcFooter.chapters": "Огляд розділу",
 	"components.molecules.share.card.options.infoText":
 		"За наступним посиланням цю картка можуть імпортувати як копію інші особи.",
-	"components.molecules.share.column.options.infoText": "За наведеним посиланням інші користувачі можуть імпортувати цю колонку.",
+	"components.molecules.share.column.options.infoText":
+		"За наведеним посиланням інші користувачі можуть імпортувати цю колонку.",
 	"components.molecules.share.card.result.linkLabel": "Посилання на копію картки",
 	"components.molecules.share.columnBoard.options.infoText":
 		"За наступним посиланням завдання можуть імпортувати як копію інші вчителі. Особисті дані не будуть імпортовані.",
@@ -987,7 +995,8 @@ export default {
 	"components.roomForm.labels.timePeriod.from": "Період від",
 	"components.roomForm.labels.timePeriod.to": "Період до",
 	"components.roomForm.labels.feedback.title": "Зворотний зв'язок",
-	"components.roomForm.labels.feedback.helperText": "Типове налаштування для дошок цієї кімнати. Окремі дошки, колонки та картки можуть відрізнятися.",
+	"components.roomForm.labels.feedback.helperText":
+		"Типове налаштування для дошок цієї кімнати. Окремі дошки, колонки та картки можуть відрізнятися.",
 	"components.roomForm.labels.feedback.comments": "Дозволити коментарі на картках",
 	"components.roomForm.labels.feedback.reactions": "Реакції на картках",
 	"components.roomForm.labels.feedback.reactions.none": "Немає",

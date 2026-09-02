@@ -52,7 +52,11 @@
 						/>
 					</template>
 					<template v-else>
-						<p v-if="!element.content.dueDate" class="text-body-2 text-medium-emphasis mb-0" data-testid="deadline-none">
+						<p
+							v-if="!element.content.dueDate"
+							class="text-body-2 text-medium-emphasis mb-0"
+							data-testid="deadline-none"
+						>
 							{{ t("components.cardElement.deadlineElement.noDate") }}
 						</p>
 						<template v-else>
@@ -80,14 +84,14 @@
 </template>
 
 <script setup lang="ts">
+// Importing the util registers the dayjs plugins this element needs (relativeTime, localizedFormat).
+import "@/utils/date-time.utils";
 import { askDeletionForType } from "@/utils/confirmation-dialog.utils";
 import { DeadlineElementResponse } from "@api-server";
 import { useBoardFocusHandler, useContentElementState } from "@data-board";
 import { mdiCalendarOutline, mdiClockOutline } from "@icons/material";
 import { BoardMenu, BoardMenuScope, ContentElementBar } from "@ui-board";
 import { KebabMenuActionDelete, KebabMenuActionMoveDown, KebabMenuActionMoveUp } from "@ui-kebab-menu";
-// Importing the util registers the dayjs plugins this element needs (relativeTime, localizedFormat).
-import "@/utils/date-time.utils";
 import dayjs from "dayjs";
 import { computed, ref, toRef } from "vue";
 import { useI18n } from "vue-i18n";
@@ -127,7 +131,9 @@ const localDateTime = computed(() =>
 	modelValue.value.dueDate ? dayjs(modelValue.value.dueDate).format("YYYY-MM-DDTHH:mm") : ""
 );
 
-const isPast = computed(() => !!element.value.content.dueDate && dayjs(element.value.content.dueDate).isBefore(dayjs()));
+const isPast = computed(
+	() => !!element.value.content.dueDate && dayjs(element.value.content.dueDate).isBefore(dayjs())
+);
 
 /**
  * A date that has passed is stated, not judged: the board does not know whether anything was

@@ -49,12 +49,12 @@
 </template>
 
 <script setup lang="ts">
+import KebabMenuActionColumnSettings from "../column/KebabMenuActionColumnSettings.vue";
 import BoardAnyTitleInput from "../shared/BoardAnyTitleInput.vue";
 import BoardColumnInteractionHandler from "./BoardColumnInteractionHandler.vue";
 import { useSafeTaskRunner } from "@/composables/async-tasks.composable";
 import { askDeletionForType } from "@/utils/confirmation-dialog.utils";
 import { useBoardAllowedOperations, useBoardFocusHandler, useBoardStore, useCourseBoardEditMode } from "@data-board";
-import KebabMenuActionColumnSettings from "../column/KebabMenuActionColumnSettings.vue";
 import { BoardMenu, BoardMenuScope } from "@ui-board";
 import {
 	KebabMenuActionDelete,
@@ -66,7 +66,7 @@ import {
 	KebabMenuActionRename,
 } from "@ui-kebab-menu";
 import { watchDebounced } from "@vueuse/core";
-import { computed, ref, toRef, watch } from "vue";
+import { ref, toRef, watch } from "vue";
 import { useI18n } from "vue-i18n";
 
 const props = defineProps({
@@ -93,8 +93,6 @@ const emit = defineEmits([
 const { t } = useI18n();
 
 const { allowedOperations } = useBoardAllowedOperations();
-
-
 
 const columnId = toRef(props, "columnId");
 const columnTitle = toRef(props, "title");

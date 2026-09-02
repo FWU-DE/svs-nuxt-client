@@ -11,13 +11,13 @@ import {
 	MoveCardRequestPayload,
 	MoveCardToBoardRequestPayload,
 	MoveColumnRequestPayload,
+	UpdateBoardCommentsEnabledRequestPayload,
 	UpdateBoardLayoutRequestPayload,
+	UpdateBoardReactionTypeRequestPayload,
 	UpdateBoardTitleRequestPayload,
 	UpdateBoardVisibilityRequestPayload,
-	UpdateColumnTitleRequestPayload,
-	UpdateBoardCommentsEnabledRequestPayload,
-	UpdateBoardReactionTypeRequestPayload,
 	UpdateColumnSettingsRequestPayload,
+	UpdateColumnTitleRequestPayload,
 	UpdateReaderCanEditRequestPayload,
 } from "./boardActionPayload.types";
 import * as BoardActions from "./boardActions";

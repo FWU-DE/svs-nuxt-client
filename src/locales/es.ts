@@ -503,14 +503,17 @@ export default {
 	"components.cardElement.recordingElement.start": "Empezar a grabar",
 	"components.cardElement.recordingElement.again": "Grabar de nuevo",
 	"components.cardElement.recordingElement.stop": "Detener la grabación",
-	"components.cardElement.recordingElement.unsupported": "Este navegador no puede grabar. La grabación se puede subir como archivo.",
-	"components.cardElement.recordingElement.denied": "Sin acceso al micrófono o a la cámara no hay nada que grabar. El acceso se concede en los ajustes del navegador.",
+	"components.cardElement.recordingElement.unsupported":
+		"Este navegador no puede grabar. La grabación se puede subir como archivo.",
+	"components.cardElement.recordingElement.denied":
+		"Sin acceso al micrófono o a la cámara no hay nada que grabar. El acceso se concede en los ajustes del navegador.",
 	"components.elementTypeSelection.elements.recordingElement.subtitle": "Grabación de voz o vídeo",
 	"components.cardElement.deadlineElement": "Plazo",
 	"components.cardElement.deadlineElement.title": "Etiqueta",
 	"components.cardElement.deadlineElement.dueDate": "Fecha límite",
 	"components.cardElement.deadlineElement.showInCalendar": "Mostrar también en el calendario",
-	"components.cardElement.deadlineElement.showInCalendar.hint": "Aparece en el calendario de quien pueda ver este tablero. La fecha se sigue gestionando aquí.",
+	"components.cardElement.deadlineElement.showInCalendar.hint":
+		"Aparece en el calendario de quien pueda ver este tablero. La fecha se sigue gestionando aquí.",
 	"components.cardElement.deadlineElement.inCalendar": "En el calendario",
 	"components.cardElement.deadlineElement.noDate": "Sin fecha",
 	"components.cardElement.deadlineElement.remaining": "Vence {time}",
@@ -549,14 +552,17 @@ export default {
 	"components.board.action.interactions": "Reacciones y comentarios",
 	"components.board.interactions.title": "Reacciones y comentarios",
 	"components.board.comments.title": "Comentarios",
-	"components.board.comments.description": "Quien pueda ver el tablero puede comentar sus tarjetas. El profesorado puede eliminar cualquier comentario y solo ellos ven las denuncias.",
+	"components.board.comments.description":
+		"Quien pueda ver el tablero puede comentar sus tarjetas. El profesorado puede eliminar cualquier comentario y solo ellos ven las denuncias.",
 	"components.board.comments.toggle": "Permitir comentarios",
 	"components.boardCard.comment.count": "Comentarios ({count})",
 	"components.boardColumn.settings.title": "Ajustes de la columna",
-	"components.boardColumn.settings.description": "Esta columna puede diferir del tablero. Cada tarjeta puede a su vez diferir de la columna.",
+	"components.boardColumn.settings.description":
+		"Esta columna puede diferir del tablero. Cada tarjeta puede a su vez diferir de la columna.",
 	"components.boardColumn.settings.inherit": "Seguir al tablero",
 	"components.boardCard.settings.title": "Ajustes de la tarjeta",
-	"components.boardCard.settings.description": "Esta tarjeta puede diferir del tablero. «Seguir al tablero» significa que un cambio en el tablero también cambia esta tarjeta.",
+	"components.boardCard.settings.description":
+		"Esta tarjeta puede diferir del tablero. «Seguir al tablero» significa que un cambio en el tablero también cambia esta tarjeta.",
 	"components.boardCard.settings.inherit": "Seguir al tablero",
 	"components.boardCard.settings.off": "Desactivado",
 	"components.boardCard.settings.editing": "Edición",
@@ -572,7 +578,8 @@ export default {
 	"components.boardCard.comment.alreadyReported": "Ya denunciado",
 	"components.boardCard.comment.reported": "denunciado {count}×",
 	"components.board.reactionType.title": "Reacciones en las tarjetas",
-	"components.board.reactionType.description": "Se aplica a todas las tarjetas de este tablero. Nadie ve quién reaccionó, solo el total.",
+	"components.board.reactionType.description":
+		"Se aplica a todas las tarjetas de este tablero. Nadie ve quién reaccionó, solo el total.",
 	"components.board.reactionType.none": "Desactivadas",
 	"components.board.reactionType.none.hint": "Las tarjetas no muestran barra de reacciones.",
 	"components.board.reactionType.like": "Me gusta",
@@ -699,7 +706,8 @@ export default {
 	"components.cardElement.pollElement.votedBy": "{count} votaron de forma visible",
 	"components.cardElement.pollElement.share": "{percent} por ciento",
 	"components.cardElement.pollElement.withdraw": "Retirar voto",
-	"components.cardElement.pollElement.voteResetHint": "Cambiar las respuestas o el anonimato borra los votos emitidos hasta ahora.",
+	"components.cardElement.pollElement.voteResetHint":
+		"Cambiar las respuestas o el anonimato borra los votos emitidos hasta ahora.",
 	"components.elementTypeSelection.elements.pollElement.subtitle": "Encuesta",
 	"components.cardElement.folderElement.untitled": "Carpeta sin título",
 	"components.cardElement.folderElement.storage.error":
@@ -846,7 +854,8 @@ export default {
 	"components.molecules.MintEcFooter.chapters": "Resumen del capítulo",
 	"components.molecules.share.card.options.infoText":
 		"Con el siguiente enlace, la tarjeta puede ser importada como copia por otros personas.",
-	"components.molecules.share.column.options.infoText": "El siguiente enlace permite a otras personas importar esta columna.",
+	"components.molecules.share.column.options.infoText":
+		"El siguiente enlace permite a otras personas importar esta columna.",
 	"components.molecules.share.card.result.linkLabel": "Enlace a la copia de la tarjeta",
 	"components.molecules.share.columnBoard.options.infoText":
 		"Con el siguiente enlace, el tablero puede ser importado como copia por otros profesores. Los datos personales no se importarán.",
@@ -991,7 +1000,8 @@ export default {
 	"components.roomForm.labels.timePeriod.from": "Periodo de tiempo desde",
 	"components.roomForm.labels.timePeriod.to": "Periodo de tiempo hasta",
 	"components.roomForm.labels.feedback.title": "Comentarios",
-	"components.roomForm.labels.feedback.helperText": "Valor predeterminado para los tableros de esta sala. Cada tablero, columna o tarjeta puede diferir.",
+	"components.roomForm.labels.feedback.helperText":
+		"Valor predeterminado para los tableros de esta sala. Cada tablero, columna o tarjeta puede diferir.",
 	"components.roomForm.labels.feedback.comments": "Permitir comentarios en las tarjetas",
 	"components.roomForm.labels.feedback.reactions": "Reacciones en las tarjetas",
 	"components.roomForm.labels.feedback.reactions.none": "Ninguna",

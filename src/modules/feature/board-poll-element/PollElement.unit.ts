@@ -118,7 +118,10 @@ describe("PollElement", () => {
 			const edit = wrapper.findComponent(PollElementEdit);
 			edit.vm.$emit("update:modelValue", {
 				...edit.props("modelValue"),
-				options: [{ id: "opt-1", text: "Ganz sicher" }, { id: "opt-2", text: "Noch unsicher" }],
+				options: [
+					{ id: "opt-1", text: "Ganz sicher" },
+					{ id: "opt-2", text: "Noch unsicher" },
+				],
 			});
 			await flushPromises();
 			await vi.waitFor(() => expect(updateElementRequest).toHaveBeenCalled());

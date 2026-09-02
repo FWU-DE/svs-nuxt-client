@@ -507,14 +507,17 @@ export default {
 	"components.cardElement.recordingElement.start": "Aufnahme starten",
 	"components.cardElement.recordingElement.again": "Neu aufnehmen",
 	"components.cardElement.recordingElement.stop": "Aufnahme beenden",
-	"components.cardElement.recordingElement.unsupported": "Dieser Browser kann nicht aufnehmen. Die Aufnahme lässt sich stattdessen als Datei hochladen.",
-	"components.cardElement.recordingElement.denied": "Ohne Zugriff auf Mikrofon oder Kamera ist keine Aufnahme möglich. Der Zugriff lässt sich in den Browser-Einstellungen erlauben.",
+	"components.cardElement.recordingElement.unsupported":
+		"Dieser Browser kann nicht aufnehmen. Die Aufnahme lässt sich stattdessen als Datei hochladen.",
+	"components.cardElement.recordingElement.denied":
+		"Ohne Zugriff auf Mikrofon oder Kamera ist keine Aufnahme möglich. Der Zugriff lässt sich in den Browser-Einstellungen erlauben.",
 	"components.elementTypeSelection.elements.recordingElement.subtitle": "Sprach- oder Videoaufnahme",
 	"components.cardElement.deadlineElement": "Termin",
 	"components.cardElement.deadlineElement.title": "Bezeichnung",
 	"components.cardElement.deadlineElement.dueDate": "Fällig am",
 	"components.cardElement.deadlineElement.showInCalendar": "Auch im Kalender anzeigen",
-	"components.cardElement.deadlineElement.showInCalendar.hint": "Erscheint im Kalender aller, die diesen Bereich sehen. Der Termin bleibt hier gepflegt.",
+	"components.cardElement.deadlineElement.showInCalendar.hint":
+		"Erscheint im Kalender aller, die diesen Bereich sehen. Der Termin bleibt hier gepflegt.",
 	"components.cardElement.deadlineElement.inCalendar": "Im Kalender",
 	"components.cardElement.deadlineElement.noDate": "Kein Termin gesetzt",
 	"components.cardElement.deadlineElement.remaining": "Fällig {time}",
@@ -553,14 +556,17 @@ export default {
 	"components.board.action.interactions": "Reaktionen und Kommentare",
 	"components.board.interactions.title": "Reaktionen und Kommentare",
 	"components.board.comments.title": "Kommentare",
-	"components.board.comments.description": "Alle, die den Bereich sehen, können Karten kommentieren. Lehrkräfte können jeden Kommentar entfernen, Meldungen sehen nur sie.",
+	"components.board.comments.description":
+		"Alle, die den Bereich sehen, können Karten kommentieren. Lehrkräfte können jeden Kommentar entfernen, Meldungen sehen nur sie.",
 	"components.board.comments.toggle": "Kommentare erlauben",
 	"components.boardCard.comment.count": "Kommentare ({count})",
 	"components.boardColumn.settings.title": "Spalten-Einstellungen",
-	"components.boardColumn.settings.description": "Diese Spalte kann von den Einstellungen des Bereichs abweichen. Einzelne Karten können wiederum davon abweichen.",
+	"components.boardColumn.settings.description":
+		"Diese Spalte kann von den Einstellungen des Bereichs abweichen. Einzelne Karten können wiederum davon abweichen.",
 	"components.boardColumn.settings.inherit": "Vom Bereich übernehmen",
 	"components.boardCard.settings.title": "Karten-Einstellungen",
-	"components.boardCard.settings.description": "Diese Karte kann von den Einstellungen des Bereichs abweichen. „Vom Bereich übernehmen“ heißt: ändert sich der Bereich, ändert sich auch die Karte.",
+	"components.boardCard.settings.description":
+		"Diese Karte kann von den Einstellungen des Bereichs abweichen. „Vom Bereich übernehmen“ heißt: ändert sich der Bereich, ändert sich auch die Karte.",
 	"components.boardCard.settings.inherit": "Vom Bereich übernehmen",
 	"components.boardCard.settings.off": "Aus",
 	"components.boardCard.settings.editing": "Bearbeiten",
@@ -576,7 +582,8 @@ export default {
 	"components.boardCard.comment.alreadyReported": "Bereits gemeldet",
 	"components.boardCard.comment.reported": "{count}× gemeldet",
 	"components.board.reactionType.title": "Reaktionen auf Karten",
-	"components.board.reactionType.description": "Gilt für alle Karten dieses Bereichs. Wer reagiert hat, ist für niemanden sichtbar — nur die Summe.",
+	"components.board.reactionType.description":
+		"Gilt für alle Karten dieses Bereichs. Wer reagiert hat, ist für niemanden sichtbar — nur die Summe.",
 	"components.board.reactionType.none": "Aus",
 	"components.board.reactionType.none.hint": "Karten haben keine Reaktionsleiste.",
 	"components.board.reactionType.like": "Gefällt mir",
@@ -707,7 +714,8 @@ export default {
 	"components.cardElement.pollElement.votedBy": "{count} sichtbar abgestimmt",
 	"components.cardElement.pollElement.share": "{percent} Prozent",
 	"components.cardElement.pollElement.withdraw": "Stimme zurückziehen",
-	"components.cardElement.pollElement.voteResetHint": "Antworten zu ändern oder die Anonymität umzustellen löscht die bisher abgegebenen Stimmen.",
+	"components.cardElement.pollElement.voteResetHint":
+		"Antworten zu ändern oder die Anonymität umzustellen löscht die bisher abgegebenen Stimmen.",
 	"components.elementTypeSelection.elements.pollElement.subtitle": "Umfrage",
 	"components.cardElement.folderElement.untitled": "Unbenannter Ordner",
 	"components.cardElement.folderElement.storage.error":
@@ -867,7 +875,8 @@ export default {
 	"components.molecules.MintEcFooter.chapters": "Kapitelübersicht",
 	"components.molecules.share.card.options.infoText":
 		"Mit dem folgenden Link kann diese Karte von anderen Personen importiert werden.",
-	"components.molecules.share.column.options.infoText": "Mit dem folgenden Link kann diese Spalte von anderen Personen importiert werden.",
+	"components.molecules.share.column.options.infoText":
+		"Mit dem folgenden Link kann diese Spalte von anderen Personen importiert werden.",
 	"components.molecules.share.card.result.linkLabel": "Link Karten-Kopie",
 	"components.molecules.share.columnBoard.options.infoText":
 		"Mit dem folgenden Link kann der Bereich als Kopie von anderen Lehrkräften importiert werden.",
@@ -998,7 +1007,8 @@ export default {
 	"components.roomForm.labels.timePeriod.from": "Zeitraum von",
 	"components.roomForm.labels.timePeriod.to": "Zeitraum bis",
 	"components.roomForm.labels.feedback.title": "Rückmeldungen",
-	"components.roomForm.labels.feedback.helperText": "Voreinstellung für die Bereiche dieses Raums. Einzelne Bereiche, Spalten und Karten können davon abweichen.",
+	"components.roomForm.labels.feedback.helperText":
+		"Voreinstellung für die Bereiche dieses Raums. Einzelne Bereiche, Spalten und Karten können davon abweichen.",
 	"components.roomForm.labels.feedback.comments": "Kommentare auf Karten erlauben",
 	"components.roomForm.labels.feedback.reactions": "Reaktionen auf Karten",
 	"components.roomForm.labels.feedback.reactions.none": "Keine",

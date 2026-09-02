@@ -94,8 +94,17 @@
 							:data-testid="`checklist-item-${item.id}`"
 							@update:model-value="onToggle(item.id, $event)"
 						/>
-						<p v-if="element.content.items.length > 0" class="text-caption text-medium-emphasis mt-1 mb-0" data-testid="checklist-progress">
-							{{ t("components.cardElement.checklistElement.progress", { done: checkedCount, total: element.content.items.length }) }}
+						<p
+							v-if="element.content.items.length > 0"
+							class="text-caption text-medium-emphasis mt-1 mb-0"
+							data-testid="checklist-progress"
+						>
+							{{
+								t("components.cardElement.checklistElement.progress", {
+									done: checkedCount,
+									total: element.content.items.length,
+								})
+							}}
 							<span v-if="isPerUser" class="ml-1" data-testid="checklist-personal-hint">
 								· {{ t("components.cardElement.checklistElement.personal") }}
 							</span>
@@ -111,8 +120,8 @@
 </template>
 
 <script setup lang="ts">
-import { askDeletionForType } from "@/utils/confirmation-dialog.utils";
 import { AnyContentElement } from "@/types/board/ContentElement";
+import { askDeletionForType } from "@/utils/confirmation-dialog.utils";
 import { ChecklistContentBody, ChecklistElementResponse, ChecklistProgressMode } from "@api-server";
 import { useBoardFocusHandler, useCardStore } from "@data-board";
 import { mdiCheckboxMarkedOutline, mdiPlus, mdiTrashCanOutline } from "@icons/material";

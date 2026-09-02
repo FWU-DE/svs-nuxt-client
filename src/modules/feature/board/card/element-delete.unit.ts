@@ -69,7 +69,12 @@ const cases: { name: string; component: Component; element: object; expectedType
 		name: "deadline",
 		component: DeadlineElement,
 		expectedType: "components.cardElement.deadlineElement",
-		element: { id: "e2", type: ContentElementType.DEADLINE, timestamps, content: { title: "", dueDate: null, showInCalendar: false } },
+		element: {
+			id: "e2",
+			type: ContentElementType.DEADLINE,
+			timestamps,
+			content: { title: "", dueDate: null, showInCalendar: false },
+		},
 	},
 	{
 		name: "code",

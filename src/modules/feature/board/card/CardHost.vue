@@ -113,14 +113,14 @@
 <script setup lang="ts">
 import { useAddElementDialog } from "../shared/AddElementDialog.composable";
 import CardAddElementMenu from "./CardAddElementMenu.vue";
-import CardHostInteractionHandler from "./CardHostInteractionHandler.vue";
-import CardSkeleton from "./CardSkeleton.vue";
-import CardTitle from "./CardTitle.vue";
 import CardCommentSection from "./CardCommentSection.vue";
+import CardHostInteractionHandler from "./CardHostInteractionHandler.vue";
 import CardReactionBar from "./CardReactionBar.vue";
 import CardSettingsDialog from "./CardSettingsDialog.vue";
-import KebabMenuActionCardSettings from "./KebabMenuActionCardSettings.vue";
+import CardSkeleton from "./CardSkeleton.vue";
+import CardTitle from "./CardTitle.vue";
 import ContentElementList from "./ContentElementList.vue";
+import KebabMenuActionCardSettings from "./KebabMenuActionCardSettings.vue";
 import { useSafeTaskRunner } from "@/composables/async-tasks.composable";
 import { ElementMove, verticalCursorKeys } from "@/types/board/DragAndDrop";
 import { colorToHexLighten3, colorToHexLighten5 } from "@/utils/color.utils";
@@ -265,11 +265,9 @@ const onAddComment = (text: string) => cardStore.addCardCommentRequest({ cardId:
 const onEditComment = (commentId: string, text: string) =>
 	cardStore.editCardCommentRequest({ cardId: cardId.value, commentId, text });
 
-const onRemoveComment = (commentId: string) =>
-	cardStore.removeCardCommentRequest({ cardId: cardId.value, commentId });
+const onRemoveComment = (commentId: string) => cardStore.removeCardCommentRequest({ cardId: cardId.value, commentId });
 
-const onReportComment = (commentId: string) =>
-	cardStore.reportCardCommentRequest({ cardId: cardId.value, commentId });
+const onReportComment = (commentId: string) => cardStore.reportCardCommentRequest({ cardId: cardId.value, commentId });
 
 const onDeleteElement = (elementId: string) => cardStore.deleteElementRequest({ cardId: cardId.value, elementId });
 

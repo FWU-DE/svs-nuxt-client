@@ -40,7 +40,13 @@
 				@keydown.enter.exact.prevent="onSubmit"
 			/>
 			<div class="d-flex justify-end mt-1">
-				<VBtn size="small" variant="tonal" :disabled="!isDraftValid" data-testid="card-comment-submit" @click.stop="onSubmit">
+				<VBtn
+					size="small"
+					variant="tonal"
+					:disabled="!isDraftValid"
+					data-testid="card-comment-submit"
+					@click.stop="onSubmit"
+				>
 					{{ t("components.boardCard.comment.submit") }}
 				</VBtn>
 			</div>

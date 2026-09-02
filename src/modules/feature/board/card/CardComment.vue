@@ -25,7 +25,13 @@
 				<VBtn size="small" variant="text" data-testid="card-comment-edit-cancel" @click="onCancelEdit">
 					{{ t("common.actions.cancel") }}
 				</VBtn>
-				<VBtn size="small" variant="tonal" :disabled="!isDraftValid" data-testid="card-comment-edit-save" @click="onSaveEdit">
+				<VBtn
+					size="small"
+					variant="tonal"
+					:disabled="!isDraftValid"
+					data-testid="card-comment-edit-save"
+					@click="onSaveEdit"
+				>
 					{{ t("common.actions.save") }}
 				</VBtn>
 			</div>
@@ -41,11 +47,7 @@
 							{{ relativeDate }}
 						</time>
 						<span v-if="comment.isEdited"> · {{ t("components.boardCard.comment.edited") }}</span>
-						<span
-							v-if="comment.reportCount"
-							class="text-error"
-							data-testid="card-comment-report-count"
-						>
+						<span v-if="comment.reportCount" class="text-error" data-testid="card-comment-report-count">
 							· {{ t("components.boardCard.comment.reported", { count: comment.reportCount }) }}
 						</span>
 					</p>
@@ -67,11 +69,7 @@
 						<VListItem v-if="comment.isOwn" data-testid="card-comment-action-edit" @click="onStartEdit">
 							{{ t("common.actions.edit") }}
 						</VListItem>
-						<VListItem
-							v-if="comment.isOwn || canModerate"
-							data-testid="card-comment-action-remove"
-							@click="onRemove"
-						>
+						<VListItem v-if="comment.isOwn || canModerate" data-testid="card-comment-action-remove" @click="onRemove">
 							{{ t("common.actions.remove") }}
 						</VListItem>
 						<VListItem
