@@ -3,6 +3,7 @@
 		<BoardColumnHeader
 			:can-edit-column="allowedOperations?.updateColumnTitle ?? false"
 			:can-delete-column="allowedOperations?.deleteColumn ?? false"
+			:can-change-settings="canChangeColumnSettings"
 			:column-id="column.id"
 			:title="column.title"
 			:index="index"
@@ -10,12 +11,20 @@
 			:is-not-first-column="isNotFirstColumn"
 			:is-not-last-column="isNotLastColumn"
 			@delete:column="onColumnDelete"
+			@settings:column="isSettingsDialogOpen = true"
 			@move:column-down="onMoveColumnDown"
 			@move:column-left="onMoveColumnLeft"
 			@move:column-right="onMoveColumnRight"
 			@move:column-up="onMoveColumnUp"
 			@share:column="emit('share:column', $event)"
 			@update:title="onUpdateTitle"
+		/>
+		<ColumnSettingsDialog
+			v-model="isSettingsDialogOpen"
+			:comments-enabled="column.commentsEnabled ?? null"
+			:reaction-type="column.reactionType ?? null"
+			@change-comments="onChangeColumnComments"
+			@change-reactions="onChangeColumnReactions"
 		/>
 		<div class="h-100 pt-3" :class="scrollableClasses">
 			<Sortable
@@ -78,15 +87,18 @@
 
 <script setup lang="ts">
 import CardHost from "../card/CardHost.vue";
+import ColumnSettingsDialog from "../column/ColumnSettingsDialog.vue";
 import BoardAddCardButton from "./BoardAddCardButton.vue";
 import BoardColumnHeader from "./BoardColumnHeader.vue";
 import { BoardColumn } from "@/types/board/Board";
+import { CardReactionType } from "@api-server";
 import { useBoardAllowedOperations, useBoardStore, useForceRender, useSharedEditMode } from "@data-board";
+import { useEnvConfig } from "@data-env";
 import { extractDataAttribute, useDragAndDrop } from "@util-board";
 import { useDebounceFn } from "@vueuse/core";
 import { SortableEvent } from "sortablejs";
 import { Sortable } from "sortablejs-vue3";
-import { computed, toRef } from "vue";
+import { computed, ref, toRef } from "vue";
 
 type Props = {
 	column: BoardColumn;
@@ -113,6 +125,22 @@ const emit = defineEmits<{
 }>();
 
 const boardStore = useBoardStore();
+
+const isSettingsDialogOpen = ref(false);
+
+const canChangeColumnSettings = computed(
+	() =>
+		useEnvConfig().value.FEATURE_COLUMN_BOARD_INTERACTIVE_ELEMENTS_ENABLED &&
+		(allowedOperations.value?.updateColumnSettings ?? false)
+);
+
+const onChangeColumnComments = (commentsEnabled: boolean | null) => {
+	boardStore.updateColumnSettingsRequest({ columnId: props.column.id, commentsEnabled });
+};
+
+const onChangeColumnReactions = (reactionType: CardReactionType | null) => {
+	boardStore.updateColumnSettingsRequest({ columnId: props.column.id, reactionType });
+};
 const { allowedOperations } = useBoardAllowedOperations();
 const reactiveIndex = toRef(props, "index");
 const { editModeId } = useSharedEditMode();

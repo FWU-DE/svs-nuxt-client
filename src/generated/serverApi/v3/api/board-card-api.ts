@@ -23,9 +23,19 @@ import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } fr
 // @ts-ignore
 import { ApiValidationError } from '../models';
 // @ts-ignore
+import { CardCommentBodyParams } from '../models';
+// @ts-ignore
+import { CardCommentReportBodyParams } from '../models';
+// @ts-ignore
+import { CardCommentResponse } from '../models';
+// @ts-ignore
 import { CardListResponse } from '../models';
 // @ts-ignore
+import { CardReactionBodyParams } from '../models';
+// @ts-ignore
 import { CardResponse } from '../models';
+// @ts-ignore
+import { CardSettingsBodyParams } from '../models';
 // @ts-ignore
 import { ColorBodyParams } from '../models';
 // @ts-ignore
@@ -62,6 +72,50 @@ import { VideoConferenceElementResponse } from '../models';
  */
 export const BoardCardApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
+        /**
+         * 
+         * @summary Write a comment on a card.
+         * @param {string} cardId The id of the card.
+         * @param {CardCommentBodyParams} cardCommentBodyParams 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        cardControllerAddComment: async (cardId: string, cardCommentBodyParams: CardCommentBodyParams, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'cardId' is not null or undefined
+            assertParamExists('cardControllerAddComment', 'cardId', cardId)
+            // verify required parameter 'cardCommentBodyParams' is not null or undefined
+            assertParamExists('cardControllerAddComment', 'cardCommentBodyParams', cardCommentBodyParams)
+            const localVarPath = `/cards/{cardId}/comments`
+                .replace(`{${"cardId"}}`, encodeURIComponent(String(cardId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearer required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(cardCommentBodyParams, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
         /**
          * 
          * @summary Copy a single card.
@@ -184,6 +238,54 @@ export const BoardCardApiAxiosParamCreator = function (configuration?: Configura
         },
         /**
          * 
+         * @summary Edit an own comment on a card.
+         * @param {string} cardId 
+         * @param {string} commentId 
+         * @param {CardCommentBodyParams} cardCommentBodyParams 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        cardControllerEditComment: async (cardId: string, commentId: string, cardCommentBodyParams: CardCommentBodyParams, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'cardId' is not null or undefined
+            assertParamExists('cardControllerEditComment', 'cardId', cardId)
+            // verify required parameter 'commentId' is not null or undefined
+            assertParamExists('cardControllerEditComment', 'commentId', commentId)
+            // verify required parameter 'cardCommentBodyParams' is not null or undefined
+            assertParamExists('cardControllerEditComment', 'cardCommentBodyParams', cardCommentBodyParams)
+            const localVarPath = `/cards/{cardId}/comments/{commentId}`
+                .replace(`{${"cardId"}}`, encodeURIComponent(String(cardId)))
+                .replace(`{${"commentId"}}`, encodeURIComponent(String(commentId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearer required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(cardCommentBodyParams, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary Get a list of cards by their ids.
          * @param {Array<string>} ids Array of Ids to be loaded
          * @param {*} [options] Override http request option.
@@ -261,6 +363,140 @@ export const BoardCardApiAxiosParamCreator = function (configuration?: Configura
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
             localVarRequestOptions.data = serializeDataIfNeeded(moveCardBodyParams, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary React to a card, change or withdraw the reaction.
+         * @param {string} cardId The id of the card.
+         * @param {CardReactionBodyParams} cardReactionBodyParams 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        cardControllerReactToCard: async (cardId: string, cardReactionBodyParams: CardReactionBodyParams, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'cardId' is not null or undefined
+            assertParamExists('cardControllerReactToCard', 'cardId', cardId)
+            // verify required parameter 'cardReactionBodyParams' is not null or undefined
+            assertParamExists('cardControllerReactToCard', 'cardReactionBodyParams', cardReactionBodyParams)
+            const localVarPath = `/cards/{cardId}/reaction`
+                .replace(`{${"cardId"}}`, encodeURIComponent(String(cardId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearer required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(cardReactionBodyParams, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Remove a comment: an own one, or any as a moderator.
+         * @param {string} cardId 
+         * @param {string} commentId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        cardControllerRemoveComment: async (cardId: string, commentId: string, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'cardId' is not null or undefined
+            assertParamExists('cardControllerRemoveComment', 'cardId', cardId)
+            // verify required parameter 'commentId' is not null or undefined
+            assertParamExists('cardControllerRemoveComment', 'commentId', commentId)
+            const localVarPath = `/cards/{cardId}/comments/{commentId}`
+                .replace(`{${"cardId"}}`, encodeURIComponent(String(cardId)))
+                .replace(`{${"commentId"}}`, encodeURIComponent(String(commentId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearer required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Report a comment to the people who may moderate this board.
+         * @param {string} cardId 
+         * @param {string} commentId 
+         * @param {CardCommentReportBodyParams} cardCommentReportBodyParams 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        cardControllerReportComment: async (cardId: string, commentId: string, cardCommentReportBodyParams: CardCommentReportBodyParams, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'cardId' is not null or undefined
+            assertParamExists('cardControllerReportComment', 'cardId', cardId)
+            // verify required parameter 'commentId' is not null or undefined
+            assertParamExists('cardControllerReportComment', 'commentId', commentId)
+            // verify required parameter 'cardCommentReportBodyParams' is not null or undefined
+            assertParamExists('cardControllerReportComment', 'cardCommentReportBodyParams', cardCommentReportBodyParams)
+            const localVarPath = `/cards/{cardId}/comments/{commentId}/report`
+                .replace(`{${"cardId"}}`, encodeURIComponent(String(cardId)))
+                .replace(`{${"commentId"}}`, encodeURIComponent(String(commentId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearer required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(cardCommentReportBodyParams, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -357,6 +593,50 @@ export const BoardCardApiAxiosParamCreator = function (configuration?: Configura
         },
         /**
          * 
+         * @summary Override the board\'s comment and editing settings for a single card.
+         * @param {string} cardId The id of the card.
+         * @param {CardSettingsBodyParams} cardSettingsBodyParams 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        cardControllerUpdateCardSettings: async (cardId: string, cardSettingsBodyParams: CardSettingsBodyParams, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'cardId' is not null or undefined
+            assertParamExists('cardControllerUpdateCardSettings', 'cardId', cardId)
+            // verify required parameter 'cardSettingsBodyParams' is not null or undefined
+            assertParamExists('cardControllerUpdateCardSettings', 'cardSettingsBodyParams', cardSettingsBodyParams)
+            const localVarPath = `/cards/{cardId}/settings`
+                .replace(`{${"cardId"}}`, encodeURIComponent(String(cardId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearer required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(cardSettingsBodyParams, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary Update the title of a single card.
          * @param {string} cardId The id of the card.
          * @param {RenameBodyParams} renameBodyParams 
@@ -411,6 +691,18 @@ export const BoardCardApiFp = function(configuration?: Configuration) {
     return {
         /**
          * 
+         * @summary Write a comment on a card.
+         * @param {string} cardId The id of the card.
+         * @param {CardCommentBodyParams} cardCommentBodyParams 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async cardControllerAddComment(cardId: string, cardCommentBodyParams: CardCommentBodyParams, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CardCommentResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.cardControllerAddComment(cardId, cardCommentBodyParams, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
          * @summary Copy a single card.
          * @param {string} cardId The id of the card.
          * @param {*} [options] Override http request option.
@@ -445,6 +737,19 @@ export const BoardCardApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @summary Edit an own comment on a card.
+         * @param {string} cardId 
+         * @param {string} commentId 
+         * @param {CardCommentBodyParams} cardCommentBodyParams 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async cardControllerEditComment(cardId: string, commentId: string, cardCommentBodyParams: CardCommentBodyParams, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CardCommentResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.cardControllerEditComment(cardId, commentId, cardCommentBodyParams, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
          * @summary Get a list of cards by their ids.
          * @param {Array<string>} ids Array of Ids to be loaded
          * @param {*} [options] Override http request option.
@@ -464,6 +769,43 @@ export const BoardCardApiFp = function(configuration?: Configuration) {
          */
         async cardControllerMoveCard(cardId: string, moveCardBodyParams: MoveCardBodyParams, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<MoveCardResponse>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.cardControllerMoveCard(cardId, moveCardBodyParams, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary React to a card, change or withdraw the reaction.
+         * @param {string} cardId The id of the card.
+         * @param {CardReactionBodyParams} cardReactionBodyParams 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async cardControllerReactToCard(cardId: string, cardReactionBodyParams: CardReactionBodyParams, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CardResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.cardControllerReactToCard(cardId, cardReactionBodyParams, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary Remove a comment: an own one, or any as a moderator.
+         * @param {string} cardId 
+         * @param {string} commentId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async cardControllerRemoveComment(cardId: string, commentId: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CardCommentResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.cardControllerRemoveComment(cardId, commentId, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary Report a comment to the people who may moderate this board.
+         * @param {string} cardId 
+         * @param {string} commentId 
+         * @param {CardCommentReportBodyParams} cardCommentReportBodyParams 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async cardControllerReportComment(cardId: string, commentId: string, cardCommentReportBodyParams: CardCommentReportBodyParams, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CardCommentResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.cardControllerReportComment(cardId, commentId, cardCommentReportBodyParams, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -492,6 +834,18 @@ export const BoardCardApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @summary Override the board\'s comment and editing settings for a single card.
+         * @param {string} cardId The id of the card.
+         * @param {CardSettingsBodyParams} cardSettingsBodyParams 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async cardControllerUpdateCardSettings(cardId: string, cardSettingsBodyParams: CardSettingsBodyParams, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CardResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.cardControllerUpdateCardSettings(cardId, cardSettingsBodyParams, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
          * @summary Update the title of a single card.
          * @param {string} cardId The id of the card.
          * @param {RenameBodyParams} renameBodyParams 
@@ -512,6 +866,17 @@ export const BoardCardApiFp = function(configuration?: Configuration) {
 export const BoardCardApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
     const localVarFp = BoardCardApiFp(configuration)
     return {
+        /**
+         * 
+         * @summary Write a comment on a card.
+         * @param {string} cardId The id of the card.
+         * @param {CardCommentBodyParams} cardCommentBodyParams 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        cardControllerAddComment(cardId: string, cardCommentBodyParams: CardCommentBodyParams, options?: any): AxiosPromise<CardCommentResponse> {
+            return localVarFp.cardControllerAddComment(cardId, cardCommentBodyParams, options).then((request) => request(axios, basePath));
+        },
         /**
          * 
          * @summary Copy a single card.
@@ -545,6 +910,18 @@ export const BoardCardApiFactory = function (configuration?: Configuration, base
         },
         /**
          * 
+         * @summary Edit an own comment on a card.
+         * @param {string} cardId 
+         * @param {string} commentId 
+         * @param {CardCommentBodyParams} cardCommentBodyParams 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        cardControllerEditComment(cardId: string, commentId: string, cardCommentBodyParams: CardCommentBodyParams, options?: any): AxiosPromise<CardCommentResponse> {
+            return localVarFp.cardControllerEditComment(cardId, commentId, cardCommentBodyParams, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @summary Get a list of cards by their ids.
          * @param {Array<string>} ids Array of Ids to be loaded
          * @param {*} [options] Override http request option.
@@ -563,6 +940,40 @@ export const BoardCardApiFactory = function (configuration?: Configuration, base
          */
         cardControllerMoveCard(cardId: string, moveCardBodyParams: MoveCardBodyParams, options?: any): AxiosPromise<MoveCardResponse> {
             return localVarFp.cardControllerMoveCard(cardId, moveCardBodyParams, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary React to a card, change or withdraw the reaction.
+         * @param {string} cardId The id of the card.
+         * @param {CardReactionBodyParams} cardReactionBodyParams 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        cardControllerReactToCard(cardId: string, cardReactionBodyParams: CardReactionBodyParams, options?: any): AxiosPromise<CardResponse> {
+            return localVarFp.cardControllerReactToCard(cardId, cardReactionBodyParams, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Remove a comment: an own one, or any as a moderator.
+         * @param {string} cardId 
+         * @param {string} commentId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        cardControllerRemoveComment(cardId: string, commentId: string, options?: any): AxiosPromise<CardCommentResponse> {
+            return localVarFp.cardControllerRemoveComment(cardId, commentId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Report a comment to the people who may moderate this board.
+         * @param {string} cardId 
+         * @param {string} commentId 
+         * @param {CardCommentReportBodyParams} cardCommentReportBodyParams 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        cardControllerReportComment(cardId: string, commentId: string, cardCommentReportBodyParams: CardCommentReportBodyParams, options?: any): AxiosPromise<CardCommentResponse> {
+            return localVarFp.cardControllerReportComment(cardId, commentId, cardCommentReportBodyParams, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -588,6 +999,17 @@ export const BoardCardApiFactory = function (configuration?: Configuration, base
         },
         /**
          * 
+         * @summary Override the board\'s comment and editing settings for a single card.
+         * @param {string} cardId The id of the card.
+         * @param {CardSettingsBodyParams} cardSettingsBodyParams 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        cardControllerUpdateCardSettings(cardId: string, cardSettingsBodyParams: CardSettingsBodyParams, options?: any): AxiosPromise<CardResponse> {
+            return localVarFp.cardControllerUpdateCardSettings(cardId, cardSettingsBodyParams, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @summary Update the title of a single card.
          * @param {string} cardId The id of the card.
          * @param {RenameBodyParams} renameBodyParams 
@@ -606,6 +1028,17 @@ export const BoardCardApiFactory = function (configuration?: Configuration, base
  * @interface BoardCardApi
  */
 export interface BoardCardApiInterface {
+    /**
+     * 
+     * @summary Write a comment on a card.
+     * @param {string} cardId The id of the card.
+     * @param {CardCommentBodyParams} cardCommentBodyParams 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof BoardCardApiInterface
+     */
+    cardControllerAddComment(cardId: string, cardCommentBodyParams: CardCommentBodyParams, options?: any): AxiosPromise<CardCommentResponse>;
+
     /**
      * 
      * @summary Copy a single card.
@@ -639,6 +1072,18 @@ export interface BoardCardApiInterface {
 
     /**
      * 
+     * @summary Edit an own comment on a card.
+     * @param {string} cardId 
+     * @param {string} commentId 
+     * @param {CardCommentBodyParams} cardCommentBodyParams 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof BoardCardApiInterface
+     */
+    cardControllerEditComment(cardId: string, commentId: string, cardCommentBodyParams: CardCommentBodyParams, options?: any): AxiosPromise<CardCommentResponse>;
+
+    /**
+     * 
      * @summary Get a list of cards by their ids.
      * @param {Array<string>} ids Array of Ids to be loaded
      * @param {*} [options] Override http request option.
@@ -657,6 +1102,40 @@ export interface BoardCardApiInterface {
      * @memberof BoardCardApiInterface
      */
     cardControllerMoveCard(cardId: string, moveCardBodyParams: MoveCardBodyParams, options?: any): AxiosPromise<MoveCardResponse>;
+
+    /**
+     * 
+     * @summary React to a card, change or withdraw the reaction.
+     * @param {string} cardId The id of the card.
+     * @param {CardReactionBodyParams} cardReactionBodyParams 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof BoardCardApiInterface
+     */
+    cardControllerReactToCard(cardId: string, cardReactionBodyParams: CardReactionBodyParams, options?: any): AxiosPromise<CardResponse>;
+
+    /**
+     * 
+     * @summary Remove a comment: an own one, or any as a moderator.
+     * @param {string} cardId 
+     * @param {string} commentId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof BoardCardApiInterface
+     */
+    cardControllerRemoveComment(cardId: string, commentId: string, options?: any): AxiosPromise<CardCommentResponse>;
+
+    /**
+     * 
+     * @summary Report a comment to the people who may moderate this board.
+     * @param {string} cardId 
+     * @param {string} commentId 
+     * @param {CardCommentReportBodyParams} cardCommentReportBodyParams 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof BoardCardApiInterface
+     */
+    cardControllerReportComment(cardId: string, commentId: string, cardCommentReportBodyParams: CardCommentReportBodyParams, options?: any): AxiosPromise<CardCommentResponse>;
 
     /**
      * 
@@ -682,6 +1161,17 @@ export interface BoardCardApiInterface {
 
     /**
      * 
+     * @summary Override the board\'s comment and editing settings for a single card.
+     * @param {string} cardId The id of the card.
+     * @param {CardSettingsBodyParams} cardSettingsBodyParams 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof BoardCardApiInterface
+     */
+    cardControllerUpdateCardSettings(cardId: string, cardSettingsBodyParams: CardSettingsBodyParams, options?: any): AxiosPromise<CardResponse>;
+
+    /**
+     * 
      * @summary Update the title of a single card.
      * @param {string} cardId The id of the card.
      * @param {RenameBodyParams} renameBodyParams 
@@ -700,6 +1190,19 @@ export interface BoardCardApiInterface {
  * @extends {BaseAPI}
  */
 export class BoardCardApi extends BaseAPI implements BoardCardApiInterface {
+    /**
+     * 
+     * @summary Write a comment on a card.
+     * @param {string} cardId The id of the card.
+     * @param {CardCommentBodyParams} cardCommentBodyParams 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof BoardCardApi
+     */
+    public cardControllerAddComment(cardId: string, cardCommentBodyParams: CardCommentBodyParams, options?: any) {
+        return BoardCardApiFp(this.configuration).cardControllerAddComment(cardId, cardCommentBodyParams, options).then((request) => request(this.axios, this.basePath));
+    }
+
     /**
      * 
      * @summary Copy a single card.
@@ -739,6 +1242,20 @@ export class BoardCardApi extends BaseAPI implements BoardCardApiInterface {
 
     /**
      * 
+     * @summary Edit an own comment on a card.
+     * @param {string} cardId 
+     * @param {string} commentId 
+     * @param {CardCommentBodyParams} cardCommentBodyParams 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof BoardCardApi
+     */
+    public cardControllerEditComment(cardId: string, commentId: string, cardCommentBodyParams: CardCommentBodyParams, options?: any) {
+        return BoardCardApiFp(this.configuration).cardControllerEditComment(cardId, commentId, cardCommentBodyParams, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
      * @summary Get a list of cards by their ids.
      * @param {Array<string>} ids Array of Ids to be loaded
      * @param {*} [options] Override http request option.
@@ -760,6 +1277,46 @@ export class BoardCardApi extends BaseAPI implements BoardCardApiInterface {
      */
     public cardControllerMoveCard(cardId: string, moveCardBodyParams: MoveCardBodyParams, options?: any) {
         return BoardCardApiFp(this.configuration).cardControllerMoveCard(cardId, moveCardBodyParams, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary React to a card, change or withdraw the reaction.
+     * @param {string} cardId The id of the card.
+     * @param {CardReactionBodyParams} cardReactionBodyParams 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof BoardCardApi
+     */
+    public cardControllerReactToCard(cardId: string, cardReactionBodyParams: CardReactionBodyParams, options?: any) {
+        return BoardCardApiFp(this.configuration).cardControllerReactToCard(cardId, cardReactionBodyParams, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Remove a comment: an own one, or any as a moderator.
+     * @param {string} cardId 
+     * @param {string} commentId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof BoardCardApi
+     */
+    public cardControllerRemoveComment(cardId: string, commentId: string, options?: any) {
+        return BoardCardApiFp(this.configuration).cardControllerRemoveComment(cardId, commentId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Report a comment to the people who may moderate this board.
+     * @param {string} cardId 
+     * @param {string} commentId 
+     * @param {CardCommentReportBodyParams} cardCommentReportBodyParams 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof BoardCardApi
+     */
+    public cardControllerReportComment(cardId: string, commentId: string, cardCommentReportBodyParams: CardCommentReportBodyParams, options?: any) {
+        return BoardCardApiFp(this.configuration).cardControllerReportComment(cardId, commentId, cardCommentReportBodyParams, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -786,6 +1343,19 @@ export class BoardCardApi extends BaseAPI implements BoardCardApiInterface {
      */
     public cardControllerUpdateCardHeight(cardId: string, setHeightBodyParams: SetHeightBodyParams, options?: any) {
         return BoardCardApiFp(this.configuration).cardControllerUpdateCardHeight(cardId, setHeightBodyParams, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Override the board\'s comment and editing settings for a single card.
+     * @param {string} cardId The id of the card.
+     * @param {CardSettingsBodyParams} cardSettingsBodyParams 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof BoardCardApi
+     */
+    public cardControllerUpdateCardSettings(cardId: string, cardSettingsBodyParams: CardSettingsBodyParams, options?: any) {
+        return BoardCardApiFp(this.configuration).cardControllerUpdateCardSettings(cardId, cardSettingsBodyParams, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

@@ -1,5 +1,14 @@
 import { AnyContentElement } from "@/types/board/ContentElement";
-import { CardResponse, Colors, ContentElementType, CopyStatusEnum } from "@api-server";
+import {
+	CardCommentResponse,
+	CardReactionType,
+	CardResponse,
+	ChecklistElementResponse,
+	Colors,
+	ContentElementType,
+	CopyStatusEnum,
+	PollElementResponse,
+} from "@api-server";
 
 export type FetchCardRequestPayload = {
 	cardIds: string[];
@@ -113,5 +122,83 @@ export type UpdateElementSuccessPayload = {
 	isOwnAction: boolean;
 };
 export type UpdateElementFailurePayload = UpdateElementRequestPayload;
+
+export type AddCardCommentRequestPayload = {
+	cardId: string;
+	text: string;
+};
+export type EditCardCommentRequestPayload = AddCardCommentRequestPayload & {
+	commentId: string;
+};
+export type RemoveCardCommentRequestPayload = {
+	cardId: string;
+	commentId: string;
+};
+export type ReportCardCommentRequestPayload = RemoveCardCommentRequestPayload & {
+	reason?: string;
+};
+export type CardCommentSuccessPayload = {
+	cardId: string;
+	comment?: CardCommentResponse;
+	isOwnAction: boolean;
+};
+export type CardCommentFailurePayload = {
+	cardId: string;
+};
+
+export type UpdateCardSettingsRequestPayload = {
+	cardId: string;
+	commentsEnabled?: boolean | null;
+	readersCanEdit?: boolean | null;
+	reactionType?: CardReactionType | null;
+};
+export type UpdateCardSettingsSuccessPayload = {
+	cardId: string;
+	card: CardResponse;
+	isOwnAction: boolean;
+};
+export type UpdateCardSettingsFailurePayload = {
+	cardId: string;
+};
+
+export type ReactToCardRequestPayload = {
+	cardId: string;
+	value?: number;
+};
+export type ReactToCardSuccessPayload = {
+	cardId: string;
+	card: CardResponse;
+	isOwnAction: boolean;
+};
+export type ReactToCardFailurePayload = {
+	cardId: string;
+};
+
+export type SetChecklistItemCheckedRequestPayload = {
+	elementId: string;
+	itemId: string;
+	checked: boolean;
+};
+export type SetChecklistItemCheckedSuccessPayload = {
+	elementId: string;
+	element: ChecklistElementResponse;
+	isOwnAction: boolean;
+};
+export type SetChecklistItemCheckedFailurePayload = {
+	elementId: string;
+};
+
+export type VoteInPollRequestPayload = {
+	elementId: string;
+	optionIds: string[];
+};
+export type VoteInPollSuccessPayload = {
+	elementId: string;
+	pollElement: PollElementResponse;
+	isOwnAction: boolean;
+};
+export type VoteInPollFailurePayload = {
+	elementId: string;
+};
 
 export type DisconnectSocketRequestPayload = Record<string, never>;

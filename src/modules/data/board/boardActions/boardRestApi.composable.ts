@@ -11,9 +11,12 @@ import {
 	MoveCardRequestPayload,
 	MoveCardToBoardRequestPayload,
 	MoveColumnRequestPayload,
+	UpdateBoardCommentsEnabledRequestPayload,
 	UpdateBoardLayoutRequestPayload,
+	UpdateBoardReactionTypeRequestPayload,
 	UpdateBoardTitleRequestPayload,
 	UpdateBoardVisibilityRequestPayload,
+	UpdateColumnSettingsRequestPayload,
 	UpdateColumnTitleRequestPayload,
 	UpdateReaderCanEditRequestPayload,
 } from "./boardActionPayload.types";
@@ -43,6 +46,9 @@ export const useBoardRestApi = () => {
 		updateBoardVisibilityCall,
 		updateBoardLayoutCall,
 		updateReadersCanEditCall,
+		updateBoardReactionTypeCall,
+		updateColumnSettingsCall,
+		updateBoardCommentsEnabledCall,
 	} = useBoardApi();
 
 	const { setEditModeId } = useSharedEditMode();
@@ -277,6 +283,46 @@ export const useBoardRestApi = () => {
 		}
 	};
 
+	const updateColumnSettingsRequest = async (payload: UpdateColumnSettingsRequestPayload) => {
+		try {
+			const { columnId, ...settings } = payload;
+			await updateColumnSettingsCall(columnId, settings);
+			boardStore.updateColumnSettingsSuccess({ columnId, isOwnAction: true });
+		} catch (error) {
+			handleError(error, {
+				404: notifyWithTemplate("notUpdated", "boardColumn"),
+			});
+		}
+	};
+
+	const updateBoardReactionTypeRequest = async (payload: UpdateBoardReactionTypeRequestPayload) => {
+		if (boardStore.board === undefined) return;
+		const { boardId, reactionType } = payload;
+
+		try {
+			await updateBoardReactionTypeCall(boardId, reactionType);
+			boardStore.updateBoardReactionTypeSuccess({ boardId, reactionType, isOwnAction: true });
+		} catch (error) {
+			handleError(error, {
+				404: notifyWithTemplateAndReload("notUpdated", "board"),
+			});
+		}
+	};
+
+	const updateBoardCommentsEnabledRequest = async (payload: UpdateBoardCommentsEnabledRequestPayload) => {
+		if (boardStore.board === undefined) return;
+		const { boardId, commentsEnabled } = payload;
+
+		try {
+			await updateBoardCommentsEnabledCall(boardId, commentsEnabled);
+			boardStore.updateBoardCommentsEnabledSuccess({ boardId, commentsEnabled, isOwnAction: true });
+		} catch (error) {
+			handleError(error, {
+				404: notifyWithTemplateAndReload("notUpdated", "board"),
+			});
+		}
+	};
+
 	const updateBoardLayoutRequest = async (payload: UpdateBoardLayoutRequestPayload) => {
 		if (boardStore.board === undefined) return;
 		const { boardId, layout } = payload;
@@ -336,6 +382,9 @@ export const useBoardRestApi = () => {
 		updateBoardTitleRequest,
 		updateBoardVisibilityRequest,
 		updateReaderCanEditRequest,
+		updateBoardReactionTypeRequest,
+		updateColumnSettingsRequest,
+		updateBoardCommentsEnabledRequest,
 		updateBoardLayoutRequest,
 		reloadBoard,
 		reloadBoardSuccess,

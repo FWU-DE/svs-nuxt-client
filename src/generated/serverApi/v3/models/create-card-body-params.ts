@@ -48,7 +48,13 @@ export enum CreateCardBodyParamsRequiredEmptyElements {
     VIDEO_CONFERENCE = 'videoConference',
     FILE_FOLDER = 'fileFolder',
     DELETED = 'deleted',
-    H5P = 'h5p'
+    H5P = 'h5p',
+    POLL = 'poll',
+    DEADLINE = 'deadline',
+    CODE = 'code',
+    FORMULA = 'formula',
+    CHECKLIST = 'checklist',
+    RECORDING = 'recording'
 }
 
 

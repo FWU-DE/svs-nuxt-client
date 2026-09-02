@@ -13,15 +13,24 @@
  */
 
 
+import { CardCommentResponse } from './card-comment-response';
+import { CardReactionType } from './card-reaction-type';
+import { CardReactionsResponse } from './card-reactions-response';
+import { ChecklistElementResponse } from './checklist-element-response';
+import { CodeElementResponse } from './code-element-response';
 import { CollaborativeTextEditorElementResponse } from './collaborative-text-editor-element-response';
 import { Colors } from './colors';
+import { DeadlineElementResponse } from './deadline-element-response';
 import { DeletedElementResponse } from './deleted-element-response';
 import { DrawingElementResponse } from './drawing-element-response';
 import { ExternalToolElementResponse } from './external-tool-element-response';
 import { FileElementResponse } from './file-element-response';
 import { FileFolderElementResponse } from './file-folder-element-response';
+import { FormulaElementResponse } from './formula-element-response';
 import { H5pElementResponse } from './h5p-element-response';
 import { LinkElementResponse } from './link-element-response';
+import { PollElementResponse } from './poll-element-response';
+import { RecordingElementResponse } from './recording-element-response';
 import { RichTextElementResponse } from './rich-text-element-response';
 import { TimestampsResponse } from './timestamps-response';
 import { VideoConferenceElementResponse } from './video-conference-element-response';
@@ -59,10 +68,10 @@ export interface CardResponse {
     height: number;
     /**
      * 
-     * @type {Array<ExternalToolElementResponse | FileElementResponse | LinkElementResponse | RichTextElementResponse | DrawingElementResponse | CollaborativeTextEditorElementResponse | DeletedElementResponse | VideoConferenceElementResponse | FileFolderElementResponse | H5pElementResponse>}
+     * @type {Array<ExternalToolElementResponse | FileElementResponse | LinkElementResponse | RichTextElementResponse | DrawingElementResponse | CollaborativeTextEditorElementResponse | DeletedElementResponse | VideoConferenceElementResponse | FileFolderElementResponse | H5pElementResponse | PollElementResponse | DeadlineElementResponse | CodeElementResponse | FormulaElementResponse | ChecklistElementResponse | RecordingElementResponse>}
      * @memberof CardResponse
      */
-    elements: Array<ExternalToolElementResponse | FileElementResponse | LinkElementResponse | RichTextElementResponse | DrawingElementResponse | CollaborativeTextEditorElementResponse | DeletedElementResponse | VideoConferenceElementResponse | FileFolderElementResponse | H5pElementResponse>;
+    elements: Array<ExternalToolElementResponse | FileElementResponse | LinkElementResponse | RichTextElementResponse | DrawingElementResponse | CollaborativeTextEditorElementResponse | DeletedElementResponse | VideoConferenceElementResponse | FileFolderElementResponse | H5pElementResponse | PollElementResponse | DeadlineElementResponse | CodeElementResponse | FormulaElementResponse | ChecklistElementResponse | RecordingElementResponse>;
     /**
      * 
      * @type {VisibilitySettingsResponse}
@@ -75,6 +84,36 @@ export interface CardResponse {
      * @memberof CardResponse
      */
     timestamps: TimestampsResponse;
+    /**
+     * Absent while the board has reactions turned off.
+     * @type {CardReactionsResponse}
+     * @memberof CardResponse
+     */
+    reactions?: CardReactionsResponse;
+    /**
+     * Absent while the board has comments turned off.
+     * @type {Array<CardCommentResponse>}
+     * @memberof CardResponse
+     */
+    comments?: Array<CardCommentResponse>;
+    /**
+     * This card\'s own comment setting. null means it follows the board.
+     * @type {boolean}
+     * @memberof CardResponse
+     */
+    commentsEnabled?: boolean | null;
+    /**
+     * This card\'s own editing setting. null means it follows the board.
+     * @type {boolean}
+     * @memberof CardResponse
+     */
+    readersCanEdit?: boolean | null;
+    /**
+     * This card\'s own feedback setting. null means it follows the column.
+     * @type {CardReactionType}
+     * @memberof CardResponse
+     */
+    cardReactionType?: CardReactionType | null;
 }
 
 

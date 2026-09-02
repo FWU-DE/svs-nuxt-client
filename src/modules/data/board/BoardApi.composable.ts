@@ -9,6 +9,7 @@ import {
 	BoardElementApiFactory,
 	BoardLayout,
 	BoardResponse,
+	CardReactionType,
 	CardResponse,
 	Colors,
 	ColumnResponse,
@@ -30,9 +31,13 @@ import {
 	LinkContentBody,
 	LinkElementContentBody,
 	LinkElementResponse,
+	PollContentBody,
+	PollElementContentBody,
+	PollElementResponse,
 	RichTextElementContentBody,
 	RichTextElementResponse,
 	RoomApiFactory,
+	UpdateElementContentBodyParams,
 	VideoConferenceElementContentBody,
 	VideoConferenceElementResponse,
 } from "@api-server";
@@ -191,8 +196,76 @@ export const useBoardApi = () => {
 			return body;
 		}
 
+		const isPollElement = (element: AnyContentElement): element is PollElementResponse =>
+			element.type === ContentElementType.POLL;
+
+		if (isPollElement(element)) {
+			const body: PollElementContentBody = {
+				// The poll element is edited through its update body, which the response type does
+				// not describe: it has no tallies and its options may omit an id to add one.
+				content: element.content as unknown as PollContentBody,
+				type: ContentElementType.POLL,
+			};
+
+			return body;
+		}
+
+		const simpleContentTypes: ContentElementType[] = [
+			ContentElementType.DEADLINE,
+			ContentElementType.CODE,
+			ContentElementType.FORMULA,
+			ContentElementType.CHECKLIST,
+			ContentElementType.RECORDING,
+		];
+
+		if (simpleContentTypes.includes(element.type)) {
+			// These four send their content shape unchanged; the server drops the response-only
+			// fields a checklist carries (the checked state is not a setting).
+			return {
+				content: element.content,
+				type: element.type,
+			} as unknown as UpdateElementContentBodyParams["data"];
+		}
+
 		throw new Error("element.type mapping is undefined for updateElementCall");
 	};
+
+	const addCardCommentCall = async (cardId: string, text: string) =>
+		cardsApi.cardControllerAddComment(cardId, { text });
+
+	const editCardCommentCall = async (cardId: string, commentId: string, text: string) =>
+		cardsApi.cardControllerEditComment(cardId, commentId, { text });
+
+	const removeCardCommentCall = async (cardId: string, commentId: string) =>
+		cardsApi.cardControllerRemoveComment(cardId, commentId);
+
+	const reportCardCommentCall = async (cardId: string, commentId: string, reason?: string) =>
+		cardsApi.cardControllerReportComment(cardId, commentId, { reason });
+
+	const updateBoardCommentsEnabledCall = async (boardId: string, commentsEnabled: boolean | null) =>
+		boardApi.boardControllerUpdateCommentsEnabled(boardId, { commentsEnabled });
+
+	const updateCardSettingsCall = async (
+		cardId: string,
+		settings: { commentsEnabled?: boolean | null; readersCanEdit?: boolean | null }
+	) => cardsApi.cardControllerUpdateCardSettings(cardId, settings);
+
+	const reactToCardCall = async (cardId: string, value?: number) =>
+		cardsApi.cardControllerReactToCard(cardId, { value });
+
+	const updateColumnSettingsCall = async (
+		columnId: string,
+		settings: { commentsEnabled?: boolean | null; reactionType?: CardReactionType | null }
+	) => boardColumnApi.columnControllerUpdateColumnSettings(columnId, settings);
+
+	const updateBoardReactionTypeCall = async (boardId: string, reactionType: CardReactionType | null) =>
+		boardApi.boardControllerUpdateReactionType(boardId, { reactionType });
+
+	const setChecklistItemCheckedCall = async (elementId: string, itemId: string, checked: boolean) =>
+		elementApi.elementControllerSetChecklistItemChecked(elementId, itemId, { checked });
+
+	const voteInPollCall = async (elementId: string, optionIds: string[]) =>
+		elementApi.elementControllerVoteInPoll(elementId, { optionIds });
 
 	const createElementCall = async (
 		cardId: string,
@@ -314,6 +387,17 @@ export const useBoardApi = () => {
 		updateCardColor,
 		updateColumnTitleCall,
 		updateElementCall,
+		voteInPollCall,
+		setChecklistItemCheckedCall,
+		reactToCardCall,
+		updateCardSettingsCall,
+		addCardCommentCall,
+		editCardCommentCall,
+		removeCardCommentCall,
+		reportCardCommentCall,
+		updateBoardCommentsEnabledCall,
+		updateBoardReactionTypeCall,
+		updateColumnSettingsCall,
 		createCardCall,
 		duplicateCardCall,
 		duplicateColumnCall,

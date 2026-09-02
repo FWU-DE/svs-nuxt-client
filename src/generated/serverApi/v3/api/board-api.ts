@@ -23,11 +23,17 @@ import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } fr
 // @ts-ignore
 import { ApiValidationError } from '../models';
 // @ts-ignore
+import { BoardAiCardsBodyParams } from '../models';
+// @ts-ignore
 import { BoardContextResponse } from '../models';
+// @ts-ignore
+import { BoardDeadlineListResponse } from '../models';
 // @ts-ignore
 import { BoardResponse } from '../models';
 // @ts-ignore
 import { ColumnResponse } from '../models';
+// @ts-ignore
+import { CommentsEnabledBodyParams } from '../models';
 // @ts-ignore
 import { CopyApiResponse } from '../models';
 // @ts-ignore
@@ -36,6 +42,8 @@ import { CreateBoardBodyParams } from '../models';
 import { CreateBoardResponse } from '../models';
 // @ts-ignore
 import { LayoutBodyParams } from '../models';
+// @ts-ignore
+import { ReactionTypeBodyParams } from '../models';
 // @ts-ignore
 import { ReadersCanEditBodyParams } from '../models';
 // @ts-ignore
@@ -48,6 +56,94 @@ import { VisibilityBodyParams } from '../models';
  */
 export const BoardApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
+        /**
+         * Streams the suggestion as newline delimited json, one card per line, so that the client can show the cards while they are written. Nothing is changed on the board - the client inserts the cards the teacher accepts.
+         * @summary Suggest cards for an existing card
+         * @param {string} cardId 
+         * @param {BoardAiCardsBodyParams} boardAiCardsBodyParams 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        boardAiControllerSuggestCardsForCard: async (cardId: string, boardAiCardsBodyParams: BoardAiCardsBodyParams, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'cardId' is not null or undefined
+            assertParamExists('boardAiControllerSuggestCardsForCard', 'cardId', cardId)
+            // verify required parameter 'boardAiCardsBodyParams' is not null or undefined
+            assertParamExists('boardAiControllerSuggestCardsForCard', 'boardAiCardsBodyParams', boardAiCardsBodyParams)
+            const localVarPath = `/cards/{cardId}/ai-cards`
+                .replace(`{${"cardId"}}`, encodeURIComponent(String(cardId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearer required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(boardAiCardsBodyParams, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Like the card variant, but the ai reads every card of the column as its material.
+         * @summary Suggest cards for a whole column
+         * @param {string} columnId 
+         * @param {BoardAiCardsBodyParams} boardAiCardsBodyParams 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        boardAiControllerSuggestCardsForColumn: async (columnId: string, boardAiCardsBodyParams: BoardAiCardsBodyParams, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'columnId' is not null or undefined
+            assertParamExists('boardAiControllerSuggestCardsForColumn', 'columnId', columnId)
+            // verify required parameter 'boardAiCardsBodyParams' is not null or undefined
+            assertParamExists('boardAiControllerSuggestCardsForColumn', 'boardAiCardsBodyParams', boardAiCardsBodyParams)
+            const localVarPath = `/columns/{columnId}/ai-cards`
+                .replace(`{${"columnId"}}`, encodeURIComponent(String(columnId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearer required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(boardAiCardsBodyParams, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
         /**
          * 
          * @summary Create a board copy.
@@ -280,6 +376,40 @@ export const BoardApiAxiosParamCreator = function (configuration?: Configuration
         },
         /**
          * 
+         * @summary List the board deadlines that are marked for the calendar.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        boardControllerGetDeadlines: async (options: any = {}): Promise<RequestArgs> => {
+            const localVarPath = `/boards/deadlines`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearer required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary Update the title of a board.
          * @param {string} boardId The id of the board.
          * @param {UpdateBoardTitleParams} updateBoardTitleParams 
@@ -324,6 +454,50 @@ export const BoardApiAxiosParamCreator = function (configuration?: Configuration
         },
         /**
          * 
+         * @summary Turn comments on the cards of a board on or off.
+         * @param {string} boardId The id of the board.
+         * @param {CommentsEnabledBodyParams} commentsEnabledBodyParams 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        boardControllerUpdateCommentsEnabled: async (boardId: string, commentsEnabledBodyParams: CommentsEnabledBodyParams, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'boardId' is not null or undefined
+            assertParamExists('boardControllerUpdateCommentsEnabled', 'boardId', boardId)
+            // verify required parameter 'commentsEnabledBodyParams' is not null or undefined
+            assertParamExists('boardControllerUpdateCommentsEnabled', 'commentsEnabledBodyParams', commentsEnabledBodyParams)
+            const localVarPath = `/boards/{boardId}/comments-enabled`
+                .replace(`{${"boardId"}}`, encodeURIComponent(String(boardId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearer required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(commentsEnabledBodyParams, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary Update the layout of a board.
          * @param {string} boardId The id of the board.
          * @param {LayoutBodyParams} layoutBodyParams 
@@ -360,6 +534,50 @@ export const BoardApiAxiosParamCreator = function (configuration?: Configuration
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
             localVarRequestOptions.data = serializeDataIfNeeded(layoutBodyParams, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Update the reaction kind for the cards of a board.
+         * @param {string} boardId The id of the board.
+         * @param {ReactionTypeBodyParams} reactionTypeBodyParams 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        boardControllerUpdateReactionType: async (boardId: string, reactionTypeBodyParams: ReactionTypeBodyParams, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'boardId' is not null or undefined
+            assertParamExists('boardControllerUpdateReactionType', 'boardId', boardId)
+            // verify required parameter 'reactionTypeBodyParams' is not null or undefined
+            assertParamExists('boardControllerUpdateReactionType', 'reactionTypeBodyParams', reactionTypeBodyParams)
+            const localVarPath = `/boards/{boardId}/reaction-type`
+                .replace(`{${"boardId"}}`, encodeURIComponent(String(boardId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearer required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(reactionTypeBodyParams, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -465,6 +683,30 @@ export const BoardApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = BoardApiAxiosParamCreator(configuration)
     return {
         /**
+         * Streams the suggestion as newline delimited json, one card per line, so that the client can show the cards while they are written. Nothing is changed on the board - the client inserts the cards the teacher accepts.
+         * @summary Suggest cards for an existing card
+         * @param {string} cardId 
+         * @param {BoardAiCardsBodyParams} boardAiCardsBodyParams 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async boardAiControllerSuggestCardsForCard(cardId: string, boardAiCardsBodyParams: BoardAiCardsBodyParams, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.boardAiControllerSuggestCardsForCard(cardId, boardAiCardsBodyParams, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * Like the card variant, but the ai reads every card of the column as its material.
+         * @summary Suggest cards for a whole column
+         * @param {string} columnId 
+         * @param {BoardAiCardsBodyParams} boardAiCardsBodyParams 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async boardAiControllerSuggestCardsForColumn(columnId: string, boardAiCardsBodyParams: BoardAiCardsBodyParams, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.boardAiControllerSuggestCardsForColumn(columnId, boardAiCardsBodyParams, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
          * 
          * @summary Create a board copy.
          * @param {string} boardId The id of the board.
@@ -532,6 +774,16 @@ export const BoardApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @summary List the board deadlines that are marked for the calendar.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async boardControllerGetDeadlines(options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BoardDeadlineListResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.boardControllerGetDeadlines(options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
          * @summary Update the title of a board.
          * @param {string} boardId The id of the board.
          * @param {UpdateBoardTitleParams} updateBoardTitleParams 
@@ -544,6 +796,18 @@ export const BoardApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @summary Turn comments on the cards of a board on or off.
+         * @param {string} boardId The id of the board.
+         * @param {CommentsEnabledBodyParams} commentsEnabledBodyParams 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async boardControllerUpdateCommentsEnabled(boardId: string, commentsEnabledBodyParams: CommentsEnabledBodyParams, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.boardControllerUpdateCommentsEnabled(boardId, commentsEnabledBodyParams, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
          * @summary Update the layout of a board.
          * @param {string} boardId The id of the board.
          * @param {LayoutBodyParams} layoutBodyParams 
@@ -552,6 +816,18 @@ export const BoardApiFp = function(configuration?: Configuration) {
          */
         async boardControllerUpdateLayout(boardId: string, layoutBodyParams: LayoutBodyParams, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.boardControllerUpdateLayout(boardId, layoutBodyParams, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary Update the reaction kind for the cards of a board.
+         * @param {string} boardId The id of the board.
+         * @param {ReactionTypeBodyParams} reactionTypeBodyParams 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async boardControllerUpdateReactionType(boardId: string, reactionTypeBodyParams: ReactionTypeBodyParams, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.boardControllerUpdateReactionType(boardId, reactionTypeBodyParams, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -588,6 +864,28 @@ export const BoardApiFp = function(configuration?: Configuration) {
 export const BoardApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
     const localVarFp = BoardApiFp(configuration)
     return {
+        /**
+         * Streams the suggestion as newline delimited json, one card per line, so that the client can show the cards while they are written. Nothing is changed on the board - the client inserts the cards the teacher accepts.
+         * @summary Suggest cards for an existing card
+         * @param {string} cardId 
+         * @param {BoardAiCardsBodyParams} boardAiCardsBodyParams 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        boardAiControllerSuggestCardsForCard(cardId: string, boardAiCardsBodyParams: BoardAiCardsBodyParams, options?: any): AxiosPromise<void> {
+            return localVarFp.boardAiControllerSuggestCardsForCard(cardId, boardAiCardsBodyParams, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Like the card variant, but the ai reads every card of the column as its material.
+         * @summary Suggest cards for a whole column
+         * @param {string} columnId 
+         * @param {BoardAiCardsBodyParams} boardAiCardsBodyParams 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        boardAiControllerSuggestCardsForColumn(columnId: string, boardAiCardsBodyParams: BoardAiCardsBodyParams, options?: any): AxiosPromise<void> {
+            return localVarFp.boardAiControllerSuggestCardsForColumn(columnId, boardAiCardsBodyParams, options).then((request) => request(axios, basePath));
+        },
         /**
          * 
          * @summary Create a board copy.
@@ -650,6 +948,15 @@ export const BoardApiFactory = function (configuration?: Configuration, basePath
         },
         /**
          * 
+         * @summary List the board deadlines that are marked for the calendar.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        boardControllerGetDeadlines(options?: any): AxiosPromise<BoardDeadlineListResponse> {
+            return localVarFp.boardControllerGetDeadlines(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @summary Update the title of a board.
          * @param {string} boardId The id of the board.
          * @param {UpdateBoardTitleParams} updateBoardTitleParams 
@@ -661,6 +968,17 @@ export const BoardApiFactory = function (configuration?: Configuration, basePath
         },
         /**
          * 
+         * @summary Turn comments on the cards of a board on or off.
+         * @param {string} boardId The id of the board.
+         * @param {CommentsEnabledBodyParams} commentsEnabledBodyParams 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        boardControllerUpdateCommentsEnabled(boardId: string, commentsEnabledBodyParams: CommentsEnabledBodyParams, options?: any): AxiosPromise<void> {
+            return localVarFp.boardControllerUpdateCommentsEnabled(boardId, commentsEnabledBodyParams, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @summary Update the layout of a board.
          * @param {string} boardId The id of the board.
          * @param {LayoutBodyParams} layoutBodyParams 
@@ -669,6 +987,17 @@ export const BoardApiFactory = function (configuration?: Configuration, basePath
          */
         boardControllerUpdateLayout(boardId: string, layoutBodyParams: LayoutBodyParams, options?: any): AxiosPromise<void> {
             return localVarFp.boardControllerUpdateLayout(boardId, layoutBodyParams, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Update the reaction kind for the cards of a board.
+         * @param {string} boardId The id of the board.
+         * @param {ReactionTypeBodyParams} reactionTypeBodyParams 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        boardControllerUpdateReactionType(boardId: string, reactionTypeBodyParams: ReactionTypeBodyParams, options?: any): AxiosPromise<void> {
+            return localVarFp.boardControllerUpdateReactionType(boardId, reactionTypeBodyParams, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -701,6 +1030,28 @@ export const BoardApiFactory = function (configuration?: Configuration, basePath
  * @interface BoardApi
  */
 export interface BoardApiInterface {
+    /**
+     * Streams the suggestion as newline delimited json, one card per line, so that the client can show the cards while they are written. Nothing is changed on the board - the client inserts the cards the teacher accepts.
+     * @summary Suggest cards for an existing card
+     * @param {string} cardId 
+     * @param {BoardAiCardsBodyParams} boardAiCardsBodyParams 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof BoardApiInterface
+     */
+    boardAiControllerSuggestCardsForCard(cardId: string, boardAiCardsBodyParams: BoardAiCardsBodyParams, options?: any): AxiosPromise<void>;
+
+    /**
+     * Like the card variant, but the ai reads every card of the column as its material.
+     * @summary Suggest cards for a whole column
+     * @param {string} columnId 
+     * @param {BoardAiCardsBodyParams} boardAiCardsBodyParams 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof BoardApiInterface
+     */
+    boardAiControllerSuggestCardsForColumn(columnId: string, boardAiCardsBodyParams: BoardAiCardsBodyParams, options?: any): AxiosPromise<void>;
+
     /**
      * 
      * @summary Create a board copy.
@@ -763,6 +1114,15 @@ export interface BoardApiInterface {
 
     /**
      * 
+     * @summary List the board deadlines that are marked for the calendar.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof BoardApiInterface
+     */
+    boardControllerGetDeadlines(options?: any): AxiosPromise<BoardDeadlineListResponse>;
+
+    /**
+     * 
      * @summary Update the title of a board.
      * @param {string} boardId The id of the board.
      * @param {UpdateBoardTitleParams} updateBoardTitleParams 
@@ -774,6 +1134,17 @@ export interface BoardApiInterface {
 
     /**
      * 
+     * @summary Turn comments on the cards of a board on or off.
+     * @param {string} boardId The id of the board.
+     * @param {CommentsEnabledBodyParams} commentsEnabledBodyParams 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof BoardApiInterface
+     */
+    boardControllerUpdateCommentsEnabled(boardId: string, commentsEnabledBodyParams: CommentsEnabledBodyParams, options?: any): AxiosPromise<void>;
+
+    /**
+     * 
      * @summary Update the layout of a board.
      * @param {string} boardId The id of the board.
      * @param {LayoutBodyParams} layoutBodyParams 
@@ -782,6 +1153,17 @@ export interface BoardApiInterface {
      * @memberof BoardApiInterface
      */
     boardControllerUpdateLayout(boardId: string, layoutBodyParams: LayoutBodyParams, options?: any): AxiosPromise<void>;
+
+    /**
+     * 
+     * @summary Update the reaction kind for the cards of a board.
+     * @param {string} boardId The id of the board.
+     * @param {ReactionTypeBodyParams} reactionTypeBodyParams 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof BoardApiInterface
+     */
+    boardControllerUpdateReactionType(boardId: string, reactionTypeBodyParams: ReactionTypeBodyParams, options?: any): AxiosPromise<void>;
 
     /**
      * 
@@ -814,6 +1196,32 @@ export interface BoardApiInterface {
  * @extends {BaseAPI}
  */
 export class BoardApi extends BaseAPI implements BoardApiInterface {
+    /**
+     * Streams the suggestion as newline delimited json, one card per line, so that the client can show the cards while they are written. Nothing is changed on the board - the client inserts the cards the teacher accepts.
+     * @summary Suggest cards for an existing card
+     * @param {string} cardId 
+     * @param {BoardAiCardsBodyParams} boardAiCardsBodyParams 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof BoardApi
+     */
+    public boardAiControllerSuggestCardsForCard(cardId: string, boardAiCardsBodyParams: BoardAiCardsBodyParams, options?: any) {
+        return BoardApiFp(this.configuration).boardAiControllerSuggestCardsForCard(cardId, boardAiCardsBodyParams, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Like the card variant, but the ai reads every card of the column as its material.
+     * @summary Suggest cards for a whole column
+     * @param {string} columnId 
+     * @param {BoardAiCardsBodyParams} boardAiCardsBodyParams 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof BoardApi
+     */
+    public boardAiControllerSuggestCardsForColumn(columnId: string, boardAiCardsBodyParams: BoardAiCardsBodyParams, options?: any) {
+        return BoardApiFp(this.configuration).boardAiControllerSuggestCardsForColumn(columnId, boardAiCardsBodyParams, options).then((request) => request(this.axios, this.basePath));
+    }
+
     /**
      * 
      * @summary Create a board copy.
@@ -888,6 +1296,17 @@ export class BoardApi extends BaseAPI implements BoardApiInterface {
 
     /**
      * 
+     * @summary List the board deadlines that are marked for the calendar.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof BoardApi
+     */
+    public boardControllerGetDeadlines(options?: any) {
+        return BoardApiFp(this.configuration).boardControllerGetDeadlines(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
      * @summary Update the title of a board.
      * @param {string} boardId The id of the board.
      * @param {UpdateBoardTitleParams} updateBoardTitleParams 
@@ -901,6 +1320,19 @@ export class BoardApi extends BaseAPI implements BoardApiInterface {
 
     /**
      * 
+     * @summary Turn comments on the cards of a board on or off.
+     * @param {string} boardId The id of the board.
+     * @param {CommentsEnabledBodyParams} commentsEnabledBodyParams 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof BoardApi
+     */
+    public boardControllerUpdateCommentsEnabled(boardId: string, commentsEnabledBodyParams: CommentsEnabledBodyParams, options?: any) {
+        return BoardApiFp(this.configuration).boardControllerUpdateCommentsEnabled(boardId, commentsEnabledBodyParams, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
      * @summary Update the layout of a board.
      * @param {string} boardId The id of the board.
      * @param {LayoutBodyParams} layoutBodyParams 
@@ -910,6 +1342,19 @@ export class BoardApi extends BaseAPI implements BoardApiInterface {
      */
     public boardControllerUpdateLayout(boardId: string, layoutBodyParams: LayoutBodyParams, options?: any) {
         return BoardApiFp(this.configuration).boardControllerUpdateLayout(boardId, layoutBodyParams, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Update the reaction kind for the cards of a board.
+     * @param {string} boardId The id of the board.
+     * @param {ReactionTypeBodyParams} reactionTypeBodyParams 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof BoardApi
+     */
+    public boardControllerUpdateReactionType(boardId: string, reactionTypeBodyParams: ReactionTypeBodyParams, options?: any) {
+        return BoardApiFp(this.configuration).boardControllerUpdateReactionType(boardId, reactionTypeBodyParams, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

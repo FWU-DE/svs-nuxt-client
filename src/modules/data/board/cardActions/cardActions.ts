@@ -1,4 +1,7 @@
 import {
+	AddCardCommentRequestPayload,
+	CardCommentFailurePayload,
+	CardCommentSuccessPayload,
 	CreateElementFailurePayload,
 	CreateElementRequestPayload,
 	CreateElementSuccessPayload,
@@ -12,24 +15,39 @@ import {
 	DuplicateCardFailurePayload,
 	DuplicateCardRequestPayload,
 	DuplicateCardSuccessPayload,
+	EditCardCommentRequestPayload,
 	FetchCardFailurePayload,
 	FetchCardRequestPayload,
 	FetchCardSuccessPayload,
 	MoveElementFailurePayload,
 	MoveElementRequestPayload,
 	MoveElementSuccessPayload,
+	ReactToCardFailurePayload,
+	ReactToCardRequestPayload,
+	ReactToCardSuccessPayload,
+	RemoveCardCommentRequestPayload,
+	ReportCardCommentRequestPayload,
+	SetChecklistItemCheckedFailurePayload,
+	SetChecklistItemCheckedRequestPayload,
+	SetChecklistItemCheckedSuccessPayload,
 	UpdateCardColorFailurePayload,
 	UpdateCardColorRequestPayload,
 	UpdateCardColorSuccessPayload,
 	UpdateCardHeightFailurePayload,
 	UpdateCardHeightRequestPayload,
 	UpdateCardHeightSuccessPayload,
+	UpdateCardSettingsFailurePayload,
+	UpdateCardSettingsRequestPayload,
+	UpdateCardSettingsSuccessPayload,
 	UpdateCardTitleFailurePayload,
 	UpdateCardTitleRequestPayload,
 	UpdateCardTitleSuccessPayload,
 	UpdateElementFailurePayload,
 	UpdateElementRequestPayload,
 	UpdateElementSuccessPayload,
+	VoteInPollFailurePayload,
+	VoteInPollRequestPayload,
+	VoteInPollSuccessPayload,
 } from "./cardActionPayload.types";
 import { createAction, props } from "@/types/board/ActionFactory";
 
@@ -50,6 +68,62 @@ export const moveElementFailure = createAction("move-element-failure", props<Mov
 export const updateElementRequest = createAction("update-element-request", props<UpdateElementRequestPayload>());
 export const updateElementSuccess = createAction("update-element-success", props<UpdateElementSuccessPayload>());
 export const updateElementFailure = createAction("update-element-failure", props<UpdateElementFailurePayload>());
+
+export const addCardCommentRequest = createAction("add-card-comment-request", props<AddCardCommentRequestPayload>());
+export const addCardCommentSuccess = createAction("add-card-comment-success", props<CardCommentSuccessPayload>());
+export const addCardCommentFailure = createAction("add-card-comment-failure", props<CardCommentFailurePayload>());
+
+export const editCardCommentRequest = createAction("edit-card-comment-request", props<EditCardCommentRequestPayload>());
+export const editCardCommentSuccess = createAction("edit-card-comment-success", props<CardCommentSuccessPayload>());
+export const editCardCommentFailure = createAction("edit-card-comment-failure", props<CardCommentFailurePayload>());
+
+export const removeCardCommentRequest = createAction(
+	"remove-card-comment-request",
+	props<RemoveCardCommentRequestPayload>()
+);
+export const removeCardCommentSuccess = createAction("remove-card-comment-success", props<CardCommentSuccessPayload>());
+export const removeCardCommentFailure = createAction("remove-card-comment-failure", props<CardCommentFailurePayload>());
+
+export const reportCardCommentRequest = createAction(
+	"report-card-comment-request",
+	props<ReportCardCommentRequestPayload>()
+);
+export const reportCardCommentSuccess = createAction("report-card-comment-success", props<CardCommentSuccessPayload>());
+export const reportCardCommentFailure = createAction("report-card-comment-failure", props<CardCommentFailurePayload>());
+
+export const updateCardSettingsRequest = createAction(
+	"update-card-settings-request",
+	props<UpdateCardSettingsRequestPayload>()
+);
+export const updateCardSettingsSuccess = createAction(
+	"update-card-settings-success",
+	props<UpdateCardSettingsSuccessPayload>()
+);
+export const updateCardSettingsFailure = createAction(
+	"update-card-settings-failure",
+	props<UpdateCardSettingsFailurePayload>()
+);
+
+export const reactToCardRequest = createAction("react-to-card-request", props<ReactToCardRequestPayload>());
+export const reactToCardSuccess = createAction("react-to-card-success", props<ReactToCardSuccessPayload>());
+export const reactToCardFailure = createAction("react-to-card-failure", props<ReactToCardFailurePayload>());
+
+export const setChecklistItemCheckedRequest = createAction(
+	"set-checklist-item-checked-request",
+	props<SetChecklistItemCheckedRequestPayload>()
+);
+export const setChecklistItemCheckedSuccess = createAction(
+	"set-checklist-item-checked-success",
+	props<SetChecklistItemCheckedSuccessPayload>()
+);
+export const setChecklistItemCheckedFailure = createAction(
+	"set-checklist-item-checked-failure",
+	props<SetChecklistItemCheckedFailurePayload>()
+);
+
+export const voteInPollRequest = createAction("vote-in-poll-request", props<VoteInPollRequestPayload>());
+export const voteInPollSuccess = createAction("vote-in-poll-success", props<VoteInPollSuccessPayload>());
+export const voteInPollFailure = createAction("vote-in-poll-failure", props<VoteInPollFailurePayload>());
 
 export const deleteCardRequest = createAction("delete-card-request", props<DeleteCardRequestPayload>());
 export const deleteCardSuccess = createAction("delete-card-success", props<DeleteCardSuccessPayload>());

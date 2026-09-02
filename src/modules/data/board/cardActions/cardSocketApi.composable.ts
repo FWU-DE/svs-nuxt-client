@@ -3,16 +3,24 @@ import { useBoardStore } from "../Board.store";
 import { useCardStore } from "../Card.store";
 import { useSocketConnection } from "../socket/socket";
 import {
+	AddCardCommentRequestPayload,
 	CreateElementRequestPayload,
 	DeleteCardRequestPayload,
 	DeleteElementRequestPayload,
 	DuplicateCardRequestPayload,
+	EditCardCommentRequestPayload,
 	FetchCardRequestPayload,
 	MoveElementRequestPayload,
+	ReactToCardRequestPayload,
+	RemoveCardCommentRequestPayload,
+	ReportCardCommentRequestPayload,
+	SetChecklistItemCheckedRequestPayload,
 	UpdateCardColorRequestPayload,
 	UpdateCardHeightRequestPayload,
+	UpdateCardSettingsRequestPayload,
 	UpdateCardTitleRequestPayload,
 	UpdateElementRequestPayload,
+	VoteInPollRequestPayload,
 } from "./cardActionPayload.types";
 import * as CardActions from "./cardActions";
 import { handle, on, PermittedStoreActions } from "@/types/board/ActionFactory";
@@ -48,6 +56,14 @@ export const useCardSocketApi = () => {
 			on(CardActions.deleteElementSuccess, cardStore.deleteElementSuccess),
 			on(CardActions.moveElementSuccess, cardStore.moveElementSuccess),
 			on(CardActions.updateElementSuccess, cardStore.updateElementSuccess),
+			on(CardActions.voteInPollSuccess, cardStore.voteInPollSuccess),
+			on(CardActions.setChecklistItemCheckedSuccess, cardStore.setChecklistItemCheckedSuccess),
+			on(CardActions.reactToCardSuccess, cardStore.reactToCardSuccess),
+			on(CardActions.updateCardSettingsSuccess, cardStore.updateCardSettingsSuccess),
+			on(CardActions.addCardCommentSuccess, cardStore.cardCommentSuccess),
+			on(CardActions.editCardCommentSuccess, cardStore.cardCommentSuccess),
+			on(CardActions.removeCardCommentSuccess, cardStore.cardCommentSuccess),
+			on(CardActions.reportCardCommentSuccess, cardStore.cardCommentSuccess),
 			on(CardActions.deleteCardSuccess, cardStore.deleteCardSuccess),
 			on(CardActions.fetchCardSuccess, cardStore.fetchCardSuccess),
 			on(CardActions.updateCardTitleSuccess, cardStore.updateCardTitleSuccess),
@@ -61,6 +77,14 @@ export const useCardSocketApi = () => {
 			on(CardActions.deleteElementFailure, ({ cardId }) => reloadBoard(cardId)),
 			on(CardActions.moveElementFailure, () => reloadBoard()),
 			on(CardActions.updateElementFailure, () => reloadBoard()),
+			on(CardActions.voteInPollFailure, () => reloadBoard()),
+			on(CardActions.setChecklistItemCheckedFailure, () => reloadBoard()),
+			on(CardActions.reactToCardFailure, ({ cardId }) => reloadBoard(cardId)),
+			on(CardActions.updateCardSettingsFailure, ({ cardId }) => reloadBoard(cardId)),
+			on(CardActions.addCardCommentFailure, ({ cardId }) => reloadBoard(cardId)),
+			on(CardActions.editCardCommentFailure, ({ cardId }) => reloadBoard(cardId)),
+			on(CardActions.removeCardCommentFailure, ({ cardId }) => reloadBoard(cardId)),
+			on(CardActions.reportCardCommentFailure, ({ cardId }) => reloadBoard(cardId)),
 			on(CardActions.fetchCardFailure, ({ cardIds }) => reloadBoard(cardIds[0])),
 			on(CardActions.updateCardTitleFailure, ({ cardId }) => reloadBoard(cardId)),
 			on(CardActions.updateCardColorFailure, ({ cardId }) => reloadBoard(cardId)),
@@ -136,6 +160,38 @@ export const useCardSocketApi = () => {
 		});
 	};
 
+	const addCardCommentRequest = async (payload: AddCardCommentRequestPayload) => {
+		emitOnSocket("add-card-comment-request", payload);
+	};
+
+	const editCardCommentRequest = async (payload: EditCardCommentRequestPayload) => {
+		emitOnSocket("edit-card-comment-request", payload);
+	};
+
+	const removeCardCommentRequest = async (payload: RemoveCardCommentRequestPayload) => {
+		emitOnSocket("remove-card-comment-request", payload);
+	};
+
+	const reportCardCommentRequest = async (payload: ReportCardCommentRequestPayload) => {
+		emitOnSocket("report-card-comment-request", payload);
+	};
+
+	const updateCardSettingsRequest = async (payload: UpdateCardSettingsRequestPayload) => {
+		emitOnSocket("update-card-settings-request", payload);
+	};
+
+	const reactToCardRequest = async (payload: ReactToCardRequestPayload) => {
+		emitOnSocket("react-to-card-request", payload);
+	};
+
+	const setChecklistItemCheckedRequest = async (payload: SetChecklistItemCheckedRequestPayload) => {
+		emitOnSocket("set-checklist-item-checked-request", payload);
+	};
+
+	const voteInPollRequest = async (payload: VoteInPollRequestPayload) => {
+		emitOnSocket("vote-in-poll-request", payload);
+	};
+
 	const deleteCardRequest = async (payload: DeleteCardRequestPayload) => {
 		emitOnSocket("delete-card-request", payload);
 	};
@@ -177,6 +233,14 @@ export const useCardSocketApi = () => {
 		deleteElementRequest,
 		moveElementRequest,
 		updateElementRequest,
+		voteInPollRequest,
+		setChecklistItemCheckedRequest,
+		reactToCardRequest,
+		updateCardSettingsRequest,
+		addCardCommentRequest,
+		editCardCommentRequest,
+		removeCardCommentRequest,
+		reportCardCommentRequest,
 		deleteCardRequest,
 		fetchCardRequest,
 		updateCardTitleRequest,

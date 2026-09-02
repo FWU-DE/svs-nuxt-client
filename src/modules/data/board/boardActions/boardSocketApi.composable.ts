@@ -14,9 +14,12 @@ import {
 	MoveCardSuccessPayload,
 	MoveCardToBoardRequestPayload,
 	MoveColumnRequestPayload,
+	UpdateBoardCommentsEnabledRequestPayload,
 	UpdateBoardLayoutRequestPayload,
+	UpdateBoardReactionTypeRequestPayload,
 	UpdateBoardTitleRequestPayload,
 	UpdateBoardVisibilityRequestPayload,
+	UpdateColumnSettingsRequestPayload,
 	UpdateColumnTitleRequestPayload,
 	UpdateReaderCanEditRequestPayload,
 } from "./boardActionPayload.types";
@@ -62,6 +65,9 @@ export const useBoardSocketApi = () => {
 			on(BoardActions.updateBoardVisibilitySuccess, boardStore.updateBoardVisibilitySuccess),
 			on(BoardActions.updateBoardLayoutSuccess, boardStore.updateBoardLayoutSuccess),
 			on(BoardActions.updateReaderCanEditSuccess, boardStore.updateReaderCanEditSuccess),
+			on(BoardActions.updateBoardReactionTypeSuccess, boardStore.updateBoardReactionTypeSuccess),
+			on(BoardActions.updateColumnSettingsSuccess, boardStore.updateColumnSettingsSuccess),
+			on(BoardActions.updateBoardCommentsEnabledSuccess, boardStore.updateBoardCommentsEnabledSuccess),
 			on(BoardActions.duplicateColumnSuccess, boardStore.duplicateColumnSuccess),
 		];
 
@@ -79,6 +85,8 @@ export const useBoardSocketApi = () => {
 			on(BoardActions.updateBoardVisibilityFailure, reloadBoard),
 			on(BoardActions.updateBoardLayoutFailure, reloadBoard),
 			on(BoardActions.updateReaderCanEditFailure, reloadBoard),
+			on(BoardActions.updateBoardReactionTypeFailure, reloadBoard),
+			on(BoardActions.updateBoardCommentsEnabledFailure, reloadBoard),
 			on(BoardActions.duplicateColumnFailure, reloadBoard),
 		];
 
@@ -184,6 +192,18 @@ export const useBoardSocketApi = () => {
 		emitOnSocket("update-readers-can-edit-request", payload);
 	};
 
+	const updateColumnSettingsRequest = (payload: UpdateColumnSettingsRequestPayload) => {
+		emitOnSocket("update-column-settings-request", payload);
+	};
+
+	const updateBoardReactionTypeRequest = (payload: UpdateBoardReactionTypeRequestPayload) => {
+		emitOnSocket("update-board-reaction-type-request", payload);
+	};
+
+	const updateBoardCommentsEnabledRequest = (payload: UpdateBoardCommentsEnabledRequestPayload) => {
+		emitOnSocket("update-board-comments-enabled-request", payload);
+	};
+
 	const updateBoardLayoutRequest = (payload: UpdateBoardLayoutRequestPayload) => {
 		emitOnSocket("update-board-layout-request", payload);
 	};
@@ -237,6 +257,9 @@ export const useBoardSocketApi = () => {
 		updateBoardVisibilityRequest,
 		updateBoardLayoutRequest,
 		updateReaderCanEditRequest,
+		updateBoardReactionTypeRequest,
+		updateBoardCommentsEnabledRequest,
+		updateColumnSettingsRequest,
 		duplicateColumnRequest,
 	};
 };

@@ -13,6 +13,7 @@
  */
 
 
+import { CardReactionType } from './card-reaction-type';
 import { CardResponse } from './card-response';
 import { TimestampsResponse } from './timestamps-response';
 
@@ -46,6 +47,18 @@ export interface ColumnFullResponse {
      * @memberof ColumnFullResponse
      */
     timestamps: TimestampsResponse;
+    /**
+     * The column\'s own comment setting.
+     * @type {boolean}
+     * @memberof ColumnFullResponse
+     */
+    commentsEnabled: boolean | null;
+    /**
+     * The column\'s own feedback setting.
+     * @type {CardReactionType}
+     * @memberof ColumnFullResponse
+     */
+    reactionType: CardReactionType | null;
 }
 
 

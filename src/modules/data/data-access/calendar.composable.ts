@@ -1,5 +1,6 @@
 import { useSafeAxiosRunner } from "@/composables/async-tasks.composable";
 import { $axios } from "@/utils/api";
+import { BoardApiFactory } from "@api-server";
 import { computed } from "vue";
 
 export interface CalendarEventResponse {
@@ -24,6 +25,8 @@ export interface DashboardCalendarEvent {
 	description?: string;
 	contextHref?: string;
 	contextType?: "course" | "team";
+	/** Where the entry came from; a board deadline is not an event of the calendar service. */
+	source?: "board";
 }
 
 const parseDate = (value?: number | string): Date | undefined => {
@@ -65,21 +68,47 @@ const mapEvent = (event: CalendarEventResponse): DashboardCalendarEvent | undefi
 	};
 };
 
-const fetchCalendarEvents = async (): Promise<DashboardCalendarEvent[]> => {
+/**
+ * Board deadlines that were marked for the calendar. They are not events of the calendar
+ * service — the board keeps them — so they are fetched separately and merged in here.
+ */
+const fetchBoardDeadlines = async (): Promise<DashboardCalendarEvent[]> => {
 	try {
-		const { data } = await $axios.get<CalendarEventResponse[]>("/calendar", {
-			params: {
-				all: true,
-			},
-		});
+		const api = BoardApiFactory(undefined, "/v3", $axios);
+		const { data } = await api.boardControllerGetDeadlines();
 
-		return data
-			.map(mapEvent)
-			.filter((event): event is DashboardCalendarEvent => Boolean(event))
-			.sort((a, b) => a.startsAt.getTime() - b.startsAt.getTime());
+		return data.data.map((deadline) => ({
+			id: `board-deadline-${deadline.elementId}`,
+			title: deadline.title || deadline.boardTitle,
+			startsAt: new Date(deadline.dueDate),
+			description: deadline.contextName ? `${deadline.boardTitle} · ${deadline.contextName}` : deadline.boardTitle,
+			contextHref: `/boards/${deadline.boardId}`,
+			source: "board" as const,
+		}));
 	} catch {
 		return [];
 	}
+};
+
+const fetchCalendarEvents = async (): Promise<DashboardCalendarEvent[]> => {
+	const [serviceEvents, deadlines] = await Promise.all([
+		(async () => {
+			try {
+				const { data } = await $axios.get<CalendarEventResponse[]>("/calendar", {
+					params: {
+						all: true,
+					},
+				});
+
+				return data.map(mapEvent).filter((event): event is DashboardCalendarEvent => Boolean(event));
+			} catch {
+				return [];
+			}
+		})(),
+		fetchBoardDeadlines(),
+	]);
+
+	return [...serviceEvents, ...deadlines].sort((a, b) => a.startsAt.getTime() - b.startsAt.getTime());
 };
 
 export const useCalendarEvents = () => {

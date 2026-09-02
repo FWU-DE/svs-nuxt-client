@@ -11,12 +11,18 @@ import {
 import { useEnvConfig } from "@data-env";
 import { useAddCollaboraFile } from "@feature-collabora";
 import {
+	mdiCheckboxMarkedOutline,
+	mdiClockOutline,
+	mdiCodeTags,
 	mdiFileDocumentOutline,
 	mdiFolderOpenOutline,
 	mdiFormatText,
 	mdiLink,
+	mdiMicrophoneOutline,
+	mdiPoll,
 	mdiPresentation,
 	mdiPuzzleOutline,
+	mdiSigma,
 	mdiTextBoxEditOutline,
 	mdiTrayArrowUp,
 	mdiVideoOutline,
@@ -158,6 +164,50 @@ export const useAddElementDialog = (createElementRequestFn: CreateElementRequest
 				action: () => onElementClick(ContentElementType.H5P),
 				testId: "create-element-h5p",
 			});
+		}
+
+		if (envConfig.value.FEATURE_COLUMN_BOARD_INTERACTIVE_ELEMENTS_ENABLED) {
+			options.push({
+				icon: mdiPoll,
+				label: t("components.elementTypeSelection.elements.pollElement.subtitle"),
+				action: () => onElementClick(ContentElementType.POLL),
+				testId: "create-element-poll",
+			});
+		}
+
+		if (envConfig.value.FEATURE_COLUMN_BOARD_INTERACTIVE_ELEMENTS_ENABLED) {
+			options.push(
+				{
+					icon: mdiClockOutline,
+					label: t("components.elementTypeSelection.elements.deadlineElement.subtitle"),
+					action: () => onElementClick(ContentElementType.DEADLINE),
+					testId: "create-element-deadline",
+				},
+				{
+					icon: mdiCheckboxMarkedOutline,
+					label: t("components.elementTypeSelection.elements.checklistElement.subtitle"),
+					action: () => onElementClick(ContentElementType.CHECKLIST),
+					testId: "create-element-checklist",
+				},
+				{
+					icon: mdiCodeTags,
+					label: t("components.elementTypeSelection.elements.codeElement.subtitle"),
+					action: () => onElementClick(ContentElementType.CODE),
+					testId: "create-element-code",
+				},
+				{
+					icon: mdiSigma,
+					label: t("components.elementTypeSelection.elements.formulaElement.subtitle"),
+					action: () => onElementClick(ContentElementType.FORMULA),
+					testId: "create-element-formula",
+				},
+				{
+					icon: mdiMicrophoneOutline,
+					label: t("components.elementTypeSelection.elements.recordingElement.subtitle"),
+					action: () => onElementClick(ContentElementType.RECORDING),
+					testId: "create-element-recording",
+				}
+			);
 		}
 
 		if (envConfig.value.FEATURE_COLUMN_BOARD_COLLABORA_ENABLED) {

@@ -1,6 +1,7 @@
 import { CreateCardSuccessPayload } from "./boardActions/boardActionPayload.types";
 import { useBoardFocusHandler } from "./BoardFocusHandler.composable";
 import {
+	CardCommentSuccessPayload,
 	CreateElementRequestPayload,
 	CreateElementSuccessPayload,
 	DeleteCardSuccessPayload,
@@ -8,16 +9,27 @@ import {
 	DuplicateCardSuccessPayload,
 	FetchCardSuccessPayload,
 	MoveElementSuccessPayload,
+	ReactToCardSuccessPayload,
+	SetChecklistItemCheckedSuccessPayload,
 	UpdateCardColorSuccessPayload,
 	UpdateCardHeightSuccessPayload,
+	UpdateCardSettingsSuccessPayload,
 	UpdateCardTitleSuccessPayload,
 	UpdateElementSuccessPayload,
+	VoteInPollSuccessPayload,
 } from "./cardActions/cardActionPayload.types";
 import { useCardRestApi } from "./cardActions/cardRestApi.composable";
 import { useCardSocketApi } from "./cardActions/cardSocketApi.composable";
 import { useSharedEditMode } from "./edit-mode.composable";
 import { FileRecordParent } from "@/types/file/File";
-import { CardResponse, ContentElementType, CopyStatusEnum, PreferredToolResponse, ToolContextType } from "@api-server";
+import {
+	CardResponse,
+	ContentElementType,
+	CopyStatusEnum,
+	PollElementResponse,
+	PreferredToolResponse,
+	ToolContextType,
+} from "@api-server";
 import { notifyError, notifyInfo } from "@data-app";
 import { useEnvConfig } from "@data-env";
 import { CollaboraFileType, useFileStorageApi } from "@data-file";
@@ -249,8 +261,112 @@ export const useCardStore = defineStore("cardStore", () => {
 
 		if (cardId) {
 			const elementIndex = cardToUpdate.elements.findIndex((e) => e.id === payload.elementId);
-			cards.value[cardId].elements[elementIndex].content = payload.data.content;
+			const currentElement = cardToUpdate.elements[elementIndex];
+
+			// A poll update carries only the poll's definition. Assigning it wholesale would drop
+			// the tally and this reader's own ballot, which no update ever changes.
+			cards.value[cardId].elements[elementIndex].content =
+				payload.data.type === ContentElementType.POLL
+					? { ...currentElement.content, ...payload.data.content }
+					: payload.data.content;
 		}
+	};
+
+	const updateCardSettingsRequest = socketOrRest.updateCardSettingsRequest;
+
+	/**
+	 * A settings change alters what the card shows and what people may do on it, and the answer
+	 * differs per reader — so everyone but the acting client refetches instead of being handed
+	 * that client's view.
+	 */
+	const updateCardSettingsSuccess = (payload: UpdateCardSettingsSuccessPayload) => {
+		if (payload.isOwnAction) {
+			cards.value[payload.cardId] = payload.card;
+		} else {
+			fetchCardRequest({ cardIds: [payload.cardId] });
+		}
+	};
+
+	const setChecklistItemCheckedRequest = socketOrRest.setChecklistItemCheckedRequest;
+
+	/**
+	 * A checklist is shared state, so unlike a poll ballot or a reaction the payload means the
+	 * same to everyone and can be applied as it arrives.
+	 */
+	const setChecklistItemCheckedSuccess = (payload: SetChecklistItemCheckedSuccessPayload) => {
+		const cardToUpdate = Object.values(cards.value).find((c) => c.elements.some((e) => e.id === payload.elementId));
+		if (cardToUpdate === undefined) return;
+
+		const elementIndex = cardToUpdate.elements.findIndex((e) => e.id === payload.elementId);
+		cards.value[cardToUpdate.id].elements[elementIndex] = payload.element;
+	};
+
+	const reactToCardRequest = socketOrRest.reactToCardRequest;
+
+	/**
+	 * The room broadcast reports the new totals with no `ownValue`, because a reaction is not
+	 * public. Only the reacting client's own answer may set it.
+	 */
+	const reactToCardSuccess = (payload: ReactToCardSuccessPayload) => {
+		const card = cards.value[payload.cardId];
+		if (card === undefined) return;
+
+		const incoming = payload.card.reactions;
+		if (incoming === undefined) {
+			card.reactions = undefined;
+			return;
+		}
+
+		card.reactions = payload.isOwnAction ? incoming : { ...incoming, ownValue: card.reactions?.ownValue };
+	};
+
+	const addCardCommentRequest = socketOrRest.addCardCommentRequest;
+	const editCardCommentRequest = socketOrRest.editCardCommentRequest;
+	const removeCardCommentRequest = socketOrRest.removeCardCommentRequest;
+	const reportCardCommentRequest = socketOrRest.reportCardCommentRequest;
+
+	/**
+	 * The room broadcast carries no comment: how a comment reads depends on who is looking
+	 * (own, reported by me, how often reported), so everyone else refetches the card instead of
+	 * being handed the acting user's view of it.
+	 */
+	const cardCommentSuccess = (payload: CardCommentSuccessPayload) => {
+		const card = cards.value[payload.cardId];
+		if (card === undefined) return;
+
+		if (!payload.isOwnAction || payload.comment === undefined) {
+			fetchCardRequest({ cardIds: [payload.cardId] });
+			return;
+		}
+
+		const comments = card.comments ?? [];
+		const index = comments.findIndex((comment) => comment.id === payload.comment?.id);
+
+		card.comments = index === -1 ? [...comments, payload.comment] : comments.with(index, payload.comment);
+	};
+
+	const voteInPollRequest = socketOrRest.voteInPollRequest;
+
+	/**
+	 * The board room only ever learns the new tally, never who voted. That payload therefore
+	 * carries an empty `ownVote`, which must not overwrite the ballot this client cast — only
+	 * the voter's own response is allowed to set it.
+	 */
+	const voteInPollSuccess = (payload: VoteInPollSuccessPayload) => {
+		const cardToUpdate = Object.values(cards.value).find((c) => c.elements.some((e) => e.id === payload.elementId));
+		if (cardToUpdate === undefined) return;
+
+		const elementIndex = cardToUpdate.elements.findIndex((e) => e.id === payload.elementId);
+		const currentElement = cardToUpdate.elements[elementIndex] as PollElementResponse | undefined;
+		const ownVote = currentElement?.type === ContentElementType.POLL ? currentElement.content.ownVote : [];
+
+		cards.value[cardToUpdate.id].elements[elementIndex] = {
+			...payload.pollElement,
+			content: {
+				...payload.pollElement.content,
+				ownVote: payload.isOwnAction ? payload.pollElement.content.ownVote : ownVote,
+			},
+		};
 	};
 
 	const getPreviousElementId = (elementId: string, cardId: string): string | undefined => {
@@ -290,6 +406,19 @@ export const useCardStore = defineStore("cardStore", () => {
 		deleteElementSuccess,
 		updateElementRequest,
 		updateElementSuccess,
+		voteInPollRequest,
+		voteInPollSuccess,
+		setChecklistItemCheckedRequest,
+		setChecklistItemCheckedSuccess,
+		reactToCardRequest,
+		reactToCardSuccess,
+		updateCardSettingsRequest,
+		updateCardSettingsSuccess,
+		addCardCommentRequest,
+		editCardCommentRequest,
+		removeCardCommentRequest,
+		reportCardCommentRequest,
+		cardCommentSuccess,
 		addTextAfterTitle,
 		fetchCardRequest,
 		fetchCardSuccess,

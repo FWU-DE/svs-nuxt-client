@@ -28,15 +28,24 @@ import {
 	MoveColumnSuccessPayload,
 	ReloadBoardPayload,
 	ReloadBoardSuccessPayload,
+	UpdateBoardCommentsEnabledFailurePayload,
+	UpdateBoardCommentsEnabledRequestPayload,
+	UpdateBoardCommentsEnabledSuccessPayload,
 	UpdateBoardLayoutFailurePayload,
 	UpdateBoardLayoutRequestPayload,
 	UpdateBoardLayoutSuccessPayload,
+	UpdateBoardReactionTypeFailurePayload,
+	UpdateBoardReactionTypeRequestPayload,
+	UpdateBoardReactionTypeSuccessPayload,
 	UpdateBoardTitleFailurePayload,
 	UpdateBoardTitleRequestPayload,
 	UpdateBoardTitleSuccessPayload,
 	UpdateBoardVisibilityFailurePayload,
 	UpdateBoardVisibilityRequestPayload,
 	UpdateBoardVisibilitySuccessPayload,
+	UpdateColumnSettingsFailurePayload,
+	UpdateColumnSettingsRequestPayload,
+	UpdateColumnSettingsSuccessPayload,
 	UpdateColumnTitleFailurePayload,
 	UpdateColumnTitleRequestPayload,
 	UpdateColumnTitleSuccessPayload,
@@ -149,6 +158,45 @@ export const updateBoardLayoutSuccess = createAction(
 export const updateBoardLayoutFailure = createAction(
 	"update-board-layout-failure",
 	props<UpdateBoardLayoutFailurePayload>()
+);
+
+export const updateBoardCommentsEnabledRequest = createAction(
+	"update-board-comments-enabled-request",
+	props<UpdateBoardCommentsEnabledRequestPayload>()
+);
+export const updateBoardCommentsEnabledSuccess = createAction(
+	"update-board-comments-enabled-success",
+	props<UpdateBoardCommentsEnabledSuccessPayload>()
+);
+export const updateBoardCommentsEnabledFailure = createAction(
+	"update-board-comments-enabled-failure",
+	props<UpdateBoardCommentsEnabledFailurePayload>()
+);
+
+export const updateColumnSettingsRequest = createAction(
+	"update-column-settings-request",
+	props<UpdateColumnSettingsRequestPayload>()
+);
+export const updateColumnSettingsSuccess = createAction(
+	"update-column-settings-success",
+	props<UpdateColumnSettingsSuccessPayload>()
+);
+export const updateColumnSettingsFailure = createAction(
+	"update-column-settings-failure",
+	props<UpdateColumnSettingsFailurePayload>()
+);
+
+export const updateBoardReactionTypeRequest = createAction(
+	"update-board-reaction-type-request",
+	props<UpdateBoardReactionTypeRequestPayload>()
+);
+export const updateBoardReactionTypeSuccess = createAction(
+	"update-board-reaction-type-success",
+	props<UpdateBoardReactionTypeSuccessPayload>()
+);
+export const updateBoardReactionTypeFailure = createAction(
+	"update-board-reaction-type-failure",
+	props<UpdateBoardReactionTypeFailurePayload>()
 );
 
 export const updateReaderCanEditRequest = createAction(

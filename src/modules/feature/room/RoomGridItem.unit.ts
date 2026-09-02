@@ -53,6 +53,25 @@ describe("@feature-room/RoomGridItem", () => {
 		expect(fullTitleEl.text()).toBe(mockRoom.name);
 	});
 
+	describe("board count", () => {
+		it("should show how many boards the room has", () => {
+			const room = roomItemFactory.build({ boardCount: 3 });
+
+			const { wrapper } = setup({ room, index: 0 });
+
+			const chip = wrapper.get("[data-testid=room--board-count-0]");
+			expect(chip.text()).toBe("3 common.words.board");
+		});
+
+		it("should not show a chip for a room without boards", () => {
+			const room = roomItemFactory.build({ boardCount: 0 });
+
+			const { wrapper } = setup({ room, index: 0 });
+
+			expect(wrapper.find("[data-testid=room--board-count-0]").exists()).toBe(false);
+		});
+	});
+
 	it("should show locked badge when room is locked", () => {
 		const { wrapper } = setup({ room: { ...mockRoom, isLocked: true }, index: 0 });
 		const badge = wrapper.findComponent(VBadge);

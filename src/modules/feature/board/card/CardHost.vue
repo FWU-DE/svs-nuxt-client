@@ -66,6 +66,10 @@
 							/>
 							<KebabMenuActionShare v-if="allowedOperations?.shareCard" @click="onShareCard" />
 							<KebabMenuActionShareLink :scope="BoardMenuScope.CARD" @click="onCopyShareLink" />
+							<KebabMenuActionCardSettings
+								v-if="areInteractiveElementsEnabled && allowedOperations?.updateCardSettings"
+								@click="isSettingsDialogOpen = true"
+							/>
 							<KebabMenuActionDelete
 								v-if="allowedOperations?.deleteCard"
 								:name="card.title"
@@ -96,6 +100,24 @@
 						/>
 						<CardAddElementMenu v-if="isEditMode" @add-element="onAddElement" />
 					</div>
+					<CardReactionBar v-if="card.reactions" :reactions="card.reactions" @react="onReact" />
+					<CardSettingsDialog
+						v-model="isSettingsDialogOpen"
+						:comments-enabled="card.commentsEnabled ?? null"
+						:readers-can-edit="card.readersCanEdit ?? null"
+						:reaction-type="card.cardReactionType ?? null"
+						@change="onChangeCardSetting"
+						@change-reactions="onChangeCardReactions"
+					/>
+					<CardCommentSection
+						v-if="card.comments"
+						:comments="card.comments"
+						:can-moderate="allowedOperations.moderateCardComments ?? false"
+						@add="onAddComment"
+						@edit="onEditComment"
+						@remove="onRemoveComment"
+						@report="onReportComment"
+					/>
 				</template>
 			</VCard>
 		</CardHostInteractionHandler>
@@ -109,16 +131,20 @@
 import BoardAiCardsDialog from "../ai/BoardAiCardsDialog.vue";
 import { useAddElementDialog } from "../shared/AddElementDialog.composable";
 import CardAddElementMenu from "./CardAddElementMenu.vue";
+import CardCommentSection from "./CardCommentSection.vue";
 import CardHostInteractionHandler from "./CardHostInteractionHandler.vue";
+import CardReactionBar from "./CardReactionBar.vue";
+import CardSettingsDialog from "./CardSettingsDialog.vue";
 import CardSkeleton from "./CardSkeleton.vue";
 import CardTitle from "./CardTitle.vue";
 import ContentElementList from "./ContentElementList.vue";
+import KebabMenuActionCardSettings from "./KebabMenuActionCardSettings.vue";
 import { useSafeTaskRunner } from "@/composables/async-tasks.composable";
 import { ElementMove, verticalCursorKeys } from "@/types/board/DragAndDrop";
 import { colorToHexLighten3, colorToHexLighten5 } from "@/utils/color.utils";
 import { askDeletionForType } from "@/utils/confirmation-dialog.utils";
 import { delay } from "@/utils/helpers";
-import { Colors } from "@api-server";
+import { CardReactionType, Colors } from "@api-server";
 import {
 	useBoardAllowedOperations,
 	useBoardFocusHandler,
@@ -251,7 +277,32 @@ const onDeleteCard = async () => {
 	}
 };
 
+const isSettingsDialogOpen = ref(false);
+
+const areInteractiveElementsEnabled = computed(
+	() => useEnvConfig().value.FEATURE_COLUMN_BOARD_INTERACTIVE_ELEMENTS_ENABLED
+);
+
+const onChangeCardSetting = (field: "commentsEnabled" | "readersCanEdit", value: boolean | null) => {
+	cardStore.updateCardSettingsRequest({ cardId: cardId.value, [field]: value });
+};
+
+const onChangeCardReactions = (reactionType: CardReactionType | null) => {
+	cardStore.updateCardSettingsRequest({ cardId: cardId.value, reactionType });
+};
+
 const onAddElement = () => askType();
+
+const onReact = (value?: number) => cardStore.reactToCardRequest({ cardId: cardId.value, value });
+
+const onAddComment = (text: string) => cardStore.addCardCommentRequest({ cardId: cardId.value, text });
+
+const onEditComment = (commentId: string, text: string) =>
+	cardStore.editCardCommentRequest({ cardId: cardId.value, commentId, text });
+
+const onRemoveComment = (commentId: string) => cardStore.removeCardCommentRequest({ cardId: cardId.value, commentId });
+
+const onReportComment = (commentId: string) => cardStore.reportCardCommentRequest({ cardId: cardId.value, commentId });
 
 const onDeleteElement = (elementId: string) => cardStore.deleteElementRequest({ cardId: cardId.value, elementId });
 

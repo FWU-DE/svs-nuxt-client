@@ -226,6 +226,12 @@ export interface ConfigResponse {
      * @type {boolean}
      * @memberof ConfigResponse
      */
+    FEATURE_COLUMN_BOARD_INTERACTIVE_ELEMENTS_ENABLED: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof ConfigResponse
+     */
     FEATURE_COURSE_SHARE: boolean;
     /**
      * 

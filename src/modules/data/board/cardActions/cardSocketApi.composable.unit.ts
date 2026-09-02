@@ -22,7 +22,7 @@ import {
 	richTextElementContentFactory,
 } from "@@/tests/test-utils";
 import { richTextElementResponseFactory } from "@@/tests/test-utils/factory/richTextElementResponseFactory";
-import { BoardLayout, Colors, ContentElementType, CopyStatusEnum } from "@api-server";
+import { BoardLayout, CardReactionType, Colors, ContentElementType, CopyStatusEnum } from "@api-server";
 import { useBoardStore, useCardStore, useSocketConnection } from "@data-board";
 import { createTestingPinia } from "@pinia/testing";
 import { useSharedLastCreatedElement } from "@util-board";
@@ -232,6 +232,10 @@ describe("useCardSocketApi", () => {
 						deletedAt: undefined,
 					},
 					readersCanEdit: false,
+					reactionType: CardReactionType.NONE,
+					commentsEnabled: null,
+					roomReactionType: CardReactionType.NONE,
+					roomCommentsEnabled: false,
 					features: [],
 				};
 				const { dispatch } = useCardSocketApi();

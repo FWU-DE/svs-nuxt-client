@@ -12,4 +12,10 @@ export enum BoardMenuScope {
 	MEDIA_EXTERNAL_TOOL_ELEMENT = "mediaExternalToolElement",
 	VIDEO_CONFERENCE_ELEMENT = "videoConferenceElement",
 	H5P_ELEMENT = "h5pElement",
+	POLL_ELEMENT = "pollElement",
+	DEADLINE_ELEMENT = "deadlineElement",
+	CODE_ELEMENT = "codeElement",
+	FORMULA_ELEMENT = "formulaElement",
+	CHECKLIST_ELEMENT = "checklistElement",
+	RECORDING_ELEMENT = "recordingElement",
 }

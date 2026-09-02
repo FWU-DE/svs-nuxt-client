@@ -41,6 +41,8 @@ import { PassOwnershipBodyParams } from '../models';
 // @ts-ignore
 import { RemoveRoomMembersBodyParams } from '../models';
 // @ts-ignore
+import { RoomAiTemplateBodyParams } from '../models';
+// @ts-ignore
 import { RoomBoardListResponse } from '../models';
 // @ts-ignore
 import { RoomCreatedResponse } from '../models';
@@ -64,6 +66,46 @@ import { UpdateRoomBodyParams } from '../models';
  */
 export const RoomApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
+        /**
+         * Streams the suggestion as newline delimited json, one item per line, so that the client can show the structure while it is generated.
+         * @summary Suggest a room structure for a description
+         * @param {RoomAiTemplateBodyParams} roomAiTemplateBodyParams 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        roomAiTemplateControllerGenerateAiTemplate: async (roomAiTemplateBodyParams: RoomAiTemplateBodyParams, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'roomAiTemplateBodyParams' is not null or undefined
+            assertParamExists('roomAiTemplateControllerGenerateAiTemplate', 'roomAiTemplateBodyParams', roomAiTemplateBodyParams)
+            const localVarPath = `/rooms/ai-template`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearer required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(roomAiTemplateBodyParams, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
         /**
          * 
          * @summary Add external person to room or trigger registration
@@ -971,6 +1013,17 @@ export const RoomApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = RoomApiAxiosParamCreator(configuration)
     return {
         /**
+         * Streams the suggestion as newline delimited json, one item per line, so that the client can show the structure while it is generated.
+         * @summary Suggest a room structure for a description
+         * @param {RoomAiTemplateBodyParams} roomAiTemplateBodyParams 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async roomAiTemplateControllerGenerateAiTemplate(roomAiTemplateBodyParams: RoomAiTemplateBodyParams, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.roomAiTemplateControllerGenerateAiTemplate(roomAiTemplateBodyParams, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
          * 
          * @summary Add external person to room or trigger registration
          * @param {string} roomId The id of the room.
@@ -1232,6 +1285,16 @@ export const RoomApiFactory = function (configuration?: Configuration, basePath?
     const localVarFp = RoomApiFp(configuration)
     return {
         /**
+         * Streams the suggestion as newline delimited json, one item per line, so that the client can show the structure while it is generated.
+         * @summary Suggest a room structure for a description
+         * @param {RoomAiTemplateBodyParams} roomAiTemplateBodyParams 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        roomAiTemplateControllerGenerateAiTemplate(roomAiTemplateBodyParams: RoomAiTemplateBodyParams, options?: any): AxiosPromise<void> {
+            return localVarFp.roomAiTemplateControllerGenerateAiTemplate(roomAiTemplateBodyParams, options).then((request) => request(axios, basePath));
+        },
+        /**
          * 
          * @summary Add external person to room or trigger registration
          * @param {string} roomId The id of the room.
@@ -1470,6 +1533,16 @@ export const RoomApiFactory = function (configuration?: Configuration, basePath?
  */
 export interface RoomApiInterface {
     /**
+     * Streams the suggestion as newline delimited json, one item per line, so that the client can show the structure while it is generated.
+     * @summary Suggest a room structure for a description
+     * @param {RoomAiTemplateBodyParams} roomAiTemplateBodyParams 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof RoomApiInterface
+     */
+    roomAiTemplateControllerGenerateAiTemplate(roomAiTemplateBodyParams: RoomAiTemplateBodyParams, options?: any): AxiosPromise<void>;
+
+    /**
      * 
      * @summary Add external person to room or trigger registration
      * @param {string} roomId The id of the room.
@@ -1707,6 +1780,18 @@ export interface RoomApiInterface {
  * @extends {BaseAPI}
  */
 export class RoomApi extends BaseAPI implements RoomApiInterface {
+    /**
+     * Streams the suggestion as newline delimited json, one item per line, so that the client can show the structure while it is generated.
+     * @summary Suggest a room structure for a description
+     * @param {RoomAiTemplateBodyParams} roomAiTemplateBodyParams 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof RoomApi
+     */
+    public roomAiTemplateControllerGenerateAiTemplate(roomAiTemplateBodyParams: RoomAiTemplateBodyParams, options?: any) {
+        return RoomApiFp(this.configuration).roomAiTemplateControllerGenerateAiTemplate(roomAiTemplateBodyParams, options).then((request) => request(this.axios, this.basePath));
+    }
+
     /**
      * 
      * @summary Add external person to room or trigger registration

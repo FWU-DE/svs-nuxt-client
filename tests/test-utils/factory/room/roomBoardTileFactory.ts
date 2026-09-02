@@ -10,4 +10,5 @@ export const roomBoardGridItemFactory = Factory.define<RoomBoardItem>(({ sequenc
 	createdAt: "2017-09-28T11:49:39.924Z",
 	updatedAt: "2017-09-28T11:49:39.924Z",
 	allowedOperations: {},
+	preview: { columns: [], columnCount: 0 },
 }));

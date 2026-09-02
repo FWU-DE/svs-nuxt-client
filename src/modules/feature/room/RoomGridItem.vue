@@ -18,7 +18,7 @@
 					<VCardTitle class="mb-1" :data-testid="`room--title-${index}`">
 						<h2 class="text-break text-body-1 font-weight-bold ma-0">{{ room.name }}</h2>
 					</VCardTitle>
-					<div class="d-flex ga-2">
+					<div class="d-flex flex-wrap ga-1">
 						<VChip
 							size="small"
 							:prepend-icon="mdiAccountMultipleOutline"
@@ -26,6 +26,15 @@
 							:data-testid="`room--member-count-${index}`"
 						>
 							{{ room.totalMembers }} {{ t("common.words.member", room.totalMembers) }}
+						</VChip>
+						<VChip
+							v-if="room.boardCount > 0"
+							size="small"
+							:prepend-icon="mdiViewDashboardOutline"
+							class="text-decoration-none"
+							:data-testid="`room--board-count-${index}`"
+						>
+							{{ room.boardCount }} {{ t("common.words.board", room.boardCount) }}
 						</VChip>
 						<VChip
 							v-if="isExternalSchool"
@@ -57,7 +66,7 @@
 <script setup lang="ts">
 import { RoomItem } from "@/types/room/Room";
 import { useSchoolStoreRefs } from "@data-app";
-import { mdiAccountMultipleOutline, mdiLock } from "@icons/material";
+import { mdiAccountMultipleOutline, mdiLock, mdiViewDashboardOutline } from "@icons/material";
 import { computed, PropType } from "vue";
 import { useI18n } from "vue-i18n";
 

@@ -7,6 +7,8 @@ export const columnResponseFactory = Factory.define<ColumnResponse>(({ sequence 
 	title: `column #${sequence}`,
 	cards: [],
 	timestamps: timestampsResponseFactory.build(),
+	commentsEnabled: null,
+	reactionType: null,
 }));
 
 export const columnFullResponseFactory = Factory.define<ColumnFullResponse>(({ sequence }) => ({
@@ -14,4 +16,6 @@ export const columnFullResponseFactory = Factory.define<ColumnFullResponse>(({ s
 	title: `column #${sequence}`,
 	cards: [],
 	timestamps: timestampsResponseFactory.build(),
+	commentsEnabled: null,
+	reactionType: null,
 }));

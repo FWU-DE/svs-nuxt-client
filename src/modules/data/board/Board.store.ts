@@ -16,12 +16,17 @@ import {
 	MoveCardToBoardSuccessPayload,
 	MoveColumnRequestPayload,
 	MoveColumnSuccessPayload,
+	UpdateBoardCommentsEnabledRequestPayload,
+	UpdateBoardCommentsEnabledSuccessPayload,
 	UpdateBoardLayoutRequestPayload,
 	UpdateBoardLayoutSuccessPayload,
+	UpdateBoardReactionTypeRequestPayload,
+	UpdateBoardReactionTypeSuccessPayload,
 	UpdateBoardTitleRequestPayload,
 	UpdateBoardTitleSuccessPayload,
 	UpdateBoardVisibilityRequestPayload,
 	UpdateBoardVisibilitySuccessPayload,
+	UpdateColumnSettingsSuccessPayload,
 	UpdateColumnTitleRequestPayload,
 	UpdateColumnTitleSuccessPayload,
 	UpdateReaderCanEditRequestPayload,
@@ -296,6 +301,44 @@ export const useBoardStore = defineStore("boardStore", () => {
 		if (!isOwnAction) socketOrRest.fetchBoardRequest({ boardId: board.value.id });
 	};
 
+	const updateBoardReactionTypeRequest = async (payload: UpdateBoardReactionTypeRequestPayload): Promise<void> => {
+		await socketOrRest.updateBoardReactionTypeRequest(payload);
+	};
+
+	/**
+	 * Turning reactions off or switching the kind changes what every card's reaction totals
+	 * mean, so the cards are refetched rather than patched in place.
+	 */
+	const updateColumnSettingsRequest = socketOrRest.updateColumnSettingsRequest;
+
+	/**
+	 * What a column change means for each of its cards depends on what that card overrides
+	 * itself, so everyone reloads rather than being handed a resolved answer.
+	 */
+	const updateColumnSettingsSuccess = (_payload: UpdateColumnSettingsSuccessPayload) => {
+		void reloadBoard();
+	};
+
+	const updateBoardReactionTypeSuccess = (payload: UpdateBoardReactionTypeSuccessPayload) => {
+		if (!board.value) return;
+
+		board.value.reactionType = payload.reactionType;
+		reloadBoard();
+	};
+
+	const updateBoardCommentsEnabledRequest = async (
+		payload: UpdateBoardCommentsEnabledRequestPayload
+	): Promise<void> => {
+		await socketOrRest.updateBoardCommentsEnabledRequest(payload);
+	};
+
+	const updateBoardCommentsEnabledSuccess = (payload: UpdateBoardCommentsEnabledSuccessPayload) => {
+		if (!board.value) return;
+
+		board.value.commentsEnabled = payload.commentsEnabled;
+		reloadBoard();
+	};
+
 	const updateBoardLayoutRequest = async (payload: UpdateBoardLayoutRequestPayload): Promise<void> => {
 		await socketOrRest.updateBoardLayoutRequest(payload);
 	};
@@ -515,6 +558,12 @@ export const useBoardStore = defineStore("boardStore", () => {
 		updateBoardTitleSuccess,
 		updateBoardVisibilityRequest,
 		updateBoardVisibilitySuccess,
+		updateBoardReactionTypeRequest,
+		updateColumnSettingsRequest,
+		updateColumnSettingsSuccess,
+		updateBoardReactionTypeSuccess,
+		updateBoardCommentsEnabledRequest,
+		updateBoardCommentsEnabledSuccess,
 		updateBoardLayoutRequest,
 		updateBoardLayoutSuccess,
 		updateReaderCanEditSuccess,

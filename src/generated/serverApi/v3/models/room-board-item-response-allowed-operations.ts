@@ -73,6 +73,18 @@ export interface RoomBoardItemResponseAllowedOperations {
      * @type {boolean}
      * @memberof RoomBoardItemResponseAllowedOperations
      */
+    updateBoardReactionType?: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof RoomBoardItemResponseAllowedOperations
+     */
+    updateBoardCommentsEnabled?: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof RoomBoardItemResponseAllowedOperations
+     */
     copyColumn?: boolean;
     /**
      * 
@@ -104,6 +116,12 @@ export interface RoomBoardItemResponseAllowedOperations {
      * @memberof RoomBoardItemResponseAllowedOperations
      */
     updateColumnTitle?: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof RoomBoardItemResponseAllowedOperations
+     */
+    updateColumnSettings?: boolean;
     /**
      * 
      * @type {boolean}
@@ -163,6 +181,30 @@ export interface RoomBoardItemResponseAllowedOperations {
      * @type {boolean}
      * @memberof RoomBoardItemResponseAllowedOperations
      */
+    updateCardSettings?: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof RoomBoardItemResponseAllowedOperations
+     */
+    reactToCard?: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof RoomBoardItemResponseAllowedOperations
+     */
+    commentOnCard?: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof RoomBoardItemResponseAllowedOperations
+     */
+    moderateCardComments?: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof RoomBoardItemResponseAllowedOperations
+     */
     createElement?: boolean;
     /**
      * 
@@ -200,6 +242,18 @@ export interface RoomBoardItemResponseAllowedOperations {
      * @memberof RoomBoardItemResponseAllowedOperations
      */
     createFileElement?: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof RoomBoardItemResponseAllowedOperations
+     */
+    voteInPoll?: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof RoomBoardItemResponseAllowedOperations
+     */
+    checkChecklistItem?: boolean;
     /**
      * 
      * @type {boolean}

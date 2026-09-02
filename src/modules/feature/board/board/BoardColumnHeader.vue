@@ -44,6 +44,7 @@
 						<KebabMenuActionMoveLeft v-if="isNotFirstColumn" @click="onMoveColumnLeft" />
 						<KebabMenuActionMoveRight v-if="isNotLastColumn" @click="onMoveColumnRight" />
 					</template>
+					<KebabMenuActionColumnSettings v-if="canChangeSettings" @click="emit('settings:column')" />
 					<KebabMenuActionAiCards v-if="isAiEnabled" data-testid="column-menu-ai-cards" @click.stop="openAiDialog" />
 					<KebabMenuActionDelete :name="title" @click="onDelete" />
 				</BoardMenu>
@@ -62,6 +63,7 @@
 
 <script setup lang="ts">
 import BoardAiCardsDialog from "../ai/BoardAiCardsDialog.vue";
+import KebabMenuActionColumnSettings from "../column/KebabMenuActionColumnSettings.vue";
 import BoardAnyTitleInput from "../shared/BoardAnyTitleInput.vue";
 import BoardColumnInteractionHandler from "./BoardColumnInteractionHandler.vue";
 import { useSafeTaskRunner } from "@/composables/async-tasks.composable";
@@ -87,6 +89,7 @@ import { useI18n } from "vue-i18n";
 const props = defineProps({
 	canEditColumn: { type: Boolean, required: true },
 	canDeleteColumn: { type: Boolean, required: true },
+	canChangeSettings: { type: Boolean, required: false },
 	columnId: { type: String, required: true },
 	index: { type: Number, required: true },
 	isListBoard: { type: Boolean, required: true },
@@ -103,6 +106,7 @@ const openAiDialog = () => setTimeout(() => (isAiDialogOpen.value = true));
 
 const emit = defineEmits([
 	"delete:column",
+	"settings:column",
 	"move:column-down",
 	"move:column-left",
 	"move:column-right",

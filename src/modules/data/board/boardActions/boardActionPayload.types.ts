@@ -2,6 +2,7 @@ import { ColumnMove } from "@/types/board/DragAndDrop";
 import {
 	BoardLayout,
 	BoardResponse,
+	CardReactionType,
 	CardResponse,
 	CardSkeletonResponse,
 	ColumnFullResponse,
@@ -181,6 +182,39 @@ export type UpdateReaderCanEditSuccessPayload = {
 	isOwnAction: boolean;
 };
 export type UpdateReaderCanEditFailurePayload = UpdateReaderCanEditRequestPayload;
+
+export type UpdateColumnSettingsRequestPayload = {
+	columnId: string;
+	commentsEnabled?: boolean | null;
+	reactionType?: CardReactionType | null;
+};
+export type UpdateColumnSettingsSuccessPayload = {
+	columnId: string;
+	isOwnAction: boolean;
+};
+export type UpdateColumnSettingsFailurePayload = {
+	columnId: string;
+};
+
+export type UpdateBoardReactionTypeRequestPayload = {
+	boardId: string;
+	/** null puts the board back under the room's setting. */
+	reactionType: CardReactionType | null;
+};
+export type UpdateBoardReactionTypeSuccessPayload = UpdateBoardReactionTypeRequestPayload & {
+	isOwnAction: boolean;
+};
+export type UpdateBoardReactionTypeFailurePayload = UpdateBoardReactionTypeRequestPayload;
+
+export type UpdateBoardCommentsEnabledRequestPayload = {
+	boardId: string;
+	/** null puts the board back under the room's setting. */
+	commentsEnabled: boolean | null;
+};
+export type UpdateBoardCommentsEnabledSuccessPayload = UpdateBoardCommentsEnabledRequestPayload & {
+	isOwnAction: boolean;
+};
+export type UpdateBoardCommentsEnabledFailurePayload = UpdateBoardCommentsEnabledRequestPayload;
 
 export type DisconnectSocketRequestPayload = Record<string, never>;
 

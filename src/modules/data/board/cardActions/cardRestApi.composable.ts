@@ -4,20 +4,29 @@ import { useCardStore } from "../Card.store";
 import { useSharedCardRequestPool } from "../CardRequestPool.composable";
 import { useSharedEditMode } from "../edit-mode.composable";
 import {
+	AddCardCommentRequestPayload,
 	CreateElementRequestPayload,
 	DeleteCardRequestPayload,
 	DeleteElementRequestPayload,
 	DuplicateCardRequestPayload,
+	EditCardCommentRequestPayload,
 	FetchCardRequestPayload,
 	MoveElementRequestPayload,
+	ReactToCardRequestPayload,
+	RemoveCardCommentRequestPayload,
+	ReportCardCommentRequestPayload,
+	SetChecklistItemCheckedRequestPayload,
 	UpdateCardColorRequestPayload,
 	UpdateCardHeightRequestPayload,
+	UpdateCardSettingsRequestPayload,
 	UpdateCardTitleRequestPayload,
 	UpdateElementRequestPayload,
+	VoteInPollRequestPayload,
 } from "./cardActionPayload.types";
 import { AnyContentElement } from "@/types/board/ContentElement";
 import { delay } from "@/utils/helpers";
 import {
+	CardCommentResponse,
 	ContentElementType,
 	CopyStatusEnum,
 	ExternalToolElementResponse,
@@ -51,6 +60,14 @@ export const useCardRestApi = () => {
 		deleteElementCall,
 		deleteCardCall,
 		updateElementCall,
+		voteInPollCall,
+		setChecklistItemCheckedCall,
+		reactToCardCall,
+		updateCardSettingsCall,
+		addCardCommentCall,
+		editCardCommentCall,
+		removeCardCommentCall,
+		reportCardCommentCall,
 		moveElementCall,
 		updateCardTitle,
 		updateCardColor,
@@ -202,6 +219,82 @@ export const useCardRestApi = () => {
 		}
 	};
 
+	const commentRequest = async (cardId: string, call: () => Promise<{ data: CardCommentResponse }>) => {
+		try {
+			const response = await call();
+			cardStore.cardCommentSuccess({ cardId, comment: response.data, isOwnAction: true });
+		} catch (error) {
+			handleError(error, {
+				404: notifyWithTemplate("notUpdated", "boardCard"),
+			});
+		}
+	};
+
+	const addCardCommentRequest = async (payload: AddCardCommentRequestPayload) =>
+		commentRequest(payload.cardId, () => addCardCommentCall(payload.cardId, payload.text));
+
+	const editCardCommentRequest = async (payload: EditCardCommentRequestPayload) =>
+		commentRequest(payload.cardId, () => editCardCommentCall(payload.cardId, payload.commentId, payload.text));
+
+	const removeCardCommentRequest = async (payload: RemoveCardCommentRequestPayload) =>
+		commentRequest(payload.cardId, () => removeCardCommentCall(payload.cardId, payload.commentId));
+
+	const reportCardCommentRequest = async (payload: ReportCardCommentRequestPayload) =>
+		commentRequest(payload.cardId, () => reportCardCommentCall(payload.cardId, payload.commentId, payload.reason));
+
+	const setChecklistItemCheckedRequest = async (payload: SetChecklistItemCheckedRequestPayload) => {
+		try {
+			const response = await setChecklistItemCheckedCall(payload.elementId, payload.itemId, payload.checked);
+			cardStore.setChecklistItemCheckedSuccess({
+				elementId: payload.elementId,
+				element: response.data,
+				isOwnAction: true,
+			});
+		} catch (error) {
+			handleError(error, {
+				404: notifyWithTemplate("notUpdated", "boardElement"),
+			});
+		}
+	};
+
+	const updateCardSettingsRequest = async (payload: UpdateCardSettingsRequestPayload) => {
+		try {
+			const { cardId, ...settings } = payload;
+			const response = await updateCardSettingsCall(cardId, settings);
+			cardStore.updateCardSettingsSuccess({ cardId, card: response.data, isOwnAction: true });
+		} catch (error) {
+			handleError(error, {
+				404: notifyWithTemplate("notUpdated", "boardCard"),
+			});
+		}
+	};
+
+	const reactToCardRequest = async (payload: ReactToCardRequestPayload) => {
+		try {
+			const response = await reactToCardCall(payload.cardId, payload.value);
+			cardStore.reactToCardSuccess({ cardId: payload.cardId, card: response.data, isOwnAction: true });
+		} catch (error) {
+			handleError(error, {
+				404: notifyWithTemplate("notUpdated", "boardCard"),
+			});
+		}
+	};
+
+	const voteInPollRequest = async (payload: VoteInPollRequestPayload) => {
+		try {
+			const response = await voteInPollCall(payload.elementId, payload.optionIds);
+			cardStore.voteInPollSuccess({
+				elementId: payload.elementId,
+				pollElement: response.data,
+				isOwnAction: true,
+			});
+		} catch (error) {
+			handleError(error, {
+				404: notifyWithTemplate("notUpdated", "boardElement"),
+			});
+		}
+	};
+
 	const deleteCardRequest = async (payload: DeleteCardRequestPayload) => {
 		const card = cardStore.getCard(payload.cardId);
 		if (card === undefined) return;
@@ -318,6 +411,14 @@ export const useCardRestApi = () => {
 		deleteElementRequest,
 		moveElementRequest,
 		updateElementRequest,
+		voteInPollRequest,
+		setChecklistItemCheckedRequest,
+		reactToCardRequest,
+		updateCardSettingsRequest,
+		addCardCommentRequest,
+		editCardCommentRequest,
+		removeCardCommentRequest,
+		reportCardCommentRequest,
 		duplicateCardRequest,
 		deleteCardRequest,
 		fetchCardRequest,

@@ -16,6 +16,7 @@
 import { BoardFeature } from './board-feature';
 import { BoardLayout } from './board-layout';
 import { BoardResponseAllowedOperations } from './board-response-allowed-operations';
+import { CardReactionType } from './card-reaction-type';
 import { ColumnResponse } from './column-response';
 import { TimestampsResponse } from './timestamps-response';
 
@@ -61,6 +62,30 @@ export interface BoardResponse {
      * @memberof BoardResponse
      */
     readersCanEdit: boolean;
+    /**
+     * This board\'s own feedback setting. null follows the room.
+     * @type {CardReactionType}
+     * @memberof BoardResponse
+     */
+    reactionType: CardReactionType | null;
+    /**
+     * What the room defaults to.
+     * @type {CardReactionType}
+     * @memberof BoardResponse
+     */
+    roomReactionType: CardReactionType;
+    /**
+     * This board\'s own comment setting. null follows the room.
+     * @type {boolean}
+     * @memberof BoardResponse
+     */
+    commentsEnabled: boolean | null;
+    /**
+     * What the room defaults to.
+     * @type {boolean}
+     * @memberof BoardResponse
+     */
+    roomCommentsEnabled: boolean;
     /**
      * 
      * @type {BoardLayout}

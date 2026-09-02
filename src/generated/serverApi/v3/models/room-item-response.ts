@@ -88,6 +88,12 @@ export interface RoomItemResponse {
      * @memberof RoomItemResponse
      */
     totalMembers: number;
+    /**
+     * The number of boards of the room the user may see.
+     * @type {number}
+     * @memberof RoomItemResponse
+     */
+    boardCount: number;
 }
 
 

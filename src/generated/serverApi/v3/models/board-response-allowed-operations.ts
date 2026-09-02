@@ -73,6 +73,18 @@ export interface BoardResponseAllowedOperations {
      * @type {boolean}
      * @memberof BoardResponseAllowedOperations
      */
+    updateBoardReactionType: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof BoardResponseAllowedOperations
+     */
+    updateBoardCommentsEnabled: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof BoardResponseAllowedOperations
+     */
     copyColumn: boolean;
     /**
      * 
@@ -104,6 +116,12 @@ export interface BoardResponseAllowedOperations {
      * @memberof BoardResponseAllowedOperations
      */
     updateColumnTitle: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof BoardResponseAllowedOperations
+     */
+    updateColumnSettings: boolean;
     /**
      * 
      * @type {boolean}
@@ -163,6 +181,30 @@ export interface BoardResponseAllowedOperations {
      * @type {boolean}
      * @memberof BoardResponseAllowedOperations
      */
+    updateCardSettings: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof BoardResponseAllowedOperations
+     */
+    reactToCard: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof BoardResponseAllowedOperations
+     */
+    commentOnCard: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof BoardResponseAllowedOperations
+     */
+    moderateCardComments: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof BoardResponseAllowedOperations
+     */
     createElement: boolean;
     /**
      * 
@@ -200,6 +242,18 @@ export interface BoardResponseAllowedOperations {
      * @memberof BoardResponseAllowedOperations
      */
     createFileElement: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof BoardResponseAllowedOperations
+     */
+    voteInPoll: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof BoardResponseAllowedOperations
+     */
+    checkChecklistItem: boolean;
     /**
      * 
      * @type {boolean}

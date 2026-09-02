@@ -18,6 +18,53 @@ const H5pElementContentSchema = z.object({
 	contentId: z.string().nullable(),
 });
 
+const PollElementContentSchema = z.object({
+	question: z.string(),
+	options: z.array(
+		z.object({
+			id: z.string(),
+			text: z.string(),
+			count: z.number().optional(),
+			voterIds: z.array(z.string()).optional(),
+		})
+	),
+	anonymous: z.boolean(),
+	multipleChoice: z.boolean(),
+	closed: z.boolean(),
+	showResults: z.string(),
+	resultsReleased: z.boolean(),
+	resultsVisible: z.boolean(),
+	voterCount: z.number().optional(),
+	ownVote: z.array(z.string()),
+});
+
+const DeadlineElementContentSchema = z.object({
+	title: z.string(),
+	dueDate: z.string().nullable(),
+	showInCalendar: z.boolean(),
+});
+
+const CodeElementContentSchema = z.object({
+	code: z.string(),
+	language: z.string(),
+	showLineNumbers: z.boolean(),
+	syntaxHighlighting: z.boolean(),
+});
+
+const FormulaElementContentSchema = z.object({
+	latex: z.string(),
+});
+
+const ChecklistElementContentSchema = z.object({
+	title: z.string(),
+	items: z.array(z.object({ id: z.string(), text: z.string(), checked: z.boolean() })),
+});
+
+const RecordingElementContentSchema = z.object({
+	mediaType: z.string(),
+	caption: z.string(),
+});
+
 const LinkElementContentSchema = z.object({
 	url: z.string(),
 	title: z.string(),
@@ -59,6 +106,12 @@ export const AnyContentElementSchema = z.object({
 		FileElementContentSchema,
 		FileFolderElementContentSchema,
 		H5pElementContentSchema,
+		PollElementContentSchema,
+		DeadlineElementContentSchema,
+		CodeElementContentSchema,
+		FormulaElementContentSchema,
+		ChecklistElementContentSchema,
+		RecordingElementContentSchema,
 		LinkElementContentSchema,
 		RichTextElementContentSchema,
 		DrawingElementContentSchema,
