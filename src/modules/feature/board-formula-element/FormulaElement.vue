@@ -30,12 +30,8 @@
 						data-testid="formula-input"
 						@update:model-value="onLatexChange"
 					/>
-					<div
-						v-if="rendered"
-						class="formula-display"
-						data-testid="formula-display"
-						v-html="rendered"
-					/>
+					<!-- eslint-disable-next-line vue/no-v-html -- KaTeX escapes anything it cannot parse, so its output is safe markup. -->
+					<div v-if="rendered" class="formula-display" data-testid="formula-display" v-html="rendered" />
 					<p v-else-if="!isEditMode" class="text-body-2 text-medium-emphasis mb-0" data-testid="formula-empty">
 						{{ t("components.cardElement.formulaElement.empty") }}
 					</p>
@@ -46,6 +42,7 @@
 </template>
 
 <script setup lang="ts">
+import "katex/dist/katex.min.css";
 import { askDeletionForType } from "@/utils/confirmation-dialog.utils";
 import { FormulaElementResponse } from "@api-server";
 import { useBoardFocusHandler, useContentElementState } from "@data-board";
@@ -53,7 +50,6 @@ import { mdiSigma } from "@icons/material";
 import { BoardMenu, BoardMenuScope, ContentElementBar } from "@ui-board";
 import { KebabMenuActionDelete, KebabMenuActionMoveDown, KebabMenuActionMoveUp } from "@ui-kebab-menu";
 import katex from "katex";
-import "katex/dist/katex.min.css";
 import { computed, ref, toRef } from "vue";
 import { useI18n } from "vue-i18n";
 
@@ -81,30 +77,34 @@ useBoardFocusHandler(element.value.id, ref(null));
 
 const { modelValue } = useContentElementState(props, { autoSaveDebounce: 400 });
 
-const renderError = ref<string | undefined>(undefined);
-
 // While editing, the preview follows the draft; otherwise it follows what the server stored.
 const source = computed(() => (props.isEditMode ? modelValue.value.latex : element.value.content.latex));
 
 /**
  * KaTeX in non-throwing mode still escapes what it cannot parse, so the output is safe to
  * insert as markup even though the source comes from a user.
+ *
+ * Markup and error are produced together rather than by a computed that writes a ref: a
+ * computed with a side effect runs whenever something reads it, so the error message could
+ * be set, cleared and set again out of step with the markup it belongs to.
  */
-const rendered = computed(() => {
+const render = computed<{ html: string; error?: string }>(() => {
 	if (!source.value) {
-		renderError.value = undefined;
-		return "";
+		return { html: "" };
 	}
 
 	try {
-		const html = katex.renderToString(source.value, { displayMode: true, throwOnError: true });
-		renderError.value = undefined;
-		return html;
+		return { html: katex.renderToString(source.value, { displayMode: true, throwOnError: true }) };
 	} catch (error) {
-		renderError.value = error instanceof Error ? error.message : t("components.cardElement.formulaElement.invalid");
-		return katex.renderToString(source.value, { displayMode: true, throwOnError: false });
+		return {
+			html: katex.renderToString(source.value, { displayMode: true, throwOnError: false }),
+			error: error instanceof Error ? error.message : t("components.cardElement.formulaElement.invalid"),
+		};
 	}
 });
+
+const rendered = computed(() => render.value.html);
+const renderError = computed(() => render.value.error);
 
 const onLatexChange = (value: string) => {
 	modelValue.value.latex = value;

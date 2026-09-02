@@ -99,12 +99,15 @@ const canVote = computed(() => !content.value.closed);
 const totalVoters = computed(() => content.value.voterCount ?? 0);
 
 // Mirrors the server's ownVote so a click feels immediate; the server answer overwrites it.
-const selection = ref<string[]>([...props.content.ownVote]);
+// Seeded by the watcher rather than from props in root scope, so the mirror cannot start out
+// holding a stale copy of a prop that changed before the component finished setting up.
+const selection = ref<string[]>([]);
 watch(
 	() => props.content.ownVote,
 	(ownVote) => {
 		selection.value = [...ownVote];
-	}
+	},
+	{ immediate: true }
 );
 
 const resultsHiddenHint = computed(() =>

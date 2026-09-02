@@ -63,7 +63,12 @@
 						/>
 					</template>
 					<template v-else>
-						<pre class="code-block" :class="{ 'code-block--numbered': showLineNumbers }" data-testid="code-display"><code
+						<!-- eslint-disable vue/no-v-html -- highlight.js escapes its output, and escapeHtml covers the unhighlighted path. The markup cannot be split onto its own line: this is a <pre>, where any added newline shows up in the rendered code. -->
+						<pre
+							class="code-block"
+							:class="{ 'code-block--numbered': showLineNumbers }"
+							data-testid="code-display"
+						><code
 							v-for="line in renderedLines"
 							:key="line.number"
 							class="code-line"
@@ -73,6 +78,7 @@
 							aria-hidden="true"
 							data-testid="code-line-number"
 						>{{ line.number }}</span><span class="code-line-text" v-html="line.html" /></code></pre>
+						<!-- eslint-enable vue/no-v-html -->
 						<VBtn
 							size="x-small"
 							variant="text"
@@ -90,6 +96,7 @@
 </template>
 
 <script setup lang="ts">
+import "highlight.js/styles/github.css";
 import { askDeletionForType } from "@/utils/confirmation-dialog.utils";
 import { CodeElementResponse } from "@api-server";
 import { notifySuccess } from "@data-app";
@@ -98,7 +105,6 @@ import { mdiCodeTags, mdiContentCopy } from "@icons/material";
 import { BoardMenu, BoardMenuScope, ContentElementBar } from "@ui-board";
 import { KebabMenuActionDelete, KebabMenuActionMoveDown, KebabMenuActionMoveUp } from "@ui-kebab-menu";
 import hljs from "highlight.js/lib/common";
-import "highlight.js/styles/github.css";
 import { computed, ref, toRef } from "vue";
 import { useI18n } from "vue-i18n";
 
@@ -133,8 +139,7 @@ const showLineNumbers = computed(() => element.value.content.showLineNumbers);
  * highlighting off — or for a language it does not know — the code is escaped here instead and
  * rendered as plain text, which is also what keeps an unknown language harmless.
  */
-const escapeHtml = (value: string): string =>
-	value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+const escapeHtml = (value: string): string => value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
 const highlighted = computed(() => {
 	const code = element.value.content.code;
