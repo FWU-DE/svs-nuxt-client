@@ -13,6 +13,7 @@ const mockBoard: RoomBoardItem = {
 	createdAt: "2017-09-28T11:49:39.924Z",
 	updatedAt: "2017-09-28T11:49:39.924Z",
 	allowedOperations: {},
+	preview: { columns: [], columnCount: 0 },
 };
 
 describe("@feature-room/RoomBoardGridItem", () => {

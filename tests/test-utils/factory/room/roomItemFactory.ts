@@ -20,4 +20,5 @@ export const roomItemFactory = Factory.define<RoomItem>(({ sequence }) => ({
 	} as unknown as RoomItemResponseAllowedOperations,
 	isLocked: false,
 	totalMembers: 0,
+	boardCount: 0,
 }));

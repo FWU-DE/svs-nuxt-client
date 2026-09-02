@@ -23,6 +23,13 @@
 			>
 				<h2 class="text-break text-body-1 font-weight-bold ma-0">{{ board.title }}</h2>
 			</VCardTitle>
+			<BoardPreview
+				class="mx-4"
+				:class="{ 'opacity-80': isDraft }"
+				:preview="board.preview"
+				:layout="board.layout"
+				:data-testid="`board-grid-item-preview-${index}`"
+			/>
 		</RouterLink>
 
 		<KebabMenu v-if="hasAnyAllowedOperation" class="board-grid-item-menu" :data-testid="`board-dot-menu-${index}`">
@@ -54,6 +61,7 @@
 </template>
 
 <script setup lang="ts">
+import BoardPreview from "./BoardPreview.vue";
 import { BoardLayout } from "@/types/board/Board";
 import { RoomBoardItem } from "@/types/room/Room";
 import { RoomBoardItemResponse } from "@api-server";
