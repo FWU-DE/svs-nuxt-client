@@ -25,12 +25,13 @@ export const useQuickNavEntries = () => {
 	/** read the same way the sidebar reads it, so both agree on what the user may do */
 	const hasPermission = (permission: Permission) => useAppStore().userPermissions.includes(permission);
 
-	const toEntry = (item: SidebarSingleItem, parentTitle?: string): QuickNavEntry => ({
+	const toEntry = (item: SidebarSingleItem, parent?: SidebarGroupItem): QuickNavEntry => ({
 		id: `navigation:${item.testId}`,
 		kind: QuickNavKind.NAVIGATION,
 		title: t(item.title),
-		subtitle: parentTitle,
-		icon: item.icon ?? "",
+		subtitle: parent ? t(parent.title) : undefined,
+		// only the top level carries icons in the sidebar; without the fallback the rows would not line up
+		icon: item.icon ?? parent?.icon ?? "",
 		to: item.to,
 		href: item.href,
 	});
@@ -38,7 +39,7 @@ export const useQuickNavEntries = () => {
 	/** a group in the sidebar is one click away there, so in the palette its children stand alone */
 	const flatten = (item: SidebarSingleItem | SidebarGroupItem): QuickNavEntry[] => {
 		if (isSidebarCategoryItem(item)) {
-			return item.children.map((child) => toEntry(child, t(item.title)));
+			return item.children.map((child) => toEntry(child, item));
 		}
 
 		return [toEntry(item)];
