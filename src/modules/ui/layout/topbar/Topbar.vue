@@ -11,6 +11,9 @@
 			/>
 		</template>
 		<VSpacer />
+		<!-- the quick navigation lives in a feature module, so the layout fills this in -->
+		<slot name="search" />
+		<VSpacer />
 		<TopbarItem
 			v-if="showStatusAlertIcon"
 			class="mr-2"
