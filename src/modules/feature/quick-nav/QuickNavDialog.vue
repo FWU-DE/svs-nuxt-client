@@ -87,7 +87,7 @@
 </template>
 
 <script setup lang="ts">
-import { useQuickNav } from "./QuickNav.composable";
+import { matchRange, useQuickNav } from "./QuickNav.composable";
 import { QuickNavEntry } from "./types";
 import { useUid } from "@/utils/uid";
 import { mdiMagnify } from "@icons/material";
@@ -115,16 +115,17 @@ type TitlePart = { text: string; isMatch: boolean };
 
 /** Shows the user why a line matched, which is the difference between a list and an answer. */
 const highlight = (title: string): TitlePart[] => {
-	const needle = query.value.trim();
-	if (needle.length === 0) return [{ text: title, isMatch: false }];
+	const range = matchRange(title, query.value.trim());
+	if (!range) return [{ text: title, isMatch: false }];
 
-	const at = title.toLowerCase().indexOf(needle.toLowerCase());
-	if (at < 0) return [{ text: title, isMatch: false }];
+	// by characters, not by code units, because the range was measured that way
+	const characters = [...title];
+	const [start, end] = range;
 
 	return [
-		{ text: title.slice(0, at), isMatch: false },
-		{ text: title.slice(at, at + needle.length), isMatch: true },
-		{ text: title.slice(at + needle.length), isMatch: false },
+		{ text: characters.slice(0, start).join(""), isMatch: false },
+		{ text: characters.slice(start, end).join(""), isMatch: true },
+		{ text: characters.slice(end).join(""), isMatch: false },
 	].filter((part) => part.text.length > 0);
 };
 

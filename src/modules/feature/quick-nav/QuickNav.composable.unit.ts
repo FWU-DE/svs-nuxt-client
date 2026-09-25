@@ -1,4 +1,4 @@
-import { useQuickNav } from "./QuickNav.composable";
+import { matchRange, useQuickNav } from "./QuickNav.composable";
 import { QuickNavKind } from "./types";
 import de from "@/locales/de";
 import { initializeAxios } from "@/utils/api";
@@ -47,6 +47,29 @@ const setup = (permissions: Permission[] = []) => {
 
 const titlesOf = (groups: { entries: { title: string }[] }[]) =>
 	groups.flatMap((group) => group.entries.map((entry) => entry.title));
+
+describe("matchRange", () => {
+	it("finds the query where it literally stands", () => {
+		expect(matchRange("Ökosystem See", "See")).toEqual([10, 13]);
+	});
+
+	it("points at the umlaut the query was spelled without", () => {
+		// the range has to cover "Räum", not "aum", or the highlight sits one character off
+		expect(matchRange("Räume", "Raum")).toEqual([0, 4]);
+	});
+
+	it("counts in characters, so an umlaut before the match does not shift it", () => {
+		expect(matchRange("Öko See", "See")).toEqual([4, 7]);
+	});
+
+	it("gives nothing when the query is not in the title", () => {
+		expect(matchRange("Räume", "Chemie")).toBeUndefined();
+	});
+
+	it("gives nothing for an empty query", () => {
+		expect(matchRange("Räume", "")).toBeUndefined();
+	});
+});
 
 describe("QuickNav Composable", () => {
 	describe("when nothing has been typed", () => {
