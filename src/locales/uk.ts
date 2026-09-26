@@ -466,6 +466,8 @@ export default {
 	"components.board.action.moveRight": "Перемістіться праворуч",
 	"components.board.action.moveUp": "Рухатися вгору",
 	"components.board.action.changeLayout": "Змінити вигляд",
+	"components.board.presence.label": "Зараз на дошці: {names}",
+	"components.board.presence.more": "+{count}",
 	"components.board.action.fixColumns": "Зафіксувати стовпці",
 	"components.board.action.shareLink.card": "Скопіювати посилання на Карту",
 	"components.board.column.defaultTitle": "Столбець",

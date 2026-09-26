@@ -12,6 +12,7 @@ import { useBoardFeatures } from "./BoardFeatures.composable";
 import { useBoardFocusHandler } from "./BoardFocusHandler.composable";
 import { useBoardInactivity } from "./boardInactivity.composable";
 import { useSharedBoardPageInformation } from "./BoardPageInformation.composable";
+import { type BoardPresenceUser, useBoardPresenceStore } from "./BoardPresence.store";
 import { useCardStore } from "./Card.store";
 import { useCardDialogData } from "./card-dialog.composable";
 import * as cardActions from "./cardActions/cardActions";
@@ -26,11 +27,13 @@ export * from "./edit-mode.composable";
 
 export {
 	boardActions,
+	type BoardPresenceUser,
 	cardActions,
 	useBoardApi,
 	useBoardFeatures,
 	useBoardFocusHandler,
 	useBoardInactivity,
+	useBoardPresenceStore,
 	useBoardStore,
 	useCardDialogData,
 	useCardStore,

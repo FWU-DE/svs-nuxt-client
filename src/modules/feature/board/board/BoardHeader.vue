@@ -54,6 +54,7 @@
 					<KebabMenuActionChangeLayout @click="onChangeBoardLayout" />
 					<KebabMenuActionDelete :name="title" @click="onDeleteBoard" />
 				</BoardMenu>
+				<BoardPresenceAvatars v-if="presenceEnabled" :board-id="boardId" class="ml-4 align-self-center" />
 			</div>
 			<div v-if="isScrollModeToggleVisible" class="flex-1-0 mt-4 ml-8 scroll-mode-toggle">
 				<VSwitch
@@ -76,6 +77,7 @@ import BoardAnyTitleInput from "../shared/BoardAnyTitleInput.vue";
 import { useBoardScrollMode } from "../shared/BoardScrollMode.composable";
 import InlineEditInteractionHandler from "../shared/InlineEditInteractionHandler.vue";
 import BoardEditableChip from "./BoardEditableChip.vue";
+import BoardPresenceAvatars from "./BoardPresenceAvatars.vue";
 import KebabMenuActionEditingSettings from "./KebabMenuActionEditingSettings.vue";
 import KebabMenuActionReactions from "./KebabMenuActionReactions.vue";
 import { askDeletionForType } from "@/utils/confirmation-dialog.utils";
@@ -262,6 +264,8 @@ const calculateWidth = () => {
 };
 
 const isShareEnabled = computed(() => useEnvConfig().value.FEATURE_COLUMN_BOARD_SHARE);
+// Presence comes over the board socket; in REST mode there is no one to ask.
+const presenceEnabled = computed(() => useEnvConfig().value.FEATURE_COLUMN_BOARD_SOCKET_ENABLED);
 
 watchEffect(() => {
 	boardTitle.value = props.title;

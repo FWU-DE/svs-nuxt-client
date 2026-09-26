@@ -468,6 +468,8 @@ export default {
 	"components.board.action.moveRight": "Nach rechts verschieben",
 	"components.board.action.moveUp": "Nach oben verschieben",
 	"components.board.action.changeLayout": "Ansicht ändern",
+	"components.board.presence.label": "Gerade im Board: {names}",
+	"components.board.presence.more": "+{count}",
 	"components.board.action.fixColumns": "Spalten fixieren",
 	"components.board.action.shareLink.card": "Link zur Karte kopieren",
 	"components.board.column.defaultTitle": "Abschnitt",

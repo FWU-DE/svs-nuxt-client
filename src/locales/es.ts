@@ -464,6 +464,8 @@ export default {
 	"components.board.action.moveRight": "Mover a la derecha",
 	"components.board.action.moveUp": "Levantar",
 	"components.board.action.changeLayout": "Cambiar vista",
+	"components.board.presence.label": "Ahora en el tablero: {names}",
+	"components.board.presence.more": "+{count}",
 	"components.board.action.fixColumns": "Fijar columnas",
 	"components.board.action.shareLink.card": "Copiar enlace a la tarjeta",
 	"components.board.column.defaultTitle": "Columna",
