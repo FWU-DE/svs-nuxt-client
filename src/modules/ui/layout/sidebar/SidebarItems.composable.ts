@@ -230,6 +230,7 @@ export const useSidebarItems = () => {
 				{
 					title: "global.sidebar.item.teams",
 					href: "/administration/teams",
+					feature: "FEATURE_TEAMS_ENABLED",
 					permissions: [Permission.ADMIN_VIEW],
 					testId: "sidebar-management-teams",
 				},

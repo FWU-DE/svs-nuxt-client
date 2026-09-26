@@ -113,7 +113,6 @@ import {
 	mdiCheck,
 	mdiCheckAll,
 	mdiClose,
-	mdiCloudDownload,
 	mdiDeleteOutline,
 	mdiEmailOutline,
 	mdiPencilOutline,
@@ -291,12 +290,8 @@ const fab = computed(() => {
 			to: "/administration/students/new",
 			dataTestId: "fab_button_add_students",
 		},
-		{
-			label: t("pages.administration.students.fab.import"),
-			icon: mdiCloudDownload,
-			href: "/administration/students/import",
-			dataTestId: "fab_button_import_students",
-		},
+		// No CSV import: in the product it is a legacy view, and its server side (`/sync`)
+		// is not part of this installation yet.
 	];
 });
 

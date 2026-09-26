@@ -135,11 +135,11 @@ const isNew = computed(() => !taskId.value);
 
 const name = ref("");
 const courseId = ref<string | null>(typeof route.query.course === "string" ? route.query.course : null);
-const lessonId = ref<string | null>(null);
+const lessonId = ref<string | null>(typeof route.query.topic === "string" ? route.query.topic : null);
 const availableDate = ref(toLocalInput(new Date().toISOString()));
 const dueDate = ref<string | null>(null);
 const description = ref("");
-const isDraft = ref(false);
+const isDraft = ref(route.query.private === "true");
 const publicSubmissions = ref(false);
 const teamSubmissions = ref(false);
 const maxTeamMembers = ref<number | null>(null);

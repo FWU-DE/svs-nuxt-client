@@ -94,6 +94,13 @@ export const routes: Readonly<RouteRecordRaw>[] = [
 		beforeEnter: createPermissionGuard([Permission.STUDENT_CREATE]),
 	},
 	{
+		path: `/administration/students/:id(${REGEX_ID})/edit`,
+		component: () => import("@/pages/administration/UserEdit.page.vue"),
+		name: "administration-students-edit",
+		beforeEnter: createPermissionGuard([Permission.STUDENT_EDIT]),
+		props: { kind: "students" },
+	},
+	{
 		path: "/administration/teachers",
 		component: () => import("@/pages/administration/TeacherOverview.page.vue"),
 		name: "administration-teachers",
@@ -104,6 +111,40 @@ export const routes: Readonly<RouteRecordRaw>[] = [
 		component: () => import("@/pages/administration/TeacherCreate.page.vue"),
 		name: "administration-teachers-new",
 		beforeEnter: createPermissionGuard([Permission.TEACHER_CREATE]),
+	},
+	{
+		path: `/administration/teachers/:id(${REGEX_ID})/edit`,
+		component: () => import("@/pages/administration/UserEdit.page.vue"),
+		name: "administration-teachers-edit",
+		beforeEnter: createPermissionGuard([Permission.TEACHER_EDIT]),
+		props: { kind: "teachers" },
+	},
+	{
+		path: "/administration/classes/create",
+		component: () => import("@/pages/administration/ClassEdit.page.vue"),
+		name: "administration-classes-create",
+		beforeEnter: createPermissionGuard([Permission.CLASS_CREATE]),
+		props: { mode: "create" },
+	},
+	{
+		path: `/administration/classes/:id(${REGEX_ID})/edit`,
+		component: () => import("@/pages/administration/ClassEdit.page.vue"),
+		name: "administration-classes-edit",
+		beforeEnter: createPermissionGuard([Permission.CLASS_EDIT]),
+		props: { mode: "edit" },
+	},
+	{
+		path: `/administration/classes/:id(${REGEX_ID})/createSuccessor`,
+		component: () => import("@/pages/administration/ClassEdit.page.vue"),
+		name: "administration-classes-successor",
+		beforeEnter: createPermissionGuard([Permission.CLASS_CREATE]),
+		props: { mode: "upgrade" },
+	},
+	{
+		path: `/administration/classes/:id(${REGEX_ID})/manage`,
+		component: () => import("@/pages/administration/ClassManage.page.vue"),
+		name: "administration-classes-manage",
+		beforeEnter: createPermissionGuard([Permission.CLASS_EDIT]),
 	},
 	{
 		path: `/administration/rooms/manage`,
@@ -143,6 +184,57 @@ export const routes: Readonly<RouteRecordRaw>[] = [
 		props: (to: RouteLocationNormalized) => ({
 			groupId: to.params.groupId,
 		}),
+	},
+	{
+		path: "/courses/add",
+		component: () => import("@/pages/course-rooms/CourseEdit.page.vue"),
+		name: "course-add",
+		beforeEnter: createPermissionGuard([Permission.COURSE_CREATE]),
+	},
+	{
+		path: `/courses/:id(${REGEX_ID})/edit`,
+		component: () => import("@/pages/course-rooms/CourseEdit.page.vue"),
+		name: "course-edit",
+	},
+	{
+		// The legacy course page: its tabs live in the course room now.
+		path: `/courses/:id(${REGEX_ID})`,
+		redirect: (to) => ({
+			path: `/rooms/${String(to.params.id)}`,
+			query: { tab: typeof to.query.activeTab === "string" ? to.query.activeTab : "learn-content" },
+		}),
+	},
+	{
+		path: `/courses/:courseId(${REGEX_ID})/groups/add`,
+		component: () => import("@/pages/course-groups/CourseGroupEdit.page.vue"),
+		name: "course-group-add",
+		beforeEnter: createPermissionGuard([Permission.COURSEGROUP_CREATE]),
+	},
+	{
+		path: `/courses/:courseId(${REGEX_ID})/groups/:groupId(${REGEX_ID})/edit`,
+		component: () => import("@/pages/course-groups/CourseGroupEdit.page.vue"),
+		name: "course-group-edit",
+		beforeEnter: createPermissionGuard([Permission.COURSEGROUP_EDIT]),
+	},
+	{
+		path: `/courses/:courseId(${REGEX_ID})/groups/:groupId(${REGEX_ID})`,
+		component: () => import("@/pages/course-groups/CourseGroupDetail.page.vue"),
+		name: "course-group",
+	},
+	{
+		path: `/courses/:courseId(${REGEX_ID})/topics/add`,
+		component: () => import("@/pages/topics/TopicEdit.page.vue"),
+		name: "topic-add",
+	},
+	{
+		path: `/courses/:courseId(${REGEX_ID})/topics/:topicId(${REGEX_ID})/edit`,
+		component: () => import("@/pages/topics/TopicEdit.page.vue"),
+		name: "topic-edit",
+	},
+	{
+		path: `/courses/:courseId(${REGEX_ID})/topics/:topicId(${REGEX_ID})`,
+		component: () => import("@/pages/topics/TopicDetail.page.vue"),
+		name: "topic",
 	},
 	{
 		path: "/dashboard",
