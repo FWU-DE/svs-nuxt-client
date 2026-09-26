@@ -1,5 +1,5 @@
 <template>
-	<DefaultWireframe max-width="limited" main-with-bottom-padding>
+	<DefaultWireframe max-width="full" main-with-bottom-padding>
 		<template #header>
 			<h1 data-testid="release-notes-title">{{ t("pages.releaseNotes.title") }}</h1>
 		</template>
@@ -9,42 +9,34 @@
 				{{ t("pages.releaseNotes.empty") }}
 			</VAlert>
 
-			<VExpansionPanels v-else multiple data-testid="release-notes-list">
-				<VExpansionPanel v-for="(release, index) in releases" :key="release.id" :value="release.id">
-					<VExpansionPanelTitle>
-						<div class="d-flex align-center justify-space-between w-100 ga-4 flex-wrap">
-							<span class="text-h3">{{ release.name }}</span>
-							<span class="text-body-2 text-medium-emphasis">{{ formatReleaseDate(release.publishedAt) }}</span>
-						</div>
-					</VExpansionPanelTitle>
-					<VExpansionPanelText>
-						<RenderHTML
-							class="release-body"
-							:html="renderReleaseBody(release.body)"
-							:data-testid="`release-notes-body-${index}`"
-						/>
-						<VBtn
-							v-if="release.url"
-							class="mt-4"
-							variant="outlined"
-							:href="release.url"
-							target="_blank"
-							rel="noopener noreferrer"
-							data-testid="release-notes-source"
-						>
-							{{ t("pages.releaseNotes.openSource") }}
-						</VBtn>
-					</VExpansionPanelText>
-				</VExpansionPanel>
-			</VExpansionPanels>
+			<LegacyAccordion v-else :items="accordionItems" test-id="release-notes-list">
+				<template #default="{ item, index }">
+					<RenderHTML
+						class="release-body"
+						:html="renderReleaseBody(item.release.body)"
+						:data-testid="`release-notes-body-${index}`"
+					/>
+					<VBtn
+						v-if="item.release.url"
+						class="mt-4"
+						variant="outlined"
+						:href="item.release.url"
+						target="_blank"
+						rel="noopener noreferrer"
+						data-testid="release-notes-source"
+					>
+						{{ t("pages.releaseNotes.openSource") }}
+					</VBtn>
+				</template>
+			</LegacyAccordion>
 		</SvsLoading>
 	</DefaultWireframe>
 </template>
 
 <script setup lang="ts">
+import LegacyAccordion from "@/components/legacy/LegacyAccordion.vue";
 import { useSafeAxiosRunner } from "@/composables/async-tasks.composable";
 import { $axios } from "@/utils/api";
-import { formatUtc } from "@/utils/date-time.utils";
 import { buildPageTitle } from "@/utils/pageTitle";
 import { ReleaseApiFactory, ReleaseItemResponse } from "@api-server";
 import { RenderHTML } from "@feature-render-html";
@@ -54,7 +46,7 @@ import { useTitle } from "@vueuse/core";
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
 
-const { t } = useI18n();
+const { t, locale } = useI18n();
 const releaseApi = ReleaseApiFactory(undefined, "/v3", $axios);
 
 useTitle(buildPageTitle(t("pages.releaseNotes.title")));
@@ -69,7 +61,23 @@ const releases = computed(() =>
 	)
 );
 
-const formatReleaseDate = (publishedAt: string) => formatUtc(publishedAt, "date") ?? publishedAt;
+// Legacy shows `moment(publishedAt).format("ddd, ll")`, e.g. "Sa., 1. Aug. 2026".
+const formatReleaseDate = (publishedAt: string) => {
+	const date = new Date(publishedAt);
+	if (Number.isNaN(date.getTime())) return publishedAt;
+	const weekday = new Intl.DateTimeFormat(locale.value, { weekday: "short" }).format(date);
+	const day = new Intl.DateTimeFormat(locale.value, { day: "numeric", month: "short", year: "numeric" }).format(date);
+	return `${weekday}, ${day}`;
+};
+
+const accordionItems = computed(() =>
+	releases.value.map((release) => ({
+		key: release.id,
+		title: release.name,
+		aside: formatReleaseDate(release.publishedAt),
+		release,
+	}))
+);
 
 const escapeHtml = (value: string) =>
 	value

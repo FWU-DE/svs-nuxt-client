@@ -1,5 +1,5 @@
 <template>
-	<DefaultWireframe max-width="limited" main-with-bottom-padding>
+	<DefaultWireframe max-width="full" main-with-bottom-padding :breadcrumbs="breadcrumbs">
 		<template #header>
 			<h1 data-testid="help-documents-title">{{ t("pages.helpDocuments.title") }}</h1>
 		</template>
@@ -9,19 +9,17 @@
 				{{ t("pages.helpDocuments.empty") }}
 			</VAlert>
 
-			<VExpansionPanels v-else multiple data-testid="help-documents-list">
-				<VExpansionPanel v-for="section in sections" :key="section.title" :value="section.title">
-					<VExpansionPanelTitle>{{ section.title }}</VExpansionPanelTitle>
-					<VExpansionPanelText>
-						<RenderHTML :html="section.content" data-testid="help-documents-content" />
-					</VExpansionPanelText>
-				</VExpansionPanel>
-			</VExpansionPanels>
+			<LegacyAccordion v-else :items="accordionItems" test-id="help-documents-list">
+				<template #default="{ item }">
+					<RenderHTML :html="item.content" data-testid="help-documents-content" />
+				</template>
+			</LegacyAccordion>
 		</SvsLoading>
 	</DefaultWireframe>
 </template>
 
 <script setup lang="ts">
+import LegacyAccordion from "@/components/legacy/LegacyAccordion.vue";
 import { useSafeAxiosRunner } from "@/composables/async-tasks.composable";
 import { $axios } from "@/utils/api";
 import { buildPageTitle } from "@/utils/pageTitle";
@@ -55,4 +53,14 @@ const { data, loadingState } = useSafeAxiosRunner(async () => {
 });
 
 const sections = computed(() => data.value ?? []);
+const accordionItems = computed(() =>
+	sections.value.map((section, index) => ({
+		key: `${index}-${section.title}`,
+		title: section.title,
+		content: section.content,
+	}))
+);
+
+// Legacy puts the help area as breadcrumb above this page.
+const breadcrumbs = computed(() => [{ title: t("pages.helpArticles.title"), href: "/help/articles" }]);
 </script>
