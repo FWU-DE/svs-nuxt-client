@@ -57,7 +57,12 @@ const userHasPermission = (item: SidebarSingleItem | SidebarGroupItem) =>
 const hasFeatureEnabled = (item: SidebarSingleItem | SidebarGroupItem) => {
 	if (!item.feature) return true;
 
-	return useEnvConfig().value[item.feature] === (item.featureValue ?? true);
+	const value = useEnvConfig().value[item.feature];
+	// An item tied to a configured value (a URL, an address) needs that value:
+	// an unset string would otherwise match its own empty copy and show a dead entry.
+	if (typeof item.featureValue === "string" && !value) return false;
+
+	return value === (item.featureValue ?? true);
 };
 
 const isEnabledForTheme = (item: SidebarSingleItem | SidebarGroupItem) => {

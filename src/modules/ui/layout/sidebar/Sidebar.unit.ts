@@ -21,10 +21,12 @@ const setup = (
 		permissions,
 		sidebarExpanded,
 		isTeamsEnabled,
+		licenseSummaryUrl,
 	}: {
 		permissions?: Permission[];
 		sidebarExpanded?: boolean;
 		isTeamsEnabled?: boolean;
+		licenseSummaryUrl?: string;
 	} = { permissions: [], sidebarExpanded: true, isTeamsEnabled: false }
 ) => {
 	setActivePinia(createTestingPinia());
@@ -33,6 +35,7 @@ const setup = (
 		SC_THEME: SchulcloudTheme.BRB,
 		FEATURE_TEAMS_ENABLED: isTeamsEnabled,
 		DOCUMENT_BASE_DIR: "https://example.com/documents/",
+		LICENSE_SUMMARY_URL: licenseSummaryUrl ?? "",
 	});
 
 	mockedUseSidebarSelection.mockReturnValue({ isActive: ref(false) });
@@ -86,6 +89,24 @@ describe("@ui-layout/Sidebar", () => {
 	});
 
 	// when sidebar is expanded should show
+
+	describe("when an item needs a configured value", () => {
+		it("hides the licenses entry without a license summary URL", () => {
+			const { wrapper } = setup({ permissions: [], licenseSummaryUrl: "" });
+
+			expect(wrapper.find("[data-testid='sidebar-licenses']").exists()).toBe(false);
+		});
+
+		it("shows the licenses entry with a license summary URL", async () => {
+			const { wrapper } = setup({ permissions: [], licenseSummaryUrl: "https://example.com/licenses.json" });
+			await wrapper
+				.find("[data-testid='sidebar-system']")
+				.trigger("click")
+				.catch(() => undefined);
+
+			expect(wrapper.html()).toContain("global.sidebar.item.licenses");
+		});
+	});
 
 	describe("when user does not have needed permission", () => {
 		it("should filter items correctly", () => {
