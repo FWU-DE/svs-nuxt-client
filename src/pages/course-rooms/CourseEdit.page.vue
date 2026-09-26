@@ -289,7 +289,7 @@
 import { serverMessage } from "@/components/homework/serverMessage";
 import { useSafeAxiosRunner } from "@/composables/async-tasks.composable";
 import { LegacyCourseDetails, LegacyCourseInput, useLegacyCourseApi } from "@/composables/legacy-course.api";
-import { personName, useLegacySchoolPeopleApi } from "@/composables/legacy-school-people.api";
+import { personName, SchoolPerson, useLegacySchoolPeopleApi } from "@/composables/legacy-school-people.api";
 import { $axios } from "@/utils/api";
 import { buildPageTitle } from "@/utils/pageTitle";
 import { notifyError, notifySuccess, useAppStore, useSchoolStore } from "@data-app";
@@ -346,7 +346,7 @@ const untilDate = ref("");
 const times = ref<TimeRow[]>([]);
 const isArchived = ref(false);
 const isSynced = ref(false);
-const scopePermissions = ref<string[]>([]);
+const mayDelete = ref(false);
 const saving = ref(false);
 const confirmDelete = ref(false);
 const form = ref<{ validate: () => Promise<{ valid: boolean }> }>();
@@ -357,7 +357,7 @@ const teacherOptions = ref<{ id: string; title: string }[]>([]);
 const studentOptions = ref<{ id: string; title: string }[]>([]);
 const classOptions = ref<{ id: string; title: string }[]>([]);
 const colorOptions = computed(() => (COLORS.includes(color.value) ? COLORS : [color.value, ...COLORS]));
-const canDelete = computed(() => !isNew.value && scopePermissions.value.includes("COURSE_DELETE"));
+const canDelete = computed(() => !isNew.value && mayDelete.value);
 const today = dayjs().format("YYYY-MM-DD");
 
 const weekdays = computed(() =>
@@ -423,8 +423,24 @@ const { loadingState } = useSafeAxiosRunner(async () => {
 		const course = await api.getCourse(courseId.value);
 		fill(course);
 		const me = appStore.user?.id ?? "";
-		const { data } = await $axios.get<Record<string, string[]>>(`/v3/courses/${courseId.value}/user-permissions`);
-		scopePermissions.value = data[me] ?? [];
+		// COURSE_DELETE of the course scope: the course's teachers and the school's administrators.
+		mayDelete.value = course.teacherIds.includes(me) || appStore.isAdmin;
+		// Members who are no students of the school (e.g. an administrator) keep their place, with their name.
+		const unknown = [...teacherIds.value, ...substitutionIds.value, ...userIds.value].filter(
+			(id) => !teacherOptions.value.some((o) => o.id === id) && !studentOptions.value.some((o) => o.id === id)
+		);
+		if (unknown.length) {
+			const populated = await api.getCourseWithPeople(courseId.value, ["userIds", "teacherIds"]);
+			const known = [
+				...((populated.userIds as SchoolPerson[]) ?? []),
+				...((populated.teacherIds as SchoolPerson[]) ?? []),
+			];
+			for (const person of known.filter((p) => unknown.includes(p._id))) {
+				const option = { id: person._id, title: personName(person) };
+				if (userIds.value.includes(person._id)) studentOptions.value.push(option);
+				else teacherOptions.value.push(option);
+			}
+		}
 	} else {
 		// As the legacy form: the creating teacher teaches the course, for the current (or next) school year.
 		if (appStore.isTeacher && appStore.user?.id) teacherIds.value = [appStore.user.id];
