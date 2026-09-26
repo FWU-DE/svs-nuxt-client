@@ -8,6 +8,7 @@ const h5pId = "[a-z0-9]+";
 const vueRoutes = [
 	`^/favicon.png$`,
 	`^/calendar/?$`,
+	`^/nostr-search/?$`,
 	`^/collabora/doc.docx$`,
 	`^/collabora/presentation.pptx$`,
 	`^/collabora/spreadsheet.xlsx$`,

@@ -531,6 +531,11 @@ export const routes: Readonly<RouteRecordRaw>[] = [
 		beforeEnter: createPermissionGuard([Permission.NEWS_EDIT]),
 	},
 	{
+		path: "/nostr-search",
+		component: () => import("@/pages/NostrSearch.page.vue"),
+		name: "nostr-search",
+	},
+	{
 		path: "/registration-external-members",
 		component: () => import("@/pages/registration-external-members/RegistrationExternalMembers.page.vue"),
 		name: "registration-external-members",

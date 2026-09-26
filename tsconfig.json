@@ -44,6 +44,7 @@
 			"@data-users": ["./src/modules/data/users"],
 			"@data-notification": ["./src/modules/data/notification"],
 			"@feature-auto-logout": ["./src/modules/feature/auto-logout"],
+			"@feature-nostr-search": ["./src/modules/feature/nostr-search"],
 			"@feature-board-file-element": ["./src/modules/feature/board-file-element"],
 			"@feature-board-text-element": ["./src/modules/feature/board-text-element"],
 			"@feature-board-link-element": ["./src/modules/feature/board-link-element"],

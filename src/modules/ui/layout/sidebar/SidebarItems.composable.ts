@@ -12,6 +12,7 @@ import {
 	mdiFolderOpenOutline,
 	mdiFormatListChecks,
 	mdiHelpCircleOutline,
+	mdiMagnify,
 	mdiNewspaperVariantOutline,
 	mdiSchoolOutline,
 	mdiViewGridOutline,
@@ -95,6 +96,12 @@ export const useSidebarItems = () => {
 			to: "/calendar",
 			icon: mdiCalendarOutline,
 			testId: "sidebar-calendar",
+		},
+		{
+			title: "global.sidebar.item.nostrSearch",
+			to: "/nostr-search",
+			icon: mdiMagnify,
+			testId: "sidebar-nostr-search",
 		},
 		{
 			title: "feature.media-shelf.title",
