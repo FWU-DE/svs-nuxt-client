@@ -6,6 +6,12 @@ import { shallowMount } from "@vue/test-utils";
 import { nextTick } from "vue";
 import type { ComponentProps } from "vue-component-type-helpers";
 
+const { push } = vi.hoisted(() => ({ push: vi.fn() }));
+vi.mock("vue-router", async (importOriginal) => ({
+	...(await importOriginal<typeof import("vue-router")>()),
+	useRouter: () => ({ push }),
+}));
+
 describe("StartNewCourseSyncDialog", () => {
 	const getWrapper = (props: ComponentProps<typeof StartNewCourseSyncDialog> = { isOpen: true }) => {
 		const wrapper = shallowMount(StartNewCourseSyncDialog, {
@@ -67,7 +73,7 @@ describe("StartNewCourseSyncDialog", () => {
 			wrapper.getComponent(GroupSelectionDialog).vm.$emit("confirm", group);
 			await nextTick();
 
-			expect(window.location.assign).toHaveBeenCalledWith(`/courses/add?syncedGroupId=${group.id}`);
+			expect(push).toHaveBeenCalledWith(`/courses/add?syncedGroupId=${group.id}`);
 		});
 	});
 

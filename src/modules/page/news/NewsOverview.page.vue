@@ -19,7 +19,7 @@
 						color="primary"
 						variant="flat"
 						:prepend-icon="mdiPlus"
-						href="/news/new"
+						to="/news/new"
 						data-testid="news-create-button"
 					>
 						{{ t("pages.news.overview.add") }}

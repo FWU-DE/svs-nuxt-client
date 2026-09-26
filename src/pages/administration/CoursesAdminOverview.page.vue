@@ -152,7 +152,7 @@
 			color="primary"
 			variant="flat"
 			data-testid="admin-courses-add-button"
-			href="/courses/add?redirectUrl=/administration/rooms/new"
+			to="/courses/add?redirectUrl=/administration/rooms/new"
 		>
 			{{ t("pages.administration.courses.index.add") }}
 		</v-btn>

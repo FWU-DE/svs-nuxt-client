@@ -8,6 +8,12 @@ import { createPinia, setActivePinia } from "pinia";
 import { beforeAll } from "vitest";
 import { VCard } from "vuetify/lib/components/index";
 
+const { push } = vi.hoisted(() => ({ push: vi.fn() }));
+vi.mock("vue-router", async (importOriginal) => ({
+	...(await importOriginal<typeof import("vue-router")>()),
+	useRouter: () => ({ push }),
+}));
+
 const baseTestLesson = {
 	id: "123",
 	name: "Test Name",
@@ -95,7 +101,7 @@ describe("@/components/molecules/RoomLessonCard", () => {
 			const lessonCard = wrapper.findComponent(VCard);
 			await lessonCard.trigger("click");
 
-			expect(window.location.href).toStrictEqual("/courses/456/topics/123");
+			expect(push).toHaveBeenCalledWith("/courses/456/topics/123");
 		});
 
 		it("should NOT redirect to lesson page if dragging is in progress", async () => {
@@ -186,7 +192,7 @@ describe("@/components/molecules/RoomLessonCard", () => {
 				const moreActionButton = wrapper.findComponent(`[data-testid="lesson-card-menu-action-edit-0"]`);
 				await moreActionButton.trigger("click");
 
-				expect(window.location.href).toEqual(url);
+				expect(push).toHaveBeenCalledWith(url);
 			});
 
 			it("should trigger the 'publishLesson' method when 'publish' button is clicked", async () => {
@@ -389,7 +395,7 @@ describe("@/components/molecules/RoomLessonCard", () => {
 
 			await wrapper.trigger("keydown.enter");
 
-			expect(window.location.href).toStrictEqual("/courses/456/topics/123");
+			expect(push).toHaveBeenCalledWith("/courses/456/topics/123");
 		});
 
 		describe("when keydrag is true", () => {

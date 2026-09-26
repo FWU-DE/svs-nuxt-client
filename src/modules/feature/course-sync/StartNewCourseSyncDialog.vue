@@ -11,14 +11,17 @@
 import GroupSelectionDialog from "./GroupSelectionDialog.vue";
 import { GroupResponse } from "@api-server";
 import { ModelRef } from "vue";
+import { useRouter } from "vue-router";
 
 const isOpen: ModelRef<boolean> = defineModel("isOpen", {
 	type: Boolean,
 	required: true,
 });
 
+const router = useRouter();
+
 const onConfirm = async (selectedGroup: GroupResponse) => {
-	window.location.assign(`/courses/add?syncedGroupId=${selectedGroup.id}`);
+	await router.push(`/courses/add?syncedGroupId=${selectedGroup.id}`);
 };
 
 const closeDialog = () => {

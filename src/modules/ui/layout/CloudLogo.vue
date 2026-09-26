@@ -1,7 +1,7 @@
 <template>
-	<a href="/dashboard">
+	<RouterLink to="/dashboard">
 		<img :src="logo" :alt="altText" />
-	</a>
+	</RouterLink>
 </template>
 
 <script setup lang="ts">

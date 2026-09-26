@@ -26,6 +26,7 @@ import { useEnvConfig } from "@data-env";
 import { SvsDialog } from "@ui-dialog";
 import { computed, watch } from "vue";
 import { useI18n } from "vue-i18n";
+import { useRouter } from "vue-router";
 
 const envConfig = useEnvConfig();
 const { updateUserPreferences } = useAppStore();
@@ -53,9 +54,11 @@ const setReleasePreferences = async () => {
 	await updateUserPreferences({ releaseDate: latestRelease.value!.publishedAt });
 };
 
+const router = useRouter();
+
 const toReleasesRoute = async () => {
 	await setReleasePreferences();
-	window.location.href = "/system/releases";
+	await router.push("/system/releases");
 };
 
 watch(

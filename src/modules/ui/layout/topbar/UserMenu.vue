@@ -20,7 +20,7 @@
 				Onboarding-Assistent
 			</VListItem>
 			<LanguageMenu />
-			<VListItem href="/account" data-testid="account-link">
+			<VListItem to="/account" data-testid="account-link">
 				{{ $t("global.topbar.settings") }}
 			</VListItem>
 			<VListItem

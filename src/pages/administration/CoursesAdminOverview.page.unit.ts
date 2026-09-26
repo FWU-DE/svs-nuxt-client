@@ -16,6 +16,7 @@ import { setActivePinia } from "pinia";
 import { Mocked } from "vitest";
 import { nextTick, ref } from "vue";
 import { createRouterMock, injectRouterMock } from "vue-router-mock";
+import { VBtn } from "vuetify/components";
 import { VDataTableServer } from "vuetify/components";
 
 vi.mock("@data-room", () => ({
@@ -731,10 +732,12 @@ describe("CoursesAdminOverviewPage", () => {
 
 	describe("addCourse", () => {
 		describe("when clicking on add course buttton", () => {
-			it("should redirect to legacy create course page", () => {
+			it("should link to the course creation page", () => {
 				const { wrapper } = createWrapper();
-				const addClassBtn = wrapper.find('[data-testid="admin-courses-add-button"]');
-				expect(addClassBtn.attributes().href).toStrictEqual("/courses/add?redirectUrl=/administration/rooms/new");
+				const addClassBtn = wrapper
+					.findAllComponents(VBtn)
+					.find((btn) => btn.attributes("data-testid") === "admin-courses-add-button");
+				expect(addClassBtn?.props("to")).toStrictEqual("/courses/add?redirectUrl=/administration/rooms/new");
 			});
 		});
 	});

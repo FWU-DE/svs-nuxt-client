@@ -73,6 +73,7 @@ import {
 } from "@icons/material";
 import { computed, PropType, toRef } from "vue";
 import { useI18n } from "vue-i18n";
+import { useRouter } from "vue-router";
 
 const props = defineProps({
 	lesson: {
@@ -212,14 +213,21 @@ const taskChipValue = computed(() => {
 	return chipStr;
 });
 
+const router = useRouter();
+
 const handleClick = () => {
 	if (!props.dragInProgress) {
-		window.location.href = `/courses/${props.room.roomId}/topics/${props.lesson.id}`;
+		router.push(`/courses/${props.room.roomId}/topics/${props.lesson.id}`);
 	}
 };
 
+// Internal pages are Vue routes now; a full page load would throw away the app state.
 const redirectAction = (value: string) => {
-	window.location.href = value;
+	if (value.startsWith("/")) {
+		router.push(value);
+	} else {
+		window.location.href = value;
+	}
 };
 
 const publishLesson = () => {

@@ -63,36 +63,36 @@ export const useSidebarItems = () => {
 			children: [
 				{
 					title: "global.sidebar.item.filesPersonal",
-					href: "/files/my/",
+					to: "/files/my",
 					testId: "sidebar-files-personalfiles",
 				},
 				{
 					title: "global.sidebar.item.courses",
-					href: "/files/courses/",
+					to: "/files/courses",
 					testId: "sidebar-files-coursefiles",
 				},
 				{
 					title: "global.sidebar.item.teams",
-					href: "/files/teams/",
+					to: "/files/teams",
 					feature: "FEATURE_TEAMS_ENABLED",
 					testId: "sidebar-files-teamfiles",
 				},
 				{
 					title: "global.sidebar.item.filesShared",
-					href: "/files/shared/",
+					to: "/files/shared",
 					testId: "sidebar-files-sharedfiles",
 				},
 			],
 		},
 		{
 			title: "pages.news.title",
-			href: "/news",
+			to: "/news",
 			icon: mdiNewspaperVariantOutline,
 			testId: "sidebar-news",
 		},
 		{
 			title: "global.sidebar.item.calendar",
-			href: "/calendar",
+			to: "/calendar",
 			icon: mdiCalendarOutline,
 			testId: "sidebar-calendar",
 		},
@@ -169,8 +169,7 @@ export const useSidebarItems = () => {
 		},
 		{
 			title: "global.sidebar.item.releaseNotes",
-			href: "/system/releases",
-			target: "_self",
+			to: "/system/releases",
 			testId: "sidebar-system-releases",
 		},
 		{
@@ -249,14 +248,12 @@ export const useSidebarItems = () => {
 			children: [
 				{
 					title: "global.sidebar.item.helpSection",
-					href: "/help",
-					target: "_self",
+					to: "/help",
 					testId: "sidebar-helpsection-helparticles",
 				},
 				{
 					title: "global.sidebar.item.contactSupport",
-					href: "/help/contact",
-					target: "_self",
+					to: "/help/contact",
 					testId: "sidebar-helpsection-contact",
 				},
 				{

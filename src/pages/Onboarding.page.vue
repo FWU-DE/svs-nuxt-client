@@ -114,9 +114,7 @@
 			<!-- Schritt 3: Empfohlene Funktionen -->
 			<section v-else-if="step === 2" data-testid="step-suggestions">
 				<h2 class="text-h5 mb-1">Ihre empfohlenen Funktionen</h2>
-				<p class="text-medium-emphasis mb-5">
-					Auf Basis Ihrer Angaben passend sortiert – die wichtigsten zuerst.
-				</p>
+				<p class="text-medium-emphasis mb-5">Auf Basis Ihrer Angaben passend sortiert – die wichtigsten zuerst.</p>
 				<VCard
 					v-for="(feature, idx) in topSuggestions"
 					:key="feature.id"
@@ -214,7 +212,7 @@
 				>
 					{{ step === 1 ? "Empfehlungen anzeigen" : "Weiter" }}
 				</VBtn>
-				<VBtn v-else color="primary" :prepend-icon="mdiCheck" href="/dashboard" data-testid="finish-btn">
+				<VBtn v-else color="primary" :prepend-icon="mdiCheck" to="/dashboard" data-testid="finish-btn">
 					Fertig – zum Dashboard
 				</VBtn>
 			</div>
