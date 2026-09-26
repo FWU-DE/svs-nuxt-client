@@ -1241,6 +1241,7 @@ export default {
 	"pages.accountSettings.passwordMismatch": "The new passwords do not match.",
 	"pages.accountSettings.saved": "Account settings saved.",
 	"pages.accountSettings.saveError": "Account settings could not be saved.",
+	"pages.accountSettings.label.email": "E-mail address:",
 	"pages.accountSettings.label.firstName": "First name:",
 	"pages.accountSettings.label.lastName": "Last name:",
 	"pages.accountSettings.label.currentPassword": "Current password:",

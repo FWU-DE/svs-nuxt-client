@@ -1265,6 +1265,7 @@ export default {
 	"pages.accountSettings.passwordMismatch": "Las nuevas contraseñas no coinciden.",
 	"pages.accountSettings.saved": "Configuración de la cuenta guardada.",
 	"pages.accountSettings.saveError": "No se pudo guardar la configuración de la cuenta.",
+	"pages.accountSettings.label.email": "Dirección de correo electrónico:",
 	"pages.accountSettings.label.firstName": "Nombre:",
 	"pages.accountSettings.label.lastName": "Apellidos:",
 	"pages.accountSettings.label.currentPassword": "Contraseña actual:",

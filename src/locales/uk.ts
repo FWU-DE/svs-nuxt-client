@@ -1258,6 +1258,7 @@ export default {
 	"pages.accountSettings.passwordMismatch": "Нові паролі не збігаються.",
 	"pages.accountSettings.saved": "Налаштування облікового запису збережено.",
 	"pages.accountSettings.saveError": "Не вдалося зберегти налаштування облікового запису.",
+	"pages.accountSettings.label.email": "Адреса електронної пошти:",
 	"pages.accountSettings.label.firstName": "Ім'я:",
 	"pages.accountSettings.label.lastName": "Прізвище:",
 	"pages.accountSettings.label.currentPassword": "Поточний пароль:",

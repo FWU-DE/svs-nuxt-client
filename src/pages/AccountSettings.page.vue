@@ -35,6 +35,20 @@
 				:readonly="isSsoAccount"
 				data-testid="account-last-name"
 			/>
+			<label for="account-email" class="d-block font-weight-bold mb-2">
+				{{ t("pages.accountSettings.label.email") }}
+			</label>
+			<VTextField
+				id="account-email"
+				v-model="form.email"
+				type="email"
+				variant="outlined"
+				density="comfortable"
+				hide-details
+				class="mb-5"
+				:disabled="isSsoAccount"
+				data-testid="account-email"
+			/>
 
 			<template v-if="!isSsoAccount">
 				<label for="account-current-password" class="d-block font-weight-bold mb-2">
@@ -132,6 +146,7 @@ useTitle(buildPageTitle(t("pages.accountSettings.title")));
 const form = reactive({
 	firstName: "",
 	lastName: "",
+	email: "",
 	passwordOld: "",
 	passwordNew: "",
 });
@@ -141,11 +156,17 @@ const isSaving = ref(false);
 
 const isSsoAccount = computed(() => Boolean(systemId.value));
 const hasPasswordChange = computed(() => form.passwordNew.length > 0 || passwordConfirmation.value.length > 0);
+// The e-mail is not part of /me; the product's account page reads it from the
+// user record of the old API, as this page does.
+const currentEmail = ref("");
+const hasEmailChange = computed(() => form.email.trim() !== currentEmail.value);
 const hasProfileChange = computed(
 	() => form.firstName !== (user.value?.firstName ?? "") || form.lastName !== (user.value?.lastName ?? "")
 );
 const passwordsMatch = computed(() => form.passwordNew === passwordConfirmation.value);
-const canSubmit = computed(() => (hasProfileChange.value || hasPasswordChange.value) && passwordsMatch.value);
+const canSubmit = computed(
+	() => (hasProfileChange.value || hasPasswordChange.value || hasEmailChange.value) && passwordsMatch.value
+);
 
 watch(
 	user,
@@ -153,6 +174,23 @@ watch(
 		form.firstName = value?.firstName ?? "";
 		form.lastName = value?.lastName ?? "";
 	},
+	{ immediate: true }
+);
+
+const loadEmail = async (userId: string | undefined) => {
+	if (!userId) return;
+	try {
+		const { data } = await $axios.get<{ email?: string }>(`/v1/users/${userId}`);
+		currentEmail.value = data.email ?? "";
+		form.email = currentEmail.value;
+	} catch {
+		// Without the address the field stays empty and is not sent.
+	}
+};
+
+watch(
+	() => user.value?.id,
+	(id) => loadEmail(id),
 	{ immediate: true }
 );
 
@@ -168,6 +206,7 @@ const saveAccount = async () => {
 		firstName: form.firstName,
 		lastName: form.lastName,
 		passwordNew: form.passwordNew || undefined,
+		email: hasEmailChange.value ? form.email.trim() : undefined,
 	};
 
 	isSaving.value = true;
@@ -185,6 +224,7 @@ const saveAccount = async () => {
 					}
 				: undefined,
 		});
+		currentEmail.value = form.email.trim();
 		form.passwordOld = "";
 		form.passwordNew = "";
 		passwordConfirmation.value = "";
