@@ -104,6 +104,9 @@ const demoAccounts = [
 	{ role: "Lehrkraft", username: "lehrer@schul-cloud.org" },
 	{ role: "Schüler:in", username: "schueler@schul-cloud.org" },
 	{ role: "Admin", username: "admin@schul-cloud.org" },
+	// Two more people who edit in the demo rooms, to show the board presence.
+	{ role: "Vertretungslehrkraft", username: "vertretungslehrer@schul-cloud.org" },
+	{ role: "Schüler:in 2", username: "waldemar.wunderlich@schul-cloud.org" },
 ];
 
 const fillDemo = (user: string) => {
