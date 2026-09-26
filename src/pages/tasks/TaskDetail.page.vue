@@ -120,10 +120,25 @@ const taskId = computed(() => String(route.params.id ?? ""));
 const tasksApi = TaskApiFactory(undefined, "/v3", $axios);
 const submissionApi = SubmissionApiFactory(undefined, "/v3", $axios);
 
-const { data: task, loadingState } = useSafeAxiosRunner(async () => {
-	const response = await tasksApi.taskControllerFindAll(0, 1000);
-	return response.data.data.find((item) => item.id === taskId.value);
-});
+// The server has no route for a single task and caps `limit` at 100, so page
+// through the open tasks and then the finished ones until the task turns up.
+const TASK_PAGE_SIZE = 100;
+
+type TaskPage = (skip: number, limit: number) => ReturnType<typeof tasksApi.taskControllerFindAll>;
+
+const findTaskIn = async (fetchPage: TaskPage, id: string) => {
+	for (let skip = 0; ; skip += TASK_PAGE_SIZE) {
+		const { data } = await fetchPage(skip, TASK_PAGE_SIZE);
+		const match = data.data.find((item) => item.id === id);
+		if (match || skip + TASK_PAGE_SIZE >= data.total) return match;
+	}
+};
+
+const { data: task, loadingState } = useSafeAxiosRunner(
+	async () =>
+		(await findTaskIn((skip, limit) => tasksApi.taskControllerFindAll(skip, limit), taskId.value)) ??
+		(await findTaskIn((skip, limit) => tasksApi.taskControllerFindAllFinished(skip, limit), taskId.value))
+);
 
 const { data: submissionStatusData, loadingState: submissionLoadingState } = useSafeAxiosRunner(async () => {
 	if (!taskId.value) return [];
