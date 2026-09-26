@@ -1,77 +1,225 @@
 <template>
-	<DefaultWireframe max-width="limited" main-with-bottom-padding>
+	<DefaultWireframe max-width="full" main-with-bottom-padding>
 		<template #header>
 			<h1 data-testid="help-contact-title">{{ t("pages.helpContact.title") }}</h1>
 		</template>
 
-		<VCard variant="outlined">
-			<VCardText>
-				<VBtnToggle v-model="type" mandatory class="mb-6" data-testid="help-contact-type">
-					<VBtn value="problem">{{ t("pages.helpContact.problem") }}</VBtn>
-					<VBtn value="wish">{{ t("pages.helpContact.wish") }}</VBtn>
+		<LegacyIconCard :title="t('pages.helpContact.formTitle')" :icon="mdiPencil" test-id="help-contact-card">
+			<fieldset class="feedback-kind text-center mb-6">
+				<legend class="mb-2">{{ t("pages.helpContact.feedbackKind") }}</legend>
+				<VBtnToggle
+					v-model="type"
+					mandatory
+					color="primary"
+					variant="outlined"
+					divided
+					class="kind-toggle"
+					data-testid="help-contact-type"
+				>
+					<VBtn value="problem" class="flex-grow-1">{{ t("pages.helpContact.problem") }}</VBtn>
+					<VBtn value="wish" class="flex-grow-1">{{ t("pages.helpContact.wish") }}</VBtn>
 				</VBtnToggle>
+			</fieldset>
 
-				<VForm data-testid="help-contact-form" @submit.prevent="submit">
+			<VForm data-testid="help-contact-form" @submit.prevent="submit">
+				<h3 class="section-title">{{ t("pages.helpContact.topicTitle") }}</h3>
+				<p class="text-center mb-4">{{ t("pages.helpContact.whichArea", { themeTitle }) }}</p>
+				<div class="topic-select mx-auto mb-6">
+					<div class="d-flex justify-space-between mb-1">
+						<span class="font-weight-bold">
+							<VIcon :icon="mdiInformation" size="small" color="info" />{{ t("pages.helpContact.severalTopics") }}
+						</span>
+						<span class="required-label">{{ t("pages.helpContact.required") }}</span>
+					</div>
 					<VSelect
 						v-model="problemArea"
 						:items="problemAreas"
-						:label="t('pages.helpContact.problemArea')"
+						:placeholder="t('pages.helpContact.problemArea')"
 						multiple
-						required
+						chips
+						variant="outlined"
+						density="compact"
+						hide-details="auto"
+						:rules="[(v: string[]) => v.length > 0 || t('pages.helpContact.noProblemArea')]"
 						data-testid="help-contact-problem-area"
 					/>
-					<VTextField
-						v-model="subject"
-						:label="t('pages.helpContact.subject')"
-						required
-						data-testid="help-contact-subject"
+				</div>
+
+				<template v-if="type === 'problem'">
+					<p class="font-weight-bold mb-1">{{ t("pages.helpContact.knownTitle") }}</p>
+					<p>{{ t("pages.helpContact.knownText") }} {{ t("pages.helpContact.knownStatus") }}</p>
+					<iframe
+						class="known-problems mb-6"
+						src="https://docs.dbildungscloud.de/display/SCDOK/Bekannte+Fehler+in+der+Cloud+und+ihre+Behebung?frameable=true"
+						:title="t('pages.helpContact.knownTitle')"
+						data-testid="help-contact-known-problems"
 					/>
-					<VTextarea
-						v-if="type === 'problem'"
-						v-model="problemDescription"
-						:label="t('pages.helpContact.problemDescription')"
-						required
-						data-testid="help-contact-problem-description"
-					/>
-					<template v-else>
-						<VTextField v-model="role" :label="t('pages.helpContact.role')" required data-testid="help-contact-role" />
+				</template>
+
+				<h3 class="section-title">{{ t("pages.helpContact.supportTitle") }}</h3>
+				<p class="text-center mb-4">
+					{{ type === "problem" ? t("pages.helpContact.supportSubtitle") : t("pages.helpContact.supportSubtitleWish") }}
+				</p>
+
+				<template v-if="type === 'problem'">
+					<label class="form-group d-block mb-4">
+						<span class="control-label">{{ t("pages.helpContact.subject") }}</span>
+						<span class="required-label">{{ t("pages.helpContact.required") }}</span>
+						<VTextField
+							v-model="subject"
+							:placeholder="t('pages.helpContact.subject')"
+							variant="outlined"
+							density="compact"
+							hide-details="auto"
+							required
+							data-testid="help-contact-subject"
+						/>
+					</label>
+					<label class="form-group d-block mb-4">
+						<span class="control-label">{{ t("pages.helpContact.problemDescription") }}</span>
+						<span class="required-label">{{ t("pages.helpContact.required") }}</span>
+						<VTextarea
+							v-model="problemDescription"
+							rows="14"
+							variant="outlined"
+							density="compact"
+							hide-details="auto"
+							required
+							data-testid="help-contact-problem-description"
+						/>
+					</label>
+					<label class="form-group d-block mb-4">
+						<span class="control-label">{{ t("pages.helpContact.device") }}</span>
+						<VTextField
+							v-model="device"
+							placeholder="z.B. iPhone X, Samsung Galaxy S10"
+							variant="outlined"
+							density="compact"
+							hide-details="auto"
+							data-testid="help-contact-device"
+						/>
+					</label>
+				</template>
+				<template v-else>
+					<label class="form-group d-block mb-4">
+						<span class="control-label">{{ t("pages.helpContact.subjectWish") }}</span>
+						<span class="required-label">{{ t("pages.helpContact.required") }}</span>
+						<VTextField
+							v-model="subject"
+							:placeholder="t('pages.helpContact.subjectWish')"
+							variant="outlined"
+							density="compact"
+							hide-details="auto"
+							required
+							data-testid="help-contact-subject"
+						/>
+					</label>
+					<label class="form-group d-block mb-4">
+						<span class="control-label">{{ t("pages.helpContact.role") }}</span>
+						<span class="required-label">{{ t("pages.helpContact.required") }}</span>
+						<VTextField
+							v-model="role"
+							:placeholder="t('pages.helpContact.rolePlaceholder')"
+							variant="outlined"
+							density="compact"
+							hide-details="auto"
+							required
+							data-testid="help-contact-role"
+						/>
+					</label>
+					<label class="form-group d-block mb-4">
+						<span class="control-label">{{ t("pages.helpContact.desire") }}</span>
+						<span class="required-label">{{ t("pages.helpContact.required") }}</span>
 						<VTextarea
 							v-model="desire"
-							:label="t('pages.helpContact.desire')"
+							:placeholder="t('pages.helpContact.desirePlaceholder')"
+							rows="14"
+							variant="outlined"
+							density="compact"
+							hide-details="auto"
 							required
 							data-testid="help-contact-desire"
 						/>
+					</label>
+					<label class="form-group d-block mb-4">
+						<span class="control-label">{{ t("pages.helpContact.benefit") }}</span>
+						<span class="required-label">{{ t("pages.helpContact.required") }}</span>
 						<VTextarea
 							v-model="benefit"
-							:label="t('pages.helpContact.benefit')"
+							:placeholder="t('pages.helpContact.benefitPlaceholder')"
+							rows="14"
+							variant="outlined"
+							density="compact"
+							hide-details="auto"
 							required
 							data-testid="help-contact-benefit"
 						/>
+					</label>
+					<label class="form-group d-block mb-4">
+						<span class="control-label">{{ t("pages.helpContact.acceptanceCriteria") }}</span>
 						<VTextarea
 							v-model="acceptanceCriteria"
-							:label="t('pages.helpContact.acceptanceCriteria')"
+							:placeholder="t('pages.helpContact.acceptancePlaceholder')"
+							rows="14"
+							variant="outlined"
+							density="compact"
+							hide-details="auto"
 							data-testid="help-contact-acceptance"
 						/>
-					</template>
-					<VTextField v-model="device" :label="t('pages.helpContact.device')" data-testid="help-contact-device" />
+					</label>
+					<label class="form-group d-block mb-4">
+						<span class="control-label">{{ t("pages.helpContact.deviceWish") }}</span>
+						<VTextField
+							v-model="device"
+							placeholder="z.B. iPhone X, Samsung Galaxy S10"
+							variant="outlined"
+							density="compact"
+							hide-details="auto"
+							data-testid="help-contact-device"
+						/>
+					</label>
+				</template>
+				<label class="form-group d-block mb-4">
+					<span class="control-label">{{ t("pages.helpContact.replyEmail") }}</span>
+					<span class="required-label">{{ t("pages.helpContact.required") }}</span>
 					<VTextField
 						v-model="replyEmail"
-						:label="t('pages.helpContact.replyEmail')"
-						type="email"
+						:placeholder="t('pages.helpContact.emailPlaceholder')"
+						variant="outlined"
+						density="compact"
+						hide-details="auto"
 						required
+						type="email"
 						data-testid="help-contact-email"
 					/>
-					<VCheckbox v-model="consent" :label="t('pages.helpContact.consent')" data-testid="help-contact-consent" />
-					<VBtn color="primary" variant="flat" type="submit" :loading="isSubmitting" data-testid="help-contact-submit">
-						{{ t("common.actions.send") }}
-					</VBtn>
-				</VForm>
-			</VCardText>
-		</VCard>
+				</label>
+
+				<fieldset class="mb-4">
+					<legend class="control-label mb-1">{{ t("pages.helpContact.furtherInformation") }}</legend>
+					<VCheckbox v-model="consent" hide-details density="compact" data-testid="help-contact-consent">
+						<template #label>
+							<span>
+								{{ type === "problem" ? t("pages.helpContact.consent") : t("pages.helpContact.consentWish") }}
+								<ul class="consent-list">
+									<li>{{ t("pages.helpContact.consentBrowser") }}</li>
+									<li>{{ t("pages.helpContact.consentOs") }}</li>
+								</ul>
+							</span>
+						</template>
+					</VCheckbox>
+				</fieldset>
+
+				<VDivider class="mb-4" />
+				<VBtn variant="outlined" type="submit" :loading="isSubmitting" data-testid="help-contact-submit">
+					{{ t("pages.helpContact.submit") }}
+				</VBtn>
+			</VForm>
+		</LegacyIconCard>
 	</DefaultWireframe>
 </template>
 
 <script setup lang="ts">
+import LegacyIconCard from "@/components/legacy/LegacyIconCard.vue";
 import { $axios } from "@/utils/api";
 import { buildPageTitle } from "@/utils/pageTitle";
 import {
@@ -82,6 +230,8 @@ import {
 	HelpdeskWishCreateParamsSupportType,
 } from "@api-server";
 import { notifyError, notifySuccess } from "@data-app";
+import { useEnvConfig } from "@data-env";
+import { mdiInformation, mdiPencil } from "@icons/material";
 import { DefaultWireframe } from "@ui-layout";
 import { useTitle } from "@vueuse/core";
 import { computed, ref } from "vue";
@@ -104,6 +254,8 @@ const device = ref("");
 const replyEmail = ref("");
 const consent = ref(true);
 const isSubmitting = ref(false);
+
+const themeTitle = computed(() => useEnvConfig().value.SC_TITLE);
 
 const problemAreas = computed(() => [
 	"Aufgaben",
@@ -178,3 +330,67 @@ const submit = async () => {
 	}
 };
 </script>
+
+<style lang="scss" scoped>
+// Layout of the legacy contact form (views/help/contact-card.hbs, forms/form_bug.hbs).
+fieldset {
+	border: 0;
+}
+
+// The legacy switch: primary outline, the chosen half filled, labels in capitals.
+.kind-toggle {
+	width: min(100%, 480px);
+	border-color: rgb(var(--v-theme-primary));
+
+	:deep(.v-btn) {
+		text-transform: uppercase;
+		font-weight: 400;
+	}
+
+	:deep(.v-btn--active) {
+		background: rgb(var(--v-theme-primary));
+		color: rgb(var(--v-theme-on-primary)) !important;
+
+		.v-btn__overlay {
+			opacity: 0;
+		}
+	}
+}
+
+.section-title {
+	position: relative;
+	padding: 15px 5px 5px;
+	margin: 1.5rem 0 0.75rem;
+	text-align: center;
+	font-size: 1.9rem;
+	font-weight: 400;
+	border-bottom: 1px solid #333;
+}
+
+.topic-select {
+	max-width: 50%;
+
+	.required-label {
+		font-weight: normal;
+	}
+}
+
+.control-label {
+	font-weight: bold;
+}
+
+.required-label {
+	margin-left: 0.5rem;
+	opacity: 0.7;
+}
+
+.known-problems {
+	width: 100%;
+	min-height: 500px;
+	border: 0.75rem solid #f5f5f5;
+}
+
+.consent-list {
+	padding-left: 1.25rem;
+}
+</style>

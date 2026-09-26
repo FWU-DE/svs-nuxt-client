@@ -92,12 +92,12 @@
 
 <script setup lang="ts">
 import { helpTopics } from "./help-topics";
-import { buildPageTitle } from "@/utils/pageTitle";
-import LegacyIconCard from "@/components/legacy/LegacyIconCard.vue";
 import imgAdmin from "@/assets/img/help/admin-icon.png";
 import imgTeacher from "@/assets/img/help/lehrer-icon.png";
 import imgStudent from "@/assets/img/help/schueler-icon.png";
 import imgPrincipal from "@/assets/img/help/schulleitung-icon.png";
+import LegacyIconCard from "@/components/legacy/LegacyIconCard.vue";
+import { buildPageTitle } from "@/utils/pageTitle";
 import {
 	mdiChevronRight,
 	mdiChevronUp,
