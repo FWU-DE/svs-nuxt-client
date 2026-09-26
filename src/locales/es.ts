@@ -900,8 +900,6 @@ export default {
 	"components.molecules.MintEcFooter.chapters": "Resumen del capítulo",
 	"components.molecules.share.card.options.infoText":
 		"Con el siguiente enlace, la tarjeta puede ser importada como copia por otros personas.",
-	"components.molecules.share.column.options.infoText":
-		"El siguiente enlace permite a otras personas importar esta columna.",
 	"components.molecules.share.card.result.linkLabel": "Enlace a la copia de la tarjeta",
 	"components.molecules.share.column.options.infoText":
 		"Mediante el siguiente enlace, otras personas pueden importar esta sección a una sala.",

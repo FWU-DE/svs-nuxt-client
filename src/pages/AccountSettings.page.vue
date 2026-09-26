@@ -126,8 +126,8 @@
 		<section class="mt-8" data-testid="onboarding-reset-card">
 			<h2>Onboarding-Assistent</h2>
 			<p class="text-medium-emphasis mb-4">
-				Setzt Ihre Angaben und den Fortschritt des Onboarding-Assistenten zurück. Der Assistent erscheint danach
-				wieder im Menü und kann komplett neu durchlaufen werden.
+				Setzt Ihre Angaben und den Fortschritt des Onboarding-Assistenten zurück. Der Assistent erscheint danach wieder
+				im Menü und kann komplett neu durchlaufen werden.
 			</p>
 			<VBtn
 				color="primary"
@@ -168,12 +168,7 @@ import { $axios } from "@/utils/api";
 import { buildPageTitle } from "@/utils/pageTitle";
 import { AccountApiFactory, PatchMyAccountParams } from "@api-server";
 import { notifyError, notifySuccess, useAppStore, useAppStoreRefs } from "@data-app";
-import {
-	mdiChevronRight,
-	mdiEyeOffOutline,
-	mdiEyeOutline,
-	mdiRestore,
-} from "@icons/material";
+import { mdiChevronRight, mdiEyeOffOutline, mdiEyeOutline, mdiRestore } from "@icons/material";
 import { DefaultWireframe } from "@ui-layout";
 import { useTitle } from "@vueuse/core";
 import { computed, reactive, ref, watch } from "vue";

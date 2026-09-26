@@ -894,7 +894,6 @@ export default {
 	"components.molecules.shareImport.options.ctlTools.infoText.protected": "Protected settings of external tools",
 	"components.molecules.share.card.options.infoText":
 		"With the following link, the card can be imported by other people.",
-	"components.molecules.share.column.options.infoText": "The following link lets other people import this column.",
 	"components.molecules.share.card.result.linkLabel": "Link card copy",
 	"components.molecules.share.column.options.infoText":
 		"The following link allows others to import this section into a room.",

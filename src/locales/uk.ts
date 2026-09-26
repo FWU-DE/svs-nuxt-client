@@ -897,8 +897,6 @@ export default {
 	"components.molecules.MintEcFooter.chapters": "Огляд розділу",
 	"components.molecules.share.card.options.infoText":
 		"За наступним посиланням цю картка можуть імпортувати як копію інші особи.",
-	"components.molecules.share.column.options.infoText":
-		"За наведеним посиланням інші користувачі можуть імпортувати цю колонку.",
 	"components.molecules.share.card.result.linkLabel": "Посилання на копію картки",
 	"components.molecules.share.column.options.infoText":
 		"За допомогою наведеного нижче посилання цей розділ можна імпортувати в кімнату іншим користувачам.",

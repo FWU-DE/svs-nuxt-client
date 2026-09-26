@@ -921,8 +921,6 @@ export default {
 	"components.molecules.MintEcFooter.chapters": "Kapitelübersicht",
 	"components.molecules.share.card.options.infoText":
 		"Mit dem folgenden Link kann diese Karte von anderen Personen importiert werden.",
-	"components.molecules.share.column.options.infoText":
-		"Mit dem folgenden Link kann diese Spalte von anderen Personen importiert werden.",
 	"components.molecules.share.card.result.linkLabel": "Link Karten-Kopie",
 	"components.molecules.share.column.options.infoText":
 		"Mit dem folgenden Link kann dieser Abschnitt von anderen Personen in einen Raum importiert werden.",
