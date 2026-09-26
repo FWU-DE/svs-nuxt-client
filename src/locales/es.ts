@@ -466,6 +466,7 @@ export default {
 	"components.board.action.changeLayout": "Cambiar vista",
 	"components.board.presence.label": "Ahora en el tablero: {names}",
 	"components.board.presence.more": "+{count}",
+	"components.board.presence.you": "Tú ({name})",
 	"components.board.action.fixColumns": "Fijar columnas",
 	"components.board.action.shareLink.card": "Copiar enlace a la tarjeta",
 	"components.board.column.defaultTitle": "Columna",

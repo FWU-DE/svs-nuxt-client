@@ -456,6 +456,7 @@ export default {
 	"components.board.action.changeLayout": "Change layout",
 	"components.board.presence.label": "Currently on the board: {names}",
 	"components.board.presence.more": "+{count}",
+	"components.board.presence.you": "You ({name})",
 	"components.board.action.fixColumns": "Fix columns",
 	"components.board.action.shareLink.card": "Copy link to card",
 	"components.board.column.defaultTitle": "Column",

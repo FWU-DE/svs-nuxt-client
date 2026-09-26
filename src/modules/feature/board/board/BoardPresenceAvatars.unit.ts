@@ -25,20 +25,33 @@ describe("BoardPresenceAvatars", () => {
 		return { wrapper, fetchPresence };
 	};
 
-	it("shows the other editors with their initials", () => {
+	it("shows the viewer first and marked, then the other editors with their initials", () => {
 		const { wrapper } = setup([
-			person("me", "Ich", "Selbst"),
 			person("u1", "Cord", "Carl"),
+			person("me", "Ich", "Selbst"),
 			person("u2", "ada", "lovelace"),
 		]);
 
-		expect(wrapper.find("[data-testid=board-presence-user-me]").exists()).toBe(false);
+		const avatars = wrapper.findAll("[data-testid^=board-presence-user-]");
+		expect(avatars.map((a) => a.attributes("data-testid"))).toEqual([
+			"board-presence-user-me",
+			"board-presence-user-u1",
+			"board-presence-user-u2",
+		]);
+		expect(avatars[0].classes()).toContain("board-presence-self");
+		expect(avatars[1].classes()).not.toContain("board-presence-self");
 		expect(wrapper.get("[data-testid=board-presence-user-u1]").text()).toBe("CC");
 		expect(wrapper.get("[data-testid=board-presence-user-u2]").text()).toBe("AL");
 	});
 
-	it("is hidden when the viewer is the only editor", () => {
+	it("shows the viewer alone when nobody else edits", () => {
 		const { wrapper } = setup([person("me", "Ich", "Selbst")]);
+
+		expect(wrapper.get("[data-testid=board-presence-user-me]").text()).toBe("IS");
+	});
+
+	it("is hidden when no editor is on the board", () => {
+		const { wrapper } = setup([]);
 
 		expect(wrapper.find("[data-testid=board-presence]").exists()).toBe(false);
 	});
