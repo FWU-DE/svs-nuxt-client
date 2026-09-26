@@ -1,108 +1,76 @@
 import PersonalFilesPage from "./PersonalFiles.page.vue";
-import { createTestAppStore, createTestEnvStore, fileRecordFactory, mockApiResponse } from "@@/tests/test-utils";
+import { createTestAppStore, createTestEnvStore } from "@@/tests/test-utils";
 import { createTestingI18n, createTestingVuetify } from "@@/tests/test-utils/setup";
-import * as fileStorageApi from "@api-file-storage";
-import { FileApiInterface, FileRecordListResponse, FileRecordParentType, StorageLocation } from "@api-file-storage";
+import { LegacyFile, legacyFileStorageApi } from "@data-legacy-files";
 import { createTestingPinia } from "@pinia/testing";
 import { flushPromises, mount } from "@vue/test-utils";
 import { setActivePinia } from "pinia";
-import { Mocked } from "vitest";
+import { createRouter, createWebHistory } from "vue-router";
+
+const folder = (id: string, name: string, parent?: string): LegacyFile => ({
+	_id: id,
+	name,
+	parent,
+	isDirectory: true,
+	owner: "user-1",
+	refOwnerModel: "user",
+	permissions: [],
+	createdAt: "2026-01-01T00:00:00.000Z",
+	updatedAt: "2026-01-01T00:00:00.000Z",
+});
 
 describe("PersonalFilesPage", () => {
-	let fileApi: Mocked<FileApiInterface>;
-
 	beforeEach(() => {
 		setActivePinia(createTestingPinia());
 		createTestEnvStore({ SC_TITLE: "Test Cloud" });
-		fileApi = {
-			list: vi.fn(),
-			upload: vi.fn(),
-		} as unknown as Mocked<FileApiInterface>;
-		vi.spyOn(fileStorageApi, "FileApiFactory").mockReturnValue(fileApi);
+		createTestAppStore({ me: { user: { id: "user-1" }, school: { id: "school-1" } } });
+		vi.spyOn(legacyFileStorageApi, "list").mockResolvedValue([folder("d1", "Mathe")]);
 	});
 
-	const setup = async ({
-		withContext = true,
-		files = [fileRecordFactory.build({ id: "file-1", name: "Document.pdf" })],
-	} = {}) => {
-		if (withContext) {
-			createTestAppStore({ me: { user: { id: "user-1" }, school: { id: "school-1" } } });
-		} else {
-			createTestAppStore({ me: { user: undefined, school: undefined } });
-		}
+	afterEach(() => {
+		vi.restoreAllMocks();
+	});
 
-		fileApi.list.mockResolvedValue(
-			mockApiResponse<FileRecordListResponse>({ data: { data: files, total: files.length, skip: 0, limit: 100 } })
-		);
-
+	const setup = async (path: string) => {
+		const router = createRouter({
+			history: createWebHistory(),
+			routes: [{ path: "/files/my/:folderId?", component: PersonalFilesPage }],
+		});
+		await router.push(path);
+		await router.isReady();
 		const wrapper = mount(PersonalFilesPage, {
-			global: {
-				plugins: [createTestingVuetify(), createTestingI18n()],
-			},
+			global: { plugins: [router, createTestingVuetify(), createTestingI18n()] },
 		});
 		await flushPromises();
-		return { wrapper, files };
+		return { wrapper, router };
 	};
 
-	it("loads and renders personal files", async () => {
-		const { wrapper, files } = await setup();
+	it("shows the personal root with the product's breadcrumb", async () => {
+		const { wrapper } = await setup("/files/my");
 
-		expect(fileApi.list).toHaveBeenCalledWith(
-			"school-1",
-			StorageLocation.SCHOOL,
-			"user-1",
-			FileRecordParentType.USERS,
-			0,
-			100
-		);
-		expect(wrapper.find("[data-testid='personal-files-title']").exists()).toBe(true);
-		expect(wrapper.get(`[data-testid='personal-file-${files[0].id}']`).text()).toContain("Document.pdf");
+		expect(legacyFileStorageApi.list).toHaveBeenCalledWith(undefined, undefined);
+		expect(wrapper.get("[data-testid='personal-files-title']").text()).toBe("pages.files.legacy.personalTitle");
+		expect(wrapper.get("[data-testid='breadcrumb-0']").text()).toContain("pages.files.legacy.myPersonalData");
 	});
 
-	it("renders missing context state", async () => {
-		const { wrapper } = await setup({ withContext: false });
+	it("shows a folder with its chain in the breadcrumbs", async () => {
+		vi.spyOn(legacyFileStorageApi, "folderChain").mockResolvedValue([
+			folder("d1", "Mathe"),
+			folder("d2", "Brüche", "d1"),
+		]);
 
-		expect(fileApi.list).not.toHaveBeenCalled();
-		expect(wrapper.find("[data-testid='personal-files-missing-context']").exists()).toBe(true);
+		const { wrapper } = await setup("/files/my/6ab7b011ef5e199ec0083afe");
+
+		expect(legacyFileStorageApi.list).toHaveBeenCalledWith(undefined, "6ab7b011ef5e199ec0083afe");
+		expect(wrapper.get("[data-testid='breadcrumb-2']").text()).toContain("Brüche");
 	});
 
-	it("uploads picked files into the personal area and reloads the list", async () => {
-		const { wrapper } = await setup();
-		fileApi.upload.mockResolvedValue(mockApiResponse({ data: fileRecordFactory.build() }));
-		const file = new File(["x"], "neu.txt");
-		const input = wrapper.get("[data-testid='personal-files-input']");
-		Object.defineProperty(input.element, "files", { value: [file] });
+	it("navigates into a folder", async () => {
+		const { wrapper, router } = await setup("/files/my");
+		const push = vi.spyOn(router, "push");
 
-		await input.trigger("change");
-		await flushPromises();
+		await wrapper.get("[data-testid='legacy-folder-d1']").trigger("click");
 
-		expect(fileApi.upload).toHaveBeenCalledWith(
-			"school-1",
-			StorageLocation.SCHOOL,
-			"user-1",
-			FileRecordParentType.USERS,
-			file
-		);
-		expect(fileApi.list).toHaveBeenCalledTimes(2);
-	});
-
-	it("sorts by name when chosen, newest first by default", async () => {
-		const { wrapper } = await setup({
-			files: [
-				fileRecordFactory.build({ id: "a", name: "Alpha.pdf", createdAt: "2026-01-01T00:00:00Z" }),
-				fileRecordFactory.build({ id: "b", name: "Beta.pdf", createdAt: "2026-02-01T00:00:00Z" }),
-			],
-		});
-		const order = () => wrapper.findAll("[data-testid^='personal-file-']").map((row) => row.attributes("data-testid"));
-
-		expect(order()).toEqual(["personal-file-b", "personal-file-a"]);
-		await wrapper.get("[data-testid='personal-files-sort-order']").trigger("click");
-		expect(order()).toEqual(["personal-file-a", "personal-file-b"]);
-	});
-
-	it("renders empty state", async () => {
-		const { wrapper } = await setup({ files: [] });
-
-		expect(wrapper.find("[data-testid='personal-files-empty']").exists()).toBe(true);
+		expect(push).toHaveBeenCalledWith("/files/my/d1");
 	});
 });

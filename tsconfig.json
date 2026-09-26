@@ -21,6 +21,7 @@
 		"paths": {
 			"@data-access": ["./src/modules/data/data-access"],
 			"@data-app": ["./src/modules/data/application"],
+			"@data-legacy-files": ["./src/modules/data/legacy-files"],
 			"@data-board": ["./src/modules/data/board"],
 			"@data-classes": ["./src/modules/data/classes"],
 			"@data-course-rooms": ["./src/modules/data/course-rooms"],

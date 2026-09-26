@@ -13,6 +13,7 @@ describe("legacy-view-migration", () => {
 		expect(legacyViewMigrationEntries.some((entry) => entry.view === "homework/assignment")).toBe(false);
 		expect(legacyViewMigrationEntries.some((entry) => entry.category === "news")).toBe(false);
 		expect(legacyViewMigrationEntries.some((entry) => entry.view === "files/files-overview")).toBe(false);
+		expect(legacyViewMigrationEntries.some((entry) => entry.view === "files/files")).toBe(false);
 	});
 
 	it("recognizes known legacy base paths", () => {

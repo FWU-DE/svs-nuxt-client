@@ -219,9 +219,29 @@ export const routes: Readonly<RouteRecordRaw>[] = [
 		name: "files-overview",
 	},
 	{
-		path: "/files/my",
+		path: `/files/my/:folderId(${REGEX_ID})?`,
 		component: () => import("@/pages/PersonalFiles.page.vue"),
 		name: "personal-files",
+	},
+	{
+		path: `/files/courses/:courseId(${REGEX_ID})?/:folderId(${REGEX_ID})?`,
+		component: () => import("@/pages/CourseFiles.page.vue"),
+		name: "course-files",
+	},
+	{
+		path: `/files/teams/:teamId(${REGEX_ID})?/:folderId(${REGEX_ID})?`,
+		component: () => import("@/pages/TeamFiles.page.vue"),
+		name: "team-files",
+	},
+	{
+		path: "/files/shared",
+		component: () => import("@/pages/SharedFiles.page.vue"),
+		name: "shared-files",
+	},
+	{
+		path: `/files/fileModel/:id(${REGEX_ID})/proxy`,
+		component: () => import("@/pages/FileShareProxy.page.vue"),
+		name: "file-share-proxy",
 	},
 	{
 		path: `/folder/:id(${REGEX_ID})`,

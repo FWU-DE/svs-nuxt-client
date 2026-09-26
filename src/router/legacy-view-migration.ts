@@ -100,13 +100,6 @@ export const legacyViewMigrationEntries: LegacyViewMigrationEntry[] = [
 	},
 	{
 		basePath: "/files",
-		view: "files/files",
-		controller: "controllers/files.js",
-		controllerLine: 527,
-		category: "files",
-	},
-	{
-		basePath: "/files",
 		view: "files/search",
 		controller: "controllers/files.js",
 		controllerLine: 905,
