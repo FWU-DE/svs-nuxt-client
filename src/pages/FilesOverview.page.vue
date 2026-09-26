@@ -1,32 +1,31 @@
 <template>
-	<DefaultWireframe max-width="limited" main-with-bottom-padding>
+	<DefaultWireframe max-width="full" main-with-bottom-padding>
 		<template #header>
 			<h1 data-testid="files-overview-title">{{ t("global.sidebar.item.files-old") }}</h1>
 		</template>
 
 		<VRow data-testid="files-overview-cards">
-			<VCol v-for="entry in fileEntries" :key="entry.href" cols="12" md="6">
-				<VCard class="h-100" variant="outlined" :href="entry.href" :data-testid="entry.testId">
-					<VCardText class="d-flex align-start ga-4">
-						<VIcon :icon="entry.icon" size="large" class="mt-1" />
-						<div>
-							<h2 class="text-h6 mb-2">{{ entry.title }}</h2>
-							<p class="text-medium-emphasis mb-0">{{ entry.description }}</p>
-						</div>
-					</VCardText>
-				</VCard>
+			<VCol v-for="entry in fileEntries" :key="entry.href" cols="12" sm="6">
+				<LegacyScCard
+					:title="entry.title"
+					:icon="entry.icon"
+					:href="entry.href"
+					:background="entry.background"
+					:link-text="t('pages.files.overview.open')"
+					:test-id="entry.testId"
+				>
+					{{ entry.description }}
+				</LegacyScCard>
 			</VCol>
 		</VRow>
-
-		<VAlert class="mt-6" type="info" variant="tonal" data-testid="files-overview-note">
-			{{ t("pages.files.overview.nativeNote") }}
-		</VAlert>
 	</DefaultWireframe>
 </template>
 
 <script setup lang="ts">
+import LegacyScCard from "@/components/legacy/LegacyScCard.vue";
 import { buildPageTitle } from "@/utils/pageTitle";
-import { mdiAccountOutline, mdiFolderOpenOutline, mdiSchoolOutline, mdiShareVariantOutline } from "@icons/material";
+import { useEnvConfig } from "@data-env";
+import { mdiAccountGroupOutline, mdiAccountOutline, mdiSchoolOutline, mdiShareVariantOutline } from "@icons/material";
 import { DefaultWireframe } from "@ui-layout";
 import { useTitle } from "@vueuse/core";
 import { computed } from "vue";
@@ -36,12 +35,14 @@ const { t } = useI18n();
 
 useTitle(buildPageTitle(t("global.sidebar.item.files-old")));
 
+// Cards, colours and order of the legacy files overview (views/files/files-overview.hbs).
 const fileEntries = computed(() => [
 	{
 		title: t("pages.files.overview.personalFiles"),
 		description: t("pages.files.overview.personalFiles.description"),
 		href: "/files/my/",
 		icon: mdiAccountOutline,
+		background: "#283E56",
 		testId: "files-overview-personal",
 	},
 	{
@@ -49,21 +50,28 @@ const fileEntries = computed(() => [
 		description: t("pages.files.overview.courseFiles.description"),
 		href: "/files/courses/",
 		icon: mdiSchoolOutline,
+		background: "#1989AC",
 		testId: "files-overview-courses",
 	},
+	...(useEnvConfig().value.FEATURE_TEAMS_ENABLED
+		? [
+				{
+					title: t("pages.files.overview.teamFiles"),
+					description: t("pages.files.overview.teamFiles.description"),
+					href: "/files/teams/",
+					icon: mdiAccountGroupOutline,
+					background: "#1989AC",
+					testId: "files-overview-teams",
+				},
+			]
+		: []),
 	{
 		title: t("pages.files.overview.sharedFiles"),
 		description: t("pages.files.overview.sharedFiles.description"),
 		href: "/files/shared/",
 		icon: mdiShareVariantOutline,
+		background: "#00B8A9",
 		testId: "files-overview-shared",
-	},
-	{
-		title: t("pages.files.overview.favorites"),
-		description: t("pages.files.overview.favorites.description"),
-		href: "/files/search/",
-		icon: mdiFolderOpenOutline,
-		testId: "files-overview-search",
 	},
 ]);
 </script>

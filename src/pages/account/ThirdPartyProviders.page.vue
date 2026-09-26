@@ -1,40 +1,40 @@
 <template>
-	<DefaultWireframe max-width="limited" main-with-bottom-padding>
+	<DefaultWireframe max-width="full" main-with-bottom-padding>
 		<template #header>
 			<h1 data-testid="third-party-providers-title">{{ t("pages.accountThirdPartyProviders.title") }}</h1>
 		</template>
 
 		<SvsLoading :loading-state="loadingState">
-			<VAlert v-if="sessions.length === 0" type="info" variant="tonal" data-testid="third-party-providers-empty">
+			<p v-if="sessions.length === 0" class="empty-text text-center" data-testid="third-party-providers-empty">
 				{{ t("pages.accountThirdPartyProviders.empty") }}
-			</VAlert>
+			</p>
 
-			<VList v-else lines="two" data-testid="third-party-providers-list">
-				<VListItem
-					v-for="session in sessions"
-					:key="session.client_id"
-					:title="session.client_name"
-					:subtitle="session.client_id"
-				>
-					<template #prepend>
-						<VIcon :icon="mdiApplicationBracketsOutline" />
-					</template>
-					<template #append>
-						<VBtn
-							variant="text"
-							color="error"
-							:prepend-icon="mdiDeleteOutline"
-							:data-testid="`third-party-provider-revoke-${session.client_id}`"
-							@click="revokeSession(session.client_id)"
-						>
-							{{ t("common.actions.remove") }}
-						</VBtn>
-					</template>
-				</VListItem>
-			</VList>
+			<VTable v-else data-testid="third-party-providers-list">
+				<thead>
+					<tr>
+						<th>{{ t("pages.accountThirdPartyProviders.provider") }}</th>
+						<th />
+					</tr>
+				</thead>
+				<tbody>
+					<tr v-for="session in sessions" :key="session.client_id">
+						<td>{{ session.client_name }}</td>
+						<td class="text-right">
+							<VBtn
+								variant="outlined"
+								color="error"
+								:data-testid="`third-party-provider-revoke-${session.client_id}`"
+								@click="revokeSession(session.client_id)"
+							>
+								{{ t("common.actions.remove") }}
+							</VBtn>
+						</td>
+					</tr>
+				</tbody>
+			</VTable>
 
-			<VBtn class="mt-6" variant="outlined" to="/account" data-testid="third-party-providers-back">
-				{{ t("common.labels.backToOverview") }}
+			<VBtn class="mt-4" variant="outlined" to="/account" data-testid="third-party-providers-back">
+				{{ t("pages.accountThirdPartyProviders.back") }}
 			</VBtn>
 		</SvsLoading>
 	</DefaultWireframe>
@@ -46,7 +46,6 @@ import { $axios } from "@/utils/api";
 import { buildPageTitle } from "@/utils/pageTitle";
 import { ConsentSessionResponse, Oauth2ApiFactory } from "@api-server";
 import { notifyError, notifySuccess } from "@data-app";
-import { mdiApplicationBracketsOutline, mdiDeleteOutline } from "@icons/material";
 import { SvsLoading } from "@ui-containers";
 import { DefaultWireframe } from "@ui-layout";
 import { useTitle } from "@vueuse/core";
@@ -73,3 +72,11 @@ const revokeSession = async (clientId: ConsentSessionResponse["client_id"]) => {
 	}
 };
 </script>
+
+<style lang="scss" scoped>
+// Legacy shows the empty state as a large muted line instead of an alert.
+.empty-text {
+	font-size: 1.5rem;
+	opacity: 0.75;
+}
+</style>

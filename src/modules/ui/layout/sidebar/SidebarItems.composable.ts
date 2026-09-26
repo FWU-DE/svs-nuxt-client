@@ -7,6 +7,7 @@ import {
 	mdiAccountSupervisorCircleOutline,
 	mdiApplicationBracketsOutline,
 	mdiBookshelf,
+	mdiCalendarOutline,
 	mdiCogOutline,
 	mdiFolderOpenOutline,
 	mdiFormatListChecks,
@@ -88,6 +89,12 @@ export const useSidebarItems = () => {
 			href: "/news",
 			icon: mdiNewspaperVariantOutline,
 			testId: "sidebar-news",
+		},
+		{
+			title: "global.sidebar.item.calendar",
+			href: "/calendar",
+			icon: mdiCalendarOutline,
+			testId: "sidebar-calendar",
 		},
 		{
 			title: "feature.media-shelf.title",

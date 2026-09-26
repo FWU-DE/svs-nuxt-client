@@ -1,5 +1,5 @@
 <template>
-	<DefaultWireframe max-width="limited" main-with-bottom-padding>
+	<DefaultWireframe max-width="full" main-with-bottom-padding>
 		<template #header>
 			<h1 data-testid="account-settings-title">{{ t("pages.accountSettings.title") }}</h1>
 		</template>
@@ -9,89 +9,105 @@
 		</VAlert>
 
 		<VForm data-testid="account-settings-form" @submit.prevent="saveAccount">
-			<VCard variant="outlined">
-				<VCardItem>
-					<template #prepend>
-						<VIcon :icon="mdiAccountCircleOutline" />
-					</template>
-					<VCardTitle>{{ t("pages.accountSettings.profile") }}</VCardTitle>
-				</VCardItem>
+			<label for="account-first-name" class="d-block font-weight-bold mb-2">
+				{{ t("pages.accountSettings.label.firstName") }}
+			</label>
+			<VTextField
+				id="account-first-name"
+				v-model="form.firstName"
+				variant="outlined"
+				density="comfortable"
+				hide-details
+				class="mb-5"
+				:readonly="isSsoAccount"
+				data-testid="account-first-name"
+			/>
+			<label for="account-last-name" class="d-block font-weight-bold mb-2">
+				{{ t("pages.accountSettings.label.lastName") }}
+			</label>
+			<VTextField
+				id="account-last-name"
+				v-model="form.lastName"
+				variant="outlined"
+				density="comfortable"
+				hide-details
+				class="mb-5"
+				:readonly="isSsoAccount"
+				data-testid="account-last-name"
+			/>
 
-				<VCardText>
-					<VRow>
-						<VCol cols="12" md="6">
-							<VTextField
-								v-model="form.firstName"
-								:label="t('common.labels.firstName')"
-								:readonly="isSsoAccount"
-								:data-testid="'account-first-name'"
-							/>
-						</VCol>
-						<VCol cols="12" md="6">
-							<VTextField
-								v-model="form.lastName"
-								:label="t('common.labels.lastName')"
-								:readonly="isSsoAccount"
-								:data-testid="'account-last-name'"
-							/>
-						</VCol>
-					</VRow>
-				</VCardText>
-			</VCard>
+			<template v-if="!isSsoAccount">
+				<label for="account-current-password" class="d-block font-weight-bold mb-2">
+					{{ t("pages.accountSettings.label.currentPassword") }}<sup>*</sup>
+				</label>
+				<VTextField
+					id="account-current-password"
+					v-model="form.passwordOld"
+					variant="outlined"
+					density="comfortable"
+					hide-details
+					class="mb-5"
+					placeholder="***************"
+					:type="showPasswords ? 'text' : 'password'"
+					:append-inner-icon="showPasswords ? mdiEyeOutline : mdiEyeOffOutline"
+					data-testid="account-current-password"
+					@click:append-inner="showPasswords = !showPasswords"
+				/>
+				<label for="account-new-password" class="d-block font-weight-bold mb-2">
+					{{ t("pages.accountSettings.label.newPassword") }}
+				</label>
+				<VTextField
+					id="account-new-password"
+					v-model="form.passwordNew"
+					variant="outlined"
+					density="comfortable"
+					hide-details
+					class="mb-5"
+					placeholder="***************"
+					:type="showPasswords ? 'text' : 'password'"
+					data-testid="account-new-password"
+				/>
+				<label for="account-password-confirmation" class="d-block font-weight-bold mb-2">
+					{{ t("pages.accountSettings.label.repeatNewPassword") }}
+				</label>
+				<VTextField
+					id="account-password-confirmation"
+					v-model="passwordConfirmation"
+					variant="outlined"
+					density="comfortable"
+					hide-details
+					class="mb-5"
+					placeholder="***************"
+					:type="showPasswords ? 'text' : 'password'"
+					data-testid="account-password-confirmation"
+				/>
+			</template>
 
-			<VCard v-if="!isSsoAccount" class="mt-6" variant="outlined">
-				<VCardItem>
-					<template #prepend>
-						<VIcon :icon="mdiLockOutline" />
-					</template>
-					<VCardTitle>{{ t("pages.accountSettings.security") }}</VCardTitle>
-					<VCardSubtitle>{{ t("pages.accountSettings.passwordHint") }}</VCardSubtitle>
-				</VCardItem>
+			<VBtn
+				color="primary"
+				variant="flat"
+				size="large"
+				:disabled="isSsoAccount"
+				:loading="isSaving"
+				type="submit"
+				data-testid="account-settings-submit"
+			>
+				{{ t("pages.accountSettings.save") }}
+			</VBtn>
 
-				<VCardText>
-					<VTextField
-						v-model="form.passwordOld"
-						:label="t('pages.accountSettings.currentPassword')"
-						:type="showPasswords ? 'text' : 'password'"
-						:append-inner-icon="showPasswords ? mdiEyeOffOutline : mdiEyeOutline"
-						:data-testid="'account-current-password'"
-						@click:append-inner="showPasswords = !showPasswords"
-					/>
-					<VRow>
-						<VCol cols="12" md="6">
-							<VTextField
-								v-model="form.passwordNew"
-								:label="t('common.labels.password.new')"
-								:type="showPasswords ? 'text' : 'password'"
-								:data-testid="'account-new-password'"
-							/>
-						</VCol>
-						<VCol cols="12" md="6">
-							<VTextField
-								v-model="passwordConfirmation"
-								:label="t('common.labels.password.confirmation')"
-								:type="showPasswords ? 'text' : 'password'"
-								:data-testid="'account-password-confirmation'"
-							/>
-						</VCol>
-					</VRow>
-				</VCardText>
-			</VCard>
-
-			<div class="mt-6">
-				<VBtn
-					color="primary"
-					variant="flat"
-					:prepend-icon="mdiContentSave"
-					:disabled="isSsoAccount || !canSubmit"
-					:loading="isSaving"
-					type="submit"
-					data-testid="account-settings-submit"
-				>
-					{{ t("common.actions.save") }}
-				</VBtn>
-			</div>
+			<p v-if="!isSsoAccount" class="text-caption text-medium-emphasis mt-4" data-testid="account-password-rules">
+				<sup>*</sup> {{ t("pages.accountSettings.passwordRules") }}<br />
+				{{ t("pages.accountSettings.allowedCharacters") }}
+				<code>{{ t("pages.accountSettings.specialCharacters") }}</code>
+			</p>
 		</VForm>
+
+		<h2 class="mt-8">
+			<RouterLink class="third-party-link" to="/account/thirdPartyProviders" data-testid="account-third-party-link">
+				{{ t("pages.accountSettings.thirdPartyLogins") }}
+				<VIcon :icon="mdiChevronRight" />
+			</RouterLink>
+		</h2>
 	</DefaultWireframe>
 </template>
 
@@ -100,13 +116,7 @@ import { $axios } from "@/utils/api";
 import { buildPageTitle } from "@/utils/pageTitle";
 import { AccountApiFactory, PatchMyAccountParams } from "@api-server";
 import { notifyError, notifySuccess, useAppStore, useAppStoreRefs } from "@data-app";
-import {
-	mdiAccountCircleOutline,
-	mdiContentSave,
-	mdiEyeOffOutline,
-	mdiEyeOutline,
-	mdiLockOutline,
-} from "@icons/material";
+import { mdiChevronRight, mdiEyeOffOutline, mdiEyeOutline } from "@icons/material";
 import { DefaultWireframe } from "@ui-layout";
 import { useTitle } from "@vueuse/core";
 import { computed, reactive, ref, watch } from "vue";
@@ -186,3 +196,10 @@ const saveAccount = async () => {
 	}
 };
 </script>
+
+<style lang="scss" scoped>
+.third-party-link {
+	color: inherit;
+	text-decoration: none;
+}
+</style>

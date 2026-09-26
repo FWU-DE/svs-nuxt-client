@@ -163,7 +163,7 @@ export const routes: Readonly<RouteRecordRaw>[] = [
 		name: "login",
 		meta: {
 			isPublic: true,
-			layout: Layouts.BORDERLESS,
+			layout: Layouts.LOGGED_OUT,
 		},
 	},
 	{

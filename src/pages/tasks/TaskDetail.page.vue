@@ -1,12 +1,9 @@
 <template>
-	<DefaultWireframe max-width="limited" main-with-bottom-padding>
+	<DefaultWireframe max-width="full" main-with-bottom-padding>
 		<template #header>
-			<div class="d-flex align-center ga-4 flex-wrap">
-				<VBtn variant="text" :prepend-icon="mdiArrowLeft" href="/tasks" data-testid="task-detail-back">
-					{{ t("pages.taskDetail.back") }}
-				</VBtn>
-				<h1 data-testid="task-detail-title">{{ task?.name ?? t("common.words.task") }}</h1>
-			</div>
+			<h1 data-testid="task-detail-title">
+				{{ task ? `${task.courseName} - ${task.name}` : t("common.words.task") }}
+			</h1>
 		</template>
 
 		<SvsLoading :loading-state="loadingState">
@@ -14,87 +11,130 @@
 				{{ t("pages.taskDetail.notFound") }}
 			</VAlert>
 
-			<VCard v-else variant="outlined" data-testid="task-detail-card">
-				<VCardText>
-					<div class="d-flex align-center ga-2 flex-wrap mb-4">
-						<VChip :prepend-icon="mdiBookshelf" data-testid="task-detail-course">{{ task.courseName }}</VChip>
-						<VChip v-if="task.lessonName" :prepend-icon="mdiFileTreeOutline" data-testid="task-detail-topic">
-							{{ task.lessonName }}
-						</VChip>
-						<VChip v-if="task.dueDate" :prepend-icon="mdiCalendarOutline" data-testid="task-detail-due">
-							{{ t("pages.tasks.labels.due") }} {{ formatUtc(task.dueDate, "dateTimeYY") }}
-						</VChip>
-						<VChip v-if="task.status.isDraft" :prepend-icon="mdiPencilOutline" data-testid="task-detail-draft">
+			<div v-else data-testid="task-detail-card">
+				<div class="d-flex justify-space-between align-start flex-wrap ga-4 mb-6">
+					<div class="text-body-2" data-testid="task-detail-due">
+						<template v-if="task.availableDate">{{ formatUtc(task.availableDate, "dateTime") }}</template>
+						<template v-if="task.dueDate">
+							{{ t("pages.taskDetail.till") }}: {{ formatUtc(task.dueDate, "dateTime") }}
+						</template>
+						<VChip
+							v-if="task.status.isDraft"
+							size="small"
+							class="ml-2"
+							:prepend-icon="mdiPencilOutline"
+							data-testid="task-detail-draft"
+						>
 							{{ t("components.organisms.TasksDashboardMain.tab.drafts") }}
 						</VChip>
 					</div>
+					<div class="d-flex ga-2 flex-wrap">
+						<VBtn
+							variant="outlined"
+							size="large"
+							:prepend-icon="mdiFolderOpenOutline"
+							:href="`/files/courses/${task.courseId}`"
+							data-testid="task-detail-course-files"
+						>
+							{{ t("pages.taskDetail.toCourseFiles") }}
+						</VBtn>
+						<VBtn
+							variant="outlined"
+							size="large"
+							:prepend-icon="mdiSchoolOutline"
+							:href="`/courses/${task.courseId}`"
+							data-testid="task-detail-course"
+						>
+							{{ t("pages.taskDetail.toCourse") }}
+						</VBtn>
+					</div>
+				</div>
 
-					<section class="mb-6">
-						<h2 class="text-h5 mb-2">{{ t("pages.taskDetail.description") }}</h2>
-						<p v-if="plainDescription" data-testid="task-detail-description-text">{{ plainDescription }}</p>
-						<RenderHTML
-							v-else-if="htmlDescription"
-							:html="htmlDescription"
-							data-testid="task-detail-description-html"
-						/>
-						<p v-else class="text-medium-emphasis" data-testid="task-detail-no-description">
-							{{ t("pages.taskDetail.noDescription") }}
-						</p>
-					</section>
+				<VTabs v-model="tab" color="primary" class="task-tabs mb-6">
+					<VTab value="details" data-testid="task-detail-tab-details">{{ t("pages.taskDetail.tab.details") }}</VTab>
+					<VTab value="submissions" data-testid="task-detail-tab-submissions">
+						{{ t("pages.taskDetail.tab.submissions") }}
+					</VTab>
+				</VTabs>
 
-					<VRow>
-						<VCol cols="12" sm="4">
-							<div class="text-caption">{{ t("components.molecules.TaskItemTeacher.submitted") }}</div>
-							<div class="text-h6" data-testid="task-detail-submitted">{{ task.status.submitted }}</div>
-						</VCol>
-						<VCol cols="12" sm="4">
-							<div class="text-caption">{{ t("components.molecules.TaskItemTeacher.graded") }}</div>
-							<div class="text-h6" data-testid="task-detail-graded">{{ task.status.graded }}</div>
-						</VCol>
-						<VCol cols="12" sm="4">
-							<div class="text-caption">{{ t("pages.taskDetail.maxSubmissions") }}</div>
-							<div class="text-h6" data-testid="task-detail-max-submissions">{{ task.status.maxSubmissions }}</div>
-						</VCol>
-					</VRow>
+				<VWindow v-model="tab">
+					<VWindowItem value="details">
+						<section class="px-2">
+							<p v-if="task.lessonName" class="text-medium-emphasis" data-testid="task-detail-topic">
+								{{ task.lessonName }}
+							</p>
+							<p v-if="plainDescription" data-testid="task-detail-description-text">{{ plainDescription }}</p>
+							<RenderHTML
+								v-else-if="htmlDescription"
+								:html="htmlDescription"
+								data-testid="task-detail-description-html"
+							/>
+							<p v-else class="text-medium-emphasis" data-testid="task-detail-no-description">
+								{{ t("pages.taskDetail.noDescription") }}
+							</p>
+						</section>
+					</VWindowItem>
 
-					<VDivider class="my-6" />
-
-					<section data-testid="task-detail-submissions">
-						<h2 class="text-h5 mb-2">{{ t("pages.taskDetail.submissions") }}</h2>
-						<SvsLoading :loading-state="submissionLoadingState">
-							<VAlert
-								v-if="submissionStatuses.length === 0"
-								type="info"
-								variant="tonal"
-								data-testid="task-detail-submissions-empty"
-							>
-								{{ t("pages.taskDetail.submissions.empty") }}
-							</VAlert>
-							<VList v-else density="compact" data-testid="task-detail-submissions-list">
-								<VListItem
-									v-for="status in submissionStatuses"
-									:key="status.id"
-									:data-testid="`submission-status-${status.id}`"
+					<VWindowItem value="submissions" :eager="true">
+						<section data-testid="task-detail-submissions">
+							<VRow class="mb-2">
+								<VCol cols="12" sm="4">
+									<div class="text-caption">{{ t("components.molecules.TaskItemTeacher.submitted") }}</div>
+									<div class="text-h6" data-testid="task-detail-submitted">{{ task.status.submitted }}</div>
+								</VCol>
+								<VCol cols="12" sm="4">
+									<div class="text-caption">{{ t("components.molecules.TaskItemTeacher.graded") }}</div>
+									<div class="text-h6" data-testid="task-detail-graded">{{ task.status.graded }}</div>
+								</VCol>
+								<VCol cols="12" sm="4">
+									<div class="text-caption">{{ t("pages.taskDetail.maxSubmissions") }}</div>
+									<div class="text-h6" data-testid="task-detail-max-submissions">
+										{{ task.status.maxSubmissions }}
+									</div>
+								</VCol>
+							</VRow>
+							<SvsLoading :loading-state="submissionLoadingState">
+								<VAlert
+									v-if="submissionStatuses.length === 0"
+									type="info"
+									variant="tonal"
+									data-testid="task-detail-submissions-empty"
 								>
-									<VListItemTitle>{{ status.submitters.join(", ") }}</VListItemTitle>
-									<VListItemSubtitle>
-										{{
-											status.isSubmitted
-												? t("components.molecules.TaskItemTeacher.submitted")
-												: t("pages.tasks.notGraded")
-										}}
-										·
-										{{
-											status.isGraded ? t("components.molecules.TaskItemTeacher.graded") : t("pages.tasks.notGraded")
-										}}
-										<span v-if="status.grade !== undefined"> · {{ t("pages.tasks.rating") }}: {{ status.grade }}</span>
-									</VListItemSubtitle>
-								</VListItem>
-							</VList>
-						</SvsLoading>
-					</section>
-				</VCardText>
-			</VCard>
+									{{ t("pages.taskDetail.submissions.empty") }}
+								</VAlert>
+								<VTable v-else data-testid="task-detail-submissions-list">
+									<tbody>
+										<tr
+											v-for="status in submissionStatuses"
+											:key="status.id"
+											:data-testid="`submission-status-${status.id}`"
+										>
+											<td>{{ status.submitters.join(", ") }}</td>
+											<td>
+												{{
+													status.isSubmitted
+														? t("components.molecules.TaskItemTeacher.submitted")
+														: t("pages.tasks.notGraded")
+												}}
+											</td>
+											<td>
+												{{
+													status.isGraded
+														? t("components.molecules.TaskItemTeacher.graded")
+														: t("pages.tasks.notGraded")
+												}}
+											</td>
+											<td>
+												<span v-if="status.grade !== undefined">{{ t("pages.tasks.rating") }}: {{ status.grade }}</span>
+											</td>
+										</tr>
+									</tbody>
+								</VTable>
+							</SvsLoading>
+						</section>
+					</VWindowItem>
+				</VWindow>
+			</div>
 		</SvsLoading>
 	</DefaultWireframe>
 </template>
@@ -106,16 +146,17 @@ import { formatUtc } from "@/utils/date-time.utils";
 import { buildPageTitle } from "@/utils/pageTitle";
 import { RichTextType, SubmissionApiFactory, TaskApiFactory } from "@api-server";
 import { RenderHTML } from "@feature-render-html";
-import { mdiArrowLeft, mdiBookshelf, mdiCalendarOutline, mdiFileTreeOutline, mdiPencilOutline } from "@icons/material";
+import { mdiFolderOpenOutline, mdiPencilOutline, mdiSchoolOutline } from "@icons/material";
 import { SvsLoading } from "@ui-containers";
 import { DefaultWireframe } from "@ui-layout";
 import { useTitle } from "@vueuse/core";
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRoute } from "vue-router";
 
 const { t } = useI18n();
 const route = useRoute();
+const tab = ref<"details" | "submissions">("details");
 const taskId = computed(() => String(route.params.id ?? ""));
 const tasksApi = TaskApiFactory(undefined, "/v3", $axios);
 const submissionApi = SubmissionApiFactory(undefined, "/v3", $axios);
@@ -159,3 +200,9 @@ const htmlDescription = computed(() =>
 
 useTitle(computed(() => buildPageTitle(task.value?.name ?? t("common.words.task"))));
 </script>
+
+<style lang="scss" scoped>
+.task-tabs {
+	border-bottom: 1px solid rgba(var(--v-theme-on-surface), 0.12);
+}
+</style>
