@@ -27,6 +27,17 @@ export interface DashboardCalendarEvent {
 	contextType?: "course" | "team";
 	/** Where the entry came from; a board deadline is not an event of the calendar service. */
 	source?: "board";
+	/** Own events without course or team; the calendar page may edit and delete them. */
+	editable?: boolean;
+}
+
+/** Fields of the event form, as the calendar service stores them. */
+export interface CalendarEventInput {
+	summary: string;
+	startDate: string;
+	endDate: string;
+	description?: string;
+	location?: string;
 }
 
 const parseDate = (value?: number | string): Date | undefined => {
@@ -38,7 +49,8 @@ const parseDate = (value?: number | string): Date | undefined => {
 const getContext = (event: CalendarEventResponse): Pick<DashboardCalendarEvent, "contextHref" | "contextType"> => {
 	if (event["x-sc-courseId"]) {
 		return {
-			contextHref: `/courses/${event["x-sc-courseId"]}`,
+			// The course room of the Vue client; /courses/:id is a legacy page.
+			contextHref: `/rooms/${event["x-sc-courseId"]}`,
 			contextType: "course",
 		};
 	}
@@ -65,6 +77,7 @@ const mapEvent = (event: CalendarEventResponse): DashboardCalendarEvent | undefi
 		location: event.location,
 		description: event.description,
 		...getContext(event),
+		editable: !event["x-sc-courseId"] && !event["x-sc-teamId"],
 	};
 };
 
@@ -129,4 +142,24 @@ export const useUpcomingCalendarEvents = (limit = 5) => {
 	const events = computed(() => data.value ?? []);
 
 	return { events, eventsLoadingState: loadingState, reloadEvents: execute };
+};
+
+/**
+ * Creating, changing and deleting events of the calendar service. The calendar page
+ * creates personal events; course and team events come from their own pages.
+ */
+export const useCalendarEventMutations = () => {
+	const createEvent = async (input: CalendarEventInput, userId: string): Promise<void> => {
+		await $axios.post("/calendar", { ...input, scopeId: userId });
+	};
+
+	const updateEvent = async (id: string, input: CalendarEventInput, userId: string): Promise<void> => {
+		await $axios.put(`/calendar/${id}`, { ...input, scopeId: userId });
+	};
+
+	const deleteEvent = async (id: string): Promise<void> => {
+		await $axios.delete(`/calendar/${id}`);
+	};
+
+	return { createEvent, updateEvent, deleteEvent };
 };

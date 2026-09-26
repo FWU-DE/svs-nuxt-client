@@ -38,6 +38,17 @@
 				>
 					{{ t("pages.calendar.today") }}
 				</VBtn>
+				<VBtn
+					v-if="canCreate"
+					color="primary"
+					variant="flat"
+					density="compact"
+					:prepend-icon="mdiPlus"
+					data-testid="calendar-add-event"
+					@click="openForm()"
+				>
+					{{ t("pages.calendar.addEvent") }}
+				</VBtn>
 			</div>
 		</div>
 
@@ -72,27 +83,57 @@
 				<VCardText>
 					<CalendarEventRow :event="selectedEvent" :date-label="formatUtc(selectedEvent.startsAt, 'date') ?? ''" />
 				</VCardText>
+				<VCardActions v-if="selectedEvent.editable && canEdit && confirmingDelete">
+					<span class="text-body-2 px-2" data-testid="calendar-event-confirm-delete">{{
+						t("pages.calendar.confirmDelete")
+					}}</span>
+					<VSpacer />
+					<VBtn variant="text" @click="confirmingDelete = false">{{ t("common.actions.cancel") }}</VBtn>
+					<VBtn
+						color="error"
+						variant="flat"
+						:loading="deleting"
+						data-testid="calendar-event-delete-confirm"
+						@click="removeEvent(selectedEvent)"
+					>
+						{{ t("pages.calendar.deleteEvent") }}
+					</VBtn>
+				</VCardActions>
+				<VCardActions v-else-if="selectedEvent.editable && canEdit">
+					<VSpacer />
+					<VBtn variant="text" data-testid="calendar-event-delete" @click="confirmingDelete = true">
+						{{ t("common.actions.delete") }}
+					</VBtn>
+					<VBtn color="primary" variant="flat" data-testid="calendar-event-edit" @click="openForm(selectedEvent)">
+						{{ t("common.actions.edit") }}
+					</VBtn>
+				</VCardActions>
 			</VCard>
 		</VDialog>
+
+		<CalendarEventForm v-model="formOpen" :event="editedEvent" @saved="reloadEvents" />
 	</DefaultWireframe>
 </template>
 
 <script setup lang="ts">
+import CalendarEventForm from "@/pages/calendar/CalendarEventForm.vue";
 import CalendarEventRow from "@/pages/calendar/CalendarEventRow.vue";
 import { formatUtc } from "@/utils/date-time.utils";
 import { buildPageTitle } from "@/utils/pageTitle";
-import { DashboardCalendarEvent, useCalendarEvents } from "@data-access";
-import { mdiChevronLeft, mdiChevronRight } from "@icons/material";
+import { Permission } from "@api-server";
+import { DashboardCalendarEvent, useCalendarEventMutations, useCalendarEvents } from "@data-access";
+import { notifyError, notifySuccess, useAppStore } from "@data-app";
+import { mdiChevronLeft, mdiChevronRight, mdiPlus } from "@icons/material";
 import { SvsLoading } from "@ui-containers";
 import { DefaultWireframe } from "@ui-layout";
 import { useTitle } from "@vueuse/core";
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 
 type ViewMode = "day" | "week" | "month";
 
 const { t, locale } = useI18n();
-const { events, eventsLoadingState } = useCalendarEvents();
+const { events, eventsLoadingState, reloadEvents } = useCalendarEvents();
 
 useTitle(buildPageTitle(t("pages.calendar.title")));
 
@@ -100,6 +141,39 @@ useTitle(buildPageTitle(t("pages.calendar.title")));
 const viewModes: ViewMode[] = ["day", "week", "month"];
 const viewMode = ref<ViewMode>("month");
 const selectedEvent = ref<DashboardCalendarEvent>();
+
+const { deleteEvent } = useCalendarEventMutations();
+const appStore = useAppStore();
+
+// Same permissions as the calendar service checks: create for new events, edit for changes.
+const canCreate = computed(() => appStore.userPermissions.includes(Permission.CALENDAR_CREATE));
+const canEdit = computed(() => appStore.userPermissions.includes(Permission.CALENDAR_EDIT));
+
+const formOpen = ref(false);
+const editedEvent = ref<DashboardCalendarEvent>();
+const deleting = ref(false);
+const confirmingDelete = ref(false);
+watch(selectedEvent, () => (confirmingDelete.value = false));
+
+const openForm = (event?: DashboardCalendarEvent) => {
+	editedEvent.value = event;
+	selectedEvent.value = undefined;
+	formOpen.value = true;
+};
+
+const removeEvent = async (event: DashboardCalendarEvent) => {
+	deleting.value = true;
+	try {
+		await deleteEvent(event.id);
+		selectedEvent.value = undefined;
+		notifySuccess(t("pages.calendar.deleted"));
+		await reloadEvents();
+	} catch {
+		notifyError(t("pages.calendar.form.error"));
+	} finally {
+		deleting.value = false;
+	}
+};
 
 const startOfDay = (date: Date) => new Date(date.getFullYear(), date.getMonth(), date.getDate());
 const addDays = (date: Date, days: number) => new Date(date.getFullYear(), date.getMonth(), date.getDate() + days);
