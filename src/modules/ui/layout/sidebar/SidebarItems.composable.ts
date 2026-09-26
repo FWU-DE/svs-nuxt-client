@@ -3,7 +3,6 @@ import { Permission, SchulcloudTheme } from "@api-server";
 import { useEnvConfig } from "@data-env";
 import { useFilePaths } from "@data-file";
 import {
-	mdiAccountGroupOutline,
 	mdiAccountSupervisorCircleOutline,
 	mdiApplicationBracketsOutline,
 	mdiBookshelf,
@@ -44,13 +43,6 @@ export const useSidebarItems = () => {
 			testId: "sidebar-courses",
 		},
 		{
-			title: "global.sidebar.item.teams",
-			href: "/teams",
-			icon: mdiAccountGroupOutline,
-			feature: "FEATURE_TEAMS_ENABLED",
-			testId: "sidebar-teams",
-		},
-		{
 			title: "global.sidebar.item.tasks",
 			to: "/tasks",
 			icon: mdiFormatListChecks,
@@ -71,12 +63,6 @@ export const useSidebarItems = () => {
 					title: "global.sidebar.item.courses",
 					to: "/files/courses",
 					testId: "sidebar-files-coursefiles",
-				},
-				{
-					title: "global.sidebar.item.teams",
-					to: "/files/teams",
-					feature: "FEATURE_TEAMS_ENABLED",
-					testId: "sidebar-files-teamfiles",
 				},
 				{
 					title: "global.sidebar.item.filesShared",

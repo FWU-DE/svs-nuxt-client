@@ -20,20 +20,20 @@ const setup = (
 	{
 		permissions,
 		sidebarExpanded,
-		isTeamsEnabled,
+		isMediaShelfEnabled,
 		licenseSummaryUrl,
 	}: {
 		permissions?: Permission[];
 		sidebarExpanded?: boolean;
-		isTeamsEnabled?: boolean;
+		isMediaShelfEnabled?: boolean;
 		licenseSummaryUrl?: string;
-	} = { permissions: [], sidebarExpanded: true, isTeamsEnabled: false }
+	} = { permissions: [], sidebarExpanded: true, isMediaShelfEnabled: false }
 ) => {
 	setActivePinia(createTestingPinia());
 	createTestAppStoreWithPermissions(permissions ?? []);
 	createTestEnvStore({
 		SC_THEME: SchulcloudTheme.BRB,
-		FEATURE_TEAMS_ENABLED: isTeamsEnabled,
+		FEATURE_MEDIA_SHELF_ENABLED: isMediaShelfEnabled,
 		DOCUMENT_BASE_DIR: "https://example.com/documents/",
 		LICENSE_SUMMARY_URL: licenseSummaryUrl ?? "",
 	});
@@ -108,21 +108,21 @@ describe("@ui-layout/Sidebar", () => {
 		});
 	});
 
-	describe("when user does not have needed permission", () => {
+	describe("when a feature flagged item's flag is off", () => {
 		it("should filter items correctly", () => {
 			const { wrapper } = setup({ permissions: [] });
 
-			expect(wrapper.find("[data-testid='sidebar-teams']").exists()).toBe(false);
+			expect(wrapper.find("[data-testid='sidebar-mediashelf']").exists()).toBe(false);
 		});
 	});
 
-	describe("when user does have needed permission", () => {
+	describe("when a feature flagged item's flag is on", () => {
 		it("should display items correctly ", async () => {
 			const { wrapper } = setup({
-				isTeamsEnabled: true,
+				isMediaShelfEnabled: true,
 			});
 
-			expect(wrapper.find("[data-testid='sidebar-teams']").exists()).toBe(true);
+			expect(wrapper.find("[data-testid='sidebar-mediashelf']").exists()).toBe(true);
 		});
 	});
 
