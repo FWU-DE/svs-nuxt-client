@@ -95,6 +95,12 @@ export const routes: Readonly<RouteRecordRaw>[] = [
 		props: { kind: "students" },
 	},
 	{
+		path: `/administration/students/:id(${REGEX_ID})/skipregistration`,
+		component: () => import("@/pages/administration/SkipRegistration.page.vue"),
+		name: "administration-students-skipregistration",
+		beforeEnter: createPermissionGuard([Permission.STUDENT_SKIP_REGISTRATION]),
+	},
+	{
 		path: "/administration/students/new",
 		component: () => import("@/pages/administration/StudentCreate.page.vue"),
 		name: "administration-students-new",

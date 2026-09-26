@@ -70,6 +70,7 @@
 							<VIcon :icon="consentIcon.icon" :color="consentIcon.color" size="small" />
 						</h2>
 						<VBtn
+							v-if="!hasImportHash"
 							size="small"
 							variant="outlined"
 							:prepend-icon="mdiPencilOutline"
@@ -79,7 +80,18 @@
 							{{ t("legacy.global.button.edit") }}
 						</VBtn>
 					</div>
-					<VRow data-testid="consents-overview">
+					<div v-if="hasImportHash" data-testid="consent-on-paper">
+						<p>{{ t("legacy.administration.longText.text.thereIsNoDeclarationOfConsent") }}</p>
+						<VBtn
+							variant="outlined"
+							:prepend-icon="mdiCheckboxMarkedOutline"
+							:to="`/administration/students/${userId}/skipregistration`"
+							data-testid="button-skip-registration"
+						>
+							{{ t("legacy.administration.button.receivedConsentOnPaper") }}
+						</VBtn>
+					</div>
+					<VRow v-else data-testid="consents-overview">
 						<VCol v-for="part in consentParts" :key="part.key" cols="12" md="6">
 							<p class="font-weight-bold mb-1">{{ part.label }}</p>
 							<VRadioGroup v-model="part.model.form" inline :disabled="!editConsent" hide-details>
@@ -221,7 +233,7 @@ import { buildPageTitle } from "@/utils/pageTitle";
 import { Permission } from "@api-server";
 import { notifyError, notifySuccess, useAppStore, useSchoolStore } from "@data-app";
 import { useEnvConfig } from "@data-env";
-import { mdiCheck, mdiCheckAll, mdiClose, mdiPencilOutline } from "@icons/material";
+import { mdiCheck, mdiCheckAll, mdiCheckboxMarkedOutline, mdiClose, mdiPencilOutline } from "@icons/material";
 import { SvsLoading } from "@ui-containers";
 import { Breadcrumb, DefaultWireframe } from "@ui-layout";
 import { useTitle } from "@vueuse/core";
@@ -237,6 +249,7 @@ type AdminUser = {
 	lastName: string;
 	email: string;
 	birthday?: string;
+	importHash?: string;
 	consentStatus?: string;
 	consent?: { userConsent?: Consent; parentConsents?: Consent[] };
 };
@@ -286,6 +299,9 @@ const form = ref<{ validate: () => Promise<{ valid: boolean }> }>();
 const minBirthday = dayjs().subtract(100, "year").format("YYYY-MM-DD");
 const maxBirthday = dayjs().subtract(4, "year").format("YYYY-MM-DD");
 const required = (value: string) => !!value?.trim() || t("pages.legacyPages.required");
+
+// An imported student who has not registered yet: the consent can be given on paper instead.
+const hasImportHash = computed(() => isStudent.value && !!user.value?.importHash);
 
 const consentParts = computed(() =>
 	isStudent.value
