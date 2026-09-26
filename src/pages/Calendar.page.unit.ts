@@ -36,11 +36,23 @@ describe("CalendarPage", () => {
 		return { wrapper };
 	};
 
-	it("renders an empty state", async () => {
+	it("renders the month grid like the legacy calendar", async () => {
 		const { wrapper } = setup();
 		await flushPromises();
 
-		expect(wrapper.find("[data-testid='calendar-empty']").exists()).toBe(true);
+		expect(wrapper.find("[data-testid='calendar-grid']").exists()).toBe(true);
+		expect(wrapper.findAll("[data-testid^='calendar-day-']")).toHaveLength(42);
+		expect(wrapper.find("[data-testid='calendar-event']").exists()).toBe(false);
+	});
+
+	it("switches to week and day view", async () => {
+		const { wrapper } = setup();
+		await flushPromises();
+
+		await wrapper.get("[data-testid='calendar-view-week']").trigger("click");
+		expect(wrapper.findAll("[data-testid^='calendar-day-']")).toHaveLength(7);
+		await wrapper.get("[data-testid='calendar-view-day']").trigger("click");
+		expect(wrapper.findAll("[data-testid^='calendar-day-']")).toHaveLength(1);
 	});
 
 	it("renders calendar events", async () => {
@@ -54,7 +66,7 @@ describe("CalendarPage", () => {
 		]);
 		await flushPromises();
 
-		expect(wrapper.find("[data-testid='calendar-event-list']").exists()).toBe(true);
-		expect(wrapper.text()).toContain("Team meeting");
+		const event = wrapper.get("[data-testid='calendar-event']");
+		expect(event.text()).toContain("Team meeting");
 	});
 });

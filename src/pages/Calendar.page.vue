@@ -8,7 +8,12 @@
 			<h2 class="calendar-range mb-0" data-testid="calendar-range">{{ rangeTitle }}</h2>
 			<div class="d-flex ga-2">
 				<VBtnGroup variant="outlined" density="compact" divided>
-					<VBtn :icon="mdiChevronLeft" :aria-label="t('pages.calendar.previous')" data-testid="calendar-prev" @click="move(-1)" />
+					<VBtn
+						:icon="mdiChevronLeft"
+						:aria-label="t('pages.calendar.previous')"
+						data-testid="calendar-prev"
+						@click="move(-1)"
+					/>
 					<VBtn
 						v-for="mode in viewModes"
 						:key="mode"
@@ -18,9 +23,19 @@
 					>
 						{{ t(`pages.calendar.view.${mode}`) }}
 					</VBtn>
-					<VBtn :icon="mdiChevronRight" :aria-label="t('pages.calendar.next')" data-testid="calendar-next" @click="move(1)" />
+					<VBtn
+						:icon="mdiChevronRight"
+						:aria-label="t('pages.calendar.next')"
+						data-testid="calendar-next"
+						@click="move(1)"
+					/>
 				</VBtnGroup>
-				<VBtn variant="outlined" density="compact" data-testid="calendar-today" @click="cursor = startOfDay(new Date())">
+				<VBtn
+					variant="outlined"
+					density="compact"
+					data-testid="calendar-today"
+					@click="cursor = startOfDay(new Date())"
+				>
 					{{ t("pages.calendar.today") }}
 				</VBtn>
 			</div>
@@ -45,7 +60,8 @@
 						data-testid="calendar-event"
 						@click="selectedEvent = event"
 					>
-						<span class="font-weight-bold mr-1">{{ formatUtc(event.startsAt, "time") }}</span>{{ event.title }}
+						<span class="font-weight-bold mr-1">{{ formatUtc(event.startsAt, "time") }}</span
+						>{{ event.title }}
 					</button>
 				</div>
 			</div>

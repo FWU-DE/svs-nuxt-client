@@ -1252,14 +1252,16 @@ export default {
 	"pages.accountSettings.label.newPassword": "Nueva contraseña:",
 	"pages.accountSettings.label.repeatNewPassword": "Repetir nueva contraseña:",
 	"pages.accountSettings.save": "Guardar la configuración de la cuenta",
-	"pages.accountSettings.passwordRules": "Al menos 8 caracteres con mayúsculas y minúsculas, incluyendo al menos un número y un carácter especial.",
+	"pages.accountSettings.passwordRules":
+		"Al menos 8 caracteres con mayúsculas y minúsculas, incluyendo al menos un número y un carácter especial.",
 	"pages.accountSettings.allowedCharacters": "Se permiten estos caracteres especiales:",
 	"pages.accountSettings.specialCharacters": "! § $% & / () =? \\;:,. # + * ~ -",
 	"pages.accountSettings.thirdPartyLogins": "Inicios de sesión de terceros",
 	"pages.accountThirdPartyProviders.provider": "Proveedor",
 	"pages.accountThirdPartyProviders.back": "Atrás",
 	"pages.accountTeams.visibilityDisabled": "La visibilidad de las invitaciones a salas y equipos está desactivada",
-	"pages.files.overview.teamFiles.description": "Aquí puedes encontrar todos los archivos utilizados en los respectivos equipos. Todos los participantes del equipo tienen acceso a estos archivos.",
+	"pages.files.overview.teamFiles.description":
+		"Aquí puedes encontrar todos los archivos utilizados en los respectivos equipos. Todos los participantes del equipo tienen acceso a estos archivos.",
 	"pages.files.overview.open": "Abrir archivos",
 	"pages.news.overview.add": "Añadir noticias",
 	"pages.news.overview.continueReading": "Leer más",
@@ -1847,9 +1849,12 @@ export default {
 	"pages.files.overview.personalFiles": "Mis archivos personales",
 	"pages.files.overview.sharedFiles": "Archivos compartidos conmigo",
 	"pages.files.overview.teamFiles": "Mis archivos de equipo",
-	"pages.files.overview.personalFiles.description": "Aquí puedes encontrar todos tus archivos personales. Solo tú tienes acceso a estos archivos, pero también puedes compartirlos con otros usuarios.",
-	"pages.files.overview.courseFiles.description": "Aquí encontrarás todos los archivos utilizados en los respectivos cursos de la clase. Todos los participantes del curso, es decir, tanto el profesor como los alumnos, tienen acceso a estos archivos.",
-	"pages.files.overview.sharedFiles.description": "Aquí puedes encontrar todos los archivos que han compartido contigo. Estos archivos han sido compartidos por otros usuarios.",
+	"pages.files.overview.personalFiles.description":
+		"Aquí puedes encontrar todos tus archivos personales. Solo tú tienes acceso a estos archivos, pero también puedes compartirlos con otros usuarios.",
+	"pages.files.overview.courseFiles.description":
+		"Aquí encontrarás todos los archivos utilizados en los respectivos cursos de la clase. Todos los participantes del curso, es decir, tanto el profesor como los alumnos, tienen acceso a estos archivos.",
+	"pages.files.overview.sharedFiles.description":
+		"Aquí puedes encontrar todos los archivos que han compartido contigo. Estos archivos han sido compartidos por otros usuarios.",
 	"pages.files.overview.favorites.description": "Buscar archivos y abrir vistas filtradas.",
 	"pages.files.overview.nativeNote":
 		"Esta vista general se ha migrado de forma nativa. Las listas concretas de archivos se migrarán en pasos posteriores separados.",

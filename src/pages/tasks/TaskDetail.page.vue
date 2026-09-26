@@ -14,10 +14,7 @@
 			<div v-else data-testid="task-detail-card">
 				<div class="d-flex justify-space-between align-start flex-wrap ga-4 mb-6">
 					<div class="text-body-2" data-testid="task-detail-due">
-						<template v-if="task.availableDate">{{ formatUtc(task.availableDate, "dateTime") }}</template>
-						<template v-if="task.dueDate">
-							{{ t("pages.taskDetail.till") }}: {{ formatUtc(task.dueDate, "dateTime") }}
-						</template>
+						{{ dateRange }}
 						<VChip
 							v-if="task.status.isDraft"
 							size="small"
@@ -196,6 +193,16 @@ const htmlDescription = computed(() =>
 	task.value?.description && task.value.description.type !== RichTextType.PLAIN_TEXT
 		? task.value.description.content
 		: undefined
+);
+
+// Legacy header line: "<available> bis: <due>".
+const dateRange = computed(() =>
+	[
+		task.value?.availableDate ? formatUtc(task.value.availableDate, "dateTime") : undefined,
+		task.value?.dueDate ? `${t("pages.taskDetail.till")}: ${formatUtc(task.value.dueDate, "dateTime")}` : undefined,
+	]
+		.filter(Boolean)
+		.join(" ")
 );
 
 useTitle(computed(() => buildPageTitle(task.value?.name ?? t("common.words.task"))));

@@ -1228,14 +1228,16 @@ export default {
 	"pages.accountSettings.label.newPassword": "New password:",
 	"pages.accountSettings.label.repeatNewPassword": "Repeat new password:",
 	"pages.accountSettings.save": "Save account settings",
-	"pages.accountSettings.passwordRules": "At least 8 characters with upper and lower case, including at least one number and one special character.",
+	"pages.accountSettings.passwordRules":
+		"At least 8 characters with upper and lower case, including at least one number and one special character.",
 	"pages.accountSettings.allowedCharacters": "These special characters are allowed:",
 	"pages.accountSettings.specialCharacters": "! § $% & / () =? \\;:,. # + * ~ -",
 	"pages.accountSettings.thirdPartyLogins": "Third party logins",
 	"pages.accountThirdPartyProviders.provider": "Provider",
 	"pages.accountThirdPartyProviders.back": "Back",
 	"pages.accountTeams.visibilityDisabled": "Visibility for room and team invitations is disabled",
-	"pages.files.overview.teamFiles.description": "Here you can find all files used in the respective teams. All participants of the team have access to these files.",
+	"pages.files.overview.teamFiles.description":
+		"Here you can find all files used in the respective teams. All participants of the team have access to these files.",
 	"pages.files.overview.open": "Open files",
 	"pages.news.overview.add": "Add news",
 	"pages.news.overview.continueReading": "Read more",
@@ -1812,9 +1814,12 @@ export default {
 	"pages.files.overview.personalFiles": "My personal files",
 	"pages.files.overview.sharedFiles": "Files shared with me",
 	"pages.files.overview.teamFiles": "My team files",
-	"pages.files.overview.personalFiles.description": "Here you can find all your personal files. Only you have access to these files, but you can also share them with other users.",
-	"pages.files.overview.courseFiles.description": "Here you will find all files used in the respective courses in class. All participants of the course, i.e. the teacher and the students, have access to these files.",
-	"pages.files.overview.sharedFiles.description": "Here you can find all the files you have shared with you. These are files that have been made available by other users.",
+	"pages.files.overview.personalFiles.description":
+		"Here you can find all your personal files. Only you have access to these files, but you can also share them with other users.",
+	"pages.files.overview.courseFiles.description":
+		"Here you will find all files used in the respective courses in class. All participants of the course, i.e. the teacher and the students, have access to these files.",
+	"pages.files.overview.sharedFiles.description":
+		"Here you can find all the files you have shared with you. These are files that have been made available by other users.",
 	"pages.files.overview.favorites.description": "Search files and open filtered views.",
 	"pages.files.overview.nativeNote":
 		"This overview has been migrated natively. The concrete file lists will be migrated in separate follow-up slices.",

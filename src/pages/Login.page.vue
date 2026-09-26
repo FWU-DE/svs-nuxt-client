@@ -80,8 +80,8 @@
 </template>
 
 <script setup lang="ts">
-import { buildPageTitle } from "@/utils/pageTitle";
 import { $axios } from "@/utils/api";
+import { buildPageTitle } from "@/utils/pageTitle";
 import { AuthenticationApiFactory } from "@api-server";
 import { mdiEyeOffOutline, mdiEyeOutline } from "@icons/material";
 import { useTitle } from "@vueuse/core";

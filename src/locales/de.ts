@@ -1256,14 +1256,16 @@ export default {
 	"pages.accountSettings.label.newPassword": "Neues Passwort:",
 	"pages.accountSettings.label.repeatNewPassword": "Neues Passwort wiederholen:",
 	"pages.accountSettings.save": "Accounteinstellungen speichern",
-	"pages.accountSettings.passwordRules": "Mindestens 8 Zeichen mit Groß- und Kleinschreibung, davon jeweils mindestens eine Zahl und ein Sonderzeichen.",
+	"pages.accountSettings.passwordRules":
+		"Mindestens 8 Zeichen mit Groß- und Kleinschreibung, davon jeweils mindestens eine Zahl und ein Sonderzeichen.",
 	"pages.accountSettings.allowedCharacters": "Erlaubte Sonderzeichen sind:",
 	"pages.accountSettings.specialCharacters": "!§$%&/()=?\\;:,.#+*~-",
 	"pages.accountSettings.thirdPartyLogins": "Drittanbieter-Logins",
 	"pages.accountThirdPartyProviders.provider": "Anbieter",
 	"pages.accountThirdPartyProviders.back": "Zurück",
 	"pages.accountTeams.visibilityDisabled": "Sichtbarkeit für Raum- und Teameinladungen ist deaktiviert",
-	"pages.files.overview.teamFiles.description": "Hier findest du alle Dateien, die in den jeweiligen Teams verwendet werden. Alle Teilnehmer:innen des Teams haben auf diese Dateien Zugriff.",
+	"pages.files.overview.teamFiles.description":
+		"Hier findest du alle Dateien, die in den jeweiligen Teams verwendet werden. Alle Teilnehmer:innen des Teams haben auf diese Dateien Zugriff.",
 	"pages.files.overview.open": "Dateien öffnen",
 	"pages.news.overview.add": "News hinzufügen",
 	"pages.news.overview.continueReading": "Weiterlesen",
@@ -1847,9 +1849,12 @@ export default {
 	"pages.files.overview.personalFiles": "Meine persönlichen Dateien",
 	"pages.files.overview.sharedFiles": "Mit mir geteilte Dateien",
 	"pages.files.overview.teamFiles": "Meine Team-Dateien",
-	"pages.files.overview.personalFiles.description": "Hier findest du alle deine persönlichen Dateien. Auf diese Dateien hast nur du Zugriff, du kannst sie aber auch mit anderen Nutzer:innen teilen.",
-	"pages.files.overview.courseFiles.description": "Hier findest du alle Dateien, die in den jeweiligen Kursen im Unterricht verwendet werden. Alle Teilnehmer:innen des Kurses, also die Lehrkraft und die Schüler:innen, haben auf diese Dateien Zugriff.",
-	"pages.files.overview.sharedFiles.description": "Hier findest du alle mit dir geteilten Dateien. Dies sind Dateien die von anderen Nutzer:innen zur Verfügung gestellt worden sind.",
+	"pages.files.overview.personalFiles.description":
+		"Hier findest du alle deine persönlichen Dateien. Auf diese Dateien hast nur du Zugriff, du kannst sie aber auch mit anderen Nutzer:innen teilen.",
+	"pages.files.overview.courseFiles.description":
+		"Hier findest du alle Dateien, die in den jeweiligen Kursen im Unterricht verwendet werden. Alle Teilnehmer:innen des Kurses, also die Lehrkraft und die Schüler:innen, haben auf diese Dateien Zugriff.",
+	"pages.files.overview.sharedFiles.description":
+		"Hier findest du alle mit dir geteilten Dateien. Dies sind Dateien die von anderen Nutzer:innen zur Verfügung gestellt worden sind.",
 	"pages.files.overview.favorites.description": "Dateien suchen und gefilterte Ansichten öffnen.",
 	"pages.files.overview.nativeNote":
 		"Diese Übersicht ist nativ migriert. Die konkreten Datei-Listen werden in separaten Folgeschnitten migriert.",

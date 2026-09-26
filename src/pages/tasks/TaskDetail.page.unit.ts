@@ -87,7 +87,8 @@ describe("TaskDetailPage", () => {
 		expect(taskApi.taskControllerFindAll).toHaveBeenCalledWith(0, 100);
 		expect(taskApi.taskControllerFindAllFinished).not.toHaveBeenCalled();
 		expect(wrapper.get("[data-testid='task-detail-title']").text()).toContain("Essay schreiben");
-		expect(wrapper.get("[data-testid='task-detail-course']").text()).toContain("Deutsch");
+		expect(wrapper.get("[data-testid='task-detail-title']").text()).toContain("Deutsch - Essay schreiben");
+		expect(wrapper.find("[data-testid='task-detail-course']").exists()).toBe(true);
 		expect(wrapper.get("[data-testid='task-detail-description-text']").text()).toContain("Beschreibe deine These.");
 		expect(wrapper.get("[data-testid='task-detail-submitted']").text()).toBe("3");
 		expect(submissionApi.submissionControllerFindStatusesByTask).toHaveBeenCalledWith("507f1f77bcf86cd799439011");

@@ -17,6 +17,7 @@ describe("AccountTeamsPage", () => {
 		});
 
 		expect(wrapper.find("[data-testid='account-teams-title']").exists()).toBe(true);
-		expect(wrapper.find("[data-testid='account-teams-native-note']").exists()).toBe(true);
+		expect(wrapper.find("[data-testid='account-teams-visibility']").exists()).toBe(true);
+		expect(wrapper.find("[data-testid='account-teams-back']").exists()).toBe(true);
 	});
 });

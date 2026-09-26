@@ -1245,14 +1245,16 @@ export default {
 	"pages.accountSettings.label.newPassword": "Новий пароль:",
 	"pages.accountSettings.label.repeatNewPassword": "Повторіть новий пароль:",
 	"pages.accountSettings.save": "Зберегти налаштування облікового запису",
-	"pages.accountSettings.passwordRules": "Принаймні 8 символів у верхньому та нижньому регістрі, у тому числі принаймні одну цифру та один спеціальний символ.",
+	"pages.accountSettings.passwordRules":
+		"Принаймні 8 символів у верхньому та нижньому регістрі, у тому числі принаймні одну цифру та один спеціальний символ.",
 	"pages.accountSettings.allowedCharacters": "Дозволені такі спеціальні символи:",
 	"pages.accountSettings.specialCharacters": "! § $% & / () =? \\;:,. # + * ~ -",
 	"pages.accountSettings.thirdPartyLogins": "Вхід в систему третіх сторін",
 	"pages.accountThirdPartyProviders.provider": "Провайдер",
 	"pages.accountThirdPartyProviders.back": "Назад",
 	"pages.accountTeams.visibilityDisabled": "Видимість запрошень для кімнат і команд вимкнено",
-	"pages.files.overview.teamFiles.description": "Тут можна знайти всі файли, які використовуються у відповідних командах. Усі учасники команди мають доступ до цих файлів.",
+	"pages.files.overview.teamFiles.description":
+		"Тут можна знайти всі файли, які використовуються у відповідних командах. Усі учасники команди мають доступ до цих файлів.",
 	"pages.files.overview.open": "Відкрити файли",
 	"pages.news.overview.add": "Додати новини",
 	"pages.news.overview.continueReading": "Детальніше",
@@ -1829,9 +1831,12 @@ export default {
 	"pages.files.overview.personalFiles": "Мої персональні файли",
 	"pages.files.overview.sharedFiles": "Файли, якими поділилися зі мною",
 	"pages.files.overview.teamFiles": "Файли моєї команди",
-	"pages.files.overview.personalFiles.description": "Тут можна знайти всі ваші персональні файли. Тільки ви маєте доступ до цих файлів, але ви також можете поширити їх іншим користувачам.",
-	"pages.files.overview.courseFiles.description": "Тут ви знайдете всі файли, які використовуються у відповідних курсах у класі. Усі учасники курсу, тобто викладач і учні, мають доступ до цих файлів.",
-	"pages.files.overview.sharedFiles.description": "Тут можна знайти всі файли, якими з вами поділилися. Це файли, надані іншими користувачами.",
+	"pages.files.overview.personalFiles.description":
+		"Тут можна знайти всі ваші персональні файли. Тільки ви маєте доступ до цих файлів, але ви також можете поширити їх іншим користувачам.",
+	"pages.files.overview.courseFiles.description":
+		"Тут ви знайдете всі файли, які використовуються у відповідних курсах у класі. Усі учасники курсу, тобто викладач і учні, мають доступ до цих файлів.",
+	"pages.files.overview.sharedFiles.description":
+		"Тут можна знайти всі файли, якими з вами поділилися. Це файли, надані іншими користувачами.",
 	"pages.files.overview.favorites.description": "Шукайте файли та відкривайте відфільтровані перегляди.",
 	"pages.files.overview.nativeNote":
 		"Цей огляд перенесено нативно. Конкретні списки файлів буде перенесено окремими наступними зрізами.",

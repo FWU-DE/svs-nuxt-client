@@ -51,9 +51,9 @@
 </template>
 
 <script setup lang="ts">
+import LegacyScCard from "@/components/legacy/LegacyScCard.vue";
 import { useSafeAxiosRunner } from "@/composables/async-tasks.composable";
 import { $axios } from "@/utils/api";
-import LegacyScCard from "@/components/legacy/LegacyScCard.vue";
 import { fromNowUtc } from "@/utils/date-time.utils";
 import { buildPageTitle } from "@/utils/pageTitle";
 import { NewsApiFactory, Permission } from "@api-server";

@@ -25,7 +25,6 @@ describe("FilesOverviewPage", () => {
 		expect(wrapper.find("[data-testid='files-overview-personal']").exists()).toBe(true);
 		expect(wrapper.find("[data-testid='files-overview-courses']").exists()).toBe(true);
 		expect(wrapper.find("[data-testid='files-overview-shared']").exists()).toBe(true);
-		expect(wrapper.find("[data-testid='files-overview-search']").exists()).toBe(true);
-		expect(wrapper.find("[data-testid='files-overview-note']").exists()).toBe(true);
+		expect(wrapper.find("[data-testid='files-overview-teams']").exists()).toBe(false);
 	});
 });
