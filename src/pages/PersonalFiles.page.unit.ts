@@ -16,6 +16,7 @@ describe("PersonalFilesPage", () => {
 		createTestEnvStore({ SC_TITLE: "Test Cloud" });
 		fileApi = {
 			list: vi.fn(),
+			upload: vi.fn(),
 		} as unknown as Mocked<FileApiInterface>;
 		vi.spyOn(fileStorageApi, "FileApiFactory").mockReturnValue(fileApi);
 	});
@@ -63,6 +64,40 @@ describe("PersonalFilesPage", () => {
 
 		expect(fileApi.list).not.toHaveBeenCalled();
 		expect(wrapper.find("[data-testid='personal-files-missing-context']").exists()).toBe(true);
+	});
+
+	it("uploads picked files into the personal area and reloads the list", async () => {
+		const { wrapper } = await setup();
+		fileApi.upload.mockResolvedValue(mockApiResponse({ data: fileRecordFactory.build() }));
+		const file = new File(["x"], "neu.txt");
+		const input = wrapper.get("[data-testid='personal-files-input']");
+		Object.defineProperty(input.element, "files", { value: [file] });
+
+		await input.trigger("change");
+		await flushPromises();
+
+		expect(fileApi.upload).toHaveBeenCalledWith(
+			"school-1",
+			StorageLocation.SCHOOL,
+			"user-1",
+			FileRecordParentType.USERS,
+			file
+		);
+		expect(fileApi.list).toHaveBeenCalledTimes(2);
+	});
+
+	it("sorts by name when chosen, newest first by default", async () => {
+		const { wrapper } = await setup({
+			files: [
+				fileRecordFactory.build({ id: "a", name: "Alpha.pdf", createdAt: "2026-01-01T00:00:00Z" }),
+				fileRecordFactory.build({ id: "b", name: "Beta.pdf", createdAt: "2026-02-01T00:00:00Z" }),
+			],
+		});
+		const order = () => wrapper.findAll("[data-testid^='personal-file-']").map((row) => row.attributes("data-testid"));
+
+		expect(order()).toEqual(["personal-file-b", "personal-file-a"]);
+		await wrapper.get("[data-testid='personal-files-sort-order']").trigger("click");
+		expect(order()).toEqual(["personal-file-a", "personal-file-b"]);
 	});
 
 	it("renders empty state", async () => {
