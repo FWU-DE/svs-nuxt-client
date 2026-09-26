@@ -68,3 +68,23 @@ declare module "@/assets/img/safely_connected.png" {
 	const value: string;
 	export default value;
 }
+
+declare module "@/assets/img/help/admin-icon.png" {
+	const value: string;
+	export default value;
+}
+
+declare module "@/assets/img/help/lehrer-icon.png" {
+	const value: string;
+	export default value;
+}
+
+declare module "@/assets/img/help/schueler-icon.png" {
+	const value: string;
+	export default value;
+}
+
+declare module "@/assets/img/help/schulleitung-icon.png" {
+	const value: string;
+	export default value;
+}
