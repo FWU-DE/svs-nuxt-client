@@ -2765,6 +2765,8 @@ export default {
 	"legacy.administration.button.consent": "Consents:",
 	"legacy.administration.button.generatePersonalInvitationLink": "Generate personal invitation link",
 	"legacy.administration.button.onlyRegistrationNeeded": "Registration:",
+	"legacy.administration.button.printListWithAccessData": "Print list with access data",
+	"legacy.administration.button.receivedConsentOnPaper": "Received Consent on Paper",
 	"legacy.administration.button.sendTheInvitationLinkByMail": "Send invitation link by e-mail",
 	"legacy.administration.classes.button.addClass": "Add class",
 	"legacy.administration.classes.button.transferClassToTheNextSchoolYear": "Move class to next school year",
@@ -2783,20 +2785,46 @@ export default {
 	"legacy.administration.classes.text.theNextStepIsToInviteOrAdd": "In the next step you can invite or add students to the class.",
 	"legacy.administration.controller.headline.editClass": "Edit class '{name}'",
 	"legacy.administration.controller.headline.manageClass": "Manage class '{name}'",
+	"legacy.administration.controller.headline.studentImport": "Import student",
+	"legacy.administration.controller.headline.teacherImport": "Import teacher",
 	"legacy.administration.controller.headline.upgradeClass": "Bring class '{name}' to the new school year",
 	"legacy.administration.controller.link.analogueConsent": "Declare consent manually",
 	"legacy.administration.controller.link.changePassword": "Change Password",
 	"legacy.administration.controller.link.createANewClass": "Create a new class",
 	"legacy.administration.controller.link.editTeacher": "Edit teacher",
 	"legacy.administration.controller.link.editingStudents": "Edit students",
+	"legacy.administration.controller.link.toGiveConsent": "Give consent",
+	"legacy.administration.controller.text.agreementSuccessfullyDeclared": "Consent successfully declared",
+	"legacy.administration.controller.text.anUnknownErrorOccurred": "There was an unknown error while importing.",
 	"legacy.administration.controller.text.analogueConsent": "If you wish to obtain paper consent, you can unlock students in the system as follows:",
 	"legacy.administration.controller.text.analogueConsentBullets": "<br/> <br/><ol><li>Go to the <i>management</i> section and select the <i>students</i> section</li><li>If necessary, use the filter function for classes and completed registrations</li><li>Select all relevant students</li><li>Click on <i>actions</i> and select the item <i>analogue consent form</i> to release the students and retrieve the start passwords</li></ol>",
+	"legacy.administration.controller.text.errorImportingUsers": "Error: {errorMessage}",
+	"legacy.administration.controller.text.importFailed": "Import failed. Please check your input data and try again.",
+	"legacy.administration.controller.text.importMayBeStillRunning":
+		"Import in progress. Depending on file size this process could take a few minutes.",
 	"legacy.administration.controller.text.passTheRegistrationLinkDirectly": "Send the registration link directly to the student.",
 	"legacy.administration.controller.text.registrationExplanation": "First give the registration link to the parents. They create the student data and electronically declare their consent. The student is then registered in the {title} and you can see him in your class list. The student can log in with his e-mail address and his individual initial password. After logging in for the first time, every student must change his password. If the student is over 14 years old, he must also give his electronic consent so that he can use the {title} .",
+	"legacy.administration.controller.text.setupFailed": "Setup failed. Please try again later. ",
+	"legacy.administration.controller.text.successfullyImportedUser":
+		"{amountImported} out of {amountTotal} users imported successfully ({amountCreated} created {amountUpdated} updated).",
+	"legacy.administration.controller.text.successfullyImportedUsers":
+		"{amountImported} out of {amountTotal} users imported successfully ({amountCreated} created {amountUpdated} updated).",
 	"legacy.administration.controller.text.theStepsForTheParentsAreOmitted": "The steps for the parents are omitted automatically.",
 	"legacy.administration.controller.text.whenLoggingInForTheFirstTime": "When logging in for the first time, students must change their password. If they have entered an e-mail address, they can have the changed password sent to them or generate a new password if it is lost. Alternatively, admins can click on <i>Edit</i> behind the name in the Administration > Students section and renew the password.",
 	"legacy.administration.controller.text.yourStudentsAreAtLeast": "Are your students at least {age} years old?",
 	"legacy.administration.controller.text.yourStudentsAreUnder": "Are your students less than {age} years old ?",
+	"legacy.administration.form_Import.label.fileSizeInfo": "max file size",
+	"legacy.administration.form_Import.label.selectCSVFile": "Select CSV file",
+	"legacy.administration.form_Import.label.sendRegistrationLinkToUsers":
+		"Send registration links to users immediately after import",
+	"legacy.administration.form_Import.text.alternativelyYouCanCallUpTheRegistration":
+		"Alternatively, you can call the registration links later and send them to your users by e-mail or QR print sheet.",
+	"legacy.administration.form_Import.text.attention":
+		"⚠️ ATTENTION: When importing large data sets, an error message is currently displayed shortly after the start. The import process still continues invisibly in the background. Duration: about 4 minutes per 1000 users. Please wait for the corresponding time and then update your browser window to review the updated student overview.",
+	"legacy.administration.form_Import.text.importUserData":
+		'Import user data via .csv file (<a href="#csv-import-example">example</a> ) and send your users a registration link.',
+	"legacy.administration.form_Import.text.youCanFindMoreInformationOnTheStructure":
+		'You can find more information on the structure of the .csv file, class assignment and the registration process <a href="https://docs.dbildungscloud.de/x/NYBgAw" target="_blank">here</a> .',
 	"legacy.administration.global.button.sendLinksToStudentEmailAddresses": "Send links to students' e-mail addresses",
 	"legacy.administration.global.label.afterSavingAllStudentsAdded": "(After saving, all students will be added automatically!)",
 	"legacy.administration.global.label.assignPassword": "Assign password:",
@@ -2817,6 +2845,7 @@ export default {
 	"legacy.administration.global.label.weekday": "Weekday",
 	"legacy.administration.global.placeholder.selectGrade": "Select grade",
 	"legacy.administration.global.placeholder.selectStudent": "Select students",
+	"legacy.administration.global.text.forStudentsUnder": "For pupils under {minAge} years: parental consent",
 	"legacy.administration.global.text.inviteparentsAndStudentViaLink": "Invite parents and students via a link to submit their consent",
 	"legacy.administration.global.text.obtainADeclarationConsent": "Obtain a declaration of consent",
 	"legacy.administration.global.text.orSelectStudentFromTable": "Alternatively, use <i>Administration > Students</i>. There you can also send links to students who are not fully registered or create QR print sheets.",
@@ -2826,6 +2855,8 @@ export default {
 	"legacy.administration.longText.text.canCreateYearIndependentClasses": "You can create independent classes with free names. These classes cannot be <i> 'moved' </i> by the administrator, but must be updated manually.",
 	"legacy.administration.longText.text.registrationNotCompleted": "The student has not yet completed the registration. Retrieve a personal invitation link to complete the registration and distribute it to the student.",
 	"legacy.administration.longText.text.teacherRegistrationNotCompleted": "The teacher has not yet completed the registration. Retrieve a personal invitation link to complete the registration and distribute it to the teacher.",
+	"legacy.administration.longText.text.thereIsNoDeclarationOfConsent":
+		"There is no consent form for the user yet. Call a personal invitation link to complete the registration and distribute it to the user or his parents. During registration, the consent is then granted by the user himself. If a declaration of consent is available in paper form, the user can be activated by clicking on 'Received consent on paper' and a start password can be assigned. This will unlock the login.",
 	"legacy.administration.students.text.forAllStudentsWithoutAFullConsentForm": "For all students without a full declaration of consent:",
 	"legacy.administration.text.moreOptions": "More options",
 	"legacy.administration.text.yourClassDoesntFitInto": "Your class doesn't fit into the classic scheme?",
@@ -2840,6 +2871,18 @@ export default {
 	"legacy.administration.users_edit.text.errorSendingMail": "There was an error sending the invitation email!",
 	"legacy.administration.users_edit.text.firstFinishRegistration": "The user must first complete the registration process.",
 	"legacy.administration.users_edit.text.successfullySentMail": "The invitation e-mail was sent successfully!",
+	"legacy.administration.users_registrationComplete.text.cannotCallPageAgain":
+		"<b>Attention: </b>You cannot visit this page again. So print out the access data displayed or save it in some other way. If a student forgets his password, you can only change it in the user administration.",
+	"legacy.administration.users_registrationComplete.text.loginWithPassword":
+		'You can now log in to the {shortTitle} with your start password. To do this, go to <a href="{origin}">{origin}</a> and log in there with the following access data:',
+	"legacy.administration.users_registrationComplete.text.registrationPossibleWithFollowingData":
+		"Registration at {shortTitle} is possible with the following data.",
+	"legacy.administration.users_registrationComplete.text.whenLoginForTheFirstTime":
+		"A new password must be chosen the first time you log in. Students who are at least 14 years old must also declare their consent when they log in for the first time.",
+	"legacy.administration.users_skipRegistration.text.forStudentsAged14":
+		"For students aged 14 and over: consent of the student",
+	"legacy.administration.users_skipRegistration.text.youGiveTheFollowingConsent":
+		"You grant the following consents on behalf of the user:",
 	"legacy.courses._course.edit.button.addLesson": "Add new appointment",
 	"legacy.courses._course.edit.headline.courseIsArchieved": "The course {coursename} is archived.",
 	"legacy.courses._course.edit.headline.editCourse": "Edit course",
@@ -2895,8 +2938,10 @@ export default {
 	"legacy.global.button.cancel": "Cancel",
 	"legacy.global.button.create": "Create",
 	"legacy.global.button.discard": "Discard",
+	"legacy.global.button.done": "Done",
 	"legacy.global.button.edit": "Edit",
 	"legacy.global.button.editTopic": "Edit topic",
+	"legacy.global.button.import": "Import",
 	"legacy.global.button.save": "Save",
 	"legacy.global.button.saveChanges": "Save changes",
 	"legacy.global.headline.assignedTasks": "Assigned tasks",
@@ -2911,6 +2956,7 @@ export default {
 	"legacy.global.label.from": "From",
 	"legacy.global.label.lastNameColon": "Last name:",
 	"legacy.global.label.nameOfTheCourse": "Name of the course",
+	"legacy.global.label.password": "Password:",
 	"legacy.global.label.room": "Room",
 	"legacy.global.label.to": "To",
 	"legacy.global.link.openInNewTab": "open in new tab",

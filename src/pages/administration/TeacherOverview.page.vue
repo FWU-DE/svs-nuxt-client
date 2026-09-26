@@ -102,6 +102,7 @@ import {
 	mdiAccountPlus,
 	mdiCheck,
 	mdiClose,
+	mdiCloudDownload,
 	mdiDeleteOutline,
 	mdiEmailOutline,
 	mdiPencilOutline,
@@ -312,8 +313,12 @@ const fab = computed(() => {
 			to: "/administration/teachers/new",
 			dataTestId: "fab_button_add_teachers",
 		},
-		// No CSV import: in the product it is a legacy view, and its server side (`/sync`)
-		// is not part of this installation yet.
+		{
+			label: t("pages.administration.teachers.fab.import"),
+			icon: mdiCloudDownload,
+			to: "/administration/teachers/import",
+			dataTestId: "fab_button_import_teachers",
+		},
 	];
 });
 

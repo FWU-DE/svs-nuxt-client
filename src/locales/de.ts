@@ -2813,6 +2813,8 @@ export default {
 	"legacy.administration.button.consent": "Einwilligungen:",
 	"legacy.administration.button.generatePersonalInvitationLink": "Persönlichen Einladungslink generieren",
 	"legacy.administration.button.onlyRegistrationNeeded": "Registrierung:",
+	"legacy.administration.button.printListWithAccessData": "Liste mit Zugangsdaten drucken",
+	"legacy.administration.button.receivedConsentOnPaper": "Einverständnis auf Papier erhalten",
 	"legacy.administration.button.sendTheInvitationLinkByMail": "Einladungslink per E-Mail versenden",
 	"legacy.administration.classes.button.addClass": "Klasse hinzufügen",
 	"legacy.administration.classes.button.transferClassToTheNextSchoolYear": "Klasse ins nächste Schuljahr versetzen",
@@ -2831,20 +2833,49 @@ export default {
 	"legacy.administration.classes.text.theNextStepIsToInviteOrAdd": "Im nächsten Schritt kannst du Schüler:innen zur Klasse einladen oder hinzufügen.",
 	"legacy.administration.controller.headline.editClass": "Klasse '{name}' bearbeiten",
 	"legacy.administration.controller.headline.manageClass": "Klasse '{name}' verwalten",
+	"legacy.administration.controller.headline.studentImport": "Schüler:in importieren",
+	"legacy.administration.controller.headline.teacherImport": "Lehrkraft importieren",
 	"legacy.administration.controller.headline.upgradeClass": "Klasse '{name}' in neues Schuljahr bringen",
 	"legacy.administration.controller.link.analogueConsent": "Einverständnis manuell erklären",
 	"legacy.administration.controller.link.changePassword": "Passwort ändern",
 	"legacy.administration.controller.link.createANewClass": "Erstelle eine neue Klasse",
 	"legacy.administration.controller.link.editTeacher": "Lehrkraft bearbeiten",
 	"legacy.administration.controller.link.editingStudents": "Schüler:innen bearbeiten",
+	"legacy.administration.controller.link.toGiveConsent": "Einverständnis erklären",
+	"legacy.administration.controller.text.agreementSuccessfullyDeclared": "Einverständnis erfolgreich erklärt",
+	"legacy.administration.controller.text.anUnknownErrorOccurred":
+		"Es ist ein unbekannter Fehler beim Importieren aufgetreten.",
 	"legacy.administration.controller.text.analogueConsent": "Wenn du das Einverständnis in Papierform einholen möchtest, kannst du die Schüler:innen wie folgt im System freischalten:",
 	"legacy.administration.controller.text.analogueConsentBullets": "<br/> <br/><ol><li>Rufe im Bereich <i>Verwaltung</i> den Bereich <i>Schüler:innen</i> auf</li><li>Nutze ggf. die Filterfunktion für Klassen und abgeschlossene Registrierungen</li><li>Wähle alle betreffenden Schüler:innen aus</li><li>Klicke auf <i>Aktionen</i> und wähle den Punkt <i>Analoge Einverständniserklärung</i>, um die Schüler:innen freizugeben und die Startpasswörter abzurufen</li></ol>",
+	"legacy.administration.controller.text.errorImportingUsers": "Fehler: {errorMessage}",
+	"legacy.administration.controller.text.importFailed":
+		"Import fehlgeschlagen. Bitte überprüfe deine Eingabedaten und versuche es erneut.",
+	"legacy.administration.controller.text.importMayBeStillRunning":
+		"Der Import findet im Hintergrund statt und kann je nach Menge der Daten einige Minuten dauern.",
 	"legacy.administration.controller.text.passTheRegistrationLinkDirectly": "Gib den Registrierungslink direkt an deine/n Schüler:in weiter.",
 	"legacy.administration.controller.text.registrationExplanation": "Gib den Registrierungslink zunächst an die Eltern weiter. Diese legen die Schüler:innendaten an und erklären elektronisch ihr Einverständnis. Dein/e Schüler:in ist dann in der {title} registriert und du siehst ihn in deiner Klassenliste. Dein/e Schüler:in kann sich mit der E-Mail-Adresse und dem individuellen Initial-Passwort einloggen. Nach dem ersten Login muss jede/r Schüler:in das Passwort ändern. Ist dein/e Schüler:in über 14 Jahre alt, muss zusätzlich selbst elektronisch ein Einverständnis erklärt werden, damit die {title} genutzt werden kann.",
+	"legacy.administration.controller.text.setupFailed":
+		"Einrichtung fehlgeschlagen. Bitte versuche es später noch einmal. ",
+	"legacy.administration.controller.text.successfullyImportedUser":
+		"{amountImported} von {amountTotal} Nutzer:in erfolgreich importiert ({amountCreated} erstellt {amountUpdated} aktualisiert).",
+	"legacy.administration.controller.text.successfullyImportedUsers":
+		"{amountImported} von {amountTotal} Nutzer:innen erfolgreich importiert ({amountCreated} erstellt {amountUpdated} aktualisiert).",
 	"legacy.administration.controller.text.theStepsForTheParentsAreOmitted": "Die Schritte für die Eltern entfallen automatisch.",
 	"legacy.administration.controller.text.whenLoggingInForTheFirstTime": "Beim ersten Login müssen Schüler:innen ihr Passwort ändern. Haben sie eine E-Mail-Adresse angegeben, können sie sich das geänderte Passwort zusenden lassen oder sich bei Verlust ein neues Passwort generieren. Alternativ können Admins im Bereich Verwaltung > Schüler:innen hinter dem Namen auf <i>Bearbeiten</i> klicken und das Passwort erneuern.",
 	"legacy.administration.controller.text.yourStudentsAreAtLeast": "Deine Schüler:innen sind mindestens {age} Jahre alt?",
 	"legacy.administration.controller.text.yourStudentsAreUnder": "Deine Schüler:innen sind unter {age} Jahre alt?",
+	"legacy.administration.form_Import.label.fileSizeInfo": "max. Dateigröße",
+	"legacy.administration.form_Import.label.selectCSVFile": "CSV-Datei auswählen",
+	"legacy.administration.form_Import.label.sendRegistrationLinkToUsers":
+		"Registrierungslinks sofort nach Import an Nutzer:in senden",
+	"legacy.administration.form_Import.text.alternativelyYouCanCallUpTheRegistration":
+		"Alternativ kannst du die Registrierungslinks später abrufen und deinen Nutzer:innen per Mail oder QR-Druckbogen zukommen lassen.",
+	"legacy.administration.form_Import.text.attention":
+		"⚠️ ACHTUNG: Beim Import großer Datensätze kommt es derzeit kurz nach dem Start zu einer Fehlermeldung. Im Hintergrund läuft der Importprozess trotzdem unsichtbar weiter. Zeitdauer: circa 4 Minuten pro 1000 Nutzer:innen. Bitte warte die entsprechende Zeit ab und aktualisiere dann dein Browserfenster, um die aktualisierte Schüler:innen-Übersicht überprüfen zu können.",
+	"legacy.administration.form_Import.text.importUserData":
+		'Importiere Nutzerdaten per .csv-Datei (<a href="#csv-import-example">Beispiel</a>) und lass deinen Nutzer:innen einen Registrierungslink zukommen.',
+	"legacy.administration.form_Import.text.youCanFindMoreInformationOnTheStructure":
+		'Mehr Informationen zu Struktur der .csv-Datei, Klassenzuordnung und Ablauf des Registrierungsprozesses findest du <a href="https://docs.dbildungscloud.de/x/NYBgAw" target="_blank">hier</a>.',
 	"legacy.administration.global.button.sendLinksToStudentEmailAddresses": "Links an Schüler:innen-E-Mail-Adressen senden",
 	"legacy.administration.global.label.afterSavingAllStudentsAdded": "(Nach dem Speichern werden alle Schüler:innen automatisch hinzugefügt!)",
 	"legacy.administration.global.label.assignPassword": "Passwort vergeben:",
@@ -2865,6 +2896,8 @@ export default {
 	"legacy.administration.global.label.weekday": "Wochentag",
 	"legacy.administration.global.placeholder.selectGrade": "Jahrgangsstufe wählen",
 	"legacy.administration.global.placeholder.selectStudent": "Schüler:innen auswählen",
+	"legacy.administration.global.text.forStudentsUnder":
+		"Für Schüler:innen unter {minAge} Jahren: Einverständnis der Eltern",
 	"legacy.administration.global.text.inviteparentsAndStudentViaLink": "Lade Eltern und Schüler:innen per Link ein, die Einverständniserklärung abzugeben",
 	"legacy.administration.global.text.obtainADeclarationConsent": "Einverständniserklärung einholen",
 	"legacy.administration.global.text.orSelectStudentFromTable": "Nutze alternativ <i>Verwaltung > Schüler:innen</i>. Dort kannst du ebenfalls Links an nicht vollständig registrierte Schüler:innen versenden oder QR-Druckbogen erstellen.",
@@ -2874,6 +2907,8 @@ export default {
 	"legacy.administration.longText.text.canCreateYearIndependentClasses": "Du kannst jahrgangsunabhängige Klassen mit freier Bezeichnung erstellen. Diese Klassen können nicht vom Admin <i>'versetzt'</i> werden, sondern müssen manuell aktualisiert werden.",
 	"legacy.administration.longText.text.registrationNotCompleted": "Der oder die Schüler:in hat die Registrierung noch nicht abgeschlossen. Rufe einen persönlichen Einladungslink zum Abschluss der Registrierung ab und verteile ihn an den/die Schüler:in.",
 	"legacy.administration.longText.text.teacherRegistrationNotCompleted": "Die Lehrkraft hat die Registrierung noch nicht abgeschlossen. Rufe einen persönlichen Einladungslink zum Abschluss der Registrierung ab und verteile ihn an die Lehrkraft.",
+	"legacy.administration.longText.text.thereIsNoDeclarationOfConsent":
+		"Es liegt noch keine Einverständniserklärung für den/die Schüler:in vor. Rufe einen persönlichen Einladungslink zum Abschluss der Registrierung und verteile ihn an den/die Schüler:in oder die Eltern. Während der Registrierung wird dann die Einverständniserklärung durch den/die Schüler:in selbst erteilt. Wenn eine Einverständniserklärung in Papierform vorliegt, wird diese per Klick auf 'Einverständnis auf Papier erhalten' aktiviert und ein Startpasswort vergeben. Damit ist der Login dann freigeschaltet.",
 	"legacy.administration.students.text.forAllStudentsWithoutAFullConsentForm": "Für alle Schüler:innen ohne vollständige Einverständniserklärung:",
 	"legacy.administration.text.moreOptions": "Mehr Optionen",
 	"legacy.administration.text.yourClassDoesntFitInto": "Deine Klasse passt nicht ins klassische Schema?",
@@ -2888,6 +2923,18 @@ export default {
 	"legacy.administration.users_edit.text.errorSendingMail": "Beim Senden der Einladungs-E-Mail ist ein Fehler aufgetreten!",
 	"legacy.administration.users_edit.text.firstFinishRegistration": "Der/die Nutzer:in muss zuerst die Registrierung abschließen.",
 	"legacy.administration.users_edit.text.successfullySentMail": "Die Einladungs-E-Mail wurde erfolgreich versendet!",
+	"legacy.administration.users_registrationComplete.text.cannotCallPageAgain":
+		"<b>Achtung: </b>Du kannst diese Seite nicht erneut aufrufen. Drucke dir also die angezeigten Zugangsdaten unbedingt aus oder speichere sie anderweitig. Sollte ein/e Schüler:in das Passwort vergessen, kannst du es nur in der Benutzerverwaltung ändern.",
+	"legacy.administration.users_registrationComplete.text.loginWithPassword":
+		'Du kannst dich nun in der {shortTitle} mit deinem Startpasswort einloggen. Gehe dazu auf <a href="{origin}">{origin}</a> und logge dich dort mit den folgenden Zugangsdaten ein:',
+	"legacy.administration.users_registrationComplete.text.registrationPossibleWithFollowingData":
+		"Die Anmeldung an der {shortTitle} ist mit den folgenden Daten möglich.",
+	"legacy.administration.users_registrationComplete.text.whenLoginForTheFirstTime":
+		"Beim ersten Login muss ein neues Passwort gewählt werden. Schüler:innen, die mindestens 14 Jahre alt sind, müssen bei ihrem ersten Login die Einwilligungserklärung zusätzlich selbst erklären.",
+	"legacy.administration.users_skipRegistration.text.forStudentsAged14":
+		"Für Schüler:innen ab 14 Jahren: Einverständnis des Schülers/der Schülerin",
+	"legacy.administration.users_skipRegistration.text.youGiveTheFollowingConsent":
+		"Du erteilst folgende Einwilligungen im Namen des Nutzers/der Nutzerin:",
 	"legacy.courses._course.edit.button.addLesson": "Neuen Stundentermin hinzufügen",
 	"legacy.courses._course.edit.headline.courseIsArchieved": "Der Kurs {coursename} ist archiviert.",
 	"legacy.courses._course.edit.headline.editCourse": "Kurs bearbeiten",
@@ -2943,8 +2990,10 @@ export default {
 	"legacy.global.button.cancel": "Abbrechen",
 	"legacy.global.button.create": "Erstellen",
 	"legacy.global.button.discard": "Verwerfen",
+	"legacy.global.button.done": "Fertig",
 	"legacy.global.button.edit": "Bearbeiten",
 	"legacy.global.button.editTopic": "Thema bearbeiten",
+	"legacy.global.button.import": "Importieren",
 	"legacy.global.button.save": "Speichern",
 	"legacy.global.button.saveChanges": "Änderungen speichern",
 	"legacy.global.headline.assignedTasks": "Gestellte Aufgaben",
@@ -2959,6 +3008,7 @@ export default {
 	"legacy.global.label.from": "Von",
 	"legacy.global.label.lastNameColon": "Nachname:",
 	"legacy.global.label.nameOfTheCourse": "Name des Kurses",
+	"legacy.global.label.password": "Passwort:",
 	"legacy.global.label.room": "Raum",
 	"legacy.global.label.to": "Bis",
 	"legacy.global.link.openInNewTab": "in neuem Tab öffnen",

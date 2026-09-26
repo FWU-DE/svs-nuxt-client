@@ -88,6 +88,13 @@ export const routes: Readonly<RouteRecordRaw>[] = [
 		beforeEnter: createPermissionGuard([Permission.STUDENT_EDIT, Permission.STUDENT_LIST]),
 	},
 	{
+		path: "/administration/students/import",
+		component: () => import("@/pages/administration/UserImport.page.vue"),
+		name: "administration-students-import",
+		beforeEnter: createPermissionGuard([Permission.STUDENT_CREATE]),
+		props: { kind: "students" },
+	},
+	{
 		path: "/administration/students/new",
 		component: () => import("@/pages/administration/StudentCreate.page.vue"),
 		name: "administration-students-new",
@@ -105,6 +112,13 @@ export const routes: Readonly<RouteRecordRaw>[] = [
 		component: () => import("@/pages/administration/TeacherOverview.page.vue"),
 		name: "administration-teachers",
 		beforeEnter: createPermissionGuard([Permission.TEACHER_LIST]),
+	},
+	{
+		path: "/administration/teachers/import",
+		component: () => import("@/pages/administration/UserImport.page.vue"),
+		name: "administration-teachers-import",
+		beforeEnter: createPermissionGuard([Permission.TEACHER_CREATE]),
+		props: { kind: "teachers" },
 	},
 	{
 		path: "/administration/teachers/new",
