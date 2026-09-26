@@ -148,6 +148,24 @@ describe("ChecklistElement", () => {
 			expect(element.content.items.at(-1)).toEqual({ text: "" });
 		});
 
+		it("should not save when only the server's copy changed", async () => {
+			vi.useFakeTimers();
+			const { wrapper } = setup();
+
+			// A tick comes back from the server: same definition, different progress.
+			const ticked = buildElement([
+				{ id: "item-1", text: "Erster Schritt", checked: true },
+				{ id: "item-2", text: "Zweiter Schritt", checked: true },
+			]);
+			await wrapper.setProps({ element: ticked });
+			await flushPromises();
+			// Past the save debounce (400 ms).
+			await vi.advanceTimersByTimeAsync(500);
+
+			expect(updateElementRequest).not.toHaveBeenCalled();
+			vi.useRealTimers();
+		});
+
 		it("should not send the checked state back as if it were a setting", async () => {
 			const { wrapper } = setup({ isEditMode: true });
 

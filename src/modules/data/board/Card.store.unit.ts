@@ -18,6 +18,8 @@ import { cardResponseFactory } from "@@/tests/test-utils/factory/cardResponseFac
 import { drawingElementResponseFactory } from "@@/tests/test-utils/factory/drawingElementResponseFactory";
 import { FileRecordResponse } from "@api-file-storage";
 import {
+	ChecklistElementResponse,
+	ChecklistProgressMode,
 	CollaborativeTextEditorElementResponse,
 	Colors,
 	ContentElementType,
@@ -889,6 +891,63 @@ describe("CardStore", () => {
 			});
 
 			expect(cardStore.cards[cardId].elements).toEqual(oldElements);
+		});
+
+		describe("when a checklist's definition comes back", () => {
+			const checklist = (progressMode: ChecklistProgressMode) =>
+				({
+					id: "checklist-1",
+					type: ContentElementType.CHECKLIST,
+					timestamps: { createdAt: "2026-01-01T00:00:00Z", lastUpdatedAt: "2026-01-01T00:00:00Z" },
+					content: {
+						title: "Schritte",
+						progressMode,
+						completedCount: 1,
+						participantCount: 3,
+						items: [
+							{ id: "item-1", text: "Eins", checked: true, checkedCount: 2 },
+							{ id: "item-2", text: "Zwei", checked: false, checkedCount: 0 },
+						],
+					},
+				}) as unknown as AnyContentElement;
+
+			const update = (progressMode: ChecklistProgressMode) => ({
+				elementId: "checklist-1",
+				data: {
+					type: ContentElementType.CHECKLIST,
+					content: {
+						title: "Schritte, neu",
+						progressMode,
+						items: [{ id: "item-1", text: "Eins" }, { id: "item-2", text: "Zwei" }, { text: "Drei" }],
+					},
+				},
+				isOwnAction: true,
+			});
+
+			it("should keep the ticks of items that are still there", async () => {
+				const { cardStore, cardId } = setup();
+				cardStore.cards[cardId].elements[0] = checklist(ChecklistProgressMode.PER_USER);
+
+				await cardStore.updateElementSuccess(update(ChecklistProgressMode.PER_USER) as never);
+
+				const content = cardStore.cards[cardId].elements[0].content as ChecklistElementResponse["content"];
+				expect(content.title).toBe("Schritte, neu");
+				expect(content.items.map((i) => i.checked)).toEqual([true, false, false]);
+				expect(content.items[0].checkedCount).toBe(2);
+				expect(content.completedCount).toBe(1);
+				expect(content.participantCount).toBe(3);
+			});
+
+			it("should start the progress over when the mode changes, like the server", async () => {
+				const { cardStore, cardId } = setup();
+				cardStore.cards[cardId].elements[0] = checklist(ChecklistProgressMode.PER_USER);
+
+				await cardStore.updateElementSuccess(update(ChecklistProgressMode.SHARED) as never);
+
+				const content = cardStore.cards[cardId].elements[0].content as ChecklistElementResponse["content"];
+				expect(content.items.every((i) => !i.checked)).toBe(true);
+				expect(content.completedCount).toBe(0);
+			});
 		});
 
 		it("should update element", async () => {

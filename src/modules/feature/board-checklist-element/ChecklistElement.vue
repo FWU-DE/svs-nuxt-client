@@ -201,7 +201,19 @@ const save = useDebounceFn((content: ChecklistContentBody) => {
 	});
 }, 400);
 
-watch(modelValue, (value) => save(value), { deep: true });
+// Only an edit here is worth saving. When the model was just rebuilt from the server's copy
+// (after a tick, or another person's change), it already says what the server has; saving it
+// would echo back and rebuild the model again, round after round.
+const sameDefinition = (a: ChecklistContentBody, b: ChecklistContentBody) => JSON.stringify(a) === JSON.stringify(b);
+
+watch(
+	modelValue,
+	(value) => {
+		if (sameDefinition(value, toContentBody(element.value.content))) return;
+		save(value);
+	},
+	{ deep: true }
+);
 
 const onTitleChange = (title: string) => {
 	modelValue.value = { ...modelValue.value, title };

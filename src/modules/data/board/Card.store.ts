@@ -24,6 +24,8 @@ import { useSharedEditMode } from "./edit-mode.composable";
 import { FileRecordParent } from "@/types/file/File";
 import {
 	CardResponse,
+	ChecklistContentBody,
+	ChecklistElementResponse,
 	ContentElementType,
 	CopyStatusEnum,
 	PollElementResponse,
@@ -37,6 +39,36 @@ import { useSharedFileSelect, useSharedLastCreatedElement } from "@util-board";
 import { useErrorHandler } from "@util-error-handling";
 import { defineStore } from "pinia";
 import { nextTick, Ref, ref } from "vue";
+
+/**
+ * A checklist update carries only the list's definition (title, items, mode), not who ticked
+ * what. Keep the ticks of items that are still there; a changed mode starts over, as on the
+ * server. Assigning the definition wholesale would untick every box and make the element save
+ * its definition again, which then echoes back the same way.
+ */
+const mergeChecklistDefinition = (
+	current: ChecklistElementResponse["content"],
+	update: ChecklistContentBody
+): ChecklistElementResponse["content"] => {
+	const modeChanged = update.progressMode !== current.progressMode;
+	const items = update.items.map((item) => {
+		const previous = modeChanged || !item.id ? undefined : current.items.find((i) => i.id === item.id);
+		return {
+			...(previous ?? {}),
+			id: item.id ?? "",
+			text: item.text,
+			checked: previous?.checked ?? false,
+		};
+	});
+	return {
+		...current,
+		title: update.title,
+		progressMode: update.progressMode,
+		items,
+		completedCount: items.filter((item) => item.checked).length,
+		participantCount: modeChanged ? 0 : current.participantCount,
+	};
+};
 
 export const useCardStore = defineStore("cardStore", () => {
 	const cards: Ref<Record<string, CardResponse>> = ref({});
@@ -265,10 +297,16 @@ export const useCardStore = defineStore("cardStore", () => {
 
 			// A poll update carries only the poll's definition. Assigning it wholesale would drop
 			// the tally and this reader's own ballot, which no update ever changes.
-			cards.value[cardId].elements[elementIndex].content =
-				payload.data.type === ContentElementType.POLL
-					? { ...currentElement.content, ...payload.data.content }
-					: payload.data.content;
+			if (payload.data.type === ContentElementType.POLL) {
+				cards.value[cardId].elements[elementIndex].content = { ...currentElement.content, ...payload.data.content };
+			} else if (payload.data.type === ContentElementType.CHECKLIST) {
+				cards.value[cardId].elements[elementIndex].content = mergeChecklistDefinition(
+					currentElement.content as ChecklistElementResponse["content"],
+					payload.data.content as ChecklistContentBody
+				);
+			} else {
+				cards.value[cardId].elements[elementIndex].content = payload.data.content;
+			}
 		}
 	};
 
