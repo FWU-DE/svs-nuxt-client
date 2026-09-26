@@ -114,7 +114,7 @@ const fillDemo = (user: string) => {
 /** JWT als Cookie setzen – wird beim folgenden Full-Reload von /api/v3/me genutzt. */
 const setJwtCookie = (token: string) => {
 	const maxAge = 2 * 60 * 60; // 2 Stunden
-	document.cookie = `jwt=${token}; Path=/; Max-Age=${maxAge}; SameSite=Lax`;
+	document.cookie = `jwt=${token}; Path=/; Max-Age=${maxAge}; SameSite=Lax${location.protocol === "https:" ? "; Secure" : ""}`;
 };
 
 const onSubmit = async () => {
