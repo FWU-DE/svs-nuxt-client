@@ -503,6 +503,16 @@ export const routes: Readonly<RouteRecordRaw>[] = [
 		name: "tasks",
 	},
 	{
+		path: "/homework/new",
+		component: () => import("@/pages/tasks/TaskEdit.page.vue"),
+		name: "task-new",
+	},
+	{
+		path: `/homework/:id(${REGEX_ID})/edit`,
+		component: () => import("@/pages/tasks/TaskEdit.page.vue"),
+		name: "task-edit",
+	},
+	{
 		path: `/homework/:id(${REGEX_ID})`,
 		component: () => import("@/pages/tasks/TaskDetail.page.vue"),
 		name: "task-detail",

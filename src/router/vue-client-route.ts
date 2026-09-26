@@ -75,6 +75,8 @@ const vueRoutes = [
 	`^/folder/${mongoId}/trash/?$`,
 	`^/rooms/invitation-link/${mongoId}?$`,
 	`^/homework/${mongoId}/?$`,
+	`^/homework/${mongoId}/edit/?$`,
+	`^/homework/new/?$`,
 	`^/rooms/?$`,
 	`^/rooms/new/?$`,
 	`^/rooms/${mongoId}/?$`,

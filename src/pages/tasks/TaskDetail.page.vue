@@ -2,7 +2,7 @@
 	<DefaultWireframe max-width="full" main-with-bottom-padding>
 		<template #header>
 			<h1 data-testid="task-detail-title">
-				{{ task ? `${task.courseName} - ${task.name}` : t("common.words.task") }}
+				{{ task ? [task.courseId?.name, task.name].filter(Boolean).join(" - ") : t("common.words.task") }}
 			</h1>
 		</template>
 
@@ -16,7 +16,7 @@
 					<div class="text-body-2" data-testid="task-detail-due">
 						{{ dateRange }}
 						<VChip
-							v-if="task.status.isDraft"
+							v-if="task.private"
 							size="small"
 							class="ml-2"
 							:prepend-icon="mdiPencilOutline"
@@ -24,13 +24,23 @@
 						>
 							{{ t("components.organisms.TasksDashboardMain.tab.drafts") }}
 						</VChip>
+						<div v-if="!canManage && studentState" class="mt-1" data-testid="task-detail-student-state">
+							{{ studentState }}
+						</div>
+						<div
+							v-if="task.lessonHidden && !task.private"
+							class="mt-1 text-medium-emphasis"
+							data-testid="task-detail-lesson-hidden"
+						>
+							{{ t("pages.taskDetail.lessonHidden") }}
+						</div>
 					</div>
-					<div class="d-flex ga-2 flex-wrap">
+					<div v-if="courseId" class="d-flex ga-2 flex-wrap">
 						<VBtn
 							variant="outlined"
 							size="large"
 							:prepend-icon="mdiFolderOpenOutline"
-							:href="`/files/courses/${task.courseId}`"
+							:to="`/files/courses/${courseId}`"
 							data-testid="task-detail-course-files"
 						>
 							{{ t("pages.taskDetail.toCourseFiles") }}
@@ -39,7 +49,7 @@
 							variant="outlined"
 							size="large"
 							:prepend-icon="mdiSchoolOutline"
-							:href="`/courses/${task.courseId}`"
+							:to="`/rooms/${courseId}`"
 							data-testid="task-detail-course"
 						>
 							{{ t("pages.taskDetail.toCourse") }}
@@ -49,7 +59,13 @@
 
 				<VTabs v-model="tab" color="primary" class="task-tabs mb-6">
 					<VTab value="details" data-testid="task-detail-tab-details">{{ t("pages.taskDetail.tab.details") }}</VTab>
-					<VTab value="submissions" data-testid="task-detail-tab-submissions">
+					<VTab v-if="showOwnSubmission" value="submission" data-testid="task-detail-tab-submission">
+						{{ t("pages.taskDetail.tab.submission") }}
+					</VTab>
+					<VTab v-if="showFeedback" value="feedback" data-testid="task-detail-tab-feedback">
+						{{ t("pages.taskDetail.tab.feedback") }}
+					</VTab>
+					<VTab v-if="showSubmissions" value="submissions" data-testid="task-detail-tab-submissions">
 						{{ t("pages.taskDetail.tab.submissions") }}
 					</VTab>
 				</VTabs>
@@ -57,153 +73,248 @@
 				<VWindow v-model="tab">
 					<VWindowItem value="details">
 						<section class="px-2">
+							<div class="d-flex justify-end ga-2 flex-wrap mb-4 d-print-none">
+								<VBtn variant="text" :prepend-icon="mdiPrinter" data-testid="task-detail-print" @click="print">
+									{{ t("pages.taskDetail.print") }}
+								</VBtn>
+								<VBtn
+									variant="outlined"
+									:prepend-icon="isArchived ? mdiRestore : mdiArchiveOutline"
+									:loading="archiving"
+									data-testid="task-detail-archive"
+									@click="toggleArchived"
+								>
+									{{ isArchived ? t("pages.taskDetail.restore") : t("pages.taskDetail.finish") }}
+								</VBtn>
+								<template v-if="canManage">
+									<VBtn
+										color="primary"
+										variant="flat"
+										:prepend-icon="mdiPencilOutline"
+										:to="`/homework/${task._id}/edit`"
+										data-testid="task-detail-edit"
+									>
+										{{ t("common.actions.edit") }}
+									</VBtn>
+									<VBtn
+										variant="outlined"
+										:prepend-icon="mdiTrashCanOutline"
+										data-testid="task-detail-delete"
+										@click="confirmDelete = true"
+									>
+										{{ t("common.actions.delete") }}
+									</VBtn>
+								</template>
+							</div>
 							<p v-if="task.lessonName" class="text-medium-emphasis" data-testid="task-detail-topic">
 								{{ task.lessonName }}
 							</p>
-							<p v-if="plainDescription" data-testid="task-detail-description-text">{{ plainDescription }}</p>
-							<RenderHTML
-								v-else-if="htmlDescription"
-								:html="htmlDescription"
-								data-testid="task-detail-description-html"
-							/>
+							<RenderHTML v-if="task.description" :html="task.description" data-testid="task-detail-description-html" />
 							<p v-else class="text-medium-emphasis" data-testid="task-detail-no-description">
 								{{ t("pages.taskDetail.noDescription") }}
 							</p>
 						</section>
 					</VWindowItem>
 
-					<VWindowItem value="submissions" :eager="true">
-						<section data-testid="task-detail-submissions">
-							<VRow class="mb-2">
-								<VCol cols="12" sm="4">
-									<div class="text-caption">{{ t("components.molecules.TaskItemTeacher.submitted") }}</div>
-									<div class="text-h6" data-testid="task-detail-submitted">{{ task.status.submitted }}</div>
-								</VCol>
-								<VCol cols="12" sm="4">
-									<div class="text-caption">{{ t("components.molecules.TaskItemTeacher.graded") }}</div>
-									<div class="text-h6" data-testid="task-detail-graded">{{ task.status.graded }}</div>
-								</VCol>
-								<VCol cols="12" sm="4">
-									<div class="text-caption">{{ t("pages.taskDetail.maxSubmissions") }}</div>
-									<div class="text-h6" data-testid="task-detail-max-submissions">
-										{{ task.status.maxSubmissions }}
-									</div>
-								</VCol>
-							</VRow>
-							<SvsLoading :loading-state="submissionLoadingState">
-								<VAlert
-									v-if="submissionStatuses.length === 0"
-									type="info"
-									variant="tonal"
-									data-testid="task-detail-submissions-empty"
-								>
-									{{ t("pages.taskDetail.submissions.empty") }}
-								</VAlert>
-								<VTable v-else data-testid="task-detail-submissions-list">
-									<tbody>
-										<tr
-											v-for="status in submissionStatuses"
-											:key="status.id"
-											:data-testid="`submission-status-${status.id}`"
-										>
-											<td>{{ status.submitters.join(", ") }}</td>
-											<td>
-												{{
-													status.isSubmitted
-														? t("components.molecules.TaskItemTeacher.submitted")
-														: t("pages.tasks.notGraded")
-												}}
-											</td>
-											<td>
-												{{
-													status.isGraded
-														? t("components.molecules.TaskItemTeacher.graded")
-														: t("pages.tasks.notGraded")
-												}}
-											</td>
-											<td>
-												<span v-if="status.grade !== undefined">{{ t("pages.tasks.rating") }}: {{ status.grade }}</span>
-											</td>
-										</tr>
-									</tbody>
-								</VTable>
-							</SvsLoading>
-						</section>
+					<VWindowItem v-if="showOwnSubmission" value="submission">
+						<TaskSubmissionForm
+							:task="task"
+							:submission="mySubmission"
+							:students="students"
+							:current-user-id="currentUserId"
+							:school-id="schoolId"
+							@saved="onSubmissionSaved"
+						/>
+					</VWindowItem>
+
+					<VWindowItem v-if="showFeedback" value="feedback">
+						<TaskFeedback :submission="mySubmission" />
+					</VWindowItem>
+
+					<VWindowItem v-if="showSubmissions" value="submissions" :eager="true">
+						<TaskSubmissionsTable
+							:submissions="submissions"
+							:students="students"
+							:stats="task.stats"
+							:can-grade="canManage"
+							@graded="onSubmissionSaved"
+						/>
 					</VWindowItem>
 				</VWindow>
 			</div>
 		</SvsLoading>
+
+		<VDialog v-model="confirmDelete" max-width="480" data-testid="task-delete-dialog">
+			<VCard>
+				<VCardTitle>{{ t("common.actions.delete") }}</VCardTitle>
+				<VCardText>{{ t("pages.taskDetail.confirmDelete", { name: task?.name ?? "" }) }}</VCardText>
+				<VCardActions>
+					<VSpacer />
+					<VBtn variant="text" data-testid="task-delete-cancel" @click="confirmDelete = false">{{
+						t("common.actions.cancel")
+					}}</VBtn>
+					<VBtn
+						color="primary"
+						variant="flat"
+						:loading="deleting"
+						data-testid="task-delete-confirm"
+						@click="deleteTask"
+					>
+						{{ t("common.actions.delete") }}
+					</VBtn>
+				</VCardActions>
+			</VCard>
+		</VDialog>
 	</DefaultWireframe>
 </template>
 
 <script setup lang="ts">
+import { serverMessage } from "@/components/homework/serverMessage";
+import TaskFeedback from "@/components/homework/TaskFeedback.vue";
+import TaskSubmissionForm from "@/components/homework/TaskSubmissionForm.vue";
+import TaskSubmissionsTable from "@/components/homework/TaskSubmissionsTable.vue";
 import { useSafeAxiosRunner } from "@/composables/async-tasks.composable";
-import { $axios } from "@/utils/api";
+import {
+	idOf,
+	LegacySubmission,
+	LegacyTask,
+	LegacyUser,
+	useLegacyHomeworkApi,
+} from "@/composables/legacy-homework.api";
 import { formatUtc } from "@/utils/date-time.utils";
 import { buildPageTitle } from "@/utils/pageTitle";
-import { RichTextType, SubmissionApiFactory, TaskApiFactory } from "@api-server";
+import { notifyError, useAppStore } from "@data-app";
 import { RenderHTML } from "@feature-render-html";
-import { mdiFolderOpenOutline, mdiPencilOutline, mdiSchoolOutline } from "@icons/material";
+import {
+	mdiArchiveOutline,
+	mdiFolderOpenOutline,
+	mdiPencilOutline,
+	mdiPrinter,
+	mdiRestore,
+	mdiSchoolOutline,
+	mdiTrashCanOutline,
+} from "@icons/material";
 import { SvsLoading } from "@ui-containers";
 import { DefaultWireframe } from "@ui-layout";
 import { useTitle } from "@vueuse/core";
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 
 const { t } = useI18n();
 const route = useRoute();
-const tab = ref<"details" | "submissions">("details");
+const router = useRouter();
+const api = useLegacyHomeworkApi();
+const appStore = useAppStore();
+
 const taskId = computed(() => String(route.params.id ?? ""));
-const tasksApi = TaskApiFactory(undefined, "/v3", $axios);
-const submissionApi = SubmissionApiFactory(undefined, "/v3", $axios);
+const currentUserId = computed(() => appStore.user?.id ?? "");
+const schoolId = computed(() => appStore.school?.id ?? "");
+const tab = ref<"details" | "submission" | "feedback" | "submissions">("details");
 
-// The server has no route for a single task and caps `limit` at 100, so page
-// through the open tasks and then the finished ones until the task turns up.
-const TASK_PAGE_SIZE = 100;
+const { data: loadedTask, loadingState, execute: reloadTask } = useSafeAxiosRunner(() => api.getTask(taskId.value));
+const task = computed(() => loadedTask.value as LegacyTask | undefined);
+const submissions = ref<LegacySubmission[]>([]);
+const students = ref<LegacyUser[]>([]);
 
-type TaskPage = (skip: number, limit: number) => ReturnType<typeof tasksApi.taskControllerFindAll>;
+const courseId = computed(() => task.value?.courseId?._id);
+const canManage = computed(() => {
+	const current = task.value;
+	if (!current) return false;
+	if (current.isTeacher !== undefined) return current.isTeacher;
+	const course = current.courseId;
+	return (
+		current.teacherId === currentUserId.value ||
+		!!course?.teacherIds.includes(currentUserId.value) ||
+		!!course?.substitutionIds?.includes(currentUserId.value)
+	);
+});
 
-const findTaskIn = async (fetchPage: TaskPage, id: string) => {
-	for (let skip = 0; ; skip += TASK_PAGE_SIZE) {
-		const { data } = await fetchPage(skip, TASK_PAGE_SIZE);
-		const match = data.data.find((item) => item.id === id);
-		if (match || skip + TASK_PAGE_SIZE >= data.total) return match;
+// Tabs as on the legacy task page: a private task has only the own submission;
+// teachers see all submissions, students their submission, the feedback and —
+// if the task allows it — the others' submissions.
+const showOwnSubmission = computed(() => !!task.value && (task.value.private || !canManage.value));
+const showFeedback = computed(() => !!task.value && !task.value.private && !canManage.value);
+const showSubmissions = computed(
+	() => !!task.value && !task.value.private && (canManage.value || !!task.value.publicSubmissions)
+);
+
+const mySubmission = computed(() =>
+	submissions.value.find(
+		(s) => idOf(s.studentId) === currentUserId.value || s.teamMembers.some((m) => idOf(m) === currentUserId.value)
+	)
+);
+
+const loadSubmissions = async () => {
+	submissions.value = await api.findSubmissions(taskId.value);
+};
+
+watch(task, async (current) => {
+	if (!current) return;
+	await loadSubmissions();
+	if (current.courseId && (canManage.value || current.teamSubmissions || current.publicSubmissions)) {
+		students.value = (await api.getCourseWithStudents(current.courseId._id)).userIds;
+	}
+});
+
+const onSubmissionSaved = async () => {
+	await loadSubmissions();
+	await reloadTask();
+};
+
+const isArchived = computed(() => !!task.value?.archived.includes(currentUserId.value));
+const archiving = ref(false);
+const toggleArchived = async () => {
+	if (!task.value) return;
+	archiving.value = true;
+	const archived = isArchived.value
+		? task.value.archived.filter((id) => id !== currentUserId.value)
+		: [...task.value.archived, currentUserId.value];
+	try {
+		await api.updateTask(task.value._id, { archived });
+		await reloadTask();
+	} catch (error) {
+		notifyError(serverMessage(error) ?? t("pages.taskDetail.error"));
+	} finally {
+		archiving.value = false;
 	}
 };
 
-const { data: task, loadingState } = useSafeAxiosRunner(
-	async () =>
-		(await findTaskIn((skip, limit) => tasksApi.taskControllerFindAll(skip, limit), taskId.value)) ??
-		(await findTaskIn((skip, limit) => tasksApi.taskControllerFindAllFinished(skip, limit), taskId.value))
-);
+const confirmDelete = ref(false);
+const deleting = ref(false);
+const deleteTask = async () => {
+	if (!task.value) return;
+	deleting.value = true;
+	try {
+		await api.deleteTask(task.value._id);
+		await router.push("/tasks");
+	} catch (error) {
+		notifyError(serverMessage(error) ?? t("pages.taskDetail.error"));
+	} finally {
+		deleting.value = false;
+		confirmDelete.value = false;
+	}
+};
 
-const { data: submissionStatusData, loadingState: submissionLoadingState } = useSafeAxiosRunner(async () => {
-	if (!taskId.value) return [];
-	const response = await submissionApi.submissionControllerFindStatusesByTask(taskId.value);
-	return response.data.data;
-});
-
-const submissionStatuses = computed(() => submissionStatusData.value ?? []);
-
-const plainDescription = computed(() =>
-	task.value?.description?.type === RichTextType.PLAIN_TEXT ? task.value.description.content : undefined
-);
-const htmlDescription = computed(() =>
-	task.value?.description && task.value.description.type !== RichTextType.PLAIN_TEXT
-		? task.value.description.content
-		: undefined
-);
+const print = () => window.print();
 
 // Legacy header line: "<available> bis: <due>".
-const dateRange = computed(() =>
-	[
-		task.value?.availableDate ? formatUtc(task.value.availableDate, "dateTime") : undefined,
-		task.value?.dueDate ? `${t("pages.taskDetail.till")}: ${formatUtc(task.value.dueDate, "dateTime")}` : undefined,
-	]
-		.filter(Boolean)
-		.join(" ")
-);
+const dateRange = computed(() => {
+	const current = task.value;
+	if (!current) return "";
+	const available = formatUtc(current.availableDate, "dateTime");
+	return current.dueDate
+		? `${available} ${t("pages.taskDetail.till")}: ${formatUtc(current.dueDate, "dateTime")}`
+		: `${available} ${t("pages.taskDetail.noDueDate")}`;
+});
+
+const studentState = computed(() => {
+	const current = task.value;
+	if (!current) return undefined;
+	if (mySubmission.value?.submitted) return t("pages.taskDetail.state.done");
+	if (current.dueDate && new Date(current.dueDate).getTime() < Date.now()) return t("pages.taskDetail.state.late");
+	return undefined;
+});
 
 useTitle(computed(() => buildPageTitle(task.value?.name ?? t("common.words.task"))));
 </script>
