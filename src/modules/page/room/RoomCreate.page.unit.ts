@@ -6,6 +6,7 @@ import { getRoomTemplateById } from "@data-room";
 import { RoomForm, RoomTemplatePicker } from "@feature-room";
 import { RoomCreatePage } from "@page-room";
 import { createTestingPinia } from "@pinia/testing";
+import { logger } from "@util-logger";
 import { flushPromises, VueWrapper } from "@vue/test-utils";
 import { setActivePinia } from "pinia";
 import { createRouterMock, getRouter, injectRouterMock } from "vue-router-mock";
@@ -222,6 +223,16 @@ describe("@pages/RoomCreate.page.vue", () => {
 			await wrapper.find('[data-testid="room-ai-discard-btn"]').trigger("click");
 
 			expect(wrapper.findComponent(RoomTemplatePicker).exists()).toBe(true);
+		});
+
+		it("should say so when the daily budget is used up", async () => {
+			vi.spyOn(logger, "error").mockImplementation(vi.fn());
+			vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: false, status: 429, body: null } as Response));
+			const { wrapper } = setup({ isAiEnabled: true });
+
+			await generate(wrapper);
+
+			expect(wrapper.find('[data-testid="room-ai-error"]').text()).toBe("common.ai.budgetExceeded");
 		});
 	});
 

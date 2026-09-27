@@ -57,7 +57,7 @@
 				/>
 
 				<VAlert v-if="hasFailed || searchFailed" type="error" variant="tonal" class="mb-4" data-testid="board-ai-error">
-					{{ isSearchMode ? t("components.board.ai.search.error") : t("components.board.ai.error") }}
+					{{ aiErrorMessage }}
 				</VAlert>
 
 				<VProgressLinear v-if="isBusy" indeterminate color="primary" class="mb-4" />
@@ -210,7 +210,7 @@ const isOpen = defineModel({ type: Boolean, required: true });
 
 const { t } = useI18n();
 const boardStore = useBoardStore();
-const { cards, generate, hasFailed, insert, isGenerating, isInserting, reset } = useBoardAiCards();
+const { cards, generate, hasFailed, insert, isBudgetExceeded, isGenerating, isInserting, reset } = useBoardAiCards();
 const {
 	hasFailed: searchFailed,
 	hasSearched,
@@ -229,6 +229,11 @@ const declined = ref<number[]>([]);
 
 const isSearchMode = computed(() => mode.value === "material");
 const isBusy = computed(() => isGenerating.value || isSearching.value);
+
+const aiErrorMessage = computed(() => {
+	if (isSearchMode.value) return t("components.board.ai.search.error");
+	return isBudgetExceeded.value ? t("common.ai.budgetExceeded") : t("components.board.ai.error");
+});
 
 const startLabel = computed(() => {
 	if (isSearchMode.value) return t("components.board.ai.search.button");

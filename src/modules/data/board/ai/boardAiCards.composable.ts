@@ -1,3 +1,4 @@
+import { HttpStatusCode } from "@/types/enum/http-status-code.enum";
 import { $axios } from "@/utils/api";
 import {
 	BoardCardApiFactory,
@@ -37,6 +38,8 @@ export const useBoardAiCards = () => {
 	const isGenerating = ref(false);
 	const isInserting = ref(false);
 	const hasFailed = ref(false);
+	/** the shared daily budget for AI suggestions is used up; trying again right away will not help */
+	const isBudgetExceeded = ref(false);
 
 	let controller: AbortController | undefined;
 
@@ -73,6 +76,7 @@ export const useBoardAiCards = () => {
 
 		cards.value = [];
 		hasFailed.value = false;
+		isBudgetExceeded.value = false;
 		isGenerating.value = true;
 
 		const path = source.kind === "card" ? `cards/${source.id}` : `columns/${source.id}`;
@@ -86,6 +90,7 @@ export const useBoardAiCards = () => {
 				signal: controller.signal,
 			});
 
+			if (response.status === HttpStatusCode.TooManyRequests) isBudgetExceeded.value = true;
 			if (!response.ok || response.body === null) throw new Error(`ai cards request failed: ${response.status}`);
 
 			await readStream(response.body);
@@ -153,6 +158,7 @@ export const useBoardAiCards = () => {
 		cancel();
 		cards.value = [];
 		hasFailed.value = false;
+		isBudgetExceeded.value = false;
 	};
 
 	return {
@@ -160,6 +166,7 @@ export const useBoardAiCards = () => {
 		cards,
 		generate,
 		hasFailed,
+		isBudgetExceeded,
 		insert,
 		isEmpty,
 		isGenerating,

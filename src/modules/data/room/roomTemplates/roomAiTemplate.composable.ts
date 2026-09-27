@@ -1,4 +1,5 @@
 import { ResolvedBoard, ResolvedElement } from "./types";
+import { HttpStatusCode } from "@/types/enum/http-status-code.enum";
 import { $axios } from "@/utils/api";
 import { BoardLayout, Colors } from "@api-server";
 import { logger } from "@util-logger";
@@ -30,6 +31,8 @@ export const useRoomAiTemplate = () => {
 	const roomName = ref("");
 	const isGenerating = ref(false);
 	const hasFailed = ref(false);
+	/** the shared daily budget for AI suggestions is used up; trying again right away will not help */
+	const isBudgetExceeded = ref(false);
 
 	let controller: AbortController | undefined;
 
@@ -94,6 +97,7 @@ export const useRoomAiTemplate = () => {
 		boards.value = [];
 		roomName.value = "";
 		hasFailed.value = false;
+		isBudgetExceeded.value = false;
 		isGenerating.value = true;
 
 		try {
@@ -105,6 +109,7 @@ export const useRoomAiTemplate = () => {
 				signal: controller.signal,
 			});
 
+			if (response.status === HttpStatusCode.TooManyRequests) isBudgetExceeded.value = true;
 			if (!response.ok || response.body === null) throw new Error(`ai template request failed: ${response.status}`);
 
 			await readStream(response.body);
@@ -128,6 +133,7 @@ export const useRoomAiTemplate = () => {
 		boards.value = [];
 		roomName.value = "";
 		hasFailed.value = false;
+		isBudgetExceeded.value = false;
 	};
 
 	return {
@@ -136,6 +142,7 @@ export const useRoomAiTemplate = () => {
 		generate,
 		hasFailed,
 		hasVideoConference,
+		isBudgetExceeded,
 		isEmpty,
 		isGenerating,
 		reset,

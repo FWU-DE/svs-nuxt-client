@@ -123,6 +123,8 @@
 			</RouterLink>
 		</h2>
 
+		<AiModelSettings />
+
 		<section class="mt-8" data-testid="onboarding-reset-card">
 			<h2>Onboarding-Assistent</h2>
 			<p class="text-medium-emphasis mb-4">
@@ -168,6 +170,7 @@ import { $axios } from "@/utils/api";
 import { buildPageTitle } from "@/utils/pageTitle";
 import { AccountApiFactory, PatchMyAccountParams } from "@api-server";
 import { notifyError, notifySuccess, useAppStore, useAppStoreRefs } from "@data-app";
+import { AiModelSettings } from "@feature-ai-model";
 import { mdiChevronRight, mdiEyeOffOutline, mdiEyeOutline, mdiRestore } from "@icons/material";
 import { DefaultWireframe } from "@ui-layout";
 import { useTitle } from "@vueuse/core";

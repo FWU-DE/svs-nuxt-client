@@ -17,7 +17,7 @@
 
 		<template v-else-if="isAiPreviewStep">
 			<VAlert v-if="hasFailed" type="error" variant="tonal" class="mb-6" data-testid="room-ai-error">
-				{{ t("pages.roomCreate.ai.error") }}
+				{{ isBudgetExceeded ? t("common.ai.budgetExceeded") : t("pages.roomCreate.ai.error") }}
 			</VAlert>
 			<p class="text-body-2 text-medium-emphasis mb-4">{{ t("pages.roomCreate.ai.preview") }}</p>
 			<RoomTemplateStructure :boards="aiBoards" />
@@ -119,6 +119,7 @@ const {
 	generate,
 	hasFailed,
 	hasVideoConference,
+	isBudgetExceeded,
 	isGenerating,
 	reset: resetAiResult,
 	roomName: aiRoomName,

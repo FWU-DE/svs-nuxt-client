@@ -141,6 +141,18 @@ describe("roomAiTemplate.composable", () => {
 
 		expect(composable.hasFailed.value).toBe(true);
 		expect(composable.isGenerating.value).toBe(false);
+		expect(composable.isBudgetExceeded.value).toBe(false);
+	});
+
+	it("should tell a used up budget apart from other failures", async () => {
+		vi.spyOn(logger, "error").mockImplementation(vi.fn());
+		fetchMock.mockResolvedValue({ ok: false, status: 429, body: null } as Response);
+		const composable = setup();
+
+		await composable.generate("Mathe");
+
+		expect(composable.hasFailed.value).toBe(true);
+		expect(composable.isBudgetExceeded.value).toBe(true);
 	});
 
 	it("should forget a previous suggestion on reset", async () => {

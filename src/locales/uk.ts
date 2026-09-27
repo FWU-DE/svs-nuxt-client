@@ -1,5 +1,6 @@
 export default {
 	"common.action.publish": "Опублікувати",
+	"common.ai.budgetExceeded": "Досягнуто денного ліміту для пропозицій ШІ. Спробуйте пізніше.",
 	"common.actions.add": "Додати",
 	"common.actions.back": "Назад",
 	"common.actions.cancel": "Скасувати",
@@ -1268,6 +1269,15 @@ export default {
 	"pages.accountSettings.allowedCharacters": "Дозволені такі спеціальні символи:",
 	"pages.accountSettings.specialCharacters": "! § $% & / () =? \\;:,. # + * ~ -",
 	"pages.accountSettings.thirdPartyLogins": "Вхід в систему третіх сторін",
+	"pages.accountSettings.aiModel.title": "Модель ШІ",
+	"pages.accountSettings.aiModel.description": "Ця модель створює ваші пропозиції ШІ для кімнат і дошок.",
+	"pages.accountSettings.aiModel.label": "Модель:",
+	"pages.accountSettings.aiModel.price": "≈ {input} / {output} за млн токенів (вхід/вихід)",
+	"pages.accountSettings.aiModel.defaultModel": "{label} (за замовчуванням)",
+	"pages.accountSettings.aiModel.budget":
+		"Використано сьогодні: {spent} з {limit} (спільно для всіх, ковзні {hours} год)",
+	"pages.accountSettings.aiModel.saved": "Модель ШІ збережено.",
+	"pages.accountSettings.aiModel.saveError": "Не вдалося зберегти модель ШІ.",
 	"pages.accountThirdPartyProviders.provider": "Провайдер",
 	"pages.accountThirdPartyProviders.back": "Назад",
 	"pages.accountTeams.visibilityDisabled": "Видимість запрошень для кімнат і команд вимкнено",
