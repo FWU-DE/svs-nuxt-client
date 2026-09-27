@@ -256,6 +256,53 @@ describe("roomTemplates.composable", () => {
 		});
 	});
 
+	describe("when a single board is added to a room", () => {
+		it("should create the board with its content and return its id", async () => {
+			const composable = setup();
+
+			const result = await composable.applyBoard("room-id", singleBoard[0]);
+
+			expect(result).toEqual({ boardId: "board-1", isComplete: true });
+			expect(boardApiMock.boardControllerCreateBoard).toHaveBeenCalledWith({
+				title: "Übersicht",
+				parentId: "room-id",
+				parentType: BoardParentType.ROOM,
+				layout: BoardLayout.COLUMNS,
+			});
+			expect(cardApiMock.cardControllerUpdateCardTitle).toHaveBeenCalledWith("card-1", { title: "Linksammlung" });
+			expect(composable.progress.value).toBe(100);
+		});
+
+		it("should leave the board a draft, like a board made by hand", async () => {
+			const composable = setup();
+
+			await composable.applyBoard("room-id", singleBoard[0]);
+
+			expect(boardApiMock.boardControllerUpdateVisibility).not.toHaveBeenCalled();
+		});
+
+		it("should return the id of the board even when its content is incomplete", async () => {
+			vi.spyOn(logger, "error").mockImplementation(vi.fn());
+			boardApiMock.boardControllerCreateColumn.mockRejectedValue(new Error("Network error"));
+			const composable = setup();
+
+			const result = await composable.applyBoard("room-id", singleBoard[0]);
+
+			expect(result).toEqual({ boardId: "board-1", isComplete: false });
+		});
+
+		it("should return no id when the board itself cannot be created", async () => {
+			vi.spyOn(logger, "error").mockImplementation(vi.fn());
+			boardApiMock.boardControllerCreateBoard.mockRejectedValue(new Error("Network error"));
+			const composable = setup();
+
+			const result = await composable.applyBoard("room-id", singleBoard[0]);
+
+			expect(result).toEqual({ boardId: undefined, isComplete: false });
+			expect(composable.isApplying.value).toBe(false);
+		});
+	});
+
 	describe("the catalog", () => {
 		it("should offer the blank template first", () => {
 			expect(roomTemplates[0].id).toBe("blank");

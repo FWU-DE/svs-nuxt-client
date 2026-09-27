@@ -25,6 +25,7 @@ export {
 } from "./roomMembers/types";
 export {
 	BLANK_ROOM_TEMPLATE_ID,
+	type BoardAiTemplateOptions,
 	boardKey,
 	cardKey,
 	columnKey,
@@ -43,6 +44,7 @@ export {
 	type RoomTemplateParam,
 	type RoomTemplateParamValues,
 	roomTemplates,
+	useBoardAiTemplate,
 	useRoomAiTemplate,
 	useRoomTemplate,
 } from "./roomTemplates";

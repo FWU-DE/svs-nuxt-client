@@ -36,6 +36,12 @@
 			v-model="boardLayoutDialogIsOpen"
 			@select="onCreateBoard"
 		/>
+		<RoomAiBoardDialog
+			v-if="isAiBoardAvailable"
+			v-model="aiBoardDialogIsOpen"
+			:room-id="room.id"
+			@created="onAiBoardCreated"
+		/>
 		<LeaveRoomProhibitedDialog v-model="isLeaveRoomProhibitedDialogOpen" />
 	</DefaultWireframe>
 </template>
@@ -48,11 +54,12 @@ import { askConfirmation } from "@/utils/confirmation-dialog.utils";
 import { buildPageTitle } from "@/utils/pageTitle";
 import { RoomBoardItemResponse } from "@api-server";
 import { useAppStoreRefs } from "@data-app";
+import { useEnvConfig } from "@data-env";
 import { useRoomAllowedOperations, useRoomDetailsStore, useRoomStore } from "@data-room";
 import { useCopyFlow } from "@feature-copy";
-import { RoomBoardGrid, RoomMenu } from "@feature-room";
+import { RoomAiBoardDialog, RoomBoardGrid, RoomMenu } from "@feature-room";
 import { useShareFlow } from "@feature-share";
-import { mdiPlus } from "@icons/material";
+import { mdiCreation, mdiPlus, mdiViewDashboardOutline } from "@icons/material";
 import { EmptyState, LearningContentEmptyStateSvg } from "@ui-empty-state";
 import { Breadcrumb, DefaultWireframe } from "@ui-layout";
 import { LeaveRoomProhibitedDialog, SelectBoardLayoutDialog } from "@ui-room-details";
@@ -103,20 +110,48 @@ const breadcrumbs: ComputedRef<Breadcrumb[]> = computed(() => [
 	},
 ]);
 
-const fabAction = computed<FabAction[] | undefined>(() =>
-	allowedOperations.value.editContent
-		? [
-				{
-					icon: mdiPlus,
-					label: t("pages.roomDetails.fab.add.board"),
-					dataTestId: "add-content-button",
-					clickHandler: () => {
-						boardLayoutDialogIsOpen.value = true;
-					},
-				},
-			]
-		: undefined
+const aiBoardDialogIsOpen = ref(false);
+
+/** the ai suggests a board only where the instance offers it and the user may add content */
+const isAiBoardAvailable = computed(
+	() => allowedOperations.value.editContent && useEnvConfig().value.FEATURE_ROOM_AI_TEMPLATE_ENABLED
 );
+
+const openBoardLayoutDialog = () => {
+	boardLayoutDialogIsOpen.value = true;
+};
+
+const fabAction = computed<FabAction[] | undefined>(() => {
+	if (!allowedOperations.value.editContent) return undefined;
+
+	const addBoardAction: FabAction = {
+		icon: mdiPlus,
+		label: t("pages.roomDetails.fab.add.board"),
+		dataTestId: "add-content-button",
+		clickHandler: openBoardLayoutDialog,
+	};
+
+	if (!isAiBoardAvailable.value) return [addBoardAction];
+
+	// with more than one action the button opens a speed dial, the first action only labels it
+	return [
+		addBoardAction,
+		{
+			icon: mdiViewDashboardOutline,
+			label: t("pages.roomDetails.fab.add.emptyBoard"),
+			dataTestId: "add-empty-board-button",
+			clickHandler: openBoardLayoutDialog,
+		},
+		{
+			icon: mdiCreation,
+			label: t("pages.roomDetails.fab.add.aiBoard"),
+			dataTestId: "add-ai-board-button",
+			clickHandler: () => {
+				aiBoardDialogIsOpen.value = true;
+			},
+		},
+	];
+});
 
 const onEdit = () => {
 	router.push({
@@ -193,6 +228,10 @@ const onLeaveRoom = async () => {
 
 const onCreateBoard = async (layout: BoardLayout) => {
 	const boardId = await createBoard(room.value.id, layout, t("pages.roomDetails.board.defaultName"));
+	router.push(`/boards/${boardId}`);
+};
+
+const onAiBoardCreated = (boardId: string) => {
 	router.push(`/boards/${boardId}`);
 };
 

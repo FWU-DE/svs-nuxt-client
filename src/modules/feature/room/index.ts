@@ -16,6 +16,7 @@ import Invitations from "./roomMembers/tabs/Invitations.vue";
 import Members from "./roomMembers/tabs/Members.vue";
 import RoomMenu from "./RoomMenu.vue";
 import RoomsWelcomeInfo from "./RoomsWelcomeInfo.vue";
+import RoomAiBoardDialog from "./roomTemplates/RoomAiBoardDialog.vue";
 import RoomAiPrompt from "./roomTemplates/RoomAiPrompt.vue";
 import RoomTemplateParams from "./roomTemplates/RoomTemplateParams.vue";
 import RoomTemplatePicker from "./roomTemplates/RoomTemplatePicker.vue";
@@ -36,6 +37,7 @@ export {
 	Registration,
 	RoomAdminMembersTable,
 	RoomAdminTable,
+	RoomAiBoardDialog,
 	RoomAiPrompt,
 	RoomBoardGrid,
 	RoomForm,

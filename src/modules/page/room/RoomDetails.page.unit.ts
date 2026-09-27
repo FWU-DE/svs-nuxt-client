@@ -2,14 +2,20 @@ import { BoardLayout } from "@/types/board/Board";
 import { RoomBoardItem } from "@/types/room/Room";
 import { ShareTokenParentType } from "@/types/sharing/Token";
 import * as confirmDialogUtils from "@/utils/confirmation-dialog.utils";
-import { createTestAppStore, createTestRoomStore, mockComposable, mockedPiniaStoreTyping } from "@@/tests/test-utils";
+import {
+	createTestAppStore,
+	createTestEnvStore,
+	createTestRoomStore,
+	mockComposable,
+	mockedPiniaStoreTyping,
+} from "@@/tests/test-utils";
 import { roomBoardGridItemFactory, roomFactory } from "@@/tests/test-utils/factory/room";
 import { createTestingI18n, createTestingVuetify } from "@@/tests/test-utils/setup";
 import * as serverApi from "@api-server";
 import { CopyElementType, CopyStatusEnum } from "@api-server";
 import { RoomVariant, useRoomDetailsStore } from "@data-room";
 import { useCopyFlow } from "@feature-copy";
-import { RoomBoardGrid, RoomMenu } from "@feature-room";
+import { RoomAiBoardDialog, RoomBoardGrid, RoomMenu } from "@feature-room";
 import { useShareFlow } from "@feature-share";
 import { RoomDetailsPage } from "@page-room";
 import { createTestingPinia } from "@pinia/testing";
@@ -19,6 +25,7 @@ import { LeaveRoomProhibitedDialog, SelectBoardLayoutDialog } from "@ui-room-det
 import { flushPromises, VueWrapper } from "@vue/test-utils";
 import { setActivePinia } from "pinia";
 import { Mocked } from "vitest";
+import { nextTick } from "vue";
 import { createRouterMock, injectRouterMock } from "vue-router-mock";
 import { VBreadcrumbsItem, VBtn, VCard, VFab } from "vuetify/components";
 
@@ -48,6 +55,7 @@ describe("@pages/RoomsDetails.page.vue", () => {
 		options?: Partial<{
 			roomBoards: RoomBoardItem[];
 			allowedOperations: Partial<serverApi.RoomItemResponseAllowedOperations> | undefined;
+			isAiBoardEnabled: boolean;
 		}>
 	) => {
 		const { roomBoards } = {
@@ -68,6 +76,7 @@ describe("@pages/RoomsDetails.page.vue", () => {
 		});
 
 		createTestAppStore({ me: { user: { id: "user-id" }, roles: [{ id: "teacher", name: "teacher" }] } });
+		createTestEnvStore({ FEATURE_ROOM_AI_TEMPLATE_ENABLED: options?.isAiBoardEnabled ?? false });
 
 		const router = createRouterMock();
 		injectRouterMock(router);
@@ -327,6 +336,9 @@ describe("@pages/RoomsDetails.page.vue", () => {
 			});
 		});
 
+		const fabLabels = (wrapper: VueWrapper) =>
+			(wrapper.getComponent(DefaultWireframe).props("fabItems") as { label: string }[]).map((item) => item.label);
+
 		const openDialog = async (wrapper: VueWrapper) => {
 			const fab = wrapper.getComponent(VFab).getComponent(VBtn);
 			await fab.trigger("click");
@@ -347,6 +359,61 @@ describe("@pages/RoomsDetails.page.vue", () => {
 
 			const dialog = wrapper.findComponent(SelectBoardLayoutDialog).findComponent(VCard);
 			expect(dialog.exists()).toBe(true);
+		});
+
+		describe("and the ai may suggest boards", () => {
+			it("should offer an empty board and a board made with ai", () => {
+				const { wrapper } = setup({
+					allowedOperations: { accessRoom: true, editContent: true },
+					isAiBoardEnabled: true,
+				});
+
+				expect(fabLabels(wrapper)).toEqual([
+					"pages.roomDetails.fab.add.board",
+					"pages.roomDetails.fab.add.emptyBoard",
+					"pages.roomDetails.fab.add.aiBoard",
+				]);
+			});
+
+			it("should open the ai dialog from its action", async () => {
+				const { wrapper } = setup({
+					allowedOperations: { accessRoom: true, editContent: true },
+					isAiBoardEnabled: true,
+				});
+				const items = wrapper.getComponent(DefaultWireframe).props("fabItems") as { clickHandler: () => void }[];
+
+				items[2].clickHandler();
+				await nextTick();
+
+				expect(wrapper.getComponent(RoomAiBoardDialog).props("modelValue")).toBe(true);
+			});
+
+			it("should open the board the ai dialog created", async () => {
+				const { wrapper, router } = setup({
+					allowedOperations: { accessRoom: true, editContent: true },
+					isAiBoardEnabled: true,
+				});
+
+				await wrapper.getComponent(RoomAiBoardDialog).vm.$emit("created", "ai-board-id");
+
+				expect(router.push).toHaveBeenCalledWith("/boards/ai-board-id");
+			});
+
+			it("should not offer it without the permission to edit the room", () => {
+				const { wrapper } = setup({
+					allowedOperations: { accessRoom: true, editContent: false },
+					isAiBoardEnabled: true,
+				});
+
+				expect(wrapper.findComponent(RoomAiBoardDialog).exists()).toBe(false);
+			});
+		});
+
+		it("should not offer the ai when the feature is off", () => {
+			const { wrapper } = setup({ allowedOperations: { accessRoom: true, editContent: true } });
+
+			expect(fabLabels(wrapper)).toEqual(["pages.roomDetails.fab.add.board"]);
+			expect(wrapper.findComponent(RoomAiBoardDialog).exists()).toBe(false);
 		});
 
 		describe("and user selects a multi-column layout", () => {

@@ -14,8 +14,8 @@ import { computed, ref } from "vue";
 
 const RICH_TEXT_INPUT_FORMAT = "richTextCk5";
 
-/** api calls per board that are not columns, cards or elements: create board + publish it */
-const STEPS_PER_BOARD = 2;
+/** api calls per board that are not columns, cards or elements: create board (+ publish it) */
+const stepsPerBoard = (publish: boolean): number => (publish ? 2 : 1);
 
 /** identifies an item of the structure, so that a preview can show what has been created already */
 export const boardKey = (boardIndex: number): string => `b${boardIndex}`;
@@ -33,14 +33,14 @@ const ELEMENT_TYPES: Record<ResolvedElement["kind"], ContentElementType> = {
 	videoConference: ContentElementType.VIDEO_CONFERENCE,
 };
 
-const countSteps = (boards: ResolvedBoard[]): number =>
+const countSteps = (boards: ResolvedBoard[], publish: boolean): number =>
 	boards.reduce((boardSteps, board) => {
 		const columnSteps = board.columns.reduce((columnCount, column) => {
 			const cardSteps = column.cards.reduce((cardCount, card) => cardCount + 1 + card.elements.length, 0);
 			return columnCount + 1 + cardSteps;
 		}, 0);
 
-		return boardSteps + STEPS_PER_BOARD + columnSteps;
+		return boardSteps + stepsPerBoard(publish) + columnSteps;
 	}, 0);
 
 /**
@@ -155,21 +155,25 @@ export const useRoomTemplate = () => {
 	};
 
 	/**
-	 * Creates the boards of a resolved template in an already created room. All boards are created
-	 * before they are filled, so that cards can link to any board of the same room.
-	 * @returns whether all of the content could be created
+	 * Creates the boards in the room and fills them. All boards are created before they are filled,
+	 * so that cards can link to any board of the same room.
+	 * @returns the ids of the boards that could be created, and whether all of the content could be created
 	 */
-	const applyTemplate = async (roomId: string, boards: ResolvedBoard[]): Promise<boolean> => {
-		if (boards.length === 0) return true;
+	const buildBoards = async (
+		roomId: string,
+		boards: ResolvedBoard[],
+		{ publish }: { publish: boolean }
+	): Promise<{ boardIds: string[]; isComplete: boolean }> => {
+		const boardIds: string[] = [];
+		if (boards.length === 0) return { boardIds, isComplete: true };
 
 		isApplying.value = true;
 		completedSteps.value = 0;
 		createdKeys.value = [];
-		totalSteps.value = countSteps(boards);
+		totalSteps.value = countSteps(boards, publish);
 		let isComplete = true;
 
 		try {
-			const boardIds: string[] = [];
 			for (const [boardIndex, board] of boards.entries()) {
 				const boardId = (
 					await step(
@@ -189,23 +193,44 @@ export const useRoomTemplate = () => {
 				try {
 					await fillBoard(boardIds[boardIndex], board, boardIndex, boardIds);
 					// a new board is a draft: without this the members of the room would not see it at all
-					await step(boardApi.boardControllerUpdateVisibility(boardIds[boardIndex], { isVisible: true }));
+					if (publish) await step(boardApi.boardControllerUpdateVisibility(boardIds[boardIndex], { isVisible: true }));
 				} catch (error) {
 					isComplete = false;
-					logger.error(`Could not fill board "${board.title}" of a room template`, error);
+					logger.error(`Could not fill board "${board.title}"`, error);
 				}
 			}
 		} catch (error) {
 			isComplete = false;
-			logger.error("Could not create the boards of a room template", error);
+			logger.error("Could not create the boards", error);
 		} finally {
 			isApplying.value = false;
 		}
 
-		return isComplete;
+		return { boardIds, isComplete };
+	};
+
+	/**
+	 * Creates the boards of a resolved template in an already created room and publishes them.
+	 * @returns whether all of the content could be created
+	 */
+	const applyTemplate = async (roomId: string, boards: ResolvedBoard[]): Promise<boolean> =>
+		(await buildBoards(roomId, boards, { publish: true })).isComplete;
+
+	/**
+	 * Adds a single board with its content to an existing room. Like a board made by hand it starts
+	 * out as a draft, so that it can be checked before the members of the room see it.
+	 * @returns the id of the board, undefined when not even the board could be created
+	 */
+	const applyBoard = async (
+		roomId: string,
+		board: ResolvedBoard
+	): Promise<{ boardId: string | undefined; isComplete: boolean }> => {
+		const { boardIds, isComplete } = await buildBoards(roomId, [board], { publish: false });
+		return { boardId: boardIds[0], isComplete };
 	};
 
 	return {
+		applyBoard,
 		applyTemplate,
 		createdKeys,
 		isApplying,
